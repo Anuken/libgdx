@@ -88,7 +88,7 @@ public class Lwjgl3Input implements Input, Disposable {
 		@Override
 		public void invoke(long window, double scrollX, double scrollY) {
 			Lwjgl3Input.this.window.getGraphics().requestRendering();
-			eventQueue.scrolled((int)-Math.signum(scrollY));
+			eventQueue.scrolled(-(float)scrollX, -(float)scrollY);
 		}
 	};
 	
