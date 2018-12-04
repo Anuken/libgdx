@@ -12,32 +12,32 @@ package java.io;
 
 import com.badlogic.gdx.utils.Utf8Decoder;
 
-public class InputStreamReader extends Reader {
-	private final InputStream in;
+public class InputStreamReader extends Reader{
+    private final InputStream in;
 
-	private final Utf8Decoder utf8Decoder;
+    private final Utf8Decoder utf8Decoder;
 
-	public InputStreamReader (InputStream in) {
-		this.in = in;
-		this.utf8Decoder = new Utf8Decoder();
-	}
+    public InputStreamReader(InputStream in){
+        this.in = in;
+        this.utf8Decoder = new Utf8Decoder();
+    }
 
-	public InputStreamReader (InputStream in, String encoding) throws UnsupportedEncodingException {
-		this(in);
+    public InputStreamReader(InputStream in, String encoding) throws UnsupportedEncodingException{
+        this(in);
 
-		// FIXME this is bad, but some APIs seem to use "ISO-8859-1", fuckers...
+        // FIXME this is bad, but some APIs seem to use "ISO-8859-1", fuckers...
 // if (! encoding.equals("UTF-8")) {
 // throw new UnsupportedEncodingException(encoding);
 // }
-	}
+    }
 
-	public int read (char[] b, int offset, int length) throws IOException {
-		byte[] buffer = new byte[length];
-		int c = in.read(buffer);
-		return c <= 0 ? c : utf8Decoder.decode(buffer, 0, c, b, offset);
-	}
+    public int read(char[] b, int offset, int length) throws IOException{
+        byte[] buffer = new byte[length];
+        int c = in.read(buffer);
+        return c <= 0 ? c : utf8Decoder.decode(buffer, 0, c, b, offset);
+    }
 
-	public void close () throws IOException {
-		in.close();
-	}
+    public void close() throws IOException{
+        in.close();
+    }
 }

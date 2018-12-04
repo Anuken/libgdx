@@ -26,44 +26,45 @@ import org.moe.natj.general.ann.Generated;
 
 @Generated
 @Structure()
-public final class ALOrientation extends StructObject {
-	static {
-		NatJ.register();
-	}
-	private static long __natjCache;
+public final class ALOrientation extends StructObject{
+    static{
+        NatJ.register();
+    }
 
-	@Generated
-	public ALOrientation() {
-		super(ALOrientation.class);
-	}
+    private static long __natjCache;
 
-	@Generated
-	protected ALOrientation(Pointer peer) {
-		super(peer);
-	}
+    @Generated
+    public ALOrientation(){
+        super(ALOrientation.class);
+    }
 
-	@Generated
-	public ALOrientation(@ByValue ALVector at, @ByValue ALVector up) {
-		super(ALOrientation.class);
-		setAt(at);
-		setUp(up);
-	}
+    @Generated
+    protected ALOrientation(Pointer peer){
+        super(peer);
+    }
 
-	@Generated
-	@StructureField(order = 0, isGetter = true)
-	@ByValue
-	public native ALVector at();
+    @Generated
+    public ALOrientation(@ByValue ALVector at, @ByValue ALVector up){
+        super(ALOrientation.class);
+        setAt(at);
+        setUp(up);
+    }
 
-	@Generated
-	@StructureField(order = 0, isGetter = false)
-	public native void setAt(@ByValue ALVector value);
+    @Generated
+    @StructureField(order = 0, isGetter = true)
+    @ByValue
+    public native ALVector at();
 
-	@Generated
-	@StructureField(order = 1, isGetter = true)
-	@ByValue
-	public native ALVector up();
+    @Generated
+    @StructureField(order = 0, isGetter = false)
+    public native void setAt(@ByValue ALVector value);
 
-	@Generated
-	@StructureField(order = 1, isGetter = false)
-	public native void setUp(@ByValue ALVector value);
+    @Generated
+    @StructureField(order = 1, isGetter = true)
+    @ByValue
+    public native ALVector up();
+
+    @Generated
+    @StructureField(order = 1, isGetter = false)
+    public native void setUp(@ByValue ALVector value);
 }

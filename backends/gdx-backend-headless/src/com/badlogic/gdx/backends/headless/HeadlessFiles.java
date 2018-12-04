@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,64 +16,66 @@
 
 package com.badlogic.gdx.backends.headless;
 
-import java.io.File;
-
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
 
-/** @author mzechner
- * @author Nathan Sweet */
-public final class HeadlessFiles implements Files {
-	static public final String externalPath = System.getProperty("user.home") + File.separator;
-	static public final String localPath = new File("").getAbsolutePath() + File.separator;
+import java.io.File;
 
-	@Override
-	public FileHandle getFileHandle (String fileName, FileType type) {
-		return new HeadlessFileHandle(fileName, type);
-	}
+/**
+ * @author mzechner
+ * @author Nathan Sweet
+ */
+public final class HeadlessFiles implements Files{
+    static public final String externalPath = System.getProperty("user.home") + File.separator;
+    static public final String localPath = new File("").getAbsolutePath() + File.separator;
 
-	@Override
-	public FileHandle classpath (String path) {
-		return new HeadlessFileHandle(path, FileType.Classpath);
-	}
+    @Override
+    public FileHandle getFileHandle(String fileName, FileType type){
+        return new HeadlessFileHandle(fileName, type);
+    }
 
-	@Override
-	public FileHandle internal (String path) {
-		return new HeadlessFileHandle(path, FileType.Internal);
-	}
+    @Override
+    public FileHandle classpath(String path){
+        return new HeadlessFileHandle(path, FileType.Classpath);
+    }
 
-	@Override
-	public FileHandle external (String path) {
-		return new HeadlessFileHandle(path, FileType.External);
-	}
+    @Override
+    public FileHandle internal(String path){
+        return new HeadlessFileHandle(path, FileType.Internal);
+    }
 
-	@Override
-	public FileHandle absolute (String path) {
-		return new HeadlessFileHandle(path, FileType.Absolute);
-	}
+    @Override
+    public FileHandle external(String path){
+        return new HeadlessFileHandle(path, FileType.External);
+    }
 
-	@Override
-	public FileHandle local (String path) {
-		return new HeadlessFileHandle(path, FileType.Local);
-	}
+    @Override
+    public FileHandle absolute(String path){
+        return new HeadlessFileHandle(path, FileType.Absolute);
+    }
 
-	@Override
-	public String getExternalStoragePath () {
-		return externalPath;
-	}
+    @Override
+    public FileHandle local(String path){
+        return new HeadlessFileHandle(path, FileType.Local);
+    }
 
-	@Override
-	public boolean isExternalStorageAvailable () {
-		return true;
-	}
+    @Override
+    public String getExternalStoragePath(){
+        return externalPath;
+    }
 
-	@Override
-	public String getLocalStoragePath () {
-		return localPath;
-	}
+    @Override
+    public boolean isExternalStorageAvailable(){
+        return true;
+    }
 
-	@Override
-	public boolean isLocalStorageAvailable () {
-		return true;
-	}
+    @Override
+    public String getLocalStoragePath(){
+        return localPath;
+    }
+
+    @Override
+    public boolean isLocalStorageAvailable(){
+        return true;
+    }
 }

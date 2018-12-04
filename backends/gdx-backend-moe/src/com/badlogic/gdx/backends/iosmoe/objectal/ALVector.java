@@ -25,51 +25,52 @@ import org.moe.natj.general.ann.Generated;
 
 @Generated
 @Structure()
-public final class ALVector extends StructObject {
-	static {
-		NatJ.register();
-	}
-	private static long __natjCache;
+public final class ALVector extends StructObject{
+    static{
+        NatJ.register();
+    }
 
-	@Generated
-	public ALVector() {
-		super(ALVector.class);
-	}
+    private static long __natjCache;
 
-	@Generated
-	protected ALVector(Pointer peer) {
-		super(peer);
-	}
+    @Generated
+    public ALVector(){
+        super(ALVector.class);
+    }
 
-	@Generated
-	public ALVector(float x, float y, float z) {
-		super(ALVector.class);
-		setX(x);
-		setY(y);
-		setZ(z);
-	}
+    @Generated
+    protected ALVector(Pointer peer){
+        super(peer);
+    }
 
-	@Generated
-	@StructureField(order = 0, isGetter = true)
-	public native float x();
+    @Generated
+    public ALVector(float x, float y, float z){
+        super(ALVector.class);
+        setX(x);
+        setY(y);
+        setZ(z);
+    }
 
-	@Generated
-	@StructureField(order = 0, isGetter = false)
-	public native void setX(float value);
+    @Generated
+    @StructureField(order = 0, isGetter = true)
+    public native float x();
 
-	@Generated
-	@StructureField(order = 1, isGetter = true)
-	public native float y();
+    @Generated
+    @StructureField(order = 0, isGetter = false)
+    public native void setX(float value);
 
-	@Generated
-	@StructureField(order = 1, isGetter = false)
-	public native void setY(float value);
+    @Generated
+    @StructureField(order = 1, isGetter = true)
+    public native float y();
 
-	@Generated
-	@StructureField(order = 2, isGetter = true)
-	public native float z();
+    @Generated
+    @StructureField(order = 1, isGetter = false)
+    public native void setY(float value);
 
-	@Generated
-	@StructureField(order = 2, isGetter = false)
-	public native void setZ(float value);
+    @Generated
+    @StructureField(order = 2, isGetter = true)
+    public native float z();
+
+    @Generated
+    @StructureField(order = 2, isGetter = false)
+    public native void setZ(float value);
 }

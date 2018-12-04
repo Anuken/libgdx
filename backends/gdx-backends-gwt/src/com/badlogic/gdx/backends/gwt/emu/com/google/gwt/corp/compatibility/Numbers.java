@@ -1,12 +1,12 @@
 /*
  * Copyright 2010 Google Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -23,13 +23,13 @@ import com.google.gwt.typedarrays.shared.Float32Array;
 import com.google.gwt.typedarrays.shared.Int32Array;
 import com.google.gwt.typedarrays.shared.Int8Array;
 
-public class Numbers {
+public class Numbers{
 
-	static final double LN2 = Math.log(2);
+    static final double LN2 = Math.log(2);
 
-	public static final int floatToIntBits (float f) {
-		wfa.set(0, f);
-		return wia.get(0);
+    public static final int floatToIntBits(float f){
+        wfa.set(0, f);
+        return wia.get(0);
 
 // if (Float.isNaN(f)) {
 // return 0x7f800001;
@@ -67,19 +67,19 @@ public class Numbers {
 // }
 //
 // return signBit | ((exponent + 127) << 23) | (significand & 0x007fffff);
-	}
+    }
 
-	static Int8Array wba = Int8ArrayNative.create(4);
-	static Int32Array wia = Int32ArrayNative.create(wba.buffer(), 0, 1);
-	static Float32Array wfa = Float32ArrayNative.create(wba.buffer(), 0, 1);
+    static Int8Array wba = Int8ArrayNative.create(4);
+    static Int32Array wia = Int32ArrayNative.create(wba.buffer(), 0, 1);
+    static Float32Array wfa = Float32ArrayNative.create(wba.buffer(), 0, 1);
 
-	public static final float intBitsToFloat (int i) {
+    public static final float intBitsToFloat(int i){
 // wba.set(0, (byte) (i >> 24));
 // wba.set(1, (byte) (i >> 16));
 // wba.set(2, (byte) (i >> 8));
 // wba.set(3, (byte) (i));
-		wia.set(0, i);
-		return wfa.get(0);
+        wia.set(0, i);
+        return wfa.get(0);
 //
 //
 // int exponent = (i >>> 23) & 255;
@@ -94,17 +94,17 @@ public class Numbers {
 // }
 //
 // return (i & 0x80000000) == 0 ? result : -result;
-	}
+    }
 
-	public static final long doubleToLongBits (Double d) {
-		throw new RuntimeException("NYI");
-	}
+    public static final long doubleToLongBits(Double d){
+        throw new RuntimeException("NYI");
+    }
 
-	public static final double longBitsToDouble (long l) {
-		throw new RuntimeException("NYI");
-	}
+    public static final double longBitsToDouble(long l){
+        throw new RuntimeException("NYI");
+    }
 
-	public static long doubleToRawLongBits (double value) {
-		throw new RuntimeException("NYI: Numbers.doubleToRawLongBits");
-	}
+    public static long doubleToRawLongBits(double value){
+        throw new RuntimeException("NYI: Numbers.doubleToRawLongBits");
+    }
 }

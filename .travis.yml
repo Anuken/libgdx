@@ -8,10 +8,10 @@ branches:
 os: osx
 
 before_install:
-  - brew install ant
+- brew install ant
 
 install:
-  - true
+- true
 
 script:
-  - ant -f build-mac-ios.xml
+- ant -f build-mac-ios.xml

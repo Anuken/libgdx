@@ -16,8 +16,8 @@
 
 package com.google.gwt.webgl.client;
 
-public class WebGLFramebuffer extends WebGLObject {
+public class WebGLFramebuffer extends WebGLObject{
 
-	protected WebGLFramebuffer () {
-	}
+    protected WebGLFramebuffer(){
+    }
 }

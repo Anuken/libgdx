@@ -20,5 +20,5 @@
 <!-- is subject to change in the future.  Specifically, the RTL version -->
 <!-- will be automatically selected in locales with RTL languages.      -->
 <module>
-      <stylesheet src="gwt/chrome/chrome_rtl.css"/>
+    <stylesheet src="gwt/chrome/chrome_rtl.css"/>
 </module>

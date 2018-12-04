@@ -8,82 +8,76 @@
 
 package com.badlogic.gdx.physics.bullet.collision;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+public class btGImpactMeshShape extends btGImpactShapeInterface{
+    private long swigCPtr;
 
-public class btGImpactMeshShape extends btGImpactShapeInterface {
-	private long swigCPtr;
-	
-	protected btGImpactMeshShape(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, CollisionJNI.btGImpactMeshShape_SWIGUpcast(cPtr), cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btGImpactMeshShape, normally you should not need this constructor it's intended for low-level usage. */
-	public btGImpactMeshShape(long cPtr, boolean cMemoryOwn) {
-		this("btGImpactMeshShape", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(CollisionJNI.btGImpactMeshShape_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
-	}
-	
-	public static long getCPtr(btGImpactMeshShape obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+    protected btGImpactMeshShape(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, CollisionJNI.btGImpactMeshShape_SWIGUpcast(cPtr), cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    /** Construct a new btGImpactMeshShape, normally you should not need this constructor it's intended for low-level usage. */
+    public btGImpactMeshShape(long cPtr, boolean cMemoryOwn){
+        this("btGImpactMeshShape", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_btGImpactMeshShape(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(CollisionJNI.btGImpactMeshShape_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
+    }
 
-  public btGImpactMeshShape(btStridingMeshInterface meshInterface) {
-    this(CollisionJNI.new_btGImpactMeshShape(btStridingMeshInterface.getCPtr(meshInterface), meshInterface), true);
-  }
+    public static long getCPtr(btGImpactMeshShape obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public btStridingMeshInterface getMeshInterface() {
-    long cPtr = CollisionJNI.btGImpactMeshShape_getMeshInterface(swigCPtr, this);
-    return (cPtr == 0) ? null : new btStridingMeshInterface(cPtr, false);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public btStridingMeshInterface getMeshInterfaceConst() {
-    long cPtr = CollisionJNI.btGImpactMeshShape_getMeshInterfaceConst(swigCPtr, this);
-    return (cPtr == 0) ? null : new btStridingMeshInterface(cPtr, false);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_btGImpactMeshShape(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public int getMeshPartCount() {
-    return CollisionJNI.btGImpactMeshShape_getMeshPartCount(swigCPtr, this);
-  }
+    public btGImpactMeshShape(btStridingMeshInterface meshInterface){
+        this(CollisionJNI.new_btGImpactMeshShape(btStridingMeshInterface.getCPtr(meshInterface), meshInterface), true);
+    }
 
-  public btGImpactMeshShapePart getMeshPart(int index) {
-    long cPtr = CollisionJNI.btGImpactMeshShape_getMeshPart(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new btGImpactMeshShapePart(cPtr, false);
-  }
+    public btStridingMeshInterface getMeshInterface(){
+        long cPtr = CollisionJNI.btGImpactMeshShape_getMeshInterface(swigCPtr, this);
+        return (cPtr == 0) ? null : new btStridingMeshInterface(cPtr, false);
+    }
 
-  public btGImpactMeshShapePart getMeshPartConst(int index) {
-    long cPtr = CollisionJNI.btGImpactMeshShape_getMeshPartConst(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new btGImpactMeshShapePart(cPtr, false);
-  }
+    public btStridingMeshInterface getMeshInterfaceConst(){
+        long cPtr = CollisionJNI.btGImpactMeshShape_getMeshInterfaceConst(swigCPtr, this);
+        return (cPtr == 0) ? null : new btStridingMeshInterface(cPtr, false);
+    }
+
+    public int getMeshPartCount(){
+        return CollisionJNI.btGImpactMeshShape_getMeshPartCount(swigCPtr, this);
+    }
+
+    public btGImpactMeshShapePart getMeshPart(int index){
+        long cPtr = CollisionJNI.btGImpactMeshShape_getMeshPart(swigCPtr, this, index);
+        return (cPtr == 0) ? null : new btGImpactMeshShapePart(cPtr, false);
+    }
+
+    public btGImpactMeshShapePart getMeshPartConst(int index){
+        long cPtr = CollisionJNI.btGImpactMeshShape_getMeshPartConst(swigCPtr, this, index);
+        return (cPtr == 0) ? null : new btGImpactMeshShapePart(cPtr, false);
+    }
 
 }

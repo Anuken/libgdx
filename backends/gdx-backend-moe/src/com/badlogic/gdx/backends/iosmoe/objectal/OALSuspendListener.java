@@ -25,20 +25,20 @@ import org.moe.natj.objc.ann.Selector;
 @Generated
 @Runtime(ObjCRuntime.class)
 @ObjCProtocolName("OALSuspendListener")
-public interface OALSuspendListener {
-	@Generated
-	@Selector("interrupted")
-	boolean interrupted ();
+public interface OALSuspendListener{
+    @Generated
+    @Selector("interrupted")
+    boolean interrupted();
 
-	@Generated
-	@Selector("manuallySuspended")
-	boolean manuallySuspended ();
+    @Generated
+    @Selector("manuallySuspended")
+    boolean manuallySuspended();
 
-	@Generated
-	@Selector("setInterrupted:")
-	void setInterrupted (boolean value);
+    @Generated
+    @Selector("setInterrupted:")
+    void setInterrupted(boolean value);
 
-	@Generated
-	@Selector("setManuallySuspended:")
-	void setManuallySuspended (boolean value);
+    @Generated
+    @Selector("setManuallySuspended:")
+    void setManuallySuspended(boolean value);
 }

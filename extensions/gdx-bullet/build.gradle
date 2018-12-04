@@ -29,7 +29,7 @@ dependencies {
     compile project(":extensions:gdx-jnigen")
 }
 
-task runBulletBuild (type: JavaExec) {
+task runBulletBuild(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.badlogic.gdx.physics.bullet.BulletBuild"
     standardInput = System.in

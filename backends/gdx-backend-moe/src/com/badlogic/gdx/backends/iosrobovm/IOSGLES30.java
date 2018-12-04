@@ -23,13 +23,13 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 
-public class IOSGLES30 extends IOSGLES20 implements GL30 {
+public class IOSGLES30 extends IOSGLES20 implements GL30{
 
-    public IOSGLES30() {
+    public IOSGLES30(){
         init();
     }
 
-    private static native void init( );
+    private static native void init();
 
     public native void glReadBuffer(int mode);
 

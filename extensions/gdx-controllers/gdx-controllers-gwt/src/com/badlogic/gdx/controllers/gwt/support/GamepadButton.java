@@ -18,9 +18,9 @@ package com.badlogic.gdx.controllers.gwt.support;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public final class GamepadButton extends JavaScriptObject {
+public final class GamepadButton extends JavaScriptObject{
 
-    protected GamepadButton() {
+    protected GamepadButton(){
         // Required by GWT
     }
 

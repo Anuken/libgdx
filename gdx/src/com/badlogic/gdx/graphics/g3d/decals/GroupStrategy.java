@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,8 @@ package com.badlogic.gdx.graphics.g3d.decals;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
 
-/** <p>
+/**
+ * <p>
  * This class provides hooks which are invoked by {@link DecalBatch} to evaluate the group a sprite falls into, as well as to
  * adjust settings before and after rendering a group.
  * </p>
@@ -38,33 +39,43 @@ import com.badlogic.gdx.utils.Array;
  * sorting, ... all based on the requirements of the current group. The batch itself does not change OpenGL settings except for
  * whichever changes are entailed {@link DecalMaterial#set()}. If the group requires a special shader, blending,
  * {@link #getGroupShader(int)} should return it so that DecalBatch can apply it while rendering the group.
- * </p> */
-public interface GroupStrategy {
-	/** Returns the shader to be used for the group. Can be null in which case the GroupStrategy doesn't support GLES 2.0
-	 * @param group the group
-	 * @return the {@link ShaderProgram} */
-	public ShaderProgram getGroupShader (int group);
+ * </p>
+ */
+public interface GroupStrategy{
+    /**
+     * Returns the shader to be used for the group. Can be null in which case the GroupStrategy doesn't support GLES 2.0
+     *
+     * @param group the group
+     * @return the {@link ShaderProgram}
+     */
+    public ShaderProgram getGroupShader(int group);
 
-	/** Assigns a group to a decal
-	 * 
-	 * @param decal Decal to assign group to
-	 * @return group assigned */
-	public int decideGroup (Decal decal);
+    /**
+     * Assigns a group to a decal
+     *
+     * @param decal Decal to assign group to
+     * @return group assigned
+     */
+    public int decideGroup(Decal decal);
 
-	/** Invoked directly before rendering the contents of a group
-	 * 
-	 * @param group Group that will be rendered
-	 * @param contents Array of entries of arrays containing all the decals in the group */
-	public void beforeGroup (int group, Array<Decal> contents);
+    /**
+     * Invoked directly before rendering the contents of a group
+     *
+     * @param group Group that will be rendered
+     * @param contents Array of entries of arrays containing all the decals in the group
+     */
+    public void beforeGroup(int group, Array<Decal> contents);
 
-	/** Invoked directly after rendering of a group has completed
-	 * 
-	 * @param group Group which completed rendering */
-	public void afterGroup (int group);
+    /**
+     * Invoked directly after rendering of a group has completed
+     *
+     * @param group Group which completed rendering
+     */
+    public void afterGroup(int group);
 
-	/** Invoked before rendering any group */
-	public void beforeGroups ();
+    /** Invoked before rendering any group */
+    public void beforeGroups();
 
-	/** Invoked after having rendered all groups */
-	public void afterGroups ();
+    /** Invoked after having rendered all groups */
+    public void afterGroups();
 }

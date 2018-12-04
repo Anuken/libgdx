@@ -16,6 +16,11 @@
 
 package com.badlogic.gdx.backends.iosmoe;
 
+import apple.coregraphics.struct.CGRect;
+import apple.foundation.NSSet;
+import apple.glkit.GLKView;
+import apple.uikit.UIEvent;
+import apple.uikit.UITouch;
 import org.moe.natj.general.NatJ;
 import org.moe.natj.general.Pointer;
 import org.moe.natj.general.ann.ByValue;
@@ -24,65 +29,59 @@ import org.moe.natj.objc.ObjCRuntime;
 import org.moe.natj.objc.ann.ObjCClassName;
 import org.moe.natj.objc.ann.Selector;
 
-import apple.coregraphics.struct.CGRect;
-import apple.foundation.NSSet;
-import apple.glkit.GLKView;
-import apple.uikit.UIEvent;
-import apple.uikit.UITouch;
-
 @org.moe.natj.general.ann.Runtime(ObjCRuntime.class)
 @ObjCClassName("IOSGLKView")
 @RegisterOnStartup
-public class IOSGLKView extends GLKView {
+public class IOSGLKView extends GLKView{
 
-	private IOSGraphics graphics;
+    private IOSGraphics graphics;
 
-	static {
-		NatJ.register();
-	}
+    static{
+        NatJ.register();
+    }
 
-	@Selector("alloc")
-	public static native IOSGLKView alloc ();
+    @Selector("alloc")
+    public static native IOSGLKView alloc();
 
-	@Selector("init")
-	public native IOSGLKView init ();
+    @Selector("init")
+    public native IOSGLKView init();
 
-	protected IOSGLKView (Pointer peer) {
-		super(peer);
-	}
+    protected IOSGLKView(Pointer peer){
+        super(peer);
+    }
 
-	public IOSGLKView init (CGRect bounds) {
-		initWithFrame(bounds);
-		return this;
-	}
+    public IOSGLKView init(CGRect bounds){
+        initWithFrame(bounds);
+        return this;
+    }
 
-	@Override
-	public void touchesBeganWithEvent (NSSet<? extends UITouch> nsSet, UIEvent uiEvent) {
-		graphics.input.onTouch(nsSet);
-	}
+    @Override
+    public void touchesBeganWithEvent(NSSet<? extends UITouch> nsSet, UIEvent uiEvent){
+        graphics.input.onTouch(nsSet);
+    }
 
-	@Override
-	public void touchesCancelledWithEvent (NSSet<? extends UITouch> nsSet, UIEvent uiEvent) {
-		graphics.input.onTouch(nsSet);
-	}
+    @Override
+    public void touchesCancelledWithEvent(NSSet<? extends UITouch> nsSet, UIEvent uiEvent){
+        graphics.input.onTouch(nsSet);
+    }
 
-	@Override
-	public void touchesEndedWithEvent (NSSet<? extends UITouch> nsSet, UIEvent uiEvent) {
-		graphics.input.onTouch(nsSet);
-	}
+    @Override
+    public void touchesEndedWithEvent(NSSet<? extends UITouch> nsSet, UIEvent uiEvent){
+        graphics.input.onTouch(nsSet);
+    }
 
-	@Override
-	public void touchesMovedWithEvent (NSSet<? extends UITouch> nsSet, UIEvent uiEvent) {
-		graphics.input.onTouch(nsSet);
-	}
+    @Override
+    public void touchesMovedWithEvent(NSSet<? extends UITouch> nsSet, UIEvent uiEvent){
+        graphics.input.onTouch(nsSet);
+    }
 
-	@Override
-	public void drawRect (@ByValue CGRect cgRect) {
-		graphics.glkViewDrawInRect(this, cgRect);
-	}
+    @Override
+    public void drawRect(@ByValue CGRect cgRect){
+        graphics.glkViewDrawInRect(this, cgRect);
+    }
 
-	public void setGraphics (IOSGraphics graphics) {
-		this.graphics = graphics;
-	}
+    public void setGraphics(IOSGraphics graphics){
+        this.graphics = graphics;
+    }
 
 }

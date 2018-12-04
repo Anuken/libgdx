@@ -9,96 +9,93 @@
 package com.badlogic.gdx.physics.bullet.linearmath;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class btChunk extends BulletBase {
-	private long swigCPtr;
-	
-	protected btChunk(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btChunk, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btChunk(long cPtr, boolean cMemoryOwn) {
-		this("btChunk", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btChunk obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btChunk extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btChunk(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				LinearMathJNI.delete_btChunk(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btChunk, normally you should not need this constructor it's intended for low-level usage. */
+    public btChunk(long cPtr, boolean cMemoryOwn){
+        this("btChunk", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public void setChunkCode(int value) {
-    LinearMathJNI.btChunk_chunkCode_set(swigCPtr, this, value);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public int getChunkCode() {
-    return LinearMathJNI.btChunk_chunkCode_get(swigCPtr, this);
-  }
+    public static long getCPtr(btChunk obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void setLength(int value) {
-    LinearMathJNI.btChunk_length_set(swigCPtr, this, value);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public int getLength() {
-    return LinearMathJNI.btChunk_length_get(swigCPtr, this);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                LinearMathJNI.delete_btChunk(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setOldPtr(long value) {
-    LinearMathJNI.btChunk_oldPtr_set(swigCPtr, this, value);
-  }
+    public void setChunkCode(int value){
+        LinearMathJNI.btChunk_chunkCode_set(swigCPtr, this, value);
+    }
 
-  public long getOldPtr() {
-    return LinearMathJNI.btChunk_oldPtr_get(swigCPtr, this);
-  }
+    public int getChunkCode(){
+        return LinearMathJNI.btChunk_chunkCode_get(swigCPtr, this);
+    }
 
-  public void setDna_nr(int value) {
-    LinearMathJNI.btChunk_dna_nr_set(swigCPtr, this, value);
-  }
+    public void setLength(int value){
+        LinearMathJNI.btChunk_length_set(swigCPtr, this, value);
+    }
 
-  public int getDna_nr() {
-    return LinearMathJNI.btChunk_dna_nr_get(swigCPtr, this);
-  }
+    public int getLength(){
+        return LinearMathJNI.btChunk_length_get(swigCPtr, this);
+    }
 
-  public void setNumber(int value) {
-    LinearMathJNI.btChunk_number_set(swigCPtr, this, value);
-  }
+    public void setOldPtr(long value){
+        LinearMathJNI.btChunk_oldPtr_set(swigCPtr, this, value);
+    }
 
-  public int getNumber() {
-    return LinearMathJNI.btChunk_number_get(swigCPtr, this);
-  }
+    public long getOldPtr(){
+        return LinearMathJNI.btChunk_oldPtr_get(swigCPtr, this);
+    }
 
-  public btChunk() {
-    this(LinearMathJNI.new_btChunk(), true);
-  }
+    public void setDna_nr(int value){
+        LinearMathJNI.btChunk_dna_nr_set(swigCPtr, this, value);
+    }
+
+    public int getDna_nr(){
+        return LinearMathJNI.btChunk_dna_nr_get(swigCPtr, this);
+    }
+
+    public void setNumber(int value){
+        LinearMathJNI.btChunk_number_set(swigCPtr, this, value);
+    }
+
+    public int getNumber(){
+        return LinearMathJNI.btChunk_number_get(swigCPtr, this);
+    }
+
+    public btChunk(){
+        this(LinearMathJNI.new_btChunk(), true);
+    }
 
 }

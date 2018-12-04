@@ -33,10 +33,10 @@ ext {
     toolsAssetsDir = ["assets"]
 }
 
-task dist2DParticles (type: Jar) {
+task dist2DParticles(type: Jar) {
     from files(sourceSets.main.java.outputDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(toolsAssetsDir)
 
     archiveName = "runnable-2D-particles.jar"
@@ -46,10 +46,10 @@ task dist2DParticles (type: Jar) {
     }
 }
 
-task dist3DParticles (type: Jar) {
+task dist3DParticles(type: Jar) {
     from files(sourceSets.main.java.outputDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(toolsAssetsDir)
 
     archiveName = "runnable-3D-particles.jar"
@@ -59,10 +59,10 @@ task dist3DParticles (type: Jar) {
     }
 }
 
-task distHiero (type: Jar) {
+task distHiero(type: Jar) {
     from files(sourceSets.main.java.outputDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(toolsAssetsDir)
 
     archiveName = "runnable-hiero.jar"
@@ -72,10 +72,10 @@ task distHiero (type: Jar) {
     }
 }
 
-task distTexturePacker (type: Jar) {
+task distTexturePacker(type: Jar) {
     from files(sourceSets.main.java.outputDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(toolsAssetsDir)
 
     archiveName = "runnable-texturepacker.jar"
@@ -85,7 +85,7 @@ task distTexturePacker (type: Jar) {
     }
 }
 
-task buildRunnables (dependsOn: [classes, dist2DParticles, dist3DParticles, distHiero, distTexturePacker]) {
+task buildRunnables(dependsOn: [classes, dist2DParticles, dist3DParticles, distHiero, distTexturePacker]) {
     doLast {
         println "Building ye runnables"
     }

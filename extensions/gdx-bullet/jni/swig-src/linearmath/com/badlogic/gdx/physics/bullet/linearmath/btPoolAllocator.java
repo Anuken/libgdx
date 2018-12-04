@@ -9,92 +9,89 @@
 package com.badlogic.gdx.physics.bullet.linearmath;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class btPoolAllocator extends BulletBase {
-	private long swigCPtr;
-	
-	protected btPoolAllocator(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btPoolAllocator, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btPoolAllocator(long cPtr, boolean cMemoryOwn) {
-		this("btPoolAllocator", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btPoolAllocator obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btPoolAllocator extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btPoolAllocator(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				LinearMathJNI.delete_btPoolAllocator(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btPoolAllocator, normally you should not need this constructor it's intended for low-level usage. */
+    public btPoolAllocator(long cPtr, boolean cMemoryOwn){
+        this("btPoolAllocator", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public btPoolAllocator(int elemSize, int maxElements) {
-    this(LinearMathJNI.new_btPoolAllocator(elemSize, maxElements), true);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public int getFreeCount() {
-    return LinearMathJNI.btPoolAllocator_getFreeCount(swigCPtr, this);
-  }
+    public static long getCPtr(btPoolAllocator obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public int getUsedCount() {
-    return LinearMathJNI.btPoolAllocator_getUsedCount(swigCPtr, this);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public int getMaxCount() {
-    return LinearMathJNI.btPoolAllocator_getMaxCount(swigCPtr, this);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                LinearMathJNI.delete_btPoolAllocator(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public long allocate(int size) {
-    return LinearMathJNI.btPoolAllocator_allocate(swigCPtr, this, size);
-  }
+    public btPoolAllocator(int elemSize, int maxElements){
+        this(LinearMathJNI.new_btPoolAllocator(elemSize, maxElements), true);
+    }
 
-  public boolean validPtr(long ptr) {
-    return LinearMathJNI.btPoolAllocator_validPtr(swigCPtr, this, ptr);
-  }
+    public int getFreeCount(){
+        return LinearMathJNI.btPoolAllocator_getFreeCount(swigCPtr, this);
+    }
 
-  public void freeMemory(long ptr) {
-    LinearMathJNI.btPoolAllocator_freeMemory(swigCPtr, this, ptr);
-  }
+    public int getUsedCount(){
+        return LinearMathJNI.btPoolAllocator_getUsedCount(swigCPtr, this);
+    }
 
-  public int getElementSize() {
-    return LinearMathJNI.btPoolAllocator_getElementSize(swigCPtr, this);
-  }
+    public int getMaxCount(){
+        return LinearMathJNI.btPoolAllocator_getMaxCount(swigCPtr, this);
+    }
 
-  public java.nio.ByteBuffer getPoolAddress() {
-    return LinearMathJNI.btPoolAllocator_getPoolAddress(swigCPtr, this);
-}
+    public long allocate(int size){
+        return LinearMathJNI.btPoolAllocator_allocate(swigCPtr, this, size);
+    }
 
-  public java.nio.ByteBuffer getPoolAddressConst() {
-    return LinearMathJNI.btPoolAllocator_getPoolAddressConst(swigCPtr, this);
-}
+    public boolean validPtr(long ptr){
+        return LinearMathJNI.btPoolAllocator_validPtr(swigCPtr, this, ptr);
+    }
+
+    public void freeMemory(long ptr){
+        LinearMathJNI.btPoolAllocator_freeMemory(swigCPtr, this, ptr);
+    }
+
+    public int getElementSize(){
+        return LinearMathJNI.btPoolAllocator_getElementSize(swigCPtr, this);
+    }
+
+    public java.nio.ByteBuffer getPoolAddress(){
+        return LinearMathJNI.btPoolAllocator_getPoolAddress(swigCPtr, this);
+    }
+
+    public java.nio.ByteBuffer getPoolAddressConst(){
+        return LinearMathJNI.btPoolAllocator_getPoolAddressConst(swigCPtr, this);
+    }
 
 }

@@ -8,19 +8,19 @@
 
 package com.badlogic.gdx.physics.bullet.collision;
 
-public class SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool {
-  private transient long swigCPtr;
+public class SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool{
+    private transient long swigCPtr;
 
-  protected SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
-    swigCPtr = cPtr;
-  }
+    protected SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool(long cPtr, @SuppressWarnings("unused") boolean futureUse){
+        swigCPtr = cPtr;
+    }
 
-  protected SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool() {
-    swigCPtr = 0;
-  }
+    protected SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool(){
+        swigCPtr = 0;
+    }
 
-  protected static long getCPtr(SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
+    protected static long getCPtr(SWIGTYPE_p_f_r_btManifoldPoint_p_q_const__btCollisionObjectWrapper_int_int_p_q_const__btCollisionObjectWrapper_int_int__bool obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 }
 

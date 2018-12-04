@@ -8,73 +8,71 @@
 
 package com.badlogic.gdx.physics.bullet.linearmath;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.bullet.BulletBase;
 
-public class btPolarDecomposition extends BulletBase {
-	private long swigCPtr;
-	
-	protected btPolarDecomposition(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btPolarDecomposition, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btPolarDecomposition(long cPtr, boolean cMemoryOwn) {
-		this("btPolarDecomposition", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btPolarDecomposition obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btPolarDecomposition extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btPolarDecomposition(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				LinearMathJNI.delete_btPolarDecomposition(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btPolarDecomposition, normally you should not need this constructor it's intended for low-level usage. */
+    public btPolarDecomposition(long cPtr, boolean cMemoryOwn){
+        this("btPolarDecomposition", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public btPolarDecomposition(float tolerance, long maxIterations) {
-    this(LinearMathJNI.new_btPolarDecomposition__SWIG_0(tolerance, maxIterations), true);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public btPolarDecomposition(float tolerance) {
-    this(LinearMathJNI.new_btPolarDecomposition__SWIG_1(tolerance), true);
-  }
+    public static long getCPtr(btPolarDecomposition obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public btPolarDecomposition() {
-    this(LinearMathJNI.new_btPolarDecomposition__SWIG_2(), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public long decompose(Matrix3 a, Matrix3 u, Matrix3 h) {
-    return LinearMathJNI.btPolarDecomposition_decompose(swigCPtr, this, a, u, h);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                LinearMathJNI.delete_btPolarDecomposition(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public long maxIterations() {
-    return LinearMathJNI.btPolarDecomposition_maxIterations(swigCPtr, this);
-  }
+    public btPolarDecomposition(float tolerance, long maxIterations){
+        this(LinearMathJNI.new_btPolarDecomposition__SWIG_0(tolerance, maxIterations), true);
+    }
+
+    public btPolarDecomposition(float tolerance){
+        this(LinearMathJNI.new_btPolarDecomposition__SWIG_1(tolerance), true);
+    }
+
+    public btPolarDecomposition(){
+        this(LinearMathJNI.new_btPolarDecomposition__SWIG_2(), true);
+    }
+
+    public long decompose(Matrix3 a, Matrix3 u, Matrix3 h){
+        return LinearMathJNI.btPolarDecomposition_decompose(swigCPtr, this, a, u, h);
+    }
+
+    public long maxIterations(){
+        return LinearMathJNI.btPolarDecomposition_maxIterations(swigCPtr, this);
+    }
 
 }

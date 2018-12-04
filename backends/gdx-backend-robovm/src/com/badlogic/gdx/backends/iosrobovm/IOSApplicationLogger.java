@@ -23,38 +23,38 @@ import org.robovm.apple.foundation.NSString;
 /**
  * Default implementation of {@link ApplicationLogger} for ios
  */
-public class IOSApplicationLogger implements ApplicationLogger {
+public class IOSApplicationLogger implements ApplicationLogger{
 
-	@Override
-	public void log (String tag, String message) {
-		Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
-	}
+    @Override
+    public void log(String tag, String message){
+        Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
+    }
 
-	@Override
-	public void log (String tag, String message, Throwable exception) {
-		Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
-		exception.printStackTrace();
-	}
+    @Override
+    public void log(String tag, String message, Throwable exception){
+        Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
+        exception.printStackTrace();
+    }
 
-	@Override
-	public void error (String tag, String message) {
-		Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
-	}
+    @Override
+    public void error(String tag, String message){
+        Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
+    }
 
-	@Override
-	public void error (String tag, String message, Throwable exception) {
-		Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
-		exception.printStackTrace();
-	}
+    @Override
+    public void error(String tag, String message, Throwable exception){
+        Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
+        exception.printStackTrace();
+    }
 
-	@Override
-	public void debug (String tag, String message) {
-		Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
-	}
+    @Override
+    public void debug(String tag, String message){
+        Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
+    }
 
-	@Override
-	public void debug (String tag, String message, Throwable exception) {
-		Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
-		exception.printStackTrace();
-	}
+    @Override
+    public void debug(String tag, String message, Throwable exception){
+        Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
+        exception.printStackTrace();
+    }
 }

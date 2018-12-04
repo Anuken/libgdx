@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,20 +16,18 @@
 
 package com.badlogic.gdx.utils;
 
-import com.badlogic.gdx.Gdx;
+public class GdxNativesLoader{
+    static public boolean disableNativesLoading = false;
 
-public class GdxNativesLoader {
-	static public boolean disableNativesLoading = false;
+    static private boolean nativesLoaded;
 
-	static private boolean nativesLoaded;
+    /** Loads the libgdx native libraries if they have not already been loaded. */
+    static public synchronized void load(){
+        if(nativesLoaded) return;
+        nativesLoaded = true;
 
-	/** Loads the libgdx native libraries if they have not already been loaded. */
-	static public synchronized void load () {
-		if (nativesLoaded) return;
-		nativesLoaded = true;
+        if(disableNativesLoading) return;
 
-		if (disableNativesLoading) return;
-
-		new SharedLibraryLoader().load("gdx");
-	}
+        new SharedLibraryLoader().load("gdx");
+    }
 }

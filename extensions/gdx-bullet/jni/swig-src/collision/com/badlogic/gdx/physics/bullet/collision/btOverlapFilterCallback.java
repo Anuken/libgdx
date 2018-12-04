@@ -9,77 +9,73 @@
 package com.badlogic.gdx.physics.bullet.collision;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class btOverlapFilterCallback extends BulletBase {
-	private long swigCPtr;
-	
-	protected btOverlapFilterCallback(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btOverlapFilterCallback, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btOverlapFilterCallback(long cPtr, boolean cMemoryOwn) {
-		this("btOverlapFilterCallback", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btOverlapFilterCallback obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btOverlapFilterCallback extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btOverlapFilterCallback(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_btOverlapFilterCallback(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btOverlapFilterCallback, normally you should not need this constructor it's intended for low-level usage. */
+    public btOverlapFilterCallback(long cPtr, boolean cMemoryOwn){
+        this("btOverlapFilterCallback", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  protected void swigDirectorDisconnect() {
-    swigCMemOwn = false;
-    delete();
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public void swigReleaseOwnership() {
-    swigCMemOwn = false;
-    CollisionJNI.btOverlapFilterCallback_change_ownership(this, swigCPtr, false);
-  }
+    public static long getCPtr(btOverlapFilterCallback obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void swigTakeOwnership() {
-    swigCMemOwn = true;
-    CollisionJNI.btOverlapFilterCallback_change_ownership(this, swigCPtr, true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public boolean needBroadphaseCollision(btBroadphaseProxy proxy0, btBroadphaseProxy proxy1) {
-    return CollisionJNI.btOverlapFilterCallback_needBroadphaseCollision(swigCPtr, this, btBroadphaseProxy.getCPtr(proxy0), proxy0, btBroadphaseProxy.getCPtr(proxy1), proxy1);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_btOverlapFilterCallback(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public btOverlapFilterCallback() {
-    this(CollisionJNI.new_btOverlapFilterCallback(), true);
-    CollisionJNI.btOverlapFilterCallback_director_connect(this, swigCPtr, swigCMemOwn, true);
-  }
+    protected void swigDirectorDisconnect(){
+        swigCMemOwn = false;
+        delete();
+    }
+
+    public void swigReleaseOwnership(){
+        swigCMemOwn = false;
+        CollisionJNI.btOverlapFilterCallback_change_ownership(this, swigCPtr, false);
+    }
+
+    public void swigTakeOwnership(){
+        swigCMemOwn = true;
+        CollisionJNI.btOverlapFilterCallback_change_ownership(this, swigCPtr, true);
+    }
+
+    public boolean needBroadphaseCollision(btBroadphaseProxy proxy0, btBroadphaseProxy proxy1){
+        return CollisionJNI.btOverlapFilterCallback_needBroadphaseCollision(swigCPtr, this, btBroadphaseProxy.getCPtr(proxy0), proxy0, btBroadphaseProxy.getCPtr(proxy1), proxy1);
+    }
+
+    public btOverlapFilterCallback(){
+        this(CollisionJNI.new_btOverlapFilterCallback(), true);
+        CollisionJNI.btOverlapFilterCallback_director_connect(this, swigCPtr, swigCMemOwn, true);
+    }
 
 }

@@ -8,8 +8,8 @@
 
 package com.badlogic.gdx.physics.bullet.dynamics;
 
-public final class btPoint2PointFlags {
-  public final static int BT_P2P_FLAGS_ERP = 1;
-  public final static int BT_P2P_FLAGS_CFM = 2;
+public final class btPoint2PointFlags{
+    public final static int BT_P2P_FLAGS_ERP = 1;
+    public final static int BT_P2P_FLAGS_CFM = 2;
 }
 

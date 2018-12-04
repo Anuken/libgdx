@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2013, Daniel Murphy
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  * 	* Redistributions of source code must retain the above copyright notice,
@@ -9,7 +9,7 @@
  * 	* Redistributions in binary form must reproduce the above copyright notice,
  * 	  this list of conditions and the following disclaimer in the documentation
  * 	  and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -30,21 +30,21 @@ import org.jbox2d.common.Transform;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.pooling.IWorldPool;
 
-public class PolygonContact extends Contact {
+public class PolygonContact extends Contact{
 
-  public PolygonContact(IWorldPool argPool) {
-    super(argPool);
-  }
+    public PolygonContact(IWorldPool argPool){
+        super(argPool);
+    }
 
-  public void init(Fixture fixtureA, Fixture fixtureB) {
-    super.init(fixtureA, 0, fixtureB, 0);
-    assert (m_fixtureA.getType() == ShapeType.POLYGON);
-    assert (m_fixtureB.getType() == ShapeType.POLYGON);
-  }
+    public void init(Fixture fixtureA, Fixture fixtureB){
+        super.init(fixtureA, 0, fixtureB, 0);
+        assert (m_fixtureA.getType() == ShapeType.POLYGON);
+        assert (m_fixtureB.getType() == ShapeType.POLYGON);
+    }
 
-  @Override
-  public void evaluate(Manifold manifold, Transform xfA, Transform xfB) {
-    pool.getCollision().collidePolygons(manifold, (PolygonShape) m_fixtureA.getShape(), xfA,
+    @Override
+    public void evaluate(Manifold manifold, Transform xfA, Transform xfB){
+        pool.getCollision().collidePolygons(manifold, (PolygonShape) m_fixtureA.getShape(), xfA,
         (PolygonShape) m_fixtureB.getShape(), xfB);
-  }
+    }
 }

@@ -8,71 +8,64 @@
 
 package com.badlogic.gdx.physics.bullet.dynamics;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.physics.bullet.collision.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+public class btMLCPSolver extends btSequentialImpulseConstraintSolver{
+    private long swigCPtr;
 
-public class btMLCPSolver extends btSequentialImpulseConstraintSolver {
-	private long swigCPtr;
-	
-	protected btMLCPSolver(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, DynamicsJNI.btMLCPSolver_SWIGUpcast(cPtr), cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btMLCPSolver, normally you should not need this constructor it's intended for low-level usage. */
-	public btMLCPSolver(long cPtr, boolean cMemoryOwn) {
-		this("btMLCPSolver", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(DynamicsJNI.btMLCPSolver_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
-	}
-	
-	public static long getCPtr(btMLCPSolver obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+    protected btMLCPSolver(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, DynamicsJNI.btMLCPSolver_SWIGUpcast(cPtr), cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    /** Construct a new btMLCPSolver, normally you should not need this constructor it's intended for low-level usage. */
+    public btMLCPSolver(long cPtr, boolean cMemoryOwn){
+        this("btMLCPSolver", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				DynamicsJNI.delete_btMLCPSolver(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(DynamicsJNI.btMLCPSolver_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
+    }
 
-  public btMLCPSolver(btMLCPSolverInterface solver) {
-    this(DynamicsJNI.new_btMLCPSolver(btMLCPSolverInterface.getCPtr(solver), solver), true);
-  }
+    public static long getCPtr(btMLCPSolver obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void setMLCPSolver(btMLCPSolverInterface solver) {
-    DynamicsJNI.btMLCPSolver_setMLCPSolver(swigCPtr, this, btMLCPSolverInterface.getCPtr(solver), solver);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public int getNumFallbacks() {
-    return DynamicsJNI.btMLCPSolver_getNumFallbacks(swigCPtr, this);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                DynamicsJNI.delete_btMLCPSolver(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setNumFallbacks(int num) {
-    DynamicsJNI.btMLCPSolver_setNumFallbacks(swigCPtr, this, num);
-  }
+    public btMLCPSolver(btMLCPSolverInterface solver){
+        this(DynamicsJNI.new_btMLCPSolver(btMLCPSolverInterface.getCPtr(solver), solver), true);
+    }
+
+    public void setMLCPSolver(btMLCPSolverInterface solver){
+        DynamicsJNI.btMLCPSolver_setMLCPSolver(swigCPtr, this, btMLCPSolverInterface.getCPtr(solver), solver);
+    }
+
+    public int getNumFallbacks(){
+        return DynamicsJNI.btMLCPSolver_getNumFallbacks(swigCPtr, this);
+    }
+
+    public void setNumFallbacks(int num){
+        DynamicsJNI.btMLCPSolver_setNumFallbacks(swigCPtr, this, num);
+    }
 
 }

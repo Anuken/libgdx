@@ -9,98 +9,94 @@
 package com.badlogic.gdx.physics.bullet.collision;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class gim_bitset extends BulletBase {
-	private long swigCPtr;
-	
-	protected gim_bitset(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new gim_bitset, normally you should not need this constructor it's intended for low-level usage. */ 
-	public gim_bitset(long cPtr, boolean cMemoryOwn) {
-		this("gim_bitset", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(gim_bitset obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class gim_bitset extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected gim_bitset(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_gim_bitset(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new gim_bitset, normally you should not need this constructor it's intended for low-level usage. */
+    public gim_bitset(long cPtr, boolean cMemoryOwn){
+        this("gim_bitset", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public void setContainer(SWIGTYPE_p_gim_arrayT_GUINT_t value) {
-    CollisionJNI.gim_bitset_container_set(swigCPtr, this, SWIGTYPE_p_gim_arrayT_GUINT_t.getCPtr(value));
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public SWIGTYPE_p_gim_arrayT_GUINT_t getContainer() {
-    long cPtr = CollisionJNI.gim_bitset_container_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_gim_arrayT_GUINT_t(cPtr, false);
-  }
+    public static long getCPtr(gim_bitset obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public gim_bitset() {
-    this(CollisionJNI.new_gim_bitset__SWIG_0(), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public gim_bitset(SWIGTYPE_p_GUINT bits_count) {
-    this(CollisionJNI.new_gim_bitset__SWIG_1(SWIGTYPE_p_GUINT.getCPtr(bits_count)), true);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_gim_bitset(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public boolean resize(SWIGTYPE_p_GUINT newsize) {
-    return CollisionJNI.gim_bitset_resize(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(newsize));
-  }
+    public void setContainer(SWIGTYPE_p_gim_arrayT_GUINT_t value){
+        CollisionJNI.gim_bitset_container_set(swigCPtr, this, SWIGTYPE_p_gim_arrayT_GUINT_t.getCPtr(value));
+    }
 
-  public SWIGTYPE_p_GUINT size() {
-    return new SWIGTYPE_p_GUINT(CollisionJNI.gim_bitset_size(swigCPtr, this), true);
-  }
+    public SWIGTYPE_p_gim_arrayT_GUINT_t getContainer(){
+        long cPtr = CollisionJNI.gim_bitset_container_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new SWIGTYPE_p_gim_arrayT_GUINT_t(cPtr, false);
+    }
 
-  public void set_all() {
-    CollisionJNI.gim_bitset_set_all(swigCPtr, this);
-  }
+    public gim_bitset(){
+        this(CollisionJNI.new_gim_bitset__SWIG_0(), true);
+    }
 
-  public void clear_all() {
-    CollisionJNI.gim_bitset_clear_all(swigCPtr, this);
-  }
+    public gim_bitset(SWIGTYPE_p_GUINT bits_count){
+        this(CollisionJNI.new_gim_bitset__SWIG_1(SWIGTYPE_p_GUINT.getCPtr(bits_count)), true);
+    }
 
-  public void set(SWIGTYPE_p_GUINT bit_index) {
-    CollisionJNI.gim_bitset_set(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
-  }
+    public boolean resize(SWIGTYPE_p_GUINT newsize){
+        return CollisionJNI.gim_bitset_resize(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(newsize));
+    }
 
-  public char get(SWIGTYPE_p_GUINT bit_index) {
-    return CollisionJNI.gim_bitset_get(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
-  }
+    public SWIGTYPE_p_GUINT size(){
+        return new SWIGTYPE_p_GUINT(CollisionJNI.gim_bitset_size(swigCPtr, this), true);
+    }
 
-  public void clear(SWIGTYPE_p_GUINT bit_index) {
-    CollisionJNI.gim_bitset_clear(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
-  }
+    public void set_all(){
+        CollisionJNI.gim_bitset_set_all(swigCPtr, this);
+    }
+
+    public void clear_all(){
+        CollisionJNI.gim_bitset_clear_all(swigCPtr, this);
+    }
+
+    public void set(SWIGTYPE_p_GUINT bit_index){
+        CollisionJNI.gim_bitset_set(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
+    }
+
+    public char get(SWIGTYPE_p_GUINT bit_index){
+        return CollisionJNI.gim_bitset_get(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
+    }
+
+    public void clear(SWIGTYPE_p_GUINT bit_index){
+        CollisionJNI.gim_bitset_clear(swigCPtr, this, SWIGTYPE_p_GUINT.getCPtr(bit_index));
+    }
 
 }

@@ -16,31 +16,17 @@
 package com.badlogic.gdx.backends.iosrobovm.custom;
 
 /*<imports>*/
-import java.io.*;
-import java.nio.*;
-import java.util.*;
-import org.robovm.objc.*;
-import org.robovm.objc.annotation.*;
-import org.robovm.objc.block.*;
-import org.robovm.rt.*;
-import org.robovm.rt.bro.*;
-import org.robovm.rt.bro.annotation.*;
-import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.coretext.*;
-import org.robovm.apple.corelocation.*;
+
+import org.robovm.apple.foundation.NSObject;
+import org.robovm.objc.annotation.NotImplemented;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAccelerometerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements UIAccelerometerDelegate/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAccelerometerDelegateAdapter/*</name>*/
+extends /*<extends>*/NSObject/*</extends>*/
+/*<implements>*/ implements UIAccelerometerDelegate/*</implements>*/{
 
     /*<ptr>*/
     /*</ptr>*/
@@ -49,16 +35,19 @@ import org.robovm.apple.corelocation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    
+
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 5.0.
      */
     @Deprecated
     @NotImplemented("accelerometer:didAccelerate:")
-    public void didAccelerate(UIAccelerometer accelerometer, UIAcceleration acceleration) { throw new UnsupportedOperationException(); }
+    public void didAccelerate(UIAccelerometer accelerometer, UIAcceleration acceleration){
+        throw new UnsupportedOperationException();
+    }
     /*</methods>*/
 }

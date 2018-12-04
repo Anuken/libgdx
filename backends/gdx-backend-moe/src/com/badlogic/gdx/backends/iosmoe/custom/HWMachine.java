@@ -16,38 +16,34 @@
 
 package com.badlogic.gdx.backends.iosmoe.custom;
 
-import com.badlogic.gdx.utils.BufferUtils;
 import org.moe.natj.c.CRuntime;
-import org.moe.natj.c.StructObject;
 import org.moe.natj.c.ann.CFunction;
 import org.moe.natj.general.NatJ;
 import org.moe.natj.general.ann.Runtime;
-import org.moe.natj.general.ann.UncertainArgument;
 import org.moe.natj.general.ptr.BytePtr;
-import org.moe.natj.general.ptr.IntPtr;
 import org.moe.natj.general.ptr.NUIntPtr;
-import org.moe.natj.general.ptr.impl.PtrFactory;
 import org.moe.natj.general.ptr.VoidPtr;
+import org.moe.natj.general.ptr.impl.PtrFactory;
 
 @Runtime(CRuntime.class)
-public class HWMachine {
-	static {
-		NatJ.register();
-	}
+public class HWMachine{
+    static{
+        NatJ.register();
+    }
 
-	@CFunction
-	public static native int sysctlbyname(BytePtr name, VoidPtr oldp,
-			NUIntPtr oldlenp, VoidPtr newp, long newlen);
+    @CFunction
+    public static native int sysctlbyname(BytePtr name, VoidPtr oldp,
+                                          NUIntPtr oldlenp, VoidPtr newp, long newlen);
 
-	public static String getMachineString () {
-		String name = "hw.machine";
-		BytePtr namePtr = PtrFactory.newByteArray(name.getBytes());
-		NUIntPtr sizePtr = PtrFactory.newNUIntReference();
-		sysctlbyname(namePtr, null, sizePtr, null, 0);
-		long longsize = sizePtr.get();
-		BytePtr machinePtr = PtrFactory.newByteReference();
-		machinePtr.setValue((byte) longsize);
-		sysctlbyname(namePtr, machinePtr, sizePtr, null, 0);
-		return machinePtr.toUTF8String();
-	}
+    public static String getMachineString(){
+        String name = "hw.machine";
+        BytePtr namePtr = PtrFactory.newByteArray(name.getBytes());
+        NUIntPtr sizePtr = PtrFactory.newNUIntReference();
+        sysctlbyname(namePtr, null, sizePtr, null, 0);
+        long longsize = sizePtr.get();
+        BytePtr machinePtr = PtrFactory.newByteReference();
+        machinePtr.setValue((byte) longsize);
+        sysctlbyname(namePtr, machinePtr, sizePtr, null, 0);
+        return machinePtr.toUTF8String();
+    }
 }

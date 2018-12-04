@@ -9,129 +9,126 @@
 package com.badlogic.gdx.physics.bullet.dynamics;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.physics.bullet.collision.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.bullet.linearmath.btScalarArray;
+import com.badlogic.gdx.physics.bullet.linearmath.btVector3Array;
 
-public class btMultiBodyJacobianData extends BulletBase {
-	private long swigCPtr;
-	
-	protected btMultiBodyJacobianData(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btMultiBodyJacobianData, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btMultiBodyJacobianData(long cPtr, boolean cMemoryOwn) {
-		this("btMultiBodyJacobianData", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btMultiBodyJacobianData obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btMultiBodyJacobianData extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btMultiBodyJacobianData(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				DynamicsJNI.delete_btMultiBodyJacobianData(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btMultiBodyJacobianData, normally you should not need this constructor it's intended for low-level usage. */
+    public btMultiBodyJacobianData(long cPtr, boolean cMemoryOwn){
+        this("btMultiBodyJacobianData", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public void setJacobians(btScalarArray value) {
-    DynamicsJNI.btMultiBodyJacobianData_jacobians_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public btScalarArray getJacobians() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_jacobians_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
-  }
+    public static long getCPtr(btMultiBodyJacobianData obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void setDeltaVelocitiesUnitImpulse(btScalarArray value) {
-    DynamicsJNI.btMultiBodyJacobianData_deltaVelocitiesUnitImpulse_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public btScalarArray getDeltaVelocitiesUnitImpulse() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_deltaVelocitiesUnitImpulse_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                DynamicsJNI.delete_btMultiBodyJacobianData(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setDeltaVelocities(btScalarArray value) {
-    DynamicsJNI.btMultiBodyJacobianData_deltaVelocities_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
-  }
+    public void setJacobians(btScalarArray value){
+        DynamicsJNI.btMultiBodyJacobianData_jacobians_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
+    }
 
-  public btScalarArray getDeltaVelocities() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_deltaVelocities_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
-  }
+    public btScalarArray getJacobians(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_jacobians_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
+    }
 
-  public void setScratch_r(btScalarArray value) {
-    DynamicsJNI.btMultiBodyJacobianData_scratch_r_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
-  }
+    public void setDeltaVelocitiesUnitImpulse(btScalarArray value){
+        DynamicsJNI.btMultiBodyJacobianData_deltaVelocitiesUnitImpulse_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
+    }
 
-  public btScalarArray getScratch_r() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_r_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
-  }
+    public btScalarArray getDeltaVelocitiesUnitImpulse(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_deltaVelocitiesUnitImpulse_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
+    }
 
-  public void setScratch_v(btVector3Array value) {
-    DynamicsJNI.btMultiBodyJacobianData_scratch_v_set(swigCPtr, this, btVector3Array.getCPtr(value), value);
-  }
+    public void setDeltaVelocities(btScalarArray value){
+        DynamicsJNI.btMultiBodyJacobianData_deltaVelocities_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
+    }
 
-  public btVector3Array getScratch_v() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_v_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btVector3Array(cPtr, false);
-  }
+    public btScalarArray getDeltaVelocities(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_deltaVelocities_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
+    }
 
-  public void setScratch_m(SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t value) {
-    DynamicsJNI.btMultiBodyJacobianData_scratch_m_set(swigCPtr, this, SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t.getCPtr(value));
-  }
+    public void setScratch_r(btScalarArray value){
+        DynamicsJNI.btMultiBodyJacobianData_scratch_r_set(swigCPtr, this, btScalarArray.getCPtr(value), value);
+    }
 
-  public SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t getScratch_m() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_m_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t(cPtr, false);
-  }
+    public btScalarArray getScratch_r(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_r_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btScalarArray(cPtr, false);
+    }
 
-  public void setSolverBodyPool(SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t value) {
-    DynamicsJNI.btMultiBodyJacobianData_solverBodyPool_set(swigCPtr, this, SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t.getCPtr(value));
-  }
+    public void setScratch_v(btVector3Array value){
+        DynamicsJNI.btMultiBodyJacobianData_scratch_v_set(swigCPtr, this, btVector3Array.getCPtr(value), value);
+    }
 
-  public SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t getSolverBodyPool() {
-    long cPtr = DynamicsJNI.btMultiBodyJacobianData_solverBodyPool_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t(cPtr, false);
-  }
+    public btVector3Array getScratch_v(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_v_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btVector3Array(cPtr, false);
+    }
 
-  public void setFixedBodyId(int value) {
-    DynamicsJNI.btMultiBodyJacobianData_fixedBodyId_set(swigCPtr, this, value);
-  }
+    public void setScratch_m(SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t value){
+        DynamicsJNI.btMultiBodyJacobianData_scratch_m_set(swigCPtr, this, SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t.getCPtr(value));
+    }
 
-  public int getFixedBodyId() {
-    return DynamicsJNI.btMultiBodyJacobianData_fixedBodyId_get(swigCPtr, this);
-  }
+    public SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t getScratch_m(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_scratch_m_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new SWIGTYPE_p_btAlignedObjectArrayT_btMatrix3x3_t(cPtr, false);
+    }
 
-  public btMultiBodyJacobianData() {
-    this(DynamicsJNI.new_btMultiBodyJacobianData(), true);
-  }
+    public void setSolverBodyPool(SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t value){
+        DynamicsJNI.btMultiBodyJacobianData_solverBodyPool_set(swigCPtr, this, SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t.getCPtr(value));
+    }
+
+    public SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t getSolverBodyPool(){
+        long cPtr = DynamicsJNI.btMultiBodyJacobianData_solverBodyPool_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new SWIGTYPE_p_btAlignedObjectArrayT_btSolverBody_t(cPtr, false);
+    }
+
+    public void setFixedBodyId(int value){
+        DynamicsJNI.btMultiBodyJacobianData_fixedBodyId_set(swigCPtr, this, value);
+    }
+
+    public int getFixedBodyId(){
+        return DynamicsJNI.btMultiBodyJacobianData_fixedBodyId_get(swigCPtr, this);
+    }
+
+    public btMultiBodyJacobianData(){
+        this(DynamicsJNI.new_btMultiBodyJacobianData(), true);
+    }
 
 }

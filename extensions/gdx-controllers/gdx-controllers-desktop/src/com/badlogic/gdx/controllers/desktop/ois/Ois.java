@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,50 +18,53 @@ package com.badlogic.gdx.controllers.desktop.ois;
 
 import java.util.ArrayList;
 
-/** JNI wrapper for OIS (Object-oriented Input System).
+/**
+ * JNI wrapper for OIS (Object-oriented Input System).
+ *
  * @author mzechner
- * @author Nathan Sweet */
-public class Ois {
-	private final long inputManagerPtr;
-	private final ArrayList<OisJoystick> joysticks = new ArrayList();
+ * @author Nathan Sweet
+ */
+public class Ois{
+    private final long inputManagerPtr;
+    private final ArrayList<OisJoystick> joysticks = new ArrayList();
 
-	public Ois (long hwnd) {
-		inputManagerPtr = createInputManager(hwnd);
+    public Ois(long hwnd){
+        inputManagerPtr = createInputManager(hwnd);
 
-		String[] names = getJoystickNames(inputManagerPtr);
-		for (int i = 0, n = names.length; i < n; i++)
-			joysticks.add(new OisJoystick(createJoystick(inputManagerPtr), names[i]));
-	}
+        String[] names = getJoystickNames(inputManagerPtr);
+        for(int i = 0, n = names.length; i < n; i++)
+            joysticks.add(new OisJoystick(createJoystick(inputManagerPtr), names[i]));
+    }
 
-	public ArrayList<OisJoystick> getJoysticks () {
-		return joysticks;
-	}
+    public ArrayList<OisJoystick> getJoysticks(){
+        return joysticks;
+    }
 
-	public void update () {
-		for (int i = 0, n = joysticks.size(); i < n; i++)
-			joysticks.get(i).update();
-	}
+    public void update(){
+        for(int i = 0, n = joysticks.size(); i < n; i++)
+            joysticks.get(i).update();
+    }
 
-	public int getVersionNumber () {
-		return getVersionNumber(inputManagerPtr);
-	}
+    public int getVersionNumber(){
+        return getVersionNumber(inputManagerPtr);
+    }
 
-	public String getVersionName () {
-		return getVersionName(inputManagerPtr);
-	}
+    public String getVersionName(){
+        return getVersionName(inputManagerPtr);
+    }
 
-	public String getInputSystemName () {
-		return getInputSystemName(inputManagerPtr);
-	}
+    public String getInputSystemName(){
+        return getInputSystemName(inputManagerPtr);
+    }
 
-	// @off
+    // @off
 	/*JNI
 	#include <OISJoyStick.h>
 	#include <OISInputManager.h>
 	#include <sstream>
 	*/
 
-	private native long createInputManager (long hwnd); /*
+    private native long createInputManager(long hwnd); /*
 		OIS::ParamList params;
 		#ifndef __APPLE__
 			std::ostringstream hwndStr;
@@ -73,7 +76,7 @@ public class Ois {
 		return (jlong)inputManager;
 	*/
 
-	private native String[] getJoystickNames (long inputManagerPtr); /*
+    private native String[] getJoystickNames(long inputManagerPtr); /*
 		OIS::InputManager* inputManager = (OIS::InputManager*)inputManagerPtr;
 		OIS::DeviceList map = inputManager->listFreeDevices();
 		int joystickCount = inputManager->getNumberOfDevices(OIS::OISJoyStick);
@@ -86,22 +89,22 @@ public class Ois {
 		return names;
 	*/
 
-	private native int getVersionNumber (long inputManagerPtr); /*
+    private native int getVersionNumber(long inputManagerPtr); /*
 		OIS::InputManager* inputManager = (OIS::InputManager*)inputManagerPtr;
 	 	return inputManager->getVersionNumber();
 	*/
-	
-	private native String getVersionName (long inputManagerPtr); /*
+
+    private native String getVersionName(long inputManagerPtr); /*
 		OIS::InputManager* inputManager = (OIS::InputManager*)inputManagerPtr;
 	 	return env->NewStringUTF(inputManager->getVersionName().c_str());
 	 */
-	
-	private native String getInputSystemName (long inputManagerPtr); /*
+
+    private native String getInputSystemName(long inputManagerPtr); /*
 		OIS::InputManager* inputManager = (OIS::InputManager*)inputManagerPtr;
 	 	return env->NewStringUTF(inputManager->inputSystemName().c_str());
 	 */
 
-	private native long createJoystick (long inputManagerPtr); /*
+    private native long createJoystick(long inputManagerPtr); /*
 		OIS::InputManager* inputManager = (OIS::InputManager*)inputManagerPtr;
 		try {
 			return (jlong)static_cast<OIS::JoyStick*>(inputManager->createInputObject(OIS::OISJoyStick, true));

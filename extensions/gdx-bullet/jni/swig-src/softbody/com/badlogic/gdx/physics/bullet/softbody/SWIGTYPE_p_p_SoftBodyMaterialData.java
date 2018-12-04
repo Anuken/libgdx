@@ -8,19 +8,19 @@
 
 package com.badlogic.gdx.physics.bullet.softbody;
 
-public class SWIGTYPE_p_p_SoftBodyMaterialData {
-  private transient long swigCPtr;
+public class SWIGTYPE_p_p_SoftBodyMaterialData{
+    private transient long swigCPtr;
 
-  protected SWIGTYPE_p_p_SoftBodyMaterialData(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
-    swigCPtr = cPtr;
-  }
+    protected SWIGTYPE_p_p_SoftBodyMaterialData(long cPtr, @SuppressWarnings("unused") boolean futureUse){
+        swigCPtr = cPtr;
+    }
 
-  protected SWIGTYPE_p_p_SoftBodyMaterialData() {
-    swigCPtr = 0;
-  }
+    protected SWIGTYPE_p_p_SoftBodyMaterialData(){
+        swigCPtr = 0;
+    }
 
-  protected static long getCPtr(SWIGTYPE_p_p_SoftBodyMaterialData obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
+    protected static long getCPtr(SWIGTYPE_p_p_SoftBodyMaterialData obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 }
 

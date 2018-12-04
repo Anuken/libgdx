@@ -27,16 +27,16 @@ import org.moe.natj.objc.map.ObjCObjectMapper;
 @Generated
 @Runtime(ObjCRuntime.class)
 @ObjCProtocolName("OALSuspendManager")
-public interface OALSuspendManager extends OALSuspendListener {
-	@Generated
-	@Selector("addSuspendListener:")
-	void addSuspendListener (@Mapped(ObjCObjectMapper.class) Object listener);
+public interface OALSuspendManager extends OALSuspendListener{
+    @Generated
+    @Selector("addSuspendListener:")
+    void addSuspendListener(@Mapped(ObjCObjectMapper.class) Object listener);
 
-	@Generated
-	@Selector("removeSuspendListener:")
-	void removeSuspendListener (@Mapped(ObjCObjectMapper.class) Object listener);
+    @Generated
+    @Selector("removeSuspendListener:")
+    void removeSuspendListener(@Mapped(ObjCObjectMapper.class) Object listener);
 
-	@Generated
-	@Selector("suspended")
-	boolean suspended ();
+    @Generated
+    @Selector("suspended")
+    boolean suspended();
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,134 +16,135 @@
 
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
-import java.io.EOFException;
-import java.io.FilterInputStream;
-import java.io.IOException;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 
-public class Wav {
-	static public class Music extends OpenALMusic {
-		private WavInputStream input;
+import java.io.EOFException;
+import java.io.FilterInputStream;
+import java.io.IOException;
 
-		public Music (OpenALAudio audio, FileHandle file) {
-			super(audio, file);
-			input = new WavInputStream(file);
-			if (audio.noDevice) return;
-			setup(input.channels, input.sampleRate);
-		}
+public class Wav{
+    static public class Music extends OpenALMusic{
+        private WavInputStream input;
 
-		public int read (byte[] buffer) {
-			if (input == null) {
-				input = new WavInputStream(file);
-				setup(input.channels, input.sampleRate);
-			}
-			try {
-				return input.read(buffer);
-			} catch (IOException ex) {
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
-			}
-		}
+        public Music(OpenALAudio audio, FileHandle file){
+            super(audio, file);
+            input = new WavInputStream(file);
+            if(audio.noDevice) return;
+            setup(input.channels, input.sampleRate);
+        }
 
-		public void reset () {
-			StreamUtils.closeQuietly(input);
-			input = null;
-		}
-	}
+        public int read(byte[] buffer){
+            if(input == null){
+                input = new WavInputStream(file);
+                setup(input.channels, input.sampleRate);
+            }
+            try{
+                return input.read(buffer);
+            }catch(IOException ex){
+                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+            }
+        }
 
-	static public class Sound extends OpenALSound {
-		public Sound (OpenALAudio audio, FileHandle file) {
-			super(audio);
-			if (audio.noDevice) return;
+        public void reset(){
+            StreamUtils.closeQuietly(input);
+            input = null;
+        }
+    }
 
-			WavInputStream input = null;
-			try {
-				input = new WavInputStream(file);
-				setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.sampleRate);
-			} catch (IOException ex) {
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
-			} finally {
-				StreamUtils.closeQuietly(input);
-			}
-		}
-	}
+    static public class Sound extends OpenALSound{
+        public Sound(OpenALAudio audio, FileHandle file){
+            super(audio);
+            if(audio.noDevice) return;
 
-	/** @author Nathan Sweet */
-	static private class WavInputStream extends FilterInputStream {
-		int channels, sampleRate, dataRemaining;
+            WavInputStream input = null;
+            try{
+                input = new WavInputStream(file);
+                setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.sampleRate);
+            }catch(IOException ex){
+                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+            }finally{
+                StreamUtils.closeQuietly(input);
+            }
+        }
+    }
 
-		WavInputStream (FileHandle file) {
-			super(file.read());
-			try {
-				if (read() != 'R' || read() != 'I' || read() != 'F' || read() != 'F')
-					throw new GdxRuntimeException("RIFF header not found: " + file);
+    /** @author Nathan Sweet */
+    static private class WavInputStream extends FilterInputStream{
+        int channels, sampleRate, dataRemaining;
 
-				skipFully(4);
+        WavInputStream(FileHandle file){
+            super(file.read());
+            try{
+                if(read() != 'R' || read() != 'I' || read() != 'F' || read() != 'F')
+                    throw new GdxRuntimeException("RIFF header not found: " + file);
 
-				if (read() != 'W' || read() != 'A' || read() != 'V' || read() != 'E')
-					throw new GdxRuntimeException("Invalid wave file header: " + file);
+                skipFully(4);
 
-				int fmtChunkLength = seekToChunk('f', 'm', 't', ' ');
+                if(read() != 'W' || read() != 'A' || read() != 'V' || read() != 'E')
+                    throw new GdxRuntimeException("Invalid wave file header: " + file);
 
-				int type = read() & 0xff | (read() & 0xff) << 8;
-				if (type != 1) throw new GdxRuntimeException("WAV files must be PCM: " + type);
+                int fmtChunkLength = seekToChunk('f', 'm', 't', ' ');
 
-				channels = read() & 0xff | (read() & 0xff) << 8;
-				if (channels != 1 && channels != 2)
-					throw new GdxRuntimeException("WAV files must have 1 or 2 channels: " + channels);
+                int type = read() & 0xff | (read() & 0xff) << 8;
+                if(type != 1) throw new GdxRuntimeException("WAV files must be PCM: " + type);
 
-				sampleRate = read() & 0xff | (read() & 0xff) << 8 | (read() & 0xff) << 16 | (read() & 0xff) << 24;
+                channels = read() & 0xff | (read() & 0xff) << 8;
+                if(channels != 1 && channels != 2)
+                    throw new GdxRuntimeException("WAV files must have 1 or 2 channels: " + channels);
 
-				skipFully(6);
+                sampleRate = read() & 0xff | (read() & 0xff) << 8 | (read() & 0xff) << 16 | (read() & 0xff) << 24;
 
-				int bitsPerSample = read() & 0xff | (read() & 0xff) << 8;
-				if (bitsPerSample != 16) throw new GdxRuntimeException("WAV files must have 16 bits per sample: " + bitsPerSample);
+                skipFully(6);
 
-				skipFully(fmtChunkLength - 16);
+                int bitsPerSample = read() & 0xff | (read() & 0xff) << 8;
+                if(bitsPerSample != 16)
+                    throw new GdxRuntimeException("WAV files must have 16 bits per sample: " + bitsPerSample);
 
-				dataRemaining = seekToChunk('d', 'a', 't', 'a');
-			} catch (Throwable ex) {
-				StreamUtils.closeQuietly(this);
-				throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
-			}
-		}
+                skipFully(fmtChunkLength - 16);
 
-		private int seekToChunk (char c1, char c2, char c3, char c4) throws IOException {
-			while (true) {
-				boolean found = read() == c1;
-				found &= read() == c2;
-				found &= read() == c3;
-				found &= read() == c4;
-				int chunkLength = read() & 0xff | (read() & 0xff) << 8 | (read() & 0xff) << 16 | (read() & 0xff) << 24;
-				if (chunkLength == -1) throw new IOException("Chunk not found: " + c1 + c2 + c3 + c4);
-				if (found) return chunkLength;
-				skipFully(chunkLength);
-			}
-		}
+                dataRemaining = seekToChunk('d', 'a', 't', 'a');
+            }catch(Throwable ex){
+                StreamUtils.closeQuietly(this);
+                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+            }
+        }
 
-		private void skipFully (int count) throws IOException {
-			while (count > 0) {
-				long skipped = in.skip(count);
-				if (skipped <= 0) throw new EOFException("Unable to skip.");
-				count -= skipped;
-			}
-		}
+        private int seekToChunk(char c1, char c2, char c3, char c4) throws IOException{
+            while(true){
+                boolean found = read() == c1;
+                found &= read() == c2;
+                found &= read() == c3;
+                found &= read() == c4;
+                int chunkLength = read() & 0xff | (read() & 0xff) << 8 | (read() & 0xff) << 16 | (read() & 0xff) << 24;
+                if(chunkLength == -1) throw new IOException("Chunk not found: " + c1 + c2 + c3 + c4);
+                if(found) return chunkLength;
+                skipFully(chunkLength);
+            }
+        }
 
-		public int read (byte[] buffer) throws IOException {
-			if (dataRemaining == 0) return -1;
-			int offset = 0;
-			do {
-				int length = Math.min(super.read(buffer, offset, buffer.length - offset), dataRemaining);
-				if (length == -1) {
-					if (offset > 0) return offset;
-					return -1;
-				}
-				offset += length;
-				dataRemaining -= length;
-			} while (offset < buffer.length);
-			return offset;
-		}
-	}
+        private void skipFully(int count) throws IOException{
+            while(count > 0){
+                long skipped = in.skip(count);
+                if(skipped <= 0) throw new EOFException("Unable to skip.");
+                count -= skipped;
+            }
+        }
+
+        public int read(byte[] buffer) throws IOException{
+            if(dataRemaining == 0) return -1;
+            int offset = 0;
+            do{
+                int length = Math.min(super.read(buffer, offset, buffer.length - offset), dataRemaining);
+                if(length == -1){
+                    if(offset > 0) return offset;
+                    return -1;
+                }
+                offset += length;
+                dataRemaining -= length;
+            }while(offset < buffer.length);
+            return offset;
+        }
+    }
 }

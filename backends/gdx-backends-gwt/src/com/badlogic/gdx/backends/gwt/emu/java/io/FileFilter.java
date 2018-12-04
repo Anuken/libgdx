@@ -1,7 +1,7 @@
 package java.io;
 
-public interface FileFilter {
+public interface FileFilter{
 
-	boolean accept (File file);
+    boolean accept(File file);
 
 }

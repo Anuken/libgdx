@@ -23,98 +23,98 @@ import com.google.gwt.user.client.ui.TextArea;
 /**
  * Default implementation of {@link ApplicationLogger} for gwt
  */
-public class GwtApplicationLogger implements ApplicationLogger {
+public class GwtApplicationLogger implements ApplicationLogger{
 
-	private TextArea log;
+    private TextArea log;
 
-	public GwtApplicationLogger (TextArea log) {
-		this.log = log;
-	}
+    public GwtApplicationLogger(TextArea log){
+        this.log = log;
+    }
 
-	@Override
-	public void log (String tag, String message) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message);
-		log.setCursorPos(log.getText().length() - 1);
-		System.out.println(tag + ": " + message);
-	}
+    @Override
+    public void log(String tag, String message){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message);
+        log.setCursorPos(log.getText().length() - 1);
+        System.out.println(tag + ": " + message);
+    }
 
-	@Override
-	public void log (String tag, String message, Throwable exception) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
-		log.setCursorPos(log.getText().length() - 1);
-		System.out.println(tag + ": " + message + "\n" + exception.getMessage());
-		System.out.println(getStackTrace(exception));
-	}
+    @Override
+    public void log(String tag, String message, Throwable exception){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
+        log.setCursorPos(log.getText().length() - 1);
+        System.out.println(tag + ": " + message + "\n" + exception.getMessage());
+        System.out.println(getStackTrace(exception));
+    }
 
-	@Override
-	public void error (String tag, String message) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
-		log.setCursorPos(log.getText().length() - 1);
-		System.err.println(tag + ": " + message);
-	}
+    @Override
+    public void error(String tag, String message){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
+        log.setCursorPos(log.getText().length() - 1);
+        System.err.println(tag + ": " + message);
+    }
 
-	@Override
-	public void error (String tag, String message, Throwable exception) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
-		log.setCursorPos(log.getText().length() - 1);
-		System.err.println(tag + ": " + message + "\n" + exception.getMessage() + "\n");
-		System.out.println(getStackTrace(exception));
-	}
+    @Override
+    public void error(String tag, String message, Throwable exception){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
+        log.setCursorPos(log.getText().length() - 1);
+        System.err.println(tag + ": " + message + "\n" + exception.getMessage() + "\n");
+        System.out.println(getStackTrace(exception));
+    }
 
-	@Override
-	public void debug (String tag, String message) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
-		log.setCursorPos(log.getText().length() - 1);
-		System.out.println(tag + ": " + message + "\n");
-	}
+    @Override
+    public void debug(String tag, String message){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
+        log.setCursorPos(log.getText().length() - 1);
+        System.out.println(tag + ": " + message + "\n");
+    }
 
-	@Override
-	public void debug (String tag, String message, Throwable exception) {
-		checkLogLabel();
-		log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
-		log.setCursorPos(log.getText().length() - 1);
-		System.out.println(tag + ": " + message + "\n" + exception.getMessage());
-		System.out.println(getStackTrace(exception));
-	}
+    @Override
+    public void debug(String tag, String message, Throwable exception){
+        checkLogLabel();
+        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
+        log.setCursorPos(log.getText().length() - 1);
+        System.out.println(tag + ": " + message + "\n" + exception.getMessage());
+        System.out.println(getStackTrace(exception));
+    }
 
-	private void checkLogLabel () {
-		if (log == null) {
-			((GwtApplication)Gdx.app).log = log = new TextArea();
+    private void checkLogLabel(){
+        if(log == null){
+            ((GwtApplication) Gdx.app).log = log = new TextArea();
 
-			// It's possible that log functions are called
-			// before the app is initialized. E.g. SoundManager can call log functions before the app is initialized.
-			// Since graphics is null, we're getting errors. The log size will be updated later, in case graphics was null
-			if (Gdx.graphics != null) {
-				log.setSize(Gdx.graphics.getWidth() + "px", "200px");
-			} else {
-				log.setSize("400px", "200px"); // Dummy value
-			}
+            // It's possible that log functions are called
+            // before the app is initialized. E.g. SoundManager can call log functions before the app is initialized.
+            // Since graphics is null, we're getting errors. The log size will be updated later, in case graphics was null
+            if(Gdx.graphics != null){
+                log.setSize(Gdx.graphics.getWidth() + "px", "200px");
+            }else{
+                log.setSize("400px", "200px"); // Dummy value
+            }
 
-			log.setReadOnly(true);
-			((GwtApplication)Gdx.app).getRootPanel().add(log);
-		}
-	}
+            log.setReadOnly(true);
+            ((GwtApplication) Gdx.app).getRootPanel().add(log);
+        }
+    }
 
-	private String getMessages (Throwable e) {
-		StringBuilder sb = new StringBuilder();
-		while (e != null) {
-			sb.append(e.getMessage() + "\n");
-			e = e.getCause();
-		}
-		return sb.toString();
-	}
+    private String getMessages(Throwable e){
+        StringBuilder sb = new StringBuilder();
+        while(e != null){
+            sb.append(e.getMessage() + "\n");
+            e = e.getCause();
+        }
+        return sb.toString();
+    }
 
-	private String getStackTrace (Throwable e) {
-		StringBuilder sb = new StringBuilder();
-		for (StackTraceElement trace : e.getStackTrace()) {
-			sb.append(trace.toString() + "\n");
-		}
-		return sb.toString();
-	}
+    private String getStackTrace(Throwable e){
+        StringBuilder sb = new StringBuilder();
+        for(StackTraceElement trace : e.getStackTrace()){
+            sb.append(trace.toString() + "\n");
+        }
+        return sb.toString();
+    }
 
 }

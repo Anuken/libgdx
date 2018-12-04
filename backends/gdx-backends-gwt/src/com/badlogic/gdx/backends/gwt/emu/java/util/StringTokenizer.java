@@ -37,7 +37,7 @@ package java.util;
  *
  * @since 1.0
  */
-public class StringTokenizer implements Enumeration<Object> {
+public class StringTokenizer implements Enumeration<Object>{
 
     private String string;
 
@@ -52,10 +52,9 @@ public class StringTokenizer implements Enumeration<Object> {
      * whitespace as the delimiter. The {@code returnDelimiters} flag is set to
      * {@code false}.
      *
-     * @param string
-     *            the string to be tokenized.
+     * @param string the string to be tokenized.
      */
-    public StringTokenizer(String string) {
+    public StringTokenizer(String string){
         this(string, " \t\n\r\f", false);
     }
 
@@ -66,12 +65,10 @@ public class StringTokenizer implements Enumeration<Object> {
      * doesn't throw an {@code Exception}, but later calls to some methods might
      * throw a {@code NullPointerException}.
      *
-     * @param string
-     *            the string to be tokenized.
-     * @param delimiters
-     *            the delimiters to use.
+     * @param string the string to be tokenized.
+     * @param delimiters the delimiters to use.
      */
-    public StringTokenizer(String string, String delimiters) {
+    public StringTokenizer(String string, String delimiters){
         this(string, delimiters, false);
     }
 
@@ -82,16 +79,13 @@ public class StringTokenizer implements Enumeration<Object> {
      * is null this constructor doesn't throw an {@code Exception}, but later
      * calls to some methods might throw a {@code NullPointerException}.
      *
-     * @param string
-     *            the string to be tokenized.
-     * @param delimiters
-     *            the delimiters to use.
-     * @param returnDelimiters
-     *            {@code true} to return each delimiter as a token.
+     * @param string the string to be tokenized.
+     * @param delimiters the delimiters to use.
+     * @param returnDelimiters {@code true} to return each delimiter as a token.
      */
     public StringTokenizer(String string, String delimiters,
-            boolean returnDelimiters) {
-        if (string == null) {
+                           boolean returnDelimiters){
+        if(string == null){
             throw new NullPointerException("string == null");
         }
         this.string = string;
@@ -104,24 +98,24 @@ public class StringTokenizer implements Enumeration<Object> {
      * Returns the number of unprocessed tokens remaining in the string.
      *
      * @return number of tokens that can be retreived before an {@code
-     *         Exception} will result from a call to {@code nextToken()}.
+     * Exception} will result from a call to {@code nextToken()}.
      */
-    public int countTokens() {
+    public int countTokens(){
         int count = 0;
         boolean inToken = false;
-        for (int i = position, length = string.length(); i < length; i++) {
-            if (delimiters.indexOf(string.charAt(i), 0) >= 0) {
-                if (returnDelimiters)
+        for(int i = position, length = string.length(); i < length; i++){
+            if(delimiters.indexOf(string.charAt(i), 0) >= 0){
+                if(returnDelimiters)
                     count++;
-                if (inToken) {
+                if(inToken){
                     count++;
                     inToken = false;
                 }
-            } else {
+            }else{
                 inToken = true;
             }
         }
-        if (inToken)
+        if(inToken)
             count++;
         return count;
     }
@@ -132,7 +126,7 @@ public class StringTokenizer implements Enumeration<Object> {
      *
      * @return {@code true} if unprocessed tokens remain.
      */
-    public boolean hasMoreElements() {
+    public boolean hasMoreElements(){
         return hasMoreTokens();
     }
 
@@ -141,19 +135,19 @@ public class StringTokenizer implements Enumeration<Object> {
      *
      * @return {@code true} if unprocessed tokens remain.
      */
-    public boolean hasMoreTokens() {
-        if (delimiters == null) {
+    public boolean hasMoreTokens(){
+        if(delimiters == null){
             throw new NullPointerException("delimiters == null");
         }
         int length = string.length();
-        if (position < length) {
-            if (returnDelimiters)
+        if(position < length){
+            if(returnDelimiters)
                 return true; // there is at least one character and even if
             // it is a delimiter it is a token
 
             // otherwise find a character which is not a delimiter
-            for (int i = position; i < length; i++)
-                if (delimiters.indexOf(string.charAt(i), 0) == -1)
+            for(int i = position; i < length; i++)
+                if(delimiters.indexOf(string.charAt(i), 0) == -1)
                     return true;
         }
         return false;
@@ -164,10 +158,9 @@ public class StringTokenizer implements Enumeration<Object> {
      * implemented in order to satisfy the {@code Enumeration} interface.
      *
      * @return next token in the string as an {@code Object}
-     * @throws NoSuchElementException
-     *                if no tokens remain.
+     * @throws NoSuchElementException if no tokens remain.
      */
-    public Object nextElement() {
+    public Object nextElement(){
         return nextToken();
     }
 
@@ -175,32 +168,31 @@ public class StringTokenizer implements Enumeration<Object> {
      * Returns the next token in the string as a {@code String}.
      *
      * @return next token in the string as a {@code String}.
-     * @throws NoSuchElementException
-     *                if no tokens remain.
+     * @throws NoSuchElementException if no tokens remain.
      */
-    public String nextToken() {
-        if (delimiters == null) {
+    public String nextToken(){
+        if(delimiters == null){
             throw new NullPointerException("delimiters == null");
         }
         int i = position;
         int length = string.length();
 
-        if (i < length) {
-            if (returnDelimiters) {
-                if (delimiters.indexOf(string.charAt(position), 0) >= 0)
+        if(i < length){
+            if(returnDelimiters){
+                if(delimiters.indexOf(string.charAt(position), 0) >= 0)
                     return String.valueOf(string.charAt(position++));
-                for (position++; position < length; position++)
-                    if (delimiters.indexOf(string.charAt(position), 0) >= 0)
+                for(position++; position < length; position++)
+                    if(delimiters.indexOf(string.charAt(position), 0) >= 0)
                         return string.substring(i, position);
                 return string.substring(i);
             }
 
-            while (i < length && delimiters.indexOf(string.charAt(i), 0) >= 0)
+            while(i < length && delimiters.indexOf(string.charAt(i), 0) >= 0)
                 i++;
             position = i;
-            if (i < length) {
-                for (position++; position < length; position++)
-                    if (delimiters.indexOf(string.charAt(position), 0) >= 0)
+            if(i < length){
+                for(position++; position < length; position++)
+                    if(delimiters.indexOf(string.charAt(position), 0) >= 0)
                         return string.substring(i, position);
                 return string.substring(i);
             }
@@ -212,13 +204,11 @@ public class StringTokenizer implements Enumeration<Object> {
      * Returns the next token in the string as a {@code String}. The delimiters
      * used are changed to the specified delimiters.
      *
-     * @param delims
-     *            the new delimiters to use.
+     * @param delims the new delimiters to use.
      * @return next token in the string as a {@code String}.
-     * @throws NoSuchElementException
-     *                if no tokens remain.
+     * @throws NoSuchElementException if no tokens remain.
      */
-    public String nextToken(String delims) {
+    public String nextToken(String delims){
         this.delimiters = delims;
         return nextToken();
     }

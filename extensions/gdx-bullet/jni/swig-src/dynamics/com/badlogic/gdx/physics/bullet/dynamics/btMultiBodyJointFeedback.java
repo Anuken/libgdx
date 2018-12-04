@@ -9,67 +9,63 @@
 package com.badlogic.gdx.physics.bullet.dynamics;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.physics.bullet.collision.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.bullet.linearmath.btSpatialForceVector;
 
-public class btMultiBodyJointFeedback extends BulletBase {
-	private long swigCPtr;
-	
-	protected btMultiBodyJointFeedback(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btMultiBodyJointFeedback, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btMultiBodyJointFeedback(long cPtr, boolean cMemoryOwn) {
-		this("btMultiBodyJointFeedback", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btMultiBodyJointFeedback obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btMultiBodyJointFeedback extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btMultiBodyJointFeedback(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				DynamicsJNI.delete_btMultiBodyJointFeedback(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btMultiBodyJointFeedback, normally you should not need this constructor it's intended for low-level usage. */
+    public btMultiBodyJointFeedback(long cPtr, boolean cMemoryOwn){
+        this("btMultiBodyJointFeedback", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public void setReactionForces(btSpatialForceVector value) {
-    DynamicsJNI.btMultiBodyJointFeedback_reactionForces_set(swigCPtr, this, btSpatialForceVector.getCPtr(value), value);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public btSpatialForceVector getReactionForces() {
-    long cPtr = DynamicsJNI.btMultiBodyJointFeedback_reactionForces_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new btSpatialForceVector(cPtr, false);
-  }
+    public static long getCPtr(btMultiBodyJointFeedback obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public btMultiBodyJointFeedback() {
-    this(DynamicsJNI.new_btMultiBodyJointFeedback(), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
+
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                DynamicsJNI.delete_btMultiBodyJointFeedback(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
+
+    public void setReactionForces(btSpatialForceVector value){
+        DynamicsJNI.btMultiBodyJointFeedback_reactionForces_set(swigCPtr, this, btSpatialForceVector.getCPtr(value), value);
+    }
+
+    public btSpatialForceVector getReactionForces(){
+        long cPtr = DynamicsJNI.btMultiBodyJointFeedback_reactionForces_get(swigCPtr, this);
+        return (cPtr == 0) ? null : new btSpatialForceVector(cPtr, false);
+    }
+
+    public btMultiBodyJointFeedback(){
+        this(DynamicsJNI.new_btMultiBodyJointFeedback(), true);
+    }
 
 }

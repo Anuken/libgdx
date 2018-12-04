@@ -99,7 +99,7 @@ import java.io.Serializable;
  * This is the correct behavior for Turkish text (such as user input), but inappropriate for, say,
  * HTTP headers.
  */
-public final class Locale implements Cloneable, Serializable {
+public final class Locale implements Cloneable, Serializable{
 
     private static final long serialVersionUID = 9149081749638150636L;
 
@@ -230,7 +230,7 @@ public final class Locale implements Cloneable, Serializable {
      *
      * @param unused required for this constructor to have a unique signature
      */
-    private Locale(boolean unused, String lowerCaseLanguageCode, String upperCaseCountryCode) {
+    private Locale(boolean unused, String lowerCaseLanguageCode, String upperCaseCountryCode){
         this.languageCode = lowerCaseLanguageCode;
         this.countryCode = upperCaseCountryCode;
         this.variantCode = "";
@@ -239,14 +239,14 @@ public final class Locale implements Cloneable, Serializable {
     /**
      * Constructs a new {@code Locale} using the specified language.
      */
-    public Locale(String language) {
+    public Locale(String language){
         this(language, "", "");
     }
 
     /**
      * Constructs a new {@code Locale} using the specified language and country codes.
      */
-    public Locale(String language, String country) {
+    public Locale(String language, String country){
         this(language, country, "");
     }
 
@@ -254,13 +254,13 @@ public final class Locale implements Cloneable, Serializable {
      * Constructs a new {@code Locale} using the specified language, country,
      * and variant codes.
      */
-    public Locale(String language, String country, String variant) {
-        if (language == null || country == null || variant == null) {
+    public Locale(String language, String country, String variant){
+        if(language == null || country == null || variant == null){
             throw new NullPointerException("language=" + language +
-                                           ",country=" + country +
-                                           ",variant=" + variant);
+            ",country=" + country +
+            ",variant=" + variant);
         }
-        if (language.isEmpty() && country.isEmpty()) {
+        if(language.isEmpty() && country.isEmpty()){
             languageCode = "";
             countryCode = "";
             variantCode = variant;
@@ -270,11 +270,11 @@ public final class Locale implements Cloneable, Serializable {
         languageCode = language.toLowerCase();
         // Map new language codes to the obsolete language
         // codes so the correct resource bundles will be used.
-        if (languageCode.equals("he")) {
+        if(languageCode.equals("he")){
             languageCode = "iw";
-        } else if (languageCode.equals("id")) {
+        }else if(languageCode.equals("id")){
             languageCode = "in";
-        } else if (languageCode.equals("yi")) {
+        }else if(languageCode.equals("yi")){
             languageCode = "ji";
         }
 
@@ -288,15 +288,16 @@ public final class Locale implements Cloneable, Serializable {
      * Returns true if {@code object} is a locale with the same language,
      * country and variant.
      */
-    @Override public boolean equals(Object object) {
-        if (object == this) {
+    @Override
+    public boolean equals(Object object){
+        if(object == this){
             return true;
         }
-        if (object instanceof Locale) {
+        if(object instanceof Locale){
             Locale o = (Locale) object;
             return languageCode.equals(o.languageCode)
-                    && countryCode.equals(o.countryCode)
-                    && variantCode.equals(o.variantCode);
+            && countryCode.equals(o.countryCode)
+            && variantCode.equals(o.variantCode);
         }
         return false;
     }
@@ -305,7 +306,7 @@ public final class Locale implements Cloneable, Serializable {
      * Returns the country code for this locale, or {@code ""} if this locale
      * doesn't correspond to a specific country.
      */
-    public String getCountry() {
+    public String getCountry(){
         return countryCode;
     }
 
@@ -316,16 +317,16 @@ public final class Locale implements Cloneable, Serializable {
      * <p>Since the user's locale changes dynamically, avoid caching this value.
      * Instead, use this method to look it up for each use.
      */
-    public static Locale getDefault() {
+    public static Locale getDefault(){
         return defaultLocale;
     }
 
-    private static Locale initDefault() {
+    private static Locale initDefault(){
         Locale defaultLoc = US;
 
         String browserLanguage = getBrowserLanguage();
 
-        if (browserLanguage != null && browserLanguage.length() > 0) {
+        if(browserLanguage != null && browserLanguage.length() > 0){
             String[] locale = browserLanguage.split("-");
 
             defaultLoc = new Locale(true, locale[0].toLowerCase(), locale.length > 1 ? locale[1].toUpperCase() : "");
@@ -345,7 +346,7 @@ public final class Locale implements Cloneable, Serializable {
      * Returns the language code for this {@code Locale} or the empty string if no language
      * was set.
      */
-    public String getLanguage() {
+    public String getLanguage(){
         return languageCode;
     }
 
@@ -353,14 +354,14 @@ public final class Locale implements Cloneable, Serializable {
      * Returns the variant code for this {@code Locale} or an empty {@code String} if no variant
      * was set.
      */
-    public String getVariant() {
+    public String getVariant(){
         return variantCode;
     }
 
     @Override
-    public synchronized int hashCode() {
+    public synchronized int hashCode(){
         return countryCode.hashCode() + languageCode.hashCode()
-                + variantCode.hashCode();
+        + variantCode.hashCode();
     }
 
     /**
@@ -371,8 +372,8 @@ public final class Locale implements Cloneable, Serializable {
      * passing the appropriate locale to each locale-sensitive method that's
      * called.
      */
-    public synchronized static void setDefault(Locale locale) {
-        if (locale == null) {
+    public synchronized static void setDefault(Locale locale){
+        if(locale == null){
             throw new NullPointerException("locale == null");
         }
         defaultLocale = locale;
@@ -390,17 +391,17 @@ public final class Locale implements Cloneable, Serializable {
      * <p>Examples: "en", "en_US", "_US", "en__POSIX", "en_US_POSIX"
      */
     @Override
-    public final String toString() {
+    public final String toString(){
         String result = cachedToStringResult;
-        if (result == null) {
+        if(result == null){
             result = cachedToStringResult = toNewString(languageCode, countryCode, variantCode);
         }
         return result;
     }
 
-    private static String toNewString(String languageCode, String countryCode, String variantCode) {
+    private static String toNewString(String languageCode, String countryCode, String variantCode){
         // The string form of a locale that only has a variant is the empty string.
-        if (languageCode.length() == 0 && countryCode.length() == 0) {
+        if(languageCode.length() == 0 && countryCode.length() == 0){
             return "";
         }
         // Otherwise, the output format is "ll_cc_variant", where language and country are always
@@ -409,11 +410,11 @@ public final class Locale implements Cloneable, Serializable {
         // always 5 characters: "ll_cc".)
         StringBuilder result = new StringBuilder(11);
         result.append(languageCode);
-        if (countryCode.length() > 0 || variantCode.length() > 0) {
+        if(countryCode.length() > 0 || variantCode.length() > 0){
             result.append('_');
         }
         result.append(countryCode);
-        if (variantCode.length() > 0) {
+        if(variantCode.length() > 0){
             result.append('_');
         }
         result.append(variantCode);

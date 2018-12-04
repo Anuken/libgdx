@@ -17,22 +17,22 @@
 package com.google.gwt.webgl.client;
 
 /** The WebGLActiveInfo interface represents the information returned from the getActiveAttrib and getActiveUniform calls. */
-public class WebGLActiveInfo extends WebGLObject {
+public class WebGLActiveInfo extends WebGLObject{
 
-	protected WebGLActiveInfo () {
-	}
+    protected WebGLActiveInfo(){
+    }
 
-	/** Gets the size of the requested variable. */
-	public final native int getSize () /*-{
+    /** Gets the size of the requested variable. */
+    public final native int getSize() /*-{
 													return this.size;
 													}-*/;
 
-	/** Gets the name of the requested variable. */
-	public final native String getName () /*-{
+    /** Gets the name of the requested variable. */
+    public final native String getName() /*-{
 														return this.name;
 														}-*/;
 
-	public final native int getType () /*-{
+    public final native int getType() /*-{
 													return this.type;
 													}-*/;
 }

@@ -9,114 +9,110 @@
 package com.badlogic.gdx.physics.bullet.collision;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class ContactCache extends BulletBase {
-	private long swigCPtr;
-	
-	protected ContactCache(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new ContactCache, normally you should not need this constructor it's intended for low-level usage. */ 
-	public ContactCache(long cPtr, boolean cMemoryOwn) {
-		this("ContactCache", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(ContactCache obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class ContactCache extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected ContactCache(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_ContactCache(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new ContactCache, normally you should not need this constructor it's intended for low-level usage. */
+    public ContactCache(long cPtr, boolean cMemoryOwn){
+        this("ContactCache", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  protected void swigDirectorDisconnect() {
-    swigCMemOwn = false;
-    delete();
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public void swigReleaseOwnership() {
-    swigCMemOwn = false;
-    CollisionJNI.ContactCache_change_ownership(this, swigCPtr, false);
-  }
+    public static long getCPtr(ContactCache obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void swigTakeOwnership() {
-    swigCMemOwn = true;
-    CollisionJNI.ContactCache_change_ownership(this, swigCPtr, true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-	public ContactCache() {
-		this(false);
-		enable();
-	}
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_ContactCache(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setCacheTime(float value) {
-    CollisionJNI.ContactCache_cacheTime_set(swigCPtr, this, value);
-  }
+    protected void swigDirectorDisconnect(){
+        swigCMemOwn = false;
+        delete();
+    }
 
-  public float getCacheTime() {
-    return CollisionJNI.ContactCache_cacheTime_get(swigCPtr, this);
-  }
+    public void swigReleaseOwnership(){
+        swigCMemOwn = false;
+        CollisionJNI.ContactCache_change_ownership(this, swigCPtr, false);
+    }
 
-  private ContactCache(boolean dummy) {
-    this(CollisionJNI.new_ContactCache(dummy), true);
-    CollisionJNI.ContactCache_director_connect(this, swigCPtr, swigCMemOwn, true);
-  }
+    public void swigTakeOwnership(){
+        swigCMemOwn = true;
+        CollisionJNI.ContactCache_change_ownership(this, swigCPtr, true);
+    }
 
-  public void enable() {
-    CollisionJNI.ContactCache_enable(swigCPtr, this);
-  }
+    public ContactCache(){
+        this(false);
+        enable();
+    }
 
-  public void disable() {
-    CollisionJNI.ContactCache_disable(swigCPtr, this);
-  }
+    public void setCacheTime(float value){
+        CollisionJNI.ContactCache_cacheTime_set(swigCPtr, this, value);
+    }
 
-  public boolean isEnabled() {
-    return CollisionJNI.ContactCache_isEnabled(swigCPtr, this);
-  }
+    public float getCacheTime(){
+        return CollisionJNI.ContactCache_cacheTime_get(swigCPtr, this);
+    }
 
-  public void onContactStarted(btPersistentManifold manifold, boolean match0, boolean match1) {
-    CollisionJNI.ContactCache_onContactStarted(swigCPtr, this, btPersistentManifold.getCPtr(manifold), manifold, match0, match1);
-  }
+    private ContactCache(boolean dummy){
+        this(CollisionJNI.new_ContactCache(dummy), true);
+        CollisionJNI.ContactCache_director_connect(this, swigCPtr, swigCMemOwn, true);
+    }
 
-  public void onContactEnded(btCollisionObject colObj0, boolean match0, btCollisionObject colObj1, boolean match1) {
-    CollisionJNI.ContactCache_onContactEnded(swigCPtr, this, btCollisionObject.getCPtr(colObj0), colObj0, match0, btCollisionObject.getCPtr(colObj1), colObj1, match1);
-  }
+    public void enable(){
+        CollisionJNI.ContactCache_enable(swigCPtr, this);
+    }
 
-  public void clear() {
-    CollisionJNI.ContactCache_clear(swigCPtr, this);
-  }
+    public void disable(){
+        CollisionJNI.ContactCache_disable(swigCPtr, this);
+    }
 
-  public void update(float delta) {
-    CollisionJNI.ContactCache_update(swigCPtr, this, delta);
-  }
+    public boolean isEnabled(){
+        return CollisionJNI.ContactCache_isEnabled(swigCPtr, this);
+    }
+
+    public void onContactStarted(btPersistentManifold manifold, boolean match0, boolean match1){
+        CollisionJNI.ContactCache_onContactStarted(swigCPtr, this, btPersistentManifold.getCPtr(manifold), manifold, match0, match1);
+    }
+
+    public void onContactEnded(btCollisionObject colObj0, boolean match0, btCollisionObject colObj1, boolean match1){
+        CollisionJNI.ContactCache_onContactEnded(swigCPtr, this, btCollisionObject.getCPtr(colObj0), colObj0, match0, btCollisionObject.getCPtr(colObj1), colObj1, match1);
+    }
+
+    public void clear(){
+        CollisionJNI.ContactCache_clear(swigCPtr, this);
+    }
+
+    public void update(float delta){
+        CollisionJNI.ContactCache_update(swigCPtr, this, delta);
+    }
 
 }

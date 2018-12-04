@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>FreeType-2.6.2 API Reference</title>
-<style type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FreeType-2.6.2 API Reference</title>
+    <style type="text/css">
   a:link { color: #0000EF; }
   a:visited { color: #51188E; }
   a:hover { color: #FF0000; }
@@ -95,55 +95,86 @@
   table.toc td.desc p { margin: 1.5ex 0 0 0;
                         text-align: left; }
 
-</style>
+
+    </style>
 </head>
 <body>
 
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table>
+<table class="index-toc-link">
+    <tr>
+        <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+        <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+    </tr>
+</table>
 <h1>FreeType-2.6.2 API Reference</h1>
 
 <h1 id="bzip2">BZIP2 Streams</h1>
 <h2>Synopsis</h2>
 <table class="synopsis">
-<tr><td><a href="#FT_Stream_OpenBzip2">FT_Stream_OpenBzip2</a></td><td></td><td></td></tr>
+    <tr>
+        <td><a href="#FT_Stream_OpenBzip2">FT_Stream_OpenBzip2</a></td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>
 
 
 <p>This section contains the declaration of Bzip2-specific functions.</p>
 
 <div class="section">
-<h3 id="FT_Stream_OpenBzip2">FT_Stream_OpenBzip2</h3>
-<p>Defined in FT_BZIP2_H (freetype/ftbzip2.h).</p>
-<pre>
+    <h3 id="FT_Stream_OpenBzip2">FT_Stream_OpenBzip2</h3>
+    <p>Defined in FT_BZIP2_H (freetype/ftbzip2.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_Stream_OpenBzip2</b>( <a href="ft2-system_interface.html#FT_Stream">FT_Stream</a>  stream,
                        <a href="ft2-system_interface.html#FT_Stream">FT_Stream</a>  source );
 </pre>
 
-<p>Open a new stream to parse bzip2-compressed font files. This is mainly used to support the compressed &lsquo;*.pcf.bz2&rsquo; fonts that come with XFree86.</p>
+    <p>Open a new stream to parse bzip2-compressed font files. This is mainly used to support the compressed &lsquo;*.pcf.bz2&rsquo;
+        fonts that come with XFree86.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="stream">stream</td><td class="desc">
-<p>The target embedding stream.</p>
-</td></tr>
-<tr><td class="val" id="source">source</td><td class="desc">
-<p>The source stream.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="stream">stream</td>
+            <td class="desc">
+                <p>The target embedding stream.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="source">source</td>
+            <td class="desc">
+                <p>The source stream.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>note</h4>
-<p>The source stream must be opened <i>before</i> calling this function.</p>
-<p>Calling the internal function &lsquo;FT_Stream_Close&rsquo; on the new stream will <b>not</b> call &lsquo;FT_Stream_Close&rsquo; on the source stream. None of the stream objects will be released to the heap.</p>
-<p>The stream implementation is very basic and resets the decompression process each time seeking backwards is needed within the stream.</p>
-<p>In certain builds of the library, bzip2 compression recognition is automatically handled when calling <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> or <a href="ft2-base_interface.html#FT_Open_Face">FT_Open_Face</a>. This means that if no font driver is capable of handling the raw compressed file, the library will try to open a bzip2 compressed stream from it and re-open the face with it.</p>
-<p>This function may return &lsquo;FT_Err_Unimplemented_Feature&rsquo; if your build of FreeType was not compiled with bzip2 support.</p>
+    <h4>note</h4>
+    <p>The source stream must be opened <i>before</i> calling this function.</p>
+    <p>Calling the internal function &lsquo;FT_Stream_Close&rsquo; on the new stream will <b>not</b> call &lsquo;FT_Stream_Close&rsquo;
+        on the source stream. None of the stream objects will be released to the heap.</p>
+    <p>The stream implementation is very basic and resets the decompression process each time seeking backwards is
+        needed within the stream.</p>
+    <p>In certain builds of the library, bzip2 compression recognition is automatically handled when calling <a
+            href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> or <a
+            href="ft2-base_interface.html#FT_Open_Face">FT_Open_Face</a>. This means that if no font driver is capable
+        of handling the raw compressed file, the library will try to open a bzip2 compressed stream from it and re-open
+        the face with it.</p>
+    <p>This function may return &lsquo;FT_Err_Unimplemented_Feature&rsquo; if your build of FreeType was not compiled
+        with bzip2 support.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

@@ -16,42 +16,41 @@
 
 package com.badlogic.gdx.backends.iosmoe;
 
-import com.badlogic.gdx.ApplicationListener;
-
 import apple.coregraphics.struct.CGRect;
 import apple.uikit.UIApplication;
+import com.badlogic.gdx.ApplicationListener;
 
-public class IOSGLKViewApplication extends IOSApplication {
+public class IOSGLKViewApplication extends IOSApplication{
 
-	public IOSGLKViewApplication (ApplicationListener listener, IOSApplicationConfiguration config) {
-		super(listener, config);
-	}
+    public IOSGLKViewApplication(ApplicationListener listener, IOSApplicationConfiguration config){
+        super(listener, config);
+    }
 
-	private IOSGLKView view;
+    private IOSGLKView view;
 
-	public void initializeForView (IOSGLKView view) {
-		this.view = view;
-		init();
-		this.input.setView(view);
-	}
+    public void initializeForView(IOSGLKView view){
+        this.view = view;
+        init();
+        this.input.setView(view);
+    }
 
-	@Override
-	protected IOSGraphics createGraphics (float scale) {
-		return IOSGraphics.alloc().init(scale, this, config, input, config.useGL30, view);
-	}
+    @Override
+    protected IOSGraphics createGraphics(float scale){
+        return IOSGraphics.alloc().init(scale, this, config, input, config.useGL30, view);
+    }
 
-	@Override
-	protected CGRect getOriginalBounds () {
-		return view.bounds();
-	}
+    @Override
+    protected CGRect getOriginalBounds(){
+        return view.bounds();
+    }
 
-	@Override
-	protected double getStatusBarHeight (double screenHeight) {
-		return 0;
-	}
+    @Override
+    protected double getStatusBarHeight(double screenHeight){
+        return 0;
+    }
 
-	@Override
-	protected long getStatusBarOrientation () {
-		return UIApplication.sharedApplication().statusBarOrientation();
-	}
+    @Override
+    protected long getStatusBarOrientation(){
+        return UIApplication.sharedApplication().statusBarOrientation();
+    }
 }

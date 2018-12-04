@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,64 +22,65 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gwt.storage.client.Storage;
 
-public class GwtFiles implements Files {
-	
-	public static final Storage LocalStorage = Storage.getLocalStorageIfSupported();
-	
-	final Preloader preloader;
-	
-	public GwtFiles (Preloader preloader) {
-		this.preloader = preloader;
-	}
+public class GwtFiles implements Files{
 
-	@Override
-	public FileHandle getFileHandle (String path, FileType type) {
-		if (type != FileType.Internal) throw new GdxRuntimeException("FileType '" + type + "' not supported in GWT backend");
-		return new GwtFileHandle(preloader, path, type);
-	}
+    public static final Storage LocalStorage = Storage.getLocalStorageIfSupported();
 
-	@Override
-	public FileHandle classpath (String path) {
-		return new GwtFileHandle(preloader, path, FileType.Classpath);
-	}
+    final Preloader preloader;
 
-	@Override
-	public FileHandle internal (String path) {
-		return new GwtFileHandle(preloader, path, FileType.Internal);
-	}
+    public GwtFiles(Preloader preloader){
+        this.preloader = preloader;
+    }
 
-	@Override
-	public FileHandle external (String path) {
-		throw new GdxRuntimeException("Not supported in GWT backend");
-	}
+    @Override
+    public FileHandle getFileHandle(String path, FileType type){
+        if(type != FileType.Internal)
+            throw new GdxRuntimeException("FileType '" + type + "' not supported in GWT backend");
+        return new GwtFileHandle(preloader, path, type);
+    }
 
-	@Override
-	public FileHandle absolute (String path) {
-		throw new GdxRuntimeException("Not supported in GWT backend");
-	}
+    @Override
+    public FileHandle classpath(String path){
+        return new GwtFileHandle(preloader, path, FileType.Classpath);
+    }
 
-	@Override
-	public FileHandle local (String path) {
-		throw new GdxRuntimeException("Not supported in GWT backend");
-	}
+    @Override
+    public FileHandle internal(String path){
+        return new GwtFileHandle(preloader, path, FileType.Internal);
+    }
 
-	@Override
-	public String getExternalStoragePath () {
-		return null;
-	}
+    @Override
+    public FileHandle external(String path){
+        throw new GdxRuntimeException("Not supported in GWT backend");
+    }
 
-	@Override
-	public boolean isExternalStorageAvailable () {
-		return false;
-	}
+    @Override
+    public FileHandle absolute(String path){
+        throw new GdxRuntimeException("Not supported in GWT backend");
+    }
 
-	@Override
-	public String getLocalStoragePath () {
-		return null;
-	}
+    @Override
+    public FileHandle local(String path){
+        throw new GdxRuntimeException("Not supported in GWT backend");
+    }
 
-	@Override
-	public boolean isLocalStorageAvailable () {
-		return false;
-	}
+    @Override
+    public String getExternalStoragePath(){
+        return null;
+    }
+
+    @Override
+    public boolean isExternalStorageAvailable(){
+        return false;
+    }
+
+    @Override
+    public String getLocalStoragePath(){
+        return null;
+    }
+
+    @Override
+    public boolean isLocalStorageAvailable(){
+        return false;
+    }
 }

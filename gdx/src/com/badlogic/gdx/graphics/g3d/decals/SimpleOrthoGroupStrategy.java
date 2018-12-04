@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Sort;
 
-/** <p>
+/**
+ * <p>
  * Minimalistic grouping strategy useful for orthogonal scenes where the camera faces the negative z axis. Handles enabling and
  * disabling of blending and uses world-z only front to back sorting for transparent decals.
  * </p>
@@ -65,58 +66,59 @@ import com.badlogic.gdx.utils.Sort;
  * <td>disabled</td>
  * </tr>
  * </table>
- * </p> */
-public class SimpleOrthoGroupStrategy implements GroupStrategy {
-	private Comparator comparator = new Comparator();
-	private static final int GROUP_OPAQUE = 0;
-	private static final int GROUP_BLEND = 1;
+ * </p>
+ */
+public class SimpleOrthoGroupStrategy implements GroupStrategy{
+    private Comparator comparator = new Comparator();
+    private static final int GROUP_OPAQUE = 0;
+    private static final int GROUP_BLEND = 1;
 
-	@Override
-	public int decideGroup (Decal decal) {
-		return decal.getMaterial().isOpaque() ? GROUP_OPAQUE : GROUP_BLEND;
-	}
+    @Override
+    public int decideGroup(Decal decal){
+        return decal.getMaterial().isOpaque() ? GROUP_OPAQUE : GROUP_BLEND;
+    }
 
-	@Override
-	public void beforeGroup (int group, Array<Decal> contents) {
-		if (group == GROUP_BLEND) {
-			Sort.instance().sort(contents, comparator);
-			Gdx.gl.glEnable(GL20.GL_BLEND);
-			// no need for writing into the z buffer if transparent decals are the last thing to be rendered
-			// and they are rendered back to front
-			Gdx.gl.glDepthMask(false);
-		} else {
-			// FIXME sort by material
-		}
-	}
+    @Override
+    public void beforeGroup(int group, Array<Decal> contents){
+        if(group == GROUP_BLEND){
+            Sort.instance().sort(contents, comparator);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            // no need for writing into the z buffer if transparent decals are the last thing to be rendered
+            // and they are rendered back to front
+            Gdx.gl.glDepthMask(false);
+        }else{
+            // FIXME sort by material
+        }
+    }
 
-	@Override
-	public void afterGroup (int group) {
-		if (group == GROUP_BLEND) {
-			Gdx.gl.glDepthMask(true);
-			Gdx.gl.glDisable(GL20.GL_BLEND);
-		}
-	}
+    @Override
+    public void afterGroup(int group){
+        if(group == GROUP_BLEND){
+            Gdx.gl.glDepthMask(true);
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
+    }
 
-	@Override
-	public void beforeGroups () {
-		Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
-	}
+    @Override
+    public void beforeGroups(){
+        Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
+    }
 
-	@Override
-	public void afterGroups () {
-		Gdx.gl.glDisable(GL20.GL_TEXTURE_2D);
-	}
+    @Override
+    public void afterGroups(){
+        Gdx.gl.glDisable(GL20.GL_TEXTURE_2D);
+    }
 
-	class Comparator implements java.util.Comparator<Decal> {
-		@Override
-		public int compare (Decal a, Decal b) {
-			if (a.getZ() == b.getZ()) return 0;
-			return a.getZ() - b.getZ() < 0 ? -1 : 1;
-		}
-	}
+    class Comparator implements java.util.Comparator<Decal>{
+        @Override
+        public int compare(Decal a, Decal b){
+            if(a.getZ() == b.getZ()) return 0;
+            return a.getZ() - b.getZ() < 0 ? -1 : 1;
+        }
+    }
 
-	@Override
-	public ShaderProgram getGroupShader (int group) {
-		return null;
-	}
+    @Override
+    public ShaderProgram getGroupShader(int group){
+        return null;
+    }
 }

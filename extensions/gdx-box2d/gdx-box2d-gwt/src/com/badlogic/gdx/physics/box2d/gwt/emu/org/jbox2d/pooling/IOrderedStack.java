@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2013, Daniel Murphy
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  * 	* Redistributions of source code must retain the above copyright notice,
@@ -9,7 +9,7 @@
  * 	* Redistributions in binary form must reproduce the above copyright notice,
  * 	  this list of conditions and the following disclaimer in the documentation
  * 	  and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -26,32 +26,35 @@ package org.jbox2d.pooling;
 /**
  * This stack assumes that when you push 'n' items back,
  * you're pushing back the last 'n' items popped.
- * @author Daniel
  *
  * @param <E>
+ * @author Daniel
  */
-public interface IOrderedStack<E> {
+public interface IOrderedStack<E>{
 
-	/**
-	 * Returns the next object in the pool
-	 * @return
-	 */
-	public E pop();
+    /**
+     * Returns the next object in the pool
+     *
+     * @return
+     */
+    public E pop();
 
-	/**
-	 * Returns the next 'argNum' objects in the pool
-	 * in an array
-	 * @param argNum
-	 * @return an array containing the next pool objects in
-	 * 		   items 0-argNum.  Array length and uniqueness not
-	 * 		   guaranteed.
-	 */
-	public E[] pop(int argNum);
+    /**
+     * Returns the next 'argNum' objects in the pool
+     * in an array
+     *
+     * @param argNum
+     * @return an array containing the next pool objects in
+     * items 0-argNum.  Array length and uniqueness not
+     * guaranteed.
+     */
+    public E[] pop(int argNum);
 
-	/**
-	 * Tells the stack to take back the last 'argNum' items
-	 * @param argNum
-	 */
-	public void push(int argNum);
+    /**
+     * Tells the stack to take back the last 'argNum' items
+     *
+     * @param argNum
+     */
+    public void push(int argNum);
 
 }

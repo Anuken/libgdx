@@ -8,86 +8,80 @@
 
 package com.badlogic.gdx.physics.bullet.collision;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
+public class btDefaultCollisionConfiguration extends btCollisionConfiguration{
+    private long swigCPtr;
 
-public class btDefaultCollisionConfiguration extends btCollisionConfiguration {
-	private long swigCPtr;
-	
-	protected btDefaultCollisionConfiguration(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, CollisionJNI.btDefaultCollisionConfiguration_SWIGUpcast(cPtr), cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btDefaultCollisionConfiguration, normally you should not need this constructor it's intended for low-level usage. */
-	public btDefaultCollisionConfiguration(long cPtr, boolean cMemoryOwn) {
-		this("btDefaultCollisionConfiguration", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(CollisionJNI.btDefaultCollisionConfiguration_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
-	}
-	
-	public static long getCPtr(btDefaultCollisionConfiguration obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+    protected btDefaultCollisionConfiguration(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, CollisionJNI.btDefaultCollisionConfiguration_SWIGUpcast(cPtr), cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    /** Construct a new btDefaultCollisionConfiguration, normally you should not need this constructor it's intended for low-level usage. */
+    public btDefaultCollisionConfiguration(long cPtr, boolean cMemoryOwn){
+        this("btDefaultCollisionConfiguration", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_btDefaultCollisionConfiguration(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(CollisionJNI.btDefaultCollisionConfiguration_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
+    }
 
-  public btDefaultCollisionConfiguration(btDefaultCollisionConstructionInfo constructionInfo) {
-    this(CollisionJNI.new_btDefaultCollisionConfiguration__SWIG_0(btDefaultCollisionConstructionInfo.getCPtr(constructionInfo), constructionInfo), true);
-  }
+    public static long getCPtr(btDefaultCollisionConfiguration obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public btDefaultCollisionConfiguration() {
-    this(CollisionJNI.new_btDefaultCollisionConfiguration__SWIG_1(), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public void setConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold) {
-    CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_0(swigCPtr, this, numPerturbationIterations, minimumPointsPerturbationThreshold);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_btDefaultCollisionConfiguration(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setConvexConvexMultipointIterations(int numPerturbationIterations) {
-    CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_1(swigCPtr, this, numPerturbationIterations);
-  }
+    public btDefaultCollisionConfiguration(btDefaultCollisionConstructionInfo constructionInfo){
+        this(CollisionJNI.new_btDefaultCollisionConfiguration__SWIG_0(btDefaultCollisionConstructionInfo.getCPtr(constructionInfo), constructionInfo), true);
+    }
 
-  public void setConvexConvexMultipointIterations() {
-    CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_2(swigCPtr, this);
-  }
+    public btDefaultCollisionConfiguration(){
+        this(CollisionJNI.new_btDefaultCollisionConfiguration__SWIG_1(), true);
+    }
 
-  public void setPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold) {
-    CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_0(swigCPtr, this, numPerturbationIterations, minimumPointsPerturbationThreshold);
-  }
+    public void setConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold){
+        CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_0(swigCPtr, this, numPerturbationIterations, minimumPointsPerturbationThreshold);
+    }
 
-  public void setPlaneConvexMultipointIterations(int numPerturbationIterations) {
-    CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_1(swigCPtr, this, numPerturbationIterations);
-  }
+    public void setConvexConvexMultipointIterations(int numPerturbationIterations){
+        CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_1(swigCPtr, this, numPerturbationIterations);
+    }
 
-  public void setPlaneConvexMultipointIterations() {
-    CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_2(swigCPtr, this);
-  }
+    public void setConvexConvexMultipointIterations(){
+        CollisionJNI.btDefaultCollisionConfiguration_setConvexConvexMultipointIterations__SWIG_2(swigCPtr, this);
+    }
+
+    public void setPlaneConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold){
+        CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_0(swigCPtr, this, numPerturbationIterations, minimumPointsPerturbationThreshold);
+    }
+
+    public void setPlaneConvexMultipointIterations(int numPerturbationIterations){
+        CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_1(swigCPtr, this, numPerturbationIterations);
+    }
+
+    public void setPlaneConvexMultipointIterations(){
+        CollisionJNI.btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations__SWIG_2(swigCPtr, this);
+    }
 
 }

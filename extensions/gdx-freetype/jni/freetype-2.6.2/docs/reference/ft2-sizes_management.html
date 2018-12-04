@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>FreeType-2.6.2 API Reference</title>
-<style type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FreeType-2.6.2 API Reference</title>
+    <style type="text/css">
   a:link { color: #0000EF; }
   a:visited { color: #51188E; }
   a:hover { color: #FF0000; }
@@ -95,108 +95,171 @@
   table.toc td.desc p { margin: 1.5ex 0 0 0;
                         text-align: left; }
 
-</style>
+
+    </style>
 </head>
 <body>
 
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table>
+<table class="index-toc-link">
+    <tr>
+        <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+        <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+    </tr>
+</table>
 <h1>FreeType-2.6.2 API Reference</h1>
 
 <h1 id="sizes_management">Size Management</h1>
 <h2>Synopsis</h2>
 <table class="synopsis">
-<tr><td><a href="#FT_New_Size">FT_New_Size</a></td><td><a href="#FT_Done_Size">FT_Done_Size</a></td><td><a href="#FT_Activate_Size">FT_Activate_Size</a></td><td></td></tr>
+    <tr>
+        <td><a href="#FT_New_Size">FT_New_Size</a></td>
+        <td><a href="#FT_Done_Size">FT_Done_Size</a></td>
+        <td><a href="#FT_Activate_Size">FT_Activate_Size</a></td>
+        <td></td>
+    </tr>
 </table>
 
 
-<p>When creating a new face object (e.g., with <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>), an <a href="ft2-base_interface.html#FT_Size">FT_Size</a> object is automatically created and used to store all pixel-size dependent information, available in the &lsquo;face-&gt;size&rsquo; field.</p>
-<p>It is however possible to create more sizes for a given face, mostly in order to manage several character pixel sizes of the same font family and style. See <a href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a> and <a href="ft2-sizes_management.html#FT_Done_Size">FT_Done_Size</a>.</p>
-<p>Note that <a href="ft2-base_interface.html#FT_Set_Pixel_Sizes">FT_Set_Pixel_Sizes</a> and <a href="ft2-base_interface.html#FT_Set_Char_Size">FT_Set_Char_Size</a> only modify the contents of the current &lsquo;active&rsquo; size; you thus need to use <a href="ft2-sizes_management.html#FT_Activate_Size">FT_Activate_Size</a> to change it.</p>
-<p>99% of applications won't need the functions provided here, especially if they use the caching sub-system, so be cautious when using these.</p>
+<p>When creating a new face object (e.g., with <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>), an <a
+        href="ft2-base_interface.html#FT_Size">FT_Size</a> object is automatically created and used to store all
+    pixel-size dependent information, available in the &lsquo;face-&gt;size&rsquo; field.</p>
+<p>It is however possible to create more sizes for a given face, mostly in order to manage several character pixel sizes
+    of the same font family and style. See <a href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a> and <a
+            href="ft2-sizes_management.html#FT_Done_Size">FT_Done_Size</a>.</p>
+<p>Note that <a href="ft2-base_interface.html#FT_Set_Pixel_Sizes">FT_Set_Pixel_Sizes</a> and <a
+        href="ft2-base_interface.html#FT_Set_Char_Size">FT_Set_Char_Size</a> only modify the contents of the current
+    &lsquo;active&rsquo; size; you thus need to use <a href="ft2-sizes_management.html#FT_Activate_Size">FT_Activate_Size</a>
+    to change it.</p>
+<p>99% of applications won't need the functions provided here, especially if they use the caching sub-system, so be
+    cautious when using these.</p>
 
 <div class="section">
-<h3 id="FT_New_Size">FT_New_Size</h3>
-<p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
-<pre>
+    <h3 id="FT_New_Size">FT_New_Size</h3>
+    <p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_New_Size</b>( <a href="ft2-base_interface.html#FT_Face">FT_Face</a>   face,
                <a href="ft2-base_interface.html#FT_Size">FT_Size</a>*  size );
 </pre>
 
-<p>Create a new size object from a given face object.</p>
+    <p>Create a new size object from a given face object.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="face">face</td><td class="desc">
-<p>A handle to a parent face object.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="face">face</td>
+            <td class="desc">
+                <p>A handle to a parent face object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="asize">asize</td><td class="desc">
-<p>A handle to a new size object.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="asize">asize</td>
+            <td class="desc">
+                <p>A handle to a new size object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>note</h4>
-<p>You need to call <a href="ft2-sizes_management.html#FT_Activate_Size">FT_Activate_Size</a> in order to select the new size for upcoming calls to <a href="ft2-base_interface.html#FT_Set_Pixel_Sizes">FT_Set_Pixel_Sizes</a>, <a href="ft2-base_interface.html#FT_Set_Char_Size">FT_Set_Char_Size</a>, <a href="ft2-base_interface.html#FT_Load_Glyph">FT_Load_Glyph</a>, <a href="ft2-base_interface.html#FT_Load_Char">FT_Load_Char</a>, etc.</p>
+    <h4>note</h4>
+    <p>You need to call <a href="ft2-sizes_management.html#FT_Activate_Size">FT_Activate_Size</a> in order to select the
+        new size for upcoming calls to <a href="ft2-base_interface.html#FT_Set_Pixel_Sizes">FT_Set_Pixel_Sizes</a>, <a
+                href="ft2-base_interface.html#FT_Set_Char_Size">FT_Set_Char_Size</a>, <a
+                href="ft2-base_interface.html#FT_Load_Glyph">FT_Load_Glyph</a>, <a
+                href="ft2-base_interface.html#FT_Load_Char">FT_Load_Char</a>, etc.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_Done_Size">FT_Done_Size</h3>
-<p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
-<pre>
+    <h3 id="FT_Done_Size">FT_Done_Size</h3>
+    <p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_Done_Size</b>( <a href="ft2-base_interface.html#FT_Size">FT_Size</a>  size );
 </pre>
 
-<p>Discard a given size object. Note that <a href="ft2-base_interface.html#FT_Done_Face">FT_Done_Face</a> automatically discards all size objects allocated with <a href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a>.</p>
+    <p>Discard a given size object. Note that <a href="ft2-base_interface.html#FT_Done_Face">FT_Done_Face</a>
+        automatically discards all size objects allocated with <a href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a>.
+    </p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="size">size</td><td class="desc">
-<p>A handle to a target size object.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="size">size</td>
+            <td class="desc">
+                <p>A handle to a target size object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_Activate_Size">FT_Activate_Size</h3>
-<p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
-<pre>
+    <h3 id="FT_Activate_Size">FT_Activate_Size</h3>
+    <p>Defined in FT_SIZES_H (freetype/ftsizes.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_Activate_Size</b>( <a href="ft2-base_interface.html#FT_Size">FT_Size</a>  size );
 </pre>
 
-<p>Even though it is possible to create several size objects for a given face (see <a href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a> for details), functions like <a href="ft2-base_interface.html#FT_Load_Glyph">FT_Load_Glyph</a> or <a href="ft2-base_interface.html#FT_Load_Char">FT_Load_Char</a> only use the one that has been activated last to determine the &lsquo;current character pixel size&rsquo;.</p>
-<p>This function can be used to &lsquo;activate&rsquo; a previously created size object.</p>
+    <p>Even though it is possible to create several size objects for a given face (see <a
+            href="ft2-sizes_management.html#FT_New_Size">FT_New_Size</a> for details), functions like <a
+            href="ft2-base_interface.html#FT_Load_Glyph">FT_Load_Glyph</a> or <a
+            href="ft2-base_interface.html#FT_Load_Char">FT_Load_Char</a> only use the one that has been activated last
+        to determine the &lsquo;current character pixel size&rsquo;.</p>
+    <p>This function can be used to &lsquo;activate&rsquo; a previously created size object.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="size">size</td><td class="desc">
-<p>A handle to a target size object.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="size">size</td>
+            <td class="desc">
+                <p>A handle to a target size object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>note</h4>
-<p>If &lsquo;face&rsquo; is the size's parent face object, this function changes the value of &lsquo;face-&gt;size&rsquo; to the input size handle.</p>
+    <h4>note</h4>
+    <p>If &lsquo;face&rsquo; is the size's parent face object, this function changes the value of &lsquo;face-&gt;size&rsquo;
+        to the input size handle.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

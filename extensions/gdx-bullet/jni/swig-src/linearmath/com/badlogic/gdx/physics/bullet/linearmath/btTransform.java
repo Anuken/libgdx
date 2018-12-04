@@ -8,185 +8,186 @@
 
 package com.badlogic.gdx.physics.bullet.linearmath;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.BulletBase;
 
-public class btTransform extends BulletBase {
-	private long swigCPtr;
-	
-	protected btTransform(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btTransform, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btTransform(long cPtr, boolean cMemoryOwn) {
-		this("btTransform", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btTransform obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btTransform extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btTransform(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				LinearMathJNI.delete_btTransform(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btTransform, normally you should not need this constructor it's intended for low-level usage. */
+    public btTransform(long cPtr, boolean cMemoryOwn){
+        this("btTransform", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public btTransform() {
-    this(LinearMathJNI.new_btTransform__SWIG_0(), true);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public btTransform(Quaternion q, Vector3 c) {
-    this(LinearMathJNI.new_btTransform__SWIG_1(q, c), true);
-  }
+    public static long getCPtr(btTransform obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public btTransform(Quaternion q) {
-    this(LinearMathJNI.new_btTransform__SWIG_2(q), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public btTransform(Matrix3 b, Vector3 c) {
-    this(LinearMathJNI.new_btTransform__SWIG_3(b, c), true);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                LinearMathJNI.delete_btTransform(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public btTransform(Matrix3 b) {
-    this(LinearMathJNI.new_btTransform__SWIG_4(b), true);
-  }
+    public btTransform(){
+        this(LinearMathJNI.new_btTransform__SWIG_0(), true);
+    }
 
-  public btTransform(Matrix4 other) {
-    this(LinearMathJNI.new_btTransform__SWIG_5(other), true);
-  }
+    public btTransform(Quaternion q, Vector3 c){
+        this(LinearMathJNI.new_btTransform__SWIG_1(q, c), true);
+    }
 
-  public Matrix4 operatorAssignment(Matrix4 other) {
-	return LinearMathJNI.btTransform_operatorAssignment(swigCPtr, this, other);
-}
+    public btTransform(Quaternion q){
+        this(LinearMathJNI.new_btTransform__SWIG_2(q), true);
+    }
 
-  public void mult(Matrix4 t1, Matrix4 t2) {
-    LinearMathJNI.btTransform_mult(swigCPtr, this, t1, t2);
-  }
+    public btTransform(Matrix3 b, Vector3 c){
+        this(LinearMathJNI.new_btTransform__SWIG_3(b, c), true);
+    }
 
-  public Vector3 operatorFunctionCall(Vector3 x) {
-	return LinearMathJNI.btTransform_operatorFunctionCall(swigCPtr, this, x);
-}
+    public btTransform(Matrix3 b){
+        this(LinearMathJNI.new_btTransform__SWIG_4(b), true);
+    }
 
-  public Vector3 operatorMultiplication(Vector3 x) {
-	return LinearMathJNI.btTransform_operatorMultiplication__SWIG_0(swigCPtr, this, x);
-}
+    public btTransform(Matrix4 other){
+        this(LinearMathJNI.new_btTransform__SWIG_5(other), true);
+    }
 
-  public Quaternion operatorMultiplication(Quaternion q) {
-	return LinearMathJNI.btTransform_operatorMultiplication__SWIG_1(swigCPtr, this, q);
-}
+    public Matrix4 operatorAssignment(Matrix4 other){
+        return LinearMathJNI.btTransform_operatorAssignment(swigCPtr, this, other);
+    }
 
-  public Matrix3 getBasis() {
-	return LinearMathJNI.btTransform_getBasis(swigCPtr, this);
-}
+    public void mult(Matrix4 t1, Matrix4 t2){
+        LinearMathJNI.btTransform_mult(swigCPtr, this, t1, t2);
+    }
 
-  public Matrix3 getBasisConst() {
-	return LinearMathJNI.btTransform_getBasisConst(swigCPtr, this);
-}
+    public Vector3 operatorFunctionCall(Vector3 x){
+        return LinearMathJNI.btTransform_operatorFunctionCall(swigCPtr, this, x);
+    }
 
-  public Vector3 getOrigin() {
-	return LinearMathJNI.btTransform_getOrigin(swigCPtr, this);
-}
+    public Vector3 operatorMultiplication(Vector3 x){
+        return LinearMathJNI.btTransform_operatorMultiplication__SWIG_0(swigCPtr, this, x);
+    }
 
-  public Vector3 getOriginConst() {
-	return LinearMathJNI.btTransform_getOriginConst(swigCPtr, this);
-}
+    public Quaternion operatorMultiplication(Quaternion q){
+        return LinearMathJNI.btTransform_operatorMultiplication__SWIG_1(swigCPtr, this, q);
+    }
 
-  public Quaternion getRotation() {
-	return LinearMathJNI.btTransform_getRotation(swigCPtr, this);
-}
+    public Matrix3 getBasis(){
+        return LinearMathJNI.btTransform_getBasis(swigCPtr, this);
+    }
 
-  public void setFromOpenGLMatrix(float[] m) {
-    LinearMathJNI.btTransform_setFromOpenGLMatrix(swigCPtr, this, m);
-  }
+    public Matrix3 getBasisConst(){
+        return LinearMathJNI.btTransform_getBasisConst(swigCPtr, this);
+    }
 
-  public void getOpenGLMatrix(float[] m) {
-    LinearMathJNI.btTransform_getOpenGLMatrix(swigCPtr, this, m);
-  }
+    public Vector3 getOrigin(){
+        return LinearMathJNI.btTransform_getOrigin(swigCPtr, this);
+    }
 
-  public void setOrigin(Vector3 origin) {
-    LinearMathJNI.btTransform_setOrigin(swigCPtr, this, origin);
-  }
+    public Vector3 getOriginConst(){
+        return LinearMathJNI.btTransform_getOriginConst(swigCPtr, this);
+    }
 
-  public Vector3 invXform(Vector3 inVec) {
-	return LinearMathJNI.btTransform_invXform(swigCPtr, this, inVec);
-}
+    public Quaternion getRotation(){
+        return LinearMathJNI.btTransform_getRotation(swigCPtr, this);
+    }
 
-  public void setBasis(Matrix3 basis) {
-    LinearMathJNI.btTransform_setBasis(swigCPtr, this, basis);
-  }
+    public void setFromOpenGLMatrix(float[] m){
+        LinearMathJNI.btTransform_setFromOpenGLMatrix(swigCPtr, this, m);
+    }
 
-  public void setRotation(Quaternion q) {
-    LinearMathJNI.btTransform_setRotation(swigCPtr, this, q);
-  }
+    public void getOpenGLMatrix(float[] m){
+        LinearMathJNI.btTransform_getOpenGLMatrix(swigCPtr, this, m);
+    }
 
-  public void setIdentity() {
-    LinearMathJNI.btTransform_setIdentity(swigCPtr, this);
-  }
+    public void setOrigin(Vector3 origin){
+        LinearMathJNI.btTransform_setOrigin(swigCPtr, this, origin);
+    }
 
-  public Matrix4 operatorMultiplicationAssignment(Matrix4 t) {
-	return LinearMathJNI.btTransform_operatorMultiplicationAssignment(swigCPtr, this, t);
-}
+    public Vector3 invXform(Vector3 inVec){
+        return LinearMathJNI.btTransform_invXform(swigCPtr, this, inVec);
+    }
 
-  public Matrix4 inverse() {
-	return LinearMathJNI.btTransform_inverse(swigCPtr, this);
-}
+    public void setBasis(Matrix3 basis){
+        LinearMathJNI.btTransform_setBasis(swigCPtr, this, basis);
+    }
 
-  public Matrix4 inverseTimes(Matrix4 t) {
-	return LinearMathJNI.btTransform_inverseTimes(swigCPtr, this, t);
-}
+    public void setRotation(Quaternion q){
+        LinearMathJNI.btTransform_setRotation(swigCPtr, this, q);
+    }
 
-  public Matrix4 operatorMultiplication(Matrix4 t) {
-	return LinearMathJNI.btTransform_operatorMultiplication__SWIG_2(swigCPtr, this, t);
-}
+    public void setIdentity(){
+        LinearMathJNI.btTransform_setIdentity(swigCPtr, this);
+    }
 
-  public static Matrix4 getIdentity() {
-	return LinearMathJNI.btTransform_getIdentity();
-}
+    public Matrix4 operatorMultiplicationAssignment(Matrix4 t){
+        return LinearMathJNI.btTransform_operatorMultiplicationAssignment(swigCPtr, this, t);
+    }
 
-  public void serialize(btTransformFloatData dataOut) {
-    LinearMathJNI.btTransform_serialize(swigCPtr, this, btTransformFloatData.getCPtr(dataOut), dataOut);
-  }
+    public Matrix4 inverse(){
+        return LinearMathJNI.btTransform_inverse(swigCPtr, this);
+    }
 
-  public void serializeFloat(btTransformFloatData dataOut) {
-    LinearMathJNI.btTransform_serializeFloat(swigCPtr, this, btTransformFloatData.getCPtr(dataOut), dataOut);
-  }
+    public Matrix4 inverseTimes(Matrix4 t){
+        return LinearMathJNI.btTransform_inverseTimes(swigCPtr, this, t);
+    }
 
-  public void deSerialize(btTransformFloatData dataIn) {
-    LinearMathJNI.btTransform_deSerialize(swigCPtr, this, btTransformFloatData.getCPtr(dataIn), dataIn);
-  }
+    public Matrix4 operatorMultiplication(Matrix4 t){
+        return LinearMathJNI.btTransform_operatorMultiplication__SWIG_2(swigCPtr, this, t);
+    }
 
-  public void deSerializeDouble(btTransformDoubleData dataIn) {
-    LinearMathJNI.btTransform_deSerializeDouble(swigCPtr, this, btTransformDoubleData.getCPtr(dataIn), dataIn);
-  }
+    public static Matrix4 getIdentity(){
+        return LinearMathJNI.btTransform_getIdentity();
+    }
 
-  public void deSerializeFloat(btTransformFloatData dataIn) {
-    LinearMathJNI.btTransform_deSerializeFloat(swigCPtr, this, btTransformFloatData.getCPtr(dataIn), dataIn);
-  }
+    public void serialize(btTransformFloatData dataOut){
+        LinearMathJNI.btTransform_serialize(swigCPtr, this, btTransformFloatData.getCPtr(dataOut), dataOut);
+    }
+
+    public void serializeFloat(btTransformFloatData dataOut){
+        LinearMathJNI.btTransform_serializeFloat(swigCPtr, this, btTransformFloatData.getCPtr(dataOut), dataOut);
+    }
+
+    public void deSerialize(btTransformFloatData dataIn){
+        LinearMathJNI.btTransform_deSerialize(swigCPtr, this, btTransformFloatData.getCPtr(dataIn), dataIn);
+    }
+
+    public void deSerializeDouble(btTransformDoubleData dataIn){
+        LinearMathJNI.btTransform_deSerializeDouble(swigCPtr, this, btTransformDoubleData.getCPtr(dataIn), dataIn);
+    }
+
+    public void deSerializeFloat(btTransformFloatData dataIn){
+        LinearMathJNI.btTransform_deSerializeFloat(swigCPtr, this, btTransformFloatData.getCPtr(dataIn), dataIn);
+    }
 
 }

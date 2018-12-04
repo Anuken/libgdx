@@ -17,6 +17,6 @@
 
 package com.google.gwt.corp.compatibility;
 
-public enum Endianness {
-	BIG_ENDIAN, LITTLE_ENDIAN
+public enum Endianness{
+    BIG_ENDIAN, LITTLE_ENDIAN
 }

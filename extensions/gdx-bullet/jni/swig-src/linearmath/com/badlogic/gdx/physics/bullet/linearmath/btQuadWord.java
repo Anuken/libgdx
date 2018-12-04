@@ -9,140 +9,137 @@
 package com.badlogic.gdx.physics.bullet.linearmath;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class btQuadWord extends BulletBase {
-	private long swigCPtr;
-	
-	protected btQuadWord(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btQuadWord, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btQuadWord(long cPtr, boolean cMemoryOwn) {
-		this("btQuadWord", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btQuadWord obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btQuadWord extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btQuadWord(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				LinearMathJNI.delete_btQuadWord(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btQuadWord, normally you should not need this constructor it's intended for low-level usage. */
+    public btQuadWord(long cPtr, boolean cMemoryOwn){
+        this("btQuadWord", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public float getX() {
-    return LinearMathJNI.btQuadWord_getX(swigCPtr, this);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public float getY() {
-    return LinearMathJNI.btQuadWord_getY(swigCPtr, this);
-  }
+    public static long getCPtr(btQuadWord obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public float getZ() {
-    return LinearMathJNI.btQuadWord_getZ(swigCPtr, this);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public void setX(float _x) {
-    LinearMathJNI.btQuadWord_setX(swigCPtr, this, _x);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                LinearMathJNI.delete_btQuadWord(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setY(float _y) {
-    LinearMathJNI.btQuadWord_setY(swigCPtr, this, _y);
-  }
+    public float getX(){
+        return LinearMathJNI.btQuadWord_getX(swigCPtr, this);
+    }
 
-  public void setZ(float _z) {
-    LinearMathJNI.btQuadWord_setZ(swigCPtr, this, _z);
-  }
+    public float getY(){
+        return LinearMathJNI.btQuadWord_getY(swigCPtr, this);
+    }
 
-  public void setW(float _w) {
-    LinearMathJNI.btQuadWord_setW(swigCPtr, this, _w);
-  }
+    public float getZ(){
+        return LinearMathJNI.btQuadWord_getZ(swigCPtr, this);
+    }
 
-  public float x() {
-    return LinearMathJNI.btQuadWord_x(swigCPtr, this);
-  }
+    public void setX(float _x){
+        LinearMathJNI.btQuadWord_setX(swigCPtr, this, _x);
+    }
 
-  public float y() {
-    return LinearMathJNI.btQuadWord_y(swigCPtr, this);
-  }
+    public void setY(float _y){
+        LinearMathJNI.btQuadWord_setY(swigCPtr, this, _y);
+    }
 
-  public float z() {
-    return LinearMathJNI.btQuadWord_z(swigCPtr, this);
-  }
+    public void setZ(float _z){
+        LinearMathJNI.btQuadWord_setZ(swigCPtr, this, _z);
+    }
 
-  public float w() {
-    return LinearMathJNI.btQuadWord_w(swigCPtr, this);
-  }
+    public void setW(float _w){
+        LinearMathJNI.btQuadWord_setW(swigCPtr, this, _w);
+    }
 
-  public java.nio.FloatBuffer operatorbtScalarPtr() {
-    return LinearMathJNI.btQuadWord_operatorbtScalarPtr(swigCPtr, this);
-}
+    public float x(){
+        return LinearMathJNI.btQuadWord_x(swigCPtr, this);
+    }
 
-  public java.nio.FloatBuffer operatorbtConstScalarPtr() {
-    return LinearMathJNI.btQuadWord_operatorbtConstScalarPtr(swigCPtr, this);
-}
+    public float y(){
+        return LinearMathJNI.btQuadWord_y(swigCPtr, this);
+    }
 
-  public boolean operatorEqualTo(btQuadWord other) {
-    return LinearMathJNI.btQuadWord_operatorEqualTo(swigCPtr, this, btQuadWord.getCPtr(other), other);
-  }
+    public float z(){
+        return LinearMathJNI.btQuadWord_z(swigCPtr, this);
+    }
 
-  public boolean operatorNotEqualTo(btQuadWord other) {
-    return LinearMathJNI.btQuadWord_operatorNotEqualTo(swigCPtr, this, btQuadWord.getCPtr(other), other);
-  }
+    public float w(){
+        return LinearMathJNI.btQuadWord_w(swigCPtr, this);
+    }
 
-  public void setValue(float _x, float _y, float _z) {
-    LinearMathJNI.btQuadWord_setValue__SWIG_0(swigCPtr, this, _x, _y, _z);
-  }
+    public java.nio.FloatBuffer operatorbtScalarPtr(){
+        return LinearMathJNI.btQuadWord_operatorbtScalarPtr(swigCPtr, this);
+    }
 
-  public void setValue(float _x, float _y, float _z, float _w) {
-    LinearMathJNI.btQuadWord_setValue__SWIG_1(swigCPtr, this, _x, _y, _z, _w);
-  }
+    public java.nio.FloatBuffer operatorbtConstScalarPtr(){
+        return LinearMathJNI.btQuadWord_operatorbtConstScalarPtr(swigCPtr, this);
+    }
 
-  public btQuadWord() {
-    this(LinearMathJNI.new_btQuadWord__SWIG_0(), true);
-  }
+    public boolean operatorEqualTo(btQuadWord other){
+        return LinearMathJNI.btQuadWord_operatorEqualTo(swigCPtr, this, btQuadWord.getCPtr(other), other);
+    }
 
-  public btQuadWord(float _x, float _y, float _z) {
-    this(LinearMathJNI.new_btQuadWord__SWIG_1(_x, _y, _z), true);
-  }
+    public boolean operatorNotEqualTo(btQuadWord other){
+        return LinearMathJNI.btQuadWord_operatorNotEqualTo(swigCPtr, this, btQuadWord.getCPtr(other), other);
+    }
 
-  public btQuadWord(float _x, float _y, float _z, float _w) {
-    this(LinearMathJNI.new_btQuadWord__SWIG_2(_x, _y, _z, _w), true);
-  }
+    public void setValue(float _x, float _y, float _z){
+        LinearMathJNI.btQuadWord_setValue__SWIG_0(swigCPtr, this, _x, _y, _z);
+    }
 
-  public void setMax(btQuadWord other) {
-    LinearMathJNI.btQuadWord_setMax(swigCPtr, this, btQuadWord.getCPtr(other), other);
-  }
+    public void setValue(float _x, float _y, float _z, float _w){
+        LinearMathJNI.btQuadWord_setValue__SWIG_1(swigCPtr, this, _x, _y, _z, _w);
+    }
 
-  public void setMin(btQuadWord other) {
-    LinearMathJNI.btQuadWord_setMin(swigCPtr, this, btQuadWord.getCPtr(other), other);
-  }
+    public btQuadWord(){
+        this(LinearMathJNI.new_btQuadWord__SWIG_0(), true);
+    }
+
+    public btQuadWord(float _x, float _y, float _z){
+        this(LinearMathJNI.new_btQuadWord__SWIG_1(_x, _y, _z), true);
+    }
+
+    public btQuadWord(float _x, float _y, float _z, float _w){
+        this(LinearMathJNI.new_btQuadWord__SWIG_2(_x, _y, _z, _w), true);
+    }
+
+    public void setMax(btQuadWord other){
+        LinearMathJNI.btQuadWord_setMax(swigCPtr, this, btQuadWord.getCPtr(other), other);
+    }
+
+    public void setMin(btQuadWord other){
+        LinearMathJNI.btQuadWord_setMin(swigCPtr, this, btQuadWord.getCPtr(other), other);
+    }
 
 }

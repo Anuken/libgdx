@@ -9,81 +9,77 @@
 package com.badlogic.gdx.physics.bullet.collision;
 
 import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 
-public class btQuantizedBvhNodeData extends BulletBase {
-	private long swigCPtr;
-	
-	protected btQuantizedBvhNodeData(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btQuantizedBvhNodeData, normally you should not need this constructor it's intended for low-level usage. */ 
-	public btQuantizedBvhNodeData(long cPtr, boolean cMemoryOwn) {
-		this("btQuantizedBvhNodeData", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(btQuantizedBvhNodeData obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btQuantizedBvhNodeData extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btQuantizedBvhNodeData(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_btQuantizedBvhNodeData(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btQuantizedBvhNodeData, normally you should not need this constructor it's intended for low-level usage. */
+    public btQuantizedBvhNodeData(long cPtr, boolean cMemoryOwn){
+        this("btQuantizedBvhNodeData", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public void setQuantizedAabbMin(int[] value) {
-    CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMin_set(swigCPtr, this, value);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-  public int[] getQuantizedAabbMin() {
-    return CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMin_get(swigCPtr, this);
-  }
+    public static long getCPtr(btQuantizedBvhNodeData obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void setQuantizedAabbMax(int[] value) {
-    CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMax_set(swigCPtr, this, value);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public int[] getQuantizedAabbMax() {
-    return CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMax_get(swigCPtr, this);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_btQuantizedBvhNodeData(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void setEscapeIndexOrTriangleIndex(int value) {
-    CollisionJNI.btQuantizedBvhNodeData_escapeIndexOrTriangleIndex_set(swigCPtr, this, value);
-  }
+    public void setQuantizedAabbMin(int[] value){
+        CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMin_set(swigCPtr, this, value);
+    }
 
-  public int getEscapeIndexOrTriangleIndex() {
-    return CollisionJNI.btQuantizedBvhNodeData_escapeIndexOrTriangleIndex_get(swigCPtr, this);
-  }
+    public int[] getQuantizedAabbMin(){
+        return CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMin_get(swigCPtr, this);
+    }
 
-  public btQuantizedBvhNodeData() {
-    this(CollisionJNI.new_btQuantizedBvhNodeData(), true);
-  }
+    public void setQuantizedAabbMax(int[] value){
+        CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMax_set(swigCPtr, this, value);
+    }
+
+    public int[] getQuantizedAabbMax(){
+        return CollisionJNI.btQuantizedBvhNodeData_quantizedAabbMax_get(swigCPtr, this);
+    }
+
+    public void setEscapeIndexOrTriangleIndex(int value){
+        CollisionJNI.btQuantizedBvhNodeData_escapeIndexOrTriangleIndex_set(swigCPtr, this, value);
+    }
+
+    public int getEscapeIndexOrTriangleIndex(){
+        return CollisionJNI.btQuantizedBvhNodeData_escapeIndexOrTriangleIndex_get(swigCPtr, this);
+    }
+
+    public btQuantizedBvhNodeData(){
+        this(CollisionJNI.new_btQuantizedBvhNodeData(), true);
+    }
 
 }

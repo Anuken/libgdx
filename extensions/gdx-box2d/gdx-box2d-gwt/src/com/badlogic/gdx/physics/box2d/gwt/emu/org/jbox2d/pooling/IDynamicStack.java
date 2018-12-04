@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2013, Daniel Murphy
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  * 	* Redistributions of source code must retain the above copyright notice,
@@ -9,7 +9,7 @@
  * 	* Redistributions in binary form must reproduce the above copyright notice,
  * 	  this list of conditions and the following disclaimer in the documentation
  * 	  and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -26,22 +26,24 @@ package org.jbox2d.pooling;
 /**
  * Same functionality of a regular java.util stack.  Object
  * return order does not matter.
- * @author Daniel
  *
  * @param <E>
+ * @author Daniel
  */
-public interface IDynamicStack<E> {
+public interface IDynamicStack<E>{
 
-	/**
-	 * Pops an item off the stack
-	 * @return
-	 */
-	public E pop();
+    /**
+     * Pops an item off the stack
+     *
+     * @return
+     */
+    public E pop();
 
-	/**
-	 * Pushes an item back on the stack
-	 * @param argObject
-	 */
-	public void push(E argObject);
+    /**
+     * Pushes an item back on the stack
+     *
+     * @param argObject
+     */
+    public void push(E argObject);
 
 }

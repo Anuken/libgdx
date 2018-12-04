@@ -8,108 +8,105 @@
 
 package com.badlogic.gdx.physics.bullet.softbody;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.physics.bullet.collision.*;
-import com.badlogic.gdx.physics.bullet.dynamics.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.bullet.collision.*;
+import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 
-public class btSoftRigidDynamicsWorld extends btDiscreteDynamicsWorld {
-	private long swigCPtr;
-	
-	protected btSoftRigidDynamicsWorld(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, SoftbodyJNI.btSoftRigidDynamicsWorld_SWIGUpcast(cPtr), cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new btSoftRigidDynamicsWorld, normally you should not need this constructor it's intended for low-level usage. */
-	public btSoftRigidDynamicsWorld(long cPtr, boolean cMemoryOwn) {
-		this("btSoftRigidDynamicsWorld", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(SoftbodyJNI.btSoftRigidDynamicsWorld_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
-	}
-	
-	public static long getCPtr(btSoftRigidDynamicsWorld obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class btSoftRigidDynamicsWorld extends btDiscreteDynamicsWorld{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected btSoftRigidDynamicsWorld(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, SoftbodyJNI.btSoftRigidDynamicsWorld_SWIGUpcast(cPtr), cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				SoftbodyJNI.delete_btSoftRigidDynamicsWorld(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new btSoftRigidDynamicsWorld, normally you should not need this constructor it's intended for low-level usage. */
+    public btSoftRigidDynamicsWorld(long cPtr, boolean cMemoryOwn){
+        this("btSoftRigidDynamicsWorld", cPtr, cMemoryOwn);
+        construct();
+    }
 
-  public btSoftRigidDynamicsWorld(btDispatcher dispatcher, btBroadphaseInterface pairCache, btConstraintSolver constraintSolver, btCollisionConfiguration collisionConfiguration, btSoftBodySolver softBodySolver) {
-    this(SoftbodyJNI.new_btSoftRigidDynamicsWorld__SWIG_0(btDispatcher.getCPtr(dispatcher), dispatcher, btBroadphaseInterface.getCPtr(pairCache), pairCache, btConstraintSolver.getCPtr(constraintSolver), constraintSolver, btCollisionConfiguration.getCPtr(collisionConfiguration), collisionConfiguration, btSoftBodySolver.getCPtr(softBodySolver), softBodySolver), true);
-  }
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(SoftbodyJNI.btSoftRigidDynamicsWorld_SWIGUpcast(swigCPtr = cPtr), cMemoryOwn);
+    }
 
-  public btSoftRigidDynamicsWorld(btDispatcher dispatcher, btBroadphaseInterface pairCache, btConstraintSolver constraintSolver, btCollisionConfiguration collisionConfiguration) {
-    this(SoftbodyJNI.new_btSoftRigidDynamicsWorld__SWIG_1(btDispatcher.getCPtr(dispatcher), dispatcher, btBroadphaseInterface.getCPtr(pairCache), pairCache, btConstraintSolver.getCPtr(constraintSolver), constraintSolver, btCollisionConfiguration.getCPtr(collisionConfiguration), collisionConfiguration), true);
-  }
+    public static long getCPtr(btSoftRigidDynamicsWorld obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public void addSoftBody(btSoftBody body, int collisionFilterGroup, int collisionFilterMask) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_0(swigCPtr, this, btSoftBody.getCPtr(body), body, collisionFilterGroup, collisionFilterMask);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public void addSoftBody(btSoftBody body, int collisionFilterGroup) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_1(swigCPtr, this, btSoftBody.getCPtr(body), body, collisionFilterGroup);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                SoftbodyJNI.delete_btSoftRigidDynamicsWorld(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public void addSoftBody(btSoftBody body) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_2(swigCPtr, this, btSoftBody.getCPtr(body), body);
-  }
+    public btSoftRigidDynamicsWorld(btDispatcher dispatcher, btBroadphaseInterface pairCache, btConstraintSolver constraintSolver, btCollisionConfiguration collisionConfiguration, btSoftBodySolver softBodySolver){
+        this(SoftbodyJNI.new_btSoftRigidDynamicsWorld__SWIG_0(btDispatcher.getCPtr(dispatcher), dispatcher, btBroadphaseInterface.getCPtr(pairCache), pairCache, btConstraintSolver.getCPtr(constraintSolver), constraintSolver, btCollisionConfiguration.getCPtr(collisionConfiguration), collisionConfiguration, btSoftBodySolver.getCPtr(softBodySolver), softBodySolver), true);
+    }
 
-  public void removeSoftBody(btSoftBody body) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_removeSoftBody(swigCPtr, this, btSoftBody.getCPtr(body), body);
-  }
+    public btSoftRigidDynamicsWorld(btDispatcher dispatcher, btBroadphaseInterface pairCache, btConstraintSolver constraintSolver, btCollisionConfiguration collisionConfiguration){
+        this(SoftbodyJNI.new_btSoftRigidDynamicsWorld__SWIG_1(btDispatcher.getCPtr(dispatcher), dispatcher, btBroadphaseInterface.getCPtr(pairCache), pairCache, btConstraintSolver.getCPtr(constraintSolver), constraintSolver, btCollisionConfiguration.getCPtr(collisionConfiguration), collisionConfiguration), true);
+    }
 
-  public int getDrawFlags() {
-    return SoftbodyJNI.btSoftRigidDynamicsWorld_getDrawFlags(swigCPtr, this);
-  }
+    public void addSoftBody(btSoftBody body, int collisionFilterGroup, int collisionFilterMask){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_0(swigCPtr, this, btSoftBody.getCPtr(body), body, collisionFilterGroup, collisionFilterMask);
+    }
 
-  public void setDrawFlags(int f) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_setDrawFlags(swigCPtr, this, f);
-  }
+    public void addSoftBody(btSoftBody body, int collisionFilterGroup){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_1(swigCPtr, this, btSoftBody.getCPtr(body), body, collisionFilterGroup);
+    }
 
-  public btSoftBodyWorldInfo getWorldInfo() {
-    return new btSoftBodyWorldInfo(SoftbodyJNI.btSoftRigidDynamicsWorld_getWorldInfo(swigCPtr, this), false);
-  }
+    public void addSoftBody(btSoftBody body){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_addSoftBody__SWIG_2(swigCPtr, this, btSoftBody.getCPtr(body), body);
+    }
 
-  public btSoftBodyWorldInfo getWorldInfoConst() {
-    return new btSoftBodyWorldInfo(SoftbodyJNI.btSoftRigidDynamicsWorld_getWorldInfoConst(swigCPtr, this), false);
-  }
+    public void removeSoftBody(btSoftBody body){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_removeSoftBody(swigCPtr, this, btSoftBody.getCPtr(body), body);
+    }
 
-  public SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t getSoftBodyArray() {
-    return new SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t(SoftbodyJNI.btSoftRigidDynamicsWorld_getSoftBodyArray(swigCPtr, this), false);
-  }
+    public int getDrawFlags(){
+        return SoftbodyJNI.btSoftRigidDynamicsWorld_getDrawFlags(swigCPtr, this);
+    }
 
-  public SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t getSoftBodyArrayConst() {
-    return new SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t(SoftbodyJNI.btSoftRigidDynamicsWorld_getSoftBodyArrayConst(swigCPtr, this), false);
-  }
+    public void setDrawFlags(int f){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_setDrawFlags(swigCPtr, this, f);
+    }
 
-  public static void rayTestSingle(Matrix4 rayFromTrans, Matrix4 rayToTrans, btCollisionObject collisionObject, btCollisionShape collisionShape, Matrix4 colObjWorldTransform, RayResultCallback resultCallback) {
-    SoftbodyJNI.btSoftRigidDynamicsWorld_rayTestSingle(rayFromTrans, rayToTrans, btCollisionObject.getCPtr(collisionObject), collisionObject, btCollisionShape.getCPtr(collisionShape), collisionShape, colObjWorldTransform, RayResultCallback.getCPtr(resultCallback), resultCallback);
-  }
+    public btSoftBodyWorldInfo getWorldInfo(){
+        return new btSoftBodyWorldInfo(SoftbodyJNI.btSoftRigidDynamicsWorld_getWorldInfo(swigCPtr, this), false);
+    }
+
+    public btSoftBodyWorldInfo getWorldInfoConst(){
+        return new btSoftBodyWorldInfo(SoftbodyJNI.btSoftRigidDynamicsWorld_getWorldInfoConst(swigCPtr, this), false);
+    }
+
+    public SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t getSoftBodyArray(){
+        return new SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t(SoftbodyJNI.btSoftRigidDynamicsWorld_getSoftBodyArray(swigCPtr, this), false);
+    }
+
+    public SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t getSoftBodyArrayConst(){
+        return new SWIGTYPE_p_btAlignedObjectArrayT_btSoftBody_p_t(SoftbodyJNI.btSoftRigidDynamicsWorld_getSoftBodyArrayConst(swigCPtr, this), false);
+    }
+
+    public static void rayTestSingle(Matrix4 rayFromTrans, Matrix4 rayToTrans, btCollisionObject collisionObject, btCollisionShape collisionShape, Matrix4 colObjWorldTransform, RayResultCallback resultCallback){
+        SoftbodyJNI.btSoftRigidDynamicsWorld_rayTestSingle(rayFromTrans, rayToTrans, btCollisionObject.getCPtr(collisionObject), collisionObject, btCollisionShape.getCPtr(collisionShape), collisionShape, colObjWorldTransform, RayResultCallback.getCPtr(resultCallback), resultCallback);
+    }
 
 }

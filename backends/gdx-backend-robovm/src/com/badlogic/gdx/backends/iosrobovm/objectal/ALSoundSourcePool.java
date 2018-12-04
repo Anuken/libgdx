@@ -9,13 +9,13 @@ import org.robovm.rt.bro.annotation.Library;
 
 @Library(Library.INTERNAL)
 @NativeClass
-public class ALSoundSourcePool extends NSObject {
+public class ALSoundSourcePool extends NSObject{
 
-	static {
-		ObjCRuntime.bind(ALSoundSourcePool.class);
-	}
-	
-	@Property(selector = "sources")
-	public native NSArray<ALSource> getSources ();
-	
+    static{
+        ObjCRuntime.bind(ALSoundSourcePool.class);
+    }
+
+    @Property(selector = "sources")
+    public native NSArray<ALSource> getSources();
+
 }

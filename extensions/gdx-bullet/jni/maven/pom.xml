@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.badlogicgames.gdx</groupId>
@@ -7,18 +8,18 @@
         <version>1.9.10-SNAPSHOT</version>
         <relativePath>../../../../</relativePath>
     </parent>
-    
+
     <artifactId>gdx-bullet-platform</artifactId>
     <packaging>jar</packaging>
     <name>libGDX Bullet Native Libraries</name>
-    
+
     <properties>
         <base.url>http://libgdx.badlogicgames.com/nightlies/dist/extensions/gdx-bullet/</base.url>
     </properties>
-    
+
     <build>
         <sourceDirectory>src</sourceDirectory>
-        
+
         <plugins>
             <!-- first download an unpack the native libraries -->
             <plugin>
@@ -29,7 +30,9 @@
                     <execution>
                         <id>desktop</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache</cacheDirectory>
                             <url>${base.url}/gdx-bullet-natives.jar</url>
@@ -37,11 +40,13 @@
                             <outputDirectory>${project.build.directory}/desktop</outputDirectory>
                         </configuration>
                     </execution>
-                    
+
                     <execution>
                         <id>x86-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/x86</cacheDirectory>
                             <url>${base.url}/x86/libgdx-bullet.so</url>
@@ -52,7 +57,9 @@
                     <execution>
                         <id>x86_64-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/x86_64</cacheDirectory>
                             <url>${base.url}/x86_64/libgdx-bullet.so</url>
@@ -63,18 +70,22 @@
                     <execution>
                         <id>armeabi-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/armeabi</cacheDirectory>
                             <url>${base.url}/armeabi/libgdx-bullet.so</url>
                             <outputDirectory>${project.build.directory}/armeabi</outputDirectory>
                         </configuration>
                     </execution>
-                    
+
                     <execution>
                         <id>armeabi-v7a-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/armeabi-v7a</cacheDirectory>
                             <url>${base.url}/armeabi-v7a/libgdx-bullet.so</url>
@@ -85,7 +96,9 @@
                     <execution>
                         <id>arm64-v8a-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/arm64-v8a</cacheDirectory>
                             <url>${base.url}/arm64-v8a/libgdx-bullet.so</url>
@@ -96,7 +109,9 @@
                     <execution>
                         <id>ios-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/ios</cacheDirectory>
                             <url>${base.url}/ios/libgdx-bullet.a</url>
@@ -106,7 +121,9 @@
                     <execution>
                         <id>tvos-gdx</id>
                         <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
                         <configuration>
                             <cacheDirectory>${project.build.directory}/download-cache/ios</cacheDirectory>
                             <url>${base.url}/ios/libgdx-bullet.a.tvos</url>
@@ -115,7 +132,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- if we have pre-built versions, replace the downloaded versions with those -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -129,12 +146,24 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/linux32</directory></resource>
-                                <resource><directory>${basedir}/../../libs/linux64</directory></resource>
-                                <resource><directory>${basedir}/../../libs/macosx32</directory></resource>
-                                <resource><directory>${basedir}/../../libs/macosx64</directory></resource>
-                                <resource><directory>${basedir}/../../libs/windows32</directory></resource>
-                                <resource><directory>${basedir}/../../libs/windows64</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/linux32</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/linux64</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/macosx32</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/macosx64</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/windows32</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/windows64</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/desktop</outputDirectory>
                             <overwrite>true</overwrite>
@@ -148,7 +177,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/x86</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/x86</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/x86</outputDirectory>
                             <overwrite>true</overwrite>
@@ -162,7 +193,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/x86_64</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/x86_64</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/x86_64</outputDirectory>
                             <overwrite>true</overwrite>
@@ -176,7 +209,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/armeabi</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/armeabi</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/armeabi</outputDirectory>
                             <overwrite>true</overwrite>
@@ -190,7 +225,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/armeabi-v7a</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/armeabi-v7a</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/armeabi-v7a</outputDirectory>
                             <overwrite>true</overwrite>
@@ -204,7 +241,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/arm64-v8a</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/arm64-v8a</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/arm64-v8a</outputDirectory>
                             <overwrite>true</overwrite>
@@ -218,7 +257,9 @@
                         </goals>
                         <configuration>
                             <resources>
-                                <resource><directory>${basedir}/../../libs/ios32</directory></resource>
+                                <resource>
+                                    <directory>${basedir}/../../libs/ios32</directory>
+                                </resource>
                             </resources>
                             <outputDirectory>${basedir}/target/ios</outputDirectory>
                             <overwrite>true</overwrite>
@@ -226,7 +267,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- finally package everything up into jar files -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>

@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>FreeType-2.6.2 API Reference</title>
-<style type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FreeType-2.6.2 API Reference</title>
+    <style type="text/css">
   a:link { color: #0000EF; }
   a:visited { color: #51188E; }
   a:hover { color: #FF0000; }
@@ -95,28 +95,43 @@
   table.toc td.desc p { margin: 1.5ex 0 0 0;
                         text-align: left; }
 
-</style>
+
+    </style>
 </head>
 <body>
 
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table>
+<table class="index-toc-link">
+    <tr>
+        <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+        <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+    </tr>
+</table>
 <h1>FreeType-2.6.2 API Reference</h1>
 
 <h1 id="mac_specific">Mac Specific Interface</h1>
 <h2>Synopsis</h2>
 <table class="synopsis">
-<tr><td><a href="#FT_New_Face_From_FOND">FT_New_Face_From_FOND</a></td><td><a href="#FT_GetFilePath_From_Mac_ATS_Name">FT_GetFilePath_From_Mac_ATS_Name</a></td></tr>
-<tr><td><a href="#FT_GetFile_From_Mac_Name">FT_GetFile_From_Mac_Name</a></td><td><a href="#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a></td></tr>
-<tr><td><a href="#FT_GetFile_From_Mac_ATS_Name">FT_GetFile_From_Mac_ATS_Name</a></td><td><a href="#FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</a></td></tr>
+    <tr>
+        <td><a href="#FT_New_Face_From_FOND">FT_New_Face_From_FOND</a></td>
+        <td><a href="#FT_GetFilePath_From_Mac_ATS_Name">FT_GetFilePath_From_Mac_ATS_Name</a></td>
+    </tr>
+    <tr>
+        <td><a href="#FT_GetFile_From_Mac_Name">FT_GetFile_From_Mac_Name</a></td>
+        <td><a href="#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a></td>
+    </tr>
+    <tr>
+        <td><a href="#FT_GetFile_From_Mac_ATS_Name">FT_GetFile_From_Mac_ATS_Name</a></td>
+        <td><a href="#FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</a></td>
+    </tr>
 </table>
 
 
 <p>The following definitions are only available if FreeType is compiled on a Macintosh.</p>
 
 <div class="section">
-<h3 id="FT_New_Face_From_FOND">FT_New_Face_From_FOND</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_New_Face_From_FOND">FT_New_Face_From_FOND</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_New_Face_From_FOND</b>( <a href="ft2-base_interface.html#FT_Library">FT_Library</a>  library,
                          Handle      fond,
@@ -125,49 +140,69 @@
                        FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Create a new face object from a FOND resource.</p>
+    <p>Create a new face object from a FOND resource.</p>
 
-<h4>inout</h4>
-<table class="fields">
-<tr><td class="val" id="library">library</td><td class="desc">
-<p>A handle to the library resource.</p>
-</td></tr>
-</table>
+    <h4>inout</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="library">library</td>
+            <td class="desc">
+                <p>A handle to the library resource.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="fond">fond</td><td class="desc">
-<p>A FOND resource.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>Only supported for the -1 &lsquo;sanity check&rsquo; special case.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="fond">fond</td>
+            <td class="desc">
+                <p>A FOND resource.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>Only supported for the -1 &lsquo;sanity check&rsquo; special case.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="aface">aface</td><td class="desc">
-<p>A handle to a new face object.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="aface">aface</td>
+            <td class="desc">
+                <p>A handle to a new face object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>notes</h4>
-<p>This function can be used to create <a href="ft2-base_interface.html#FT_Face">FT_Face</a> objects from fonts that are installed in the system as follows.</p>
-<pre class="colored">
+    <h4>notes</h4>
+    <p>This function can be used to create <a href="ft2-base_interface.html#FT_Face">FT_Face</a> objects from fonts that
+        are installed in the system as follows.</p>
+    <pre class="colored">
   fond = GetResource( 'FOND', fontName );                          
   error = FT_New_Face_From_FOND( library, fond, 0, &amp;face );        
 </pre>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_GetFile_From_Mac_Name">FT_GetFile_From_Mac_Name</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_GetFile_From_Mac_Name">FT_GetFile_From_Mac_Name</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_GetFile_From_Mac_Name</b>( <span class="keyword">const</span> <span class="keyword">char</span>*  fontName,
                             FSSpec*      pathSpec,
@@ -175,35 +210,53 @@
                           FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Return an FSSpec for the disk file containing the named font.</p>
+    <p>Return an FSSpec for the disk file containing the named font.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="fontName">fontName</td><td class="desc">
-<p>Mac OS name of the font (e.g., Times New Roman Bold).</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="fontName">fontName</td>
+            <td class="desc">
+                <p>Mac OS name of the font (e.g., Times New Roman Bold).</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="pathSpec">pathSpec</td><td class="desc">
-<p>FSSpec to the file. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>Index of the face. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="pathSpec">pathSpec</td>
+            <td class="desc">
+                <p>FSSpec to the file. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>Index of the face. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.
+                </p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_GetFile_From_Mac_ATS_Name">FT_GetFile_From_Mac_ATS_Name</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_GetFile_From_Mac_ATS_Name">FT_GetFile_From_Mac_ATS_Name</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_GetFile_From_Mac_ATS_Name</b>( <span class="keyword">const</span> <span class="keyword">char</span>*  fontName,
                                 FSSpec*      pathSpec,
@@ -211,35 +264,53 @@
                               FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Return an FSSpec for the disk file containing the named font.</p>
+    <p>Return an FSSpec for the disk file containing the named font.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="fontName">fontName</td><td class="desc">
-<p>Mac OS name of the font in ATS framework.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="fontName">fontName</td>
+            <td class="desc">
+                <p>Mac OS name of the font in ATS framework.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="pathSpec">pathSpec</td><td class="desc">
-<p>FSSpec to the file. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>Index of the face. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="pathSpec">pathSpec</td>
+            <td class="desc">
+                <p>FSSpec to the file. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>Index of the face. For passing to <a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a>.
+                </p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_GetFilePath_From_Mac_ATS_Name">FT_GetFilePath_From_Mac_ATS_Name</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_GetFilePath_From_Mac_ATS_Name">FT_GetFilePath_From_Mac_ATS_Name</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_GetFilePath_From_Mac_ATS_Name</b>( <span class="keyword">const</span> <span class="keyword">char</span>*  fontName,
                                     UInt8*       path,
@@ -248,38 +319,58 @@
                                   FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Return a pathname of the disk file and face index for given font name that is handled by ATS framework.</p>
+    <p>Return a pathname of the disk file and face index for given font name that is handled by ATS framework.</p>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="fontName">fontName</td><td class="desc">
-<p>Mac OS name of the font in ATS framework.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="fontName">fontName</td>
+            <td class="desc">
+                <p>Mac OS name of the font in ATS framework.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="path">path</td><td class="desc">
-<p>Buffer to store pathname of the file. For passing to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>. The client must allocate this buffer before calling this function.</p>
-</td></tr>
-<tr><td class="val" id="maxPathSize">maxPathSize</td><td class="desc">
-<p>Lengths of the buffer &lsquo;path&rsquo; that client allocated.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>Index of the face. For passing to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="path">path</td>
+            <td class="desc">
+                <p>Buffer to store pathname of the file. For passing to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>.
+                    The client must allocate this buffer before calling this function.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="maxPathSize">maxPathSize</td>
+            <td class="desc">
+                <p>Lengths of the buffer &lsquo;path&rsquo; that client allocated.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>Index of the face. For passing to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a>.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_New_Face_From_FSSpec</b>( <a href="ft2-base_interface.html#FT_Library">FT_Library</a>     library,
                            <span class="keyword">const</span> FSSpec  *spec,
@@ -288,45 +379,66 @@
                          FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Create a new face object from a given resource and typeface index using an FSSpec to the font file.</p>
+    <p>Create a new face object from a given resource and typeface index using an FSSpec to the font file.</p>
 
-<h4>inout</h4>
-<table class="fields">
-<tr><td class="val" id="library">library</td><td class="desc">
-<p>A handle to the library resource.</p>
-</td></tr>
-</table>
+    <h4>inout</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="library">library</td>
+            <td class="desc">
+                <p>A handle to the library resource.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="spec">spec</td><td class="desc">
-<p>FSSpec to the font file.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>The index of the face within the resource. The first face has index&nbsp;0.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="spec">spec</td>
+            <td class="desc">
+                <p>FSSpec to the font file.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>The index of the face within the resource. The first face has index&nbsp;0.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="aface">aface</td><td class="desc">
-<p>A handle to a new face object.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="aface">aface</td>
+            <td class="desc">
+                <p>A handle to a new face object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>note</h4>
-<p><a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a> is identical to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> except it accepts an FSSpec instead of a path.</p>
+    <h4>note</h4>
+    <p><a href="ft2-mac_specific.html#FT_New_Face_From_FSSpec">FT_New_Face_From_FSSpec</a> is identical to <a
+            href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> except it accepts an FSSpec instead of a path.
+    </p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 <div class="section">
-<h3 id="FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</h3>
-<p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
-<pre>
+    <h3 id="FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</h3>
+    <p>Defined in FT_MAC_H (freetype/ftmac.h).</p>
+    <pre>
   FT_EXPORT( <a href="ft2-basic_types.html#FT_Error">FT_Error</a> )
   <b>FT_New_Face_From_FSRef</b>( <a href="ft2-base_interface.html#FT_Library">FT_Library</a>    library,
                           <span class="keyword">const</span> FSRef  *ref,
@@ -335,40 +447,60 @@
                         FT_DEPRECATED_ATTRIBUTE;
 </pre>
 
-<p>Create a new face object from a given resource and typeface index using an FSRef to the font file.</p>
+    <p>Create a new face object from a given resource and typeface index using an FSRef to the font file.</p>
 
-<h4>inout</h4>
-<table class="fields">
-<tr><td class="val" id="library">library</td><td class="desc">
-<p>A handle to the library resource.</p>
-</td></tr>
-</table>
+    <h4>inout</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="library">library</td>
+            <td class="desc">
+                <p>A handle to the library resource.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>input</h4>
-<table class="fields">
-<tr><td class="val" id="spec">spec</td><td class="desc">
-<p>FSRef to the font file.</p>
-</td></tr>
-<tr><td class="val" id="face_index">face_index</td><td class="desc">
-<p>The index of the face within the resource. The first face has index&nbsp;0.</p>
-</td></tr>
-</table>
+    <h4>input</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="spec">spec</td>
+            <td class="desc">
+                <p>FSRef to the font file.</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="val" id="face_index">face_index</td>
+            <td class="desc">
+                <p>The index of the face within the resource. The first face has index&nbsp;0.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>output</h4>
-<table class="fields">
-<tr><td class="val" id="aface">aface</td><td class="desc">
-<p>A handle to a new face object.</p>
-</td></tr>
-</table>
+    <h4>output</h4>
+    <table class="fields">
+        <tr>
+            <td class="val" id="aface">aface</td>
+            <td class="desc">
+                <p>A handle to a new face object.</p>
+            </td>
+        </tr>
+    </table>
 
-<h4>return</h4>
-<p>FreeType error code. 0&nbsp;means success.</p>
+    <h4>return</h4>
+    <p>FreeType error code. 0&nbsp;means success.</p>
 
-<h4>note</h4>
-<p><a href="ft2-mac_specific.html#FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</a> is identical to <a href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> except it accepts an FSRef instead of a path.</p>
+    <h4>note</h4>
+    <p><a href="ft2-mac_specific.html#FT_New_Face_From_FSRef">FT_New_Face_From_FSRef</a> is identical to <a
+            href="ft2-base_interface.html#FT_New_Face">FT_New_Face</a> except it accepts an FSRef instead of a path.</p>
 
-<hr>
-<table class="index-toc-link"><tr><td class="left">[<a href="ft2-index.html">Index</a>]</td><td class="middle">[<a href="#">Top</a>]</td><td class="right">[<a href="ft2-toc.html">TOC</a>]</td></tr></table></div>
+    <hr>
+    <table class="index-toc-link">
+        <tr>
+            <td class="left">[<a href="ft2-index.html">Index</a>]</td>
+            <td class="middle">[<a href="#">Top</a>]</td>
+            <td class="right">[<a href="ft2-toc.html">TOC</a>]</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

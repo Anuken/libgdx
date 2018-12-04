@@ -8,13 +8,13 @@ import org.robovm.rt.bro.annotation.Library;
 
 @Library(Library.INTERNAL)
 @NativeClass
-public final class ALChannelSource extends NSObject {
+public final class ALChannelSource extends NSObject{
 
-	static {
-		ObjCRuntime.bind(ALChannelSource.class);
-	}
-	
-	@Property(selector = "sourcePool")
-	public native ALSoundSourcePool getSourcePool ();
-	
+    static{
+        ObjCRuntime.bind(ALChannelSource.class);
+    }
+
+    @Property(selector = "sourcePool")
+    public native ALSoundSourcePool getSourcePool();
+
 }

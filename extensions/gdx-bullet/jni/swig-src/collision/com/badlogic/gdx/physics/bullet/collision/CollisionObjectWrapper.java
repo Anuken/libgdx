@@ -8,123 +8,120 @@
 
 package com.badlogic.gdx.physics.bullet.collision;
 
-import com.badlogic.gdx.physics.bullet.BulletBase;
-import com.badlogic.gdx.physics.bullet.linearmath.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.bullet.BulletBase;
 
-public class CollisionObjectWrapper extends BulletBase {
-	private long swigCPtr;
-	
-	protected CollisionObjectWrapper(final String className, long cPtr, boolean cMemoryOwn) {
-		super(className, cPtr, cMemoryOwn);
-		swigCPtr = cPtr;
-	}
-	
-	/** Construct a new CollisionObjectWrapper, normally you should not need this constructor it's intended for low-level usage. */ 
-	public CollisionObjectWrapper(long cPtr, boolean cMemoryOwn) {
-		this("CollisionObjectWrapper", cPtr, cMemoryOwn);
-		construct();
-	}
-	
-	@Override
-	protected void reset(long cPtr, boolean cMemoryOwn) {
-		if (!destroyed)
-			destroy();
-		super.reset(swigCPtr = cPtr, cMemoryOwn);
-	}
-	
-	public static long getCPtr(CollisionObjectWrapper obj) {
-		return (obj == null) ? 0 : obj.swigCPtr;
-	}
+public class CollisionObjectWrapper extends BulletBase{
+    private long swigCPtr;
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (!destroyed)
-			destroy();
-		super.finalize();
-	}
+    protected CollisionObjectWrapper(final String className, long cPtr, boolean cMemoryOwn){
+        super(className, cPtr, cMemoryOwn);
+        swigCPtr = cPtr;
+    }
 
-  @Override protected synchronized void delete() {
-		if (swigCPtr != 0) {
-			if (swigCMemOwn) {
-				swigCMemOwn = false;
-				CollisionJNI.delete_CollisionObjectWrapper(swigCPtr);
-			}
-			swigCPtr = 0;
-		}
-		super.delete();
-	}
+    /** Construct a new CollisionObjectWrapper, normally you should not need this constructor it's intended for low-level usage. */
+    public CollisionObjectWrapper(long cPtr, boolean cMemoryOwn){
+        this("CollisionObjectWrapper", cPtr, cMemoryOwn);
+        construct();
+    }
 
-	public btCollisionObjectWrapper wrapper;
-	
-	@Override
-	protected void construct() {
-		super.construct();
-		wrapper = new btCollisionObjectWrapper(getWrapper().getCPointer(), false);
-	}
+    @Override
+    protected void reset(long cPtr, boolean cMemoryOwn){
+        if(!destroyed)
+            destroy();
+        super.reset(swigCPtr = cPtr, cMemoryOwn);
+    }
 
-	@Override
-	public void dispose() {
-		if (wrapper != null) {
-			wrapper.dispose();
-			wrapper = null;
-		}
-		super.dispose();
-	}
+    public static long getCPtr(CollisionObjectWrapper obj){
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId, int index) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_0(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId, index), true);
-  }
+    @Override
+    protected void finalize() throws Throwable{
+        if(!destroyed)
+            destroy();
+        super.finalize();
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_1(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId), true);
-  }
+    @Override
+    protected synchronized void delete(){
+        if(swigCPtr != 0){
+            if(swigCMemOwn){
+                swigCMemOwn = false;
+                CollisionJNI.delete_CollisionObjectWrapper(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+        super.delete();
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_2(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform), true);
-  }
+    public btCollisionObjectWrapper wrapper;
 
-  public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId, int index) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_3(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId, index), true);
-  }
+    @Override
+    protected void construct(){
+        super.construct();
+        wrapper = new btCollisionObjectWrapper(getWrapper().getCPointer(), false);
+    }
 
-  public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_4(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId), true);
-  }
+    @Override
+    public void dispose(){
+        if(wrapper != null){
+            wrapper.dispose();
+            wrapper = null;
+        }
+        super.dispose();
+    }
 
-  public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_5(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform), true);
-  }
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId, int index){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_0(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId, index), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject, int partId, int index) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_6(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject, partId, index), true);
-  }
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_1(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject, int partId) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_7(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject, partId), true);
-  }
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_2(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_8(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject), true);
-  }
+    public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId, int index){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_3(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId, index), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObject collisionObject, int partId, int index) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_9(btCollisionObject.getCPtr(collisionObject), collisionObject, partId, index), true);
-  }
+    public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform, int partId){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_4(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform, partId), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObject collisionObject, int partId) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_10(btCollisionObject.getCPtr(collisionObject), collisionObject, partId), true);
-  }
+    public CollisionObjectWrapper(btCollisionShape shape, btCollisionObject collisionObject, Matrix4 worldTransform){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_5(btCollisionShape.getCPtr(shape), shape, btCollisionObject.getCPtr(collisionObject), collisionObject, worldTransform), true);
+    }
 
-  public CollisionObjectWrapper(btCollisionObject collisionObject) {
-    this(CollisionJNI.new_CollisionObjectWrapper__SWIG_11(btCollisionObject.getCPtr(collisionObject), collisionObject), true);
-  }
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject, int partId, int index){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_6(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject, partId, index), true);
+    }
 
-  private btCollisionObjectWrapper getWrapper() {
-	return btCollisionObjectWrapper.internalTemp(CollisionJNI.CollisionObjectWrapper_getWrapper(swigCPtr, this), false);
-}
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject, int partId){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_7(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject, partId), true);
+    }
+
+    public CollisionObjectWrapper(btCollisionObjectWrapper parent, btCollisionObject collisionObject){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_8(btCollisionObjectWrapper.getCPtr(parent), parent, btCollisionObject.getCPtr(collisionObject), collisionObject), true);
+    }
+
+    public CollisionObjectWrapper(btCollisionObject collisionObject, int partId, int index){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_9(btCollisionObject.getCPtr(collisionObject), collisionObject, partId, index), true);
+    }
+
+    public CollisionObjectWrapper(btCollisionObject collisionObject, int partId){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_10(btCollisionObject.getCPtr(collisionObject), collisionObject, partId), true);
+    }
+
+    public CollisionObjectWrapper(btCollisionObject collisionObject){
+        this(CollisionJNI.new_CollisionObjectWrapper__SWIG_11(btCollisionObject.getCPtr(collisionObject), collisionObject), true);
+    }
+
+    private btCollisionObjectWrapper getWrapper(){
+        return btCollisionObjectWrapper.internalTemp(CollisionJNI.CollisionObjectWrapper_getWrapper(swigCPtr, this), false);
+    }
 
 }

@@ -19,7 +19,6 @@ package com.badlogic.gdx.backends.gwt;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.gwt.GwtGraphics.OrientationLockType;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,166 +32,168 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.webgl.client.WebGLContextAttributes;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
 
-public class GwtGraphics implements Graphics {
+public class GwtGraphics implements Graphics{
 
-	/* Enum values from http://www.w3.org/TR/screen-orientation. Filtered based on what the browsers actually support. */
-	public enum OrientationLockType {
-		LANDSCAPE("landscape"), PORTRAIT("portrait"), PORTRAIT_PRIMARY("portrait-primary"), PORTRAIT_SECONDARY(
-			"portrait-secondary"), LANDSCAPE_PRIMARY("landscape-primary"), LANDSCAPE_SECONDARY("landscape-secondary");
+    /* Enum values from http://www.w3.org/TR/screen-orientation. Filtered based on what the browsers actually support. */
+    public enum OrientationLockType{
+        LANDSCAPE("landscape"), PORTRAIT("portrait"), PORTRAIT_PRIMARY("portrait-primary"), PORTRAIT_SECONDARY(
+        "portrait-secondary"), LANDSCAPE_PRIMARY("landscape-primary"), LANDSCAPE_SECONDARY("landscape-secondary");
 
-		private final String name;
+        private final String name;
 
-		private OrientationLockType (String name) {
-			this.name = name;
-		}
+        private OrientationLockType(String name){
+            this.name = name;
+        }
 
-		public String getName () {
-			return name;
-		}
-	};
+        public String getName(){
+            return name;
+        }
+    }
 
-	CanvasElement canvas;
-	WebGLRenderingContext context;
-	GLVersion glVersion;
-	GL20 gl;
-	String extensions;
-	float fps = 0;
-	long lastTimeStamp = System.currentTimeMillis();
-	long frameId = -1;
-	float deltaTime = 0;
-	float time = 0;
-	int frames;
-	GwtApplicationConfiguration config;
+    ;
 
-	public GwtGraphics (Panel root, GwtApplicationConfiguration config) {
-		Canvas canvasWidget = Canvas.createIfSupported();
-		if (canvasWidget == null) throw new GdxRuntimeException("Canvas not supported");
-		canvas = canvasWidget.getCanvasElement();
-		root.add(canvasWidget);
-		canvas.setWidth(config.width);
-		canvas.setHeight(config.height);
-		this.config = config;
+    CanvasElement canvas;
+    WebGLRenderingContext context;
+    GLVersion glVersion;
+    GL20 gl;
+    String extensions;
+    float fps = 0;
+    long lastTimeStamp = System.currentTimeMillis();
+    long frameId = -1;
+    float deltaTime = 0;
+    float time = 0;
+    int frames;
+    GwtApplicationConfiguration config;
 
-		WebGLContextAttributes attributes = WebGLContextAttributes.create();
-		attributes.setAntialias(config.antialiasing);
-		attributes.setStencil(config.stencil);
-		attributes.setAlpha(config.alpha);
-		attributes.setPremultipliedAlpha(config.premultipliedAlpha);
-		attributes.setPreserveDrawingBuffer(config.preserveDrawingBuffer);
+    public GwtGraphics(Panel root, GwtApplicationConfiguration config){
+        Canvas canvasWidget = Canvas.createIfSupported();
+        if(canvasWidget == null) throw new GdxRuntimeException("Canvas not supported");
+        canvas = canvasWidget.getCanvasElement();
+        root.add(canvasWidget);
+        canvas.setWidth(config.width);
+        canvas.setHeight(config.height);
+        this.config = config;
 
-		context = WebGLRenderingContext.getContext(canvas, attributes);
-		context.viewport(0, 0, config.width, config.height);
-		this.gl = config.useDebugGL ? new GwtGL20Debug(context) : new GwtGL20(context);
+        WebGLContextAttributes attributes = WebGLContextAttributes.create();
+        attributes.setAntialias(config.antialiasing);
+        attributes.setStencil(config.stencil);
+        attributes.setAlpha(config.alpha);
+        attributes.setPremultipliedAlpha(config.premultipliedAlpha);
+        attributes.setPreserveDrawingBuffer(config.preserveDrawingBuffer);
 
-		String versionString = gl.glGetString(GL20.GL_VERSION);
-		String vendorString = gl.glGetString(GL20.GL_VENDOR);
-		String rendererString = gl.glGetString(GL20.GL_RENDERER);
-		glVersion = new GLVersion(Application.ApplicationType.WebGL, versionString, vendorString, rendererString);
-	}
+        context = WebGLRenderingContext.getContext(canvas, attributes);
+        context.viewport(0, 0, config.width, config.height);
+        this.gl = config.useDebugGL ? new GwtGL20Debug(context) : new GwtGL20(context);
 
-	public WebGLRenderingContext getContext () {
-		return context;
-	}
+        String versionString = gl.glGetString(GL20.GL_VERSION);
+        String vendorString = gl.glGetString(GL20.GL_VENDOR);
+        String rendererString = gl.glGetString(GL20.GL_RENDERER);
+        glVersion = new GLVersion(Application.ApplicationType.WebGL, versionString, vendorString, rendererString);
+    }
 
-	@Override
-	public GL20 getGL20 () {
-		return gl;
-	}
+    public WebGLRenderingContext getContext(){
+        return context;
+    }
 
-	@Override
-	public void setGL20 (GL20 gl20) {
-		this.gl = gl20;
-		Gdx.gl = gl20;
-		Gdx.gl20 = gl20;
-	}
+    @Override
+    public GL20 getGL20(){
+        return gl;
+    }
 
-	@Override
-	public boolean isGL30Available () {
-		return false;
-	}
+    @Override
+    public void setGL20(GL20 gl20){
+        this.gl = gl20;
+        Gdx.gl = gl20;
+        Gdx.gl20 = gl20;
+    }
 
-	@Override
-	public GL30 getGL30 () {
-		return null;
-	}
+    @Override
+    public boolean isGL30Available(){
+        return false;
+    }
 
-	@Override
-	public void setGL30 (GL30 gl30) {
+    @Override
+    public GL30 getGL30(){
+        return null;
+    }
 
-	}
+    @Override
+    public void setGL30(GL30 gl30){
+
+    }
 
 
-	@Override
-	public int getWidth () {
-		return canvas.getWidth();
-	}
+    @Override
+    public int getWidth(){
+        return canvas.getWidth();
+    }
 
-	@Override
-	public int getHeight () {
-		return canvas.getHeight();
-	}
+    @Override
+    public int getHeight(){
+        return canvas.getHeight();
+    }
 
-	@Override
-	public int getBackBufferWidth () {
-		return canvas.getWidth();
-	}
+    @Override
+    public int getBackBufferWidth(){
+        return canvas.getWidth();
+    }
 
-	@Override
-	public int getBackBufferHeight () {
-		return canvas.getHeight();
-	}
+    @Override
+    public int getBackBufferHeight(){
+        return canvas.getHeight();
+    }
 
-	@Override
-	public long getFrameId () {
-		return frameId;
-	}
+    @Override
+    public long getFrameId(){
+        return frameId;
+    }
 
-	@Override
-	public float getDeltaTime () {
-		return deltaTime;
-	}
+    @Override
+    public float getDeltaTime(){
+        return deltaTime;
+    }
 
-	@Override
-	public int getFramesPerSecond () {
-		return (int)fps;
-	}
+    @Override
+    public int getFramesPerSecond(){
+        return (int) fps;
+    }
 
-	@Override
-	public GraphicsType getType () {
-		return GraphicsType.WebGL;
-	}
+    @Override
+    public GraphicsType getType(){
+        return GraphicsType.WebGL;
+    }
 
-	@Override
-	public GLVersion getGLVersion () {
-		return glVersion;
-	}
+    @Override
+    public GLVersion getGLVersion(){
+        return glVersion;
+    }
 
-	@Override
-	public float getPpiX () {
-		return 96;
-	}
+    @Override
+    public float getPpiX(){
+        return 96;
+    }
 
-	@Override
-	public float getPpiY () {
-		return 96;
-	}
+    @Override
+    public float getPpiY(){
+        return 96;
+    }
 
-	@Override
-	public float getPpcX () {
-		return 96 / 2.54f;
-	}
+    @Override
+    public float getPpcX(){
+        return 96 / 2.54f;
+    }
 
-	@Override
-	public float getPpcY () {
-		return 96 / 2.54f;
-	}
+    @Override
+    public float getPpcY(){
+        return 96 / 2.54f;
+    }
 
-	@Override
-	public boolean supportsDisplayModeChange () {
-		return supportsFullscreenJSNI();
-	}
+    @Override
+    public boolean supportsDisplayModeChange(){
+        return supportsFullscreenJSNI();
+    }
 
-	private native boolean supportsFullscreenJSNI () /*-{
+    private native boolean supportsFullscreenJSNI() /*-{
 		if ("fullscreenEnabled" in $doc) {
 			return $doc.fullscreenEnabled;
 		}
@@ -208,20 +209,21 @@ public class GwtGraphics implements Graphics {
 		return false;
 	}-*/;
 
-	@Override
-	public DisplayMode[] getDisplayModes () {
-		return new DisplayMode[] {new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8) {}};
-	}
+    @Override
+    public DisplayMode[] getDisplayModes(){
+        return new DisplayMode[]{new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8){
+        }};
+    }
 
-	private native int getScreenWidthJSNI () /*-{
+    private native int getScreenWidthJSNI() /*-{
 		return $wnd.screen.width;
 	}-*/;
 
-	private native int getScreenHeightJSNI () /*-{
+    private native int getScreenHeightJSNI() /*-{
 		return $wnd.screen.height;
 	}-*/;
 
-	private native boolean isFullscreenJSNI () /*-{
+    private native boolean isFullscreenJSNI() /*-{
 		// Standards compliant check for fullscreen
 		if ("fullscreenElement" in $doc) {
 			return $doc.fullscreenElement != null;
@@ -246,18 +248,18 @@ public class GwtGraphics implements Graphics {
 		return false
 	}-*/;
 
-	private void fullscreenChanged () {
-		if (!isFullscreen()) {
-			canvas.setWidth(config.width);
-			canvas.setHeight(config.height);
-			if (config.fullscreenOrientation != null) unlockOrientation();
-		} else {
-			/* We just managed to go full-screen. Check if the user has requested a specific orientation. */
-			if (config.fullscreenOrientation != null) lockOrientation(config.fullscreenOrientation);
-		}
-	}
+    private void fullscreenChanged(){
+        if(!isFullscreen()){
+            canvas.setWidth(config.width);
+            canvas.setHeight(config.height);
+            if(config.fullscreenOrientation != null) unlockOrientation();
+        }else{
+            /* We just managed to go full-screen. Check if the user has requested a specific orientation. */
+            if(config.fullscreenOrientation != null) lockOrientation(config.fullscreenOrientation);
+        }
+    }
 
-	private native boolean setFullscreenJSNI (GwtGraphics graphics, CanvasElement element) /*-{
+    private native boolean setFullscreenJSNI(GwtGraphics graphics, CanvasElement element) /*-{
 		// Attempt to use the non-prefixed standard API (https://fullscreen.spec.whatwg.org)
 		if (element.requestFullscreen) {
 			element.width = $wnd.screen.width;
@@ -312,7 +314,7 @@ public class GwtGraphics implements Graphics {
 		return false;
 	}-*/;
 
-	private native void exitFullscreen () /*-{
+    private native void exitFullscreen() /*-{
 		if ($doc.exitFullscreen)
 			$doc.exitFullscreen();
 		if ($doc.msExitFullscreen)
@@ -325,67 +327,72 @@ public class GwtGraphics implements Graphics {
 			$doc.webkitCancelFullScreen();
 	}-*/;
 
-	@Override
-	public DisplayMode getDisplayMode () {
-		return new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8) {};
-	}
+    @Override
+    public DisplayMode getDisplayMode(){
+        return new DisplayMode(getScreenWidthJSNI(), getScreenHeightJSNI(), 60, 8){
+        };
+    }
 
-	@Override
-	public boolean setFullscreenMode (DisplayMode displayMode) {
-		if (displayMode.width != getScreenWidthJSNI() && displayMode.height != getScreenHeightJSNI()) return false;
-		return setFullscreenJSNI(this, canvas);
-	}
+    @Override
+    public boolean setFullscreenMode(DisplayMode displayMode){
+        if(displayMode.width != getScreenWidthJSNI() && displayMode.height != getScreenHeightJSNI()) return false;
+        return setFullscreenJSNI(this, canvas);
+    }
 
-	@Override
-	public boolean setWindowedMode (int width, int height) {
-		if (isFullscreenJSNI()) exitFullscreen();
-		canvas.setWidth(width);
-		canvas.setHeight(height);
-		return true;
-	}
+    @Override
+    public boolean setWindowedMode(int width, int height){
+        if(isFullscreenJSNI()) exitFullscreen();
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        return true;
+    }
 
 
-	@Override
-	public Monitor getPrimaryMonitor () {
-		return new GwtMonitor(0, 0, "Primary Monitor");
-	}
+    @Override
+    public Monitor getPrimaryMonitor(){
+        return new GwtMonitor(0, 0, "Primary Monitor");
+    }
 
-	@Override
-	public Monitor getMonitor () {
-		return getPrimaryMonitor();
-	}
+    @Override
+    public Monitor getMonitor(){
+        return getPrimaryMonitor();
+    }
 
-	@Override
-	public Monitor[] getMonitors () {
-		return new Monitor[] { getPrimaryMonitor() };
-	}
+    @Override
+    public Monitor[] getMonitors(){
+        return new Monitor[]{getPrimaryMonitor()};
+    }
 
-	@Override
-	public DisplayMode[] getDisplayModes (Monitor monitor) {
-		return getDisplayModes();
-	}
+    @Override
+    public DisplayMode[] getDisplayModes(Monitor monitor){
+        return getDisplayModes();
+    }
 
-	@Override
-	public DisplayMode getDisplayMode (Monitor monitor) {
-		return getDisplayMode();
-	}
+    @Override
+    public DisplayMode getDisplayMode(Monitor monitor){
+        return getDisplayMode();
+    }
 
-	/** Attempt to lock the orientation. Typically only supported when in full-screen mode.
-	 *
-	 * @param orientation the orientation to attempt locking
-	 * @return did the locking succeed */
-	public boolean lockOrientation (OrientationLockType orientation) {
-		return lockOrientationJSNI(orientation.getName());
-	}
+    /**
+     * Attempt to lock the orientation. Typically only supported when in full-screen mode.
+     *
+     * @param orientation the orientation to attempt locking
+     * @return did the locking succeed
+     */
+    public boolean lockOrientation(OrientationLockType orientation){
+        return lockOrientationJSNI(orientation.getName());
+    }
 
-	/** Attempt to unlock the orientation.
-	 *
-	 * @return did the unlocking succeed */
-	public boolean unlockOrientation () {
-		return unlockOrientationJSNI();
-	}
+    /**
+     * Attempt to unlock the orientation.
+     *
+     * @return did the unlocking succeed
+     */
+    public boolean unlockOrientation(){
+        return unlockOrientationJSNI();
+    }
 
-	private native boolean lockOrientationJSNI (String orientationEnumValue) /*-{
+    private native boolean lockOrientationJSNI(String orientationEnumValue) /*-{
 		var screen = $wnd.screen;
 
 		// Attempt to find the lockOrientation function
@@ -405,7 +412,7 @@ public class GwtGraphics implements Graphics {
 		return false;
 	}-*/;
 
-	private native boolean unlockOrientationJSNI () /*-{
+    private native boolean unlockOrientationJSNI() /*-{
 		var screen = $wnd.screen;
 
 		// Attempt to find the lockOrientation function
@@ -425,95 +432,95 @@ public class GwtGraphics implements Graphics {
 		return false;
 	}-*/;
 
-	@Override
-	public BufferFormat getBufferFormat () {
-		return new BufferFormat(8, 8, 8, 0, 16, config.stencil ? 8 : 0, 0, false);
-	}
+    @Override
+    public BufferFormat getBufferFormat(){
+        return new BufferFormat(8, 8, 8, 0, 16, config.stencil ? 8 : 0, 0, false);
+    }
 
-	@Override
-	public boolean supportsExtension (String extensionName) {
-		// Contrary to regular OpenGL, WebGL extensions need to be explicitly enabled before they can be used. See
-		// https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Using_Extensions
-		// Thus, it is not safe to use an extension just because context.getSupportedExtensions() tells you it is available.
-		// We need to call getExtension() to enable it.
-		return context.getExtension(extensionName) != null;
-	}
+    @Override
+    public boolean supportsExtension(String extensionName){
+        // Contrary to regular OpenGL, WebGL extensions need to be explicitly enabled before they can be used. See
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Using_Extensions
+        // Thus, it is not safe to use an extension just because context.getSupportedExtensions() tells you it is available.
+        // We need to call getExtension() to enable it.
+        return context.getExtension(extensionName) != null;
+    }
 
-	public void update () {
-		long currTimeStamp = System.currentTimeMillis();
-		deltaTime = (currTimeStamp - lastTimeStamp) / 1000.0f;
-		lastTimeStamp = currTimeStamp;
-		time += deltaTime;
-		frames++;
-		if (time > 1) {
-			this.fps = frames;
-			time = 0;
-			frames = 0;
-		}
-	}
+    public void update(){
+        long currTimeStamp = System.currentTimeMillis();
+        deltaTime = (currTimeStamp - lastTimeStamp) / 1000.0f;
+        lastTimeStamp = currTimeStamp;
+        time += deltaTime;
+        frames++;
+        if(time > 1){
+            this.fps = frames;
+            time = 0;
+            frames = 0;
+        }
+    }
 
-	@Override
-	public void setTitle (String title) {
-	}
+    @Override
+    public void setTitle(String title){
+    }
 
-	@Override
-	public void setUndecorated (boolean undecorated) {
-	}
+    @Override
+    public void setUndecorated(boolean undecorated){
+    }
 
-	@Override
-	public void setResizable (boolean resizable) {
-	}
+    @Override
+    public void setResizable(boolean resizable){
+    }
 
-	@Override
-	public void setVSync (boolean vsync) {
-	}
+    @Override
+    public void setVSync(boolean vsync){
+    }
 
-	@Override
-	public float getDensity () {
-		return 96.0f / 160;
-	}
+    @Override
+    public float getDensity(){
+        return 96.0f / 160;
+    }
 
-	@Override
-	public void setContinuousRendering (boolean isContinuous) {
-	}
+    @Override
+    public void setContinuousRendering(boolean isContinuous){
+    }
 
-	@Override
-	public boolean isContinuousRendering () {
-		return true;
-	}
+    @Override
+    public boolean isContinuousRendering(){
+        return true;
+    }
 
-	@Override
-	public void requestRendering () {
-	}
+    @Override
+    public void requestRendering(){
+    }
 
-	@Override
-	public float getRawDeltaTime () {
-		return getDeltaTime();
-	}
+    @Override
+    public float getRawDeltaTime(){
+        return getDeltaTime();
+    }
 
-	@Override
-	public boolean isFullscreen () {
-		return isFullscreenJSNI();
-	}
+    @Override
+    public boolean isFullscreen(){
+        return isFullscreenJSNI();
+    }
 
-	@Override
-	public Cursor newCursor (Pixmap pixmap, int xHotspot, int yHotspot) {
-		return new GwtCursor(pixmap, xHotspot, yHotspot);
-	}
+    @Override
+    public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot){
+        return new GwtCursor(pixmap, xHotspot, yHotspot);
+    }
 
-	@Override
-	public void setCursor (Cursor cursor) {
-		((GwtApplication)Gdx.app).graphics.canvas.getStyle().setProperty("cursor", ((GwtCursor)cursor).cssCursorProperty);
-	}
+    @Override
+    public void setCursor(Cursor cursor){
+        ((GwtApplication) Gdx.app).graphics.canvas.getStyle().setProperty("cursor", ((GwtCursor) cursor).cssCursorProperty);
+    }
 
-	@Override
-	public void setSystemCursor (SystemCursor systemCursor) {
-		((GwtApplication)Gdx.app).graphics.canvas.getStyle().setProperty("cursor", GwtCursor.getNameForSystemCursor(systemCursor));
-	}
+    @Override
+    public void setSystemCursor(SystemCursor systemCursor){
+        ((GwtApplication) Gdx.app).graphics.canvas.getStyle().setProperty("cursor", GwtCursor.getNameForSystemCursor(systemCursor));
+    }
 
-	static class GwtMonitor extends Monitor {
-		protected GwtMonitor (int virtualX, int virtualY, String name) {
-			super(virtualX, virtualY, name);
-		}
-	}
+    static class GwtMonitor extends Monitor{
+        protected GwtMonitor(int virtualX, int virtualY, String name){
+            super(virtualX, virtualY, name);
+        }
+    }
 }
