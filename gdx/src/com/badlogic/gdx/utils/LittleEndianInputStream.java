@@ -99,6 +99,7 @@ public class LittleEndianInputStream extends FilterInputStream implements DataIn
         return Double.longBitsToDouble(readLong());
     }
 
+    @SuppressWarnings("deprecation")
     public final String readLine() throws IOException{
         return din.readLine();
     }

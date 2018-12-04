@@ -22,7 +22,7 @@ public class FacedCubemapData implements CubemapData{
      * before it can be used.
      */
     public FacedCubemapData(){
-        this(null, null, null, null, null, null);
+        this((Pixmap) null, null, null, null, null, null);
     }
 
     /** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */

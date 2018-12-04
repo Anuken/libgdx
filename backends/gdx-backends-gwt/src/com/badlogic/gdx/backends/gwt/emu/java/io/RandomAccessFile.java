@@ -45,26 +45,26 @@ public class RandomAccessFile /* implements DataOutput, DataInput, Closeable */{
     }
 
     public RandomAccessFile(File file, String mode) throws FileNotFoundException{
-        name = file.getCanonicalPath();
+        try{
+            name = file.getCanonicalPath();
 
-        mode = mode.toLowerCase();
-        if(!mode.equals("r") && !mode.equals("rw")){
-            throw new IllegalArgumentException("mode: '" + mode + "'");
-        }
-        writeable = mode.equals("rw");
-        if(file.exists()){
-            data = atob(File.LocalStorage.getItem(name));
-            len = data.length();
-        }else if(writeable){
-            data = "";
-            dirty = true;
-            try{
-                flush();
-            }catch(IOException e){
-                throw new FileNotFoundException("" + e);
+            mode = mode.toLowerCase();
+            if(!mode.equals("r") && !mode.equals("rw")){
+                throw new IllegalArgumentException("mode: '" + mode + "'");
             }
-        }else{
-            throw new FileNotFoundException(name);
+            writeable = mode.equals("rw");
+            if(file.exists()){
+                data = atob(File.LocalStorage.getItem(name));
+                len = data.length();
+            }else if(writeable){
+                data = "";
+                dirty = true;
+                flush();
+            }else{
+                throw new FileNotFoundException(name);
+            }
+        }catch(IOException e){
+            throw new FileNotFoundException("" + e);
         }
     }
 

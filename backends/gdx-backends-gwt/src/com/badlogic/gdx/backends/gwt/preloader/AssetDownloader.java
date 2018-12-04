@@ -59,6 +59,7 @@ public class AssetDownloader{
 
     }
 
+    @SuppressWarnings("unchecked")
     public void load(String url, AssetType type, String mimeType, AssetLoaderListener<?> listener){
         switch(type){
             case Text:

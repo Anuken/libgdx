@@ -57,7 +57,6 @@ public class Controllers{
      * Add a global {@link ControllerListener} that can react to events from all {@link Controller} instances. The listener will be
      * invoked on the rendering thread.
      *
-     * @param listener
      */
     static public void addListener(ControllerListener listener){
         initialize();
@@ -67,7 +66,6 @@ public class Controllers{
     /**
      * Removes a global {@link ControllerListener}. The method must be called on the rendering thread.
      *
-     * @param listener
      */
     static public void removeListener(ControllerListener listener){
         initialize();

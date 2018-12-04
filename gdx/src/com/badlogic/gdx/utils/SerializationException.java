@@ -45,7 +45,7 @@ public class SerializationException extends RuntimeException{
         return causedBy(this, type);
     }
 
-    private boolean causedBy(Throwable ex, Class type){
+    private boolean causedBy(Throwable ex, Class<?> type){
         Throwable cause = ex.getCause();
         if(cause == null || cause == ex) return false;
         if(type.isAssignableFrom(cause.getClass())) return true;

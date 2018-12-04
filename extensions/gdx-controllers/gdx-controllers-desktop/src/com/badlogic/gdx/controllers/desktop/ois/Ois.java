@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class Ois{
     private final long inputManagerPtr;
-    private final ArrayList<OisJoystick> joysticks = new ArrayList();
+    private final ArrayList<OisJoystick> joysticks = new ArrayList<>();
 
     public Ois(long hwnd){
         inputManagerPtr = createInputManager(hwnd);

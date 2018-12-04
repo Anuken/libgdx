@@ -402,7 +402,7 @@ public class JsonReader implements BaseJsonReader{
                                                 }
                                             }
                                             p--;
-                                            while(Character.isSpace(data[p]))
+                                            while(Character.isWhitespace(data[p]))
                                                 p--;
                                         }
                                         break;

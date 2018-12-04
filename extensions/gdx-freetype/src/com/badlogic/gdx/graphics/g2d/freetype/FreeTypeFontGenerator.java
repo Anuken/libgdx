@@ -193,7 +193,7 @@ public class FreeTypeFontGenerator implements Disposable{
      */
     public BitmapFont generateFont(FreeTypeFontParameter parameter, FreeTypeBitmapFontData data){
         boolean updateTextureRegions = data.regions == null && parameter.packer != null;
-        if(updateTextureRegions) data.regions = new Array();
+        if(updateTextureRegions) data.regions = new Array<>();
         generateData(parameter, data);
         if(updateTextureRegions)
             parameter.packer.updateTextureRegions(data.regions, parameter.minFilter, parameter.magFilter, parameter.genMipMaps);
