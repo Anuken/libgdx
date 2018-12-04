@@ -30,27 +30,27 @@ public class Align {
 	static public final int bottomLeft = bottom | left;
 	static public final int bottomRight = bottom | right;
 
-	static public final boolean isLeft (int align) {
+	static public boolean isLeft (int align) {
 		return (align & left) != 0;
 	}
 
-	static public final boolean isRight (int align) {
+	static public boolean isRight (int align) {
 		return (align & right) != 0;
 	}
 
-	static public final boolean isTop (int align) {
+	static public boolean isTop (int align) {
 		return (align & top) != 0;
 	}
 
-	static public final boolean isBottom (int align) {
+	static public boolean isBottom (int align) {
 		return (align & bottom) != 0;
 	}
 
-	static public final boolean isCenterVertical (int align) {
+	static public boolean isCenterVertical (int align) {
 		return (align & top) == 0 && (align & bottom) == 0;
 	}
 
-	static public final boolean isCenterHorizontal (int align) {
+	static public boolean isCenterHorizontal (int align) {
 		return (align & left) == 0 && (align & right) == 0;
 	}
 

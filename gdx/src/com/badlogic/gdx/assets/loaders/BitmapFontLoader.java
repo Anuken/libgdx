@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.assets.loaders;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,7 +27,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -115,8 +113,7 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
 		/** The {@link TextureFilter} to use when scaling up the {@link BitmapFont}. Defaults to {@link TextureFilter#Nearest}. */
 		public TextureFilter magFilter = TextureFilter.Nearest;
 
-		/** optional {@link BitmapFontData} to be used instead of loading the {@link Texture} directly. Use this if your font is
-		 * embedded in a {@link Skin}. **/
+		/** optional {@link BitmapFontData} to be used instead of loading the {@link Texture} directly.**/
 		public BitmapFontData bitmapFontData = null;
 
 		/** The name of the {@link TextureAtlas} to load the {@link BitmapFont} itself from. Optional; if {@code null}, will look for
