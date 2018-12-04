@@ -1130,7 +1130,7 @@ public class JsonValue implements Iterable<JsonValue>{
         }else if(object.isDouble()){
             double doubleValue = object.asDouble();
             long longValue = object.asLong();
-            buffer.append(doubleValue == longValue ? longValue : doubleValue);
+            buffer.append(doubleValue);
         }else if(object.isLong()){
             buffer.append(object.asLong());
         }else if(object.isBoolean()){
@@ -1220,7 +1220,7 @@ public class JsonValue implements Iterable<JsonValue>{
         }else if(object.isDouble()){
             double doubleValue = object.asDouble();
             long longValue = object.asLong();
-            buffer.append(doubleValue == longValue ? longValue : doubleValue);
+            buffer.append(doubleValue);
         }else if(object.isLong()){
             buffer.append(object.asLong());
         }else if(object.isBoolean()){
@@ -1282,7 +1282,7 @@ public class JsonValue implements Iterable<JsonValue>{
         }else if(object.isDouble()){
             double doubleValue = object.asDouble();
             long longValue = object.asLong();
-            writer.append(Double.toString(doubleValue == longValue ? longValue : doubleValue));
+            writer.append(Double.toString(doubleValue));
         }else if(object.isLong()){
             writer.append(Long.toString(object.asLong()));
         }else if(object.isBoolean()){

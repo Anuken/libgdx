@@ -552,11 +552,11 @@ public abstract class GwtApplication implements EntryPoint, Application{
         /**
          * Method called before the setup
          */
-        public void beforeSetup();
+        void beforeSetup();
 
         /**
          * Method called after the setup
          */
-        public void afterSetup();
+        void afterSetup();
     }
 }

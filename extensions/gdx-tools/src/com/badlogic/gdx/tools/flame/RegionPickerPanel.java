@@ -17,7 +17,7 @@ public class RegionPickerPanel extends JPanel{
         ByRows("Generate By Rows"), ByColumns("Generate By Columns");
         String string;
 
-        private GenerationMode(String string){
+        GenerationMode(String string){
             this.string = string;
         }
 

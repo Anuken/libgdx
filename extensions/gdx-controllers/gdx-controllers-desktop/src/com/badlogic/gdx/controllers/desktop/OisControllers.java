@@ -258,7 +258,7 @@ public class OisControllers{
                 }
 
                 Class displayClass = Class.forName("org.lwjgl.opengl.Display");
-                Method getImplementation = displayClass.getDeclaredMethod("getImplementation", new Class[0]);
+                Method getImplementation = displayClass.getDeclaredMethod("getImplementation");
                 getImplementation.setAccessible(true);
                 Object display = getImplementation.invoke(null, (Object[]) null);
                 Field field = display.getClass().getDeclaredField(IS_WINDOWS ? "hwnd" : "parent_window");

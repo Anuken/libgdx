@@ -20,7 +20,7 @@ import com.google.gwt.typedarrays.shared.ArrayBufferView;
 
 public interface HasArrayBufferView{
 
-    public ArrayBufferView getTypedArray();
+    ArrayBufferView getTypedArray();
 
-    public int getElementSize();
+    int getElementSize();
 }

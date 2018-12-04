@@ -17,33 +17,33 @@
 package java.io;
 
 public interface DataInput{
-    public boolean readBoolean() throws IOException;
+    boolean readBoolean() throws IOException;
 
-    public byte readByte() throws IOException;
+    byte readByte() throws IOException;
 
-    public char readChar() throws IOException;
+    char readChar() throws IOException;
 
-    public double readDouble() throws IOException;
+    double readDouble() throws IOException;
 
-    public float readFloat() throws IOException;
+    float readFloat() throws IOException;
 
-    public void readFully(byte[] b) throws IOException;
+    void readFully(byte[] b) throws IOException;
 
-    public void readFully(byte[] b, int off, int len) throws IOException;
+    void readFully(byte[] b, int off, int len) throws IOException;
 
-    public int readInt() throws IOException;
+    int readInt() throws IOException;
 
-    public String readLine() throws IOException;
+    String readLine() throws IOException;
 
-    public long readLong() throws IOException;
+    long readLong() throws IOException;
 
-    public short readShort() throws IOException;
+    short readShort() throws IOException;
 
-    public String readUTF() throws IOException;
+    String readUTF() throws IOException;
 
-    public int readUnsignedByte() throws IOException;
+    int readUnsignedByte() throws IOException;
 
-    public int readUnsignedShort() throws IOException;
+    int readUnsignedShort() throws IOException;
 
-    public int skipBytes(int n) throws IOException;
+    int skipBytes(int n) throws IOException;
 }

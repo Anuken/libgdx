@@ -59,7 +59,7 @@ public class TimeOfImpact{
         public float tMax;
     }
 
-    public static enum TOIOutputState{
+    public enum TOIOutputState{
         UNKNOWN, FAILED, OVERLAPPED, TOUCHING, SEPARATED
     }
 
@@ -296,7 +296,7 @@ public class TimeOfImpact{
 
 
 enum Type{
-    POINTS, FACE_A, FACE_B;
+    POINTS, FACE_A, FACE_B
 }
 
 

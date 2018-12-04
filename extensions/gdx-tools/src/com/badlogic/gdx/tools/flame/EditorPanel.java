@@ -215,7 +215,7 @@ public abstract class EditorPanel<T> extends JPanel{
 
     public void setValue(T value){
         this.value = value;
-        activeButton.setVisible(value == null ? false : !isAlwaysActive);
+        activeButton.setVisible(value != null && !isAlwaysActive);
         removeButton.setVisible(isRemovable);
     }
 

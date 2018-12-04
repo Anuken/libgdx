@@ -61,8 +61,7 @@ public final class Intersector{
 
         if(bc * ac - cc * ab < 0) return false;
         float bb = v1.dot(v1);
-        if(ab * bc - ac * bb < 0) return false;
-        return true;
+        return !(ab * bc - ac * bb < 0);
     }
 
     /** Returns true if the given point is inside the triangle. */
@@ -71,8 +70,7 @@ public final class Intersector{
         float py1 = p.y - a.y;
         boolean side12 = (b.x - a.x) * py1 - (b.y - a.y) * px1 > 0;
         if((c.x - a.x) * py1 - (c.y - a.y) * px1 > 0 == side12) return false;
-        if((c.x - b.x) * (p.y - b.y) - (c.y - b.y) * (p.x - b.x) > 0 != side12) return false;
-        return true;
+        return (c.x - b.x) * (p.y - b.y) - (c.y - b.y) * (p.x - b.x) > 0 == side12;
     }
 
     /** Returns true if the given point is inside the triangle. */
@@ -81,8 +79,7 @@ public final class Intersector{
         float py1 = py - ay;
         boolean side12 = (bx - ax) * py1 - (by - ay) * px1 > 0;
         if((cx - ax) * py1 - (cy - ay) * px1 > 0 == side12) return false;
-        if((cx - bx) * (py - by) - (cy - by) * (px - bx) > 0 != side12) return false;
-        return true;
+        return (cx - bx) * (py - by) - (cy - by) * (px - bx) > 0 == side12;
     }
 
     public static boolean intersectSegmentPlane(Vector3 start, Vector3 end, Plane plane, Vector3 intersection){

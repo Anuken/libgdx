@@ -104,8 +104,6 @@ public class RandomAccessFile /* implements DataOutput, DataInput, Closeable */{
         dos.write(b);
     }
 
-    ;
-
     public void write(byte b[]) throws IOException{
         dos.write(b);
     }
@@ -114,11 +112,11 @@ public class RandomAccessFile /* implements DataOutput, DataInput, Closeable */{
         dos.write(b, off, len);
     }
 
-    public long getFilePointer() throws IOException{
+    public long getFilePointer(){
         return pos;
     }
 
-    public void seek(long pos) throws IOException{
+    public void seek(long pos){
         if(pos < 0){
             throw new IllegalArgumentException();
         }
@@ -173,7 +171,7 @@ public class RandomAccessFile /* implements DataOutput, DataInput, Closeable */{
         newData = null;
     }
 
-    void flush() throws IOException{
+    void flush(){
         if(!dirty){
             return;
         }
@@ -274,13 +272,13 @@ public class RandomAccessFile /* implements DataOutput, DataInput, Closeable */{
         dos.writeUTF(str);
     }
 
-    public final FileChannel getChannel() throws IOException{
+    public final FileChannel getChannel(){
         return null;
     }
 
     class RafInputStream extends InputStream{
         @Override
-        public int read() throws IOException{
+        public int read(){
             if(pos >= len){
                 return -1;
             }else{

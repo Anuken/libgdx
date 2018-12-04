@@ -19,7 +19,7 @@ package java.lang;
 import com.google.gwt.core.client.GWT;
 
 public class Thread{
-    public static void sleep(long millis) throws InterruptedException{
+    public static void sleep(long millis){
         // noop emu
     }
 
@@ -38,7 +38,7 @@ public class Thread{
         });
     }
 
-    public static interface UncaughtExceptionHandler{
+    public interface UncaughtExceptionHandler{
         void uncaughtException(Thread t, Throwable e);
     }
 }

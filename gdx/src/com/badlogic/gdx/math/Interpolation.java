@@ -219,8 +219,6 @@ public abstract class Interpolation{
         }
     }
 
-    ;
-
     static public class ExpIn extends Exp{
         public ExpIn(float value, float power){
             super(value, power);

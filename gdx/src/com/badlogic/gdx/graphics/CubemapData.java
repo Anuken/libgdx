@@ -17,28 +17,28 @@ import com.badlogic.gdx.graphics.glutils.KTXTextureData;
 public interface CubemapData{
 
     /** @return whether the TextureData is prepared or not. */
-    public boolean isPrepared();
+    boolean isPrepared();
 
     /**
      * Prepares the TextureData for a call to {@link #consumeCubemapData()}. This method can be called from a non OpenGL thread and
      * should thus not interact with OpenGL.
      */
-    public void prepare();
+    void prepare();
 
     /**
      * Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture. The caller must bind an OpenGL ES texture. A
      * call to {@link #prepare()} must preceed a call to this method. Any internal data structures created in {@link #prepare()}
      * should be disposed of here.
      */
-    public void consumeCubemapData();
+    void consumeCubemapData();
 
     /** @return the width of the pixel data */
-    public int getWidth();
+    int getWidth();
 
     /** @return the height of the pixel data */
-    public int getHeight();
+    int getHeight();
 
     /** @return whether this implementation can cope with a EGL context loss. */
-    public boolean isManaged();
+    boolean isManaged();
 
 }

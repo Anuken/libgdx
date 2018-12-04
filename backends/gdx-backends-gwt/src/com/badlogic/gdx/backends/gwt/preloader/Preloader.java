@@ -33,9 +33,9 @@ public class Preloader{
 
     public interface PreloaderCallback{
 
-        public void update(PreloaderState state);
+        void update(PreloaderState state);
 
-        public void error(String file);
+        void error(String file);
 
     }
 

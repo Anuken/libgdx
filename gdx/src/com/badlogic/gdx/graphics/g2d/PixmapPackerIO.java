@@ -16,7 +16,7 @@ import java.io.Writer;
 public class PixmapPackerIO{
 
     /** Image formats which can be used when saving a PixmapPacker. */
-    public static enum ImageFormat{
+    public enum ImageFormat{
         /** A simple compressed image format which is libgdx specific. */
         CIM(".cim"),
         /** A standard compressed image format which is not libgdx specific. */

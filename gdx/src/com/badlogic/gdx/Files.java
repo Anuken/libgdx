@@ -32,7 +32,7 @@ public interface Files{
      * @author mzechner
      * @author Nathan Sweet
      */
-    public enum FileType{
+    enum FileType{
         /**
          * Path relative to the root of the classpath. Classpath files are always readonly. Note that classpath files are not
          * compatible with some functionality on Android, such as {@link Audio#newSound(FileHandle)} and
@@ -57,7 +57,7 @@ public interface Files{
         Absolute,
 
         /** Path relative to the private files directory on Android and to the application's root directory on the desktop. */
-        Local;
+        Local
     }
 
     /**
@@ -67,41 +67,41 @@ public interface Files{
      * @throws GdxRuntimeException if the type is classpath or internal and the file does not exist.
      * @see FileType
      */
-    public FileHandle getFileHandle(String path, FileType type);
+    FileHandle getFileHandle(String path, FileType type);
 
     /** Convenience method that returns a {@link FileType#Classpath} file handle. */
-    public FileHandle classpath(String path);
+    FileHandle classpath(String path);
 
     /** Convenience method that returns a {@link FileType#Internal} file handle. */
-    public FileHandle internal(String path);
+    FileHandle internal(String path);
 
     /** Convenience method that returns a {@link FileType#External} file handle. */
-    public FileHandle external(String path);
+    FileHandle external(String path);
 
     /** Convenience method that returns a {@link FileType#Absolute} file handle. */
-    public FileHandle absolute(String path);
+    FileHandle absolute(String path);
 
     /** Convenience method that returns a {@link FileType#Local} file handle. */
-    public FileHandle local(String path);
+    FileHandle local(String path);
 
     /**
      * Returns the external storage path directory. This is the SD card on Android and the home directory of the current user on
      * the desktop.
      */
-    public String getExternalStoragePath();
+    String getExternalStoragePath();
 
     /**
      * Returns true if the external storage is ready for file IO. Eg, on Android, the SD card is not available when mounted for use
      * with a PC.
      */
-    public boolean isExternalStorageAvailable();
+    boolean isExternalStorageAvailable();
 
     /**
      * Returns the local storage path directory. This is the private files directory on Android and the directory of the jar on the
      * desktop.
      */
-    public String getLocalStoragePath();
+    String getLocalStoragePath();
 
     /** Returns true if the local storage is ready for file IO. */
-    public boolean isLocalStorageAvailable();
+    boolean isLocalStorageAvailable();
 }

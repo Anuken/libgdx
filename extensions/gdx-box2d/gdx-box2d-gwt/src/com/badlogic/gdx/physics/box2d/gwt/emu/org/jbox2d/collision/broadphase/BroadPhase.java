@@ -11,7 +11,7 @@ import org.jbox2d.common.Vec2;
 
 public interface BroadPhase{
 
-    public static final int NULL_PROXY = -1;
+    int NULL_PROXY = -1;
 
     /**
      * Create a proxy with an initial AABB. Pairs are not reported until updatePairs is called.

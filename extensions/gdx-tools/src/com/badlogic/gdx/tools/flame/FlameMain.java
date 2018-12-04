@@ -64,7 +64,6 @@ import com.badlogic.gdx.utils.StreamUtils;
 import com.badlogic.gdx.utils.StringBuilder;
 import removed.garbage.InputEvent;
 import removed.garbage.Stage;
-import removed.garbage.ui.Label;
 import removed.garbage.ui.Skin;
 import removed.garbage.ui.Table;
 import removed.garbage.ui.TextButton;
@@ -154,7 +153,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
         public String desc;
         public InfluencerWrapper[] wrappers;
 
-        private ControllerType(String desc, InfluencerWrapper[] wrappers){
+        ControllerType(String desc, InfluencerWrapper[] wrappers){
             this.desc = desc;
             this.wrappers = wrappers;
         }
@@ -252,7 +251,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
                     JPanel panel = null;
                     addRow(controllerPropertiesPanel, getPanel(controller.emitter));
                     for(int i = 0, c = controller.influencers.size; i < c; ++i){
-                        Influencer influencer = (Influencer) controller.influencers.get(i);
+                        Influencer influencer = controller.influencers.get(i);
                         panel = getPanel(influencer);
                         if(panel != null)
                             addRow(controllerPropertiesPanel, panel, 1, i == c - 1 ? 1 : 0);
@@ -339,7 +338,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
 
     public void setVisible(String name, boolean visible){
         for(Component component : controllerPropertiesPanel.getComponents())
-            if(component instanceof EditorPanel && ((EditorPanel) component).getName().equals(name))
+            if(component instanceof EditorPanel && component.getName().equals(name))
                 component.setVisible(visible);
     }
 
@@ -522,14 +521,14 @@ public class FlameMain extends JFrame implements AssetErrorListener{
                 replaced = controller.replaceInfluencer(RegionInfluencer.class, (RegionInfluencer) newInfluencer);
             }else if(ModelInfluencer.class.isAssignableFrom(type)){
                 ModelInfluencer newModelInfluencer = (ModelInfluencer) newInfluencer;
-                ModelInfluencer currentInfluencer = (ModelInfluencer) controller.findInfluencer(ModelInfluencer.class);
+                ModelInfluencer currentInfluencer = controller.findInfluencer(ModelInfluencer.class);
                 if(currentInfluencer != null){
                     newModelInfluencer.models.add(currentInfluencer.models.first());
                 }
                 replaced = controller.replaceInfluencer(ModelInfluencer.class, (ModelInfluencer) newInfluencer);
             }else if(ParticleControllerInfluencer.class.isAssignableFrom(type)){
                 ParticleControllerInfluencer newModelInfluencer = (ParticleControllerInfluencer) newInfluencer;
-                ParticleControllerInfluencer currentInfluencer = (ParticleControllerInfluencer) controller.findInfluencer(ParticleControllerInfluencer.class);
+                ParticleControllerInfluencer currentInfluencer = controller.findInfluencer(ParticleControllerInfluencer.class);
                 if(currentInfluencer != null){
                     newModelInfluencer.templates.add(currentInfluencer.templates.first());
                 }

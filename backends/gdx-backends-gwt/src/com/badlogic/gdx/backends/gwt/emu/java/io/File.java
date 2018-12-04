@@ -199,7 +199,7 @@ public class File{
         }
     }
 
-    public boolean createNewFile() throws IOException{
+    public boolean createNewFile(){
         if(exists()) return false;
         if(!parent.exists()) return false;
         LocalStorage.setItem(getCanonicalPath(), RandomAccessFile.btoa(""));
@@ -289,7 +289,7 @@ public class File{
         return new File[]{ROOT};
     }
 
-    public static File createTempFile(String prefix, String suffix, File directory) throws IOException{
+    public static File createTempFile(String prefix, String suffix, File directory){
         throw new RuntimeException("NYI: createTempFile");
     }
 

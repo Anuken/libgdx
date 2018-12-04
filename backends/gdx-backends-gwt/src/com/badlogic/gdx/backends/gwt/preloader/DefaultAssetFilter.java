@@ -26,8 +26,7 @@ public class DefaultAssetFilter implements AssetFilter{
 
     @Override
     public boolean accept(String file, boolean isDirectory){
-        if(isDirectory && file.endsWith(".svn")) return false;
-        return true;
+        return !isDirectory || !file.endsWith(".svn");
     }
 
     @Override

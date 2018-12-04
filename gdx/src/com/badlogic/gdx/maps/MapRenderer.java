@@ -28,7 +28,7 @@ public interface MapRenderer{
      *
      * @param camera the {@link OrthographicCamera}
      */
-    public void setView(OrthographicCamera camera);
+    void setView(OrthographicCamera camera);
 
     /**
      * Sets the projection matrix for rendering, as well as the bounds of the map which should be rendered. Make sure that the
@@ -40,16 +40,16 @@ public interface MapRenderer{
      * @param viewboundsWidth
      * @param viewboundsHeight
      */
-    public void setView(Matrix4 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth,
-                        float viewboundsHeight);
+    void setView(Matrix4 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth,
+                 float viewboundsHeight);
 
     /** Renders all the layers of a map. */
-    public void render();
+    void render();
 
     /**
      * Renders the given layers of a map.
      *
      * @param layers the layers to render.
      */
-    public void render(int[] layers);
+    void render(int[] layers);
 }

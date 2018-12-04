@@ -281,7 +281,6 @@ public class Vec2 implements Serializable{
         if(getClass() != obj.getClass()) return false;
         Vec2 other = (Vec2) obj;
         if(Float.floatToIntBits(x) != Float.floatToIntBits(other.x)) return false;
-        if(Float.floatToIntBits(y) != Float.floatToIntBits(other.y)) return false;
-        return true;
+        return Float.floatToIntBits(y) == Float.floatToIntBits(other.y);
     }
 }

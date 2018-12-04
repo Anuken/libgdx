@@ -53,7 +53,7 @@ public class HeaderFixer{
         }
 
         @Override
-        protected void processDir(Entry inputDir, ArrayList<Entry> value) throws Exception{
+        protected void processDir(Entry inputDir, ArrayList<Entry> value){
         }
     }
 

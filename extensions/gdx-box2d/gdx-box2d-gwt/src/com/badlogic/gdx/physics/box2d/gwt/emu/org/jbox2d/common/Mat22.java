@@ -574,8 +574,7 @@ public class Mat22 implements Serializable{
             if(other.ex != null) return false;
         }else if(!ex.equals(other.ex)) return false;
         if(ey == null){
-            if(other.ey != null) return false;
-        }else if(!ey.equals(other.ey)) return false;
-        return true;
+            return other.ey == null;
+        }else return ey.equals(other.ey);
     }
 }

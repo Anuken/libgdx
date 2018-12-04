@@ -309,8 +309,7 @@ public class NativeCodeGenerator{
         buffer.append("#include <" + fileName + ">\n");
     }
 
-    private void generateCppFile(ArrayList<JavaSegment> javaSegments, FileDescriptor hFile, FileDescriptor cppFile)
-    throws Exception{
+    private void generateCppFile(ArrayList<JavaSegment> javaSegments, FileDescriptor hFile, FileDescriptor cppFile){
         String headerFileContent = hFile.readString();
         ArrayList<CMethod> cMethods = cMethodParser.parse(headerFileContent).getMethods();
 

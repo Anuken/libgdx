@@ -24,21 +24,21 @@ package com.badlogic.gdx;
 public interface ApplicationLogger{
 
     /** Logs a message with a tag */
-    public void log(String tag, String message);
+    void log(String tag, String message);
 
     /** Logs a message and exception with a tag */
-    public void log(String tag, String message, Throwable exception);
+    void log(String tag, String message, Throwable exception);
 
     /** Logs an error message with a tag */
-    public void error(String tag, String message);
+    void error(String tag, String message);
 
     /** Logs an error message and exception with a tag */
-    public void error(String tag, String message, Throwable exception);
+    void error(String tag, String message, Throwable exception);
 
     /** Logs a debug message with a tag */
-    public void debug(String tag, String message);
+    void debug(String tag, String message);
 
     /** Logs a debug message and exception with a tag */
-    public void debug(String tag, String message, Throwable exception);
+    void debug(String tag, String message, Throwable exception);
 
 }

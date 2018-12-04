@@ -48,14 +48,14 @@ public interface ContactListener{
      *
      * @param contact
      */
-    public void beginContact(Contact contact);
+    void beginContact(Contact contact);
 
     /**
      * Called when two fixtures cease to touch.
      *
      * @param contact
      */
-    public void endContact(Contact contact);
+    void endContact(Contact contact);
 
     /**
      * This is called after a contact is updated. This allows you to inspect a
@@ -74,7 +74,7 @@ public interface ContactListener{
      * @param contact
      * @param oldManifold
      */
-    public void preSolve(Contact contact, Manifold oldManifold);
+    void preSolve(Contact contact, Manifold oldManifold);
 
     /**
      * This lets you inspect a contact after the solver is finished. This is useful
@@ -88,5 +88,5 @@ public interface ContactListener{
      * @param impulse this is usually a pooled variable, so it will be modified after
      * this call
      */
-    public void postSolve(Contact contact, ContactImpulse impulse);
+    void postSolve(Contact contact, ContactImpulse impulse);
 }

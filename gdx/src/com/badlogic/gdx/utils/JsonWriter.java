@@ -166,7 +166,7 @@ public class JsonWriter extends Writer{
         }
     }
 
-    static public enum OutputType{
+    public enum OutputType{
         /** Normal JSON, with all its double quotes. */
         json,
         /** Like JSON, but names are only double quoted if necessary. */

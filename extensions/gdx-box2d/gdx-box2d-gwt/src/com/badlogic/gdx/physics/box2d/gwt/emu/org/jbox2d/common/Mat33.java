@@ -284,8 +284,7 @@ public class Mat33 implements Serializable{
             if(other.ey != null) return false;
         }else if(!ey.equals(other.ey)) return false;
         if(ez == null){
-            if(other.ez != null) return false;
-        }else if(!ez.equals(other.ez)) return false;
-        return true;
+            return other.ez == null;
+        }else return ez.equals(other.ez);
     }
 }

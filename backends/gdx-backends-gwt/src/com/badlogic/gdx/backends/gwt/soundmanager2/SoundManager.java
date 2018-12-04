@@ -19,9 +19,9 @@ package com.badlogic.gdx.backends.gwt.soundmanager2;
 public class SoundManager{
 
     public interface SoundManagerCallback{
-        public void onready();
+        void onready();
 
-        public void ontimeout(String status, String errorType);
+        void ontimeout(String status, String errorType);
     }
 
     public static final native SoundManager getInstance() /*-{

@@ -51,7 +51,7 @@ import java.util.Map;
 public interface Net{
 
     /** HTTP response interface with methods to get the response data as a byte[], a {@link String} or an {@link InputStream}. */
-    public static interface HttpResponse{
+    interface HttpResponse{
         /**
          * Returns the data of the HTTP response as a byte[].
          * <p>
@@ -109,12 +109,12 @@ public interface Net{
      * <li>DELETE</li>
      * </ul>
      */
-    public static interface HttpMethods{
+    interface HttpMethods{
 
-        public static final String GET = "GET";
-        public static final String POST = "POST";
-        public static final String PUT = "PUT";
-        public static final String DELETE = "DELETE";
+        String GET = "GET";
+        String POST = "POST";
+        String PUT = "PUT";
+        String DELETE = "DELETE";
 
     }
 
@@ -152,7 +152,7 @@ public interface Net{
      * });
      * </pre>
      */
-    public static class HttpRequest implements Poolable{
+    class HttpRequest implements Poolable{
 
         private String httpMethod;
         private String url;
@@ -328,7 +328,7 @@ public interface Net{
      * Listener to be able to do custom logic once the {@link HttpResponse} is ready to be processed, register it with
      * {@link Net#sendHttpRequest(HttpRequest, HttpResponseListener)}.
      */
-    public static interface HttpResponseListener{
+    interface HttpResponseListener{
 
         /**
          * Called when the {@link HttpRequest} has been processed and there is a {@link HttpResponse} ready. Passing data to the
@@ -372,9 +372,9 @@ public interface Net{
      * @param httpResponseListener The {@link HttpResponseListener} to call once the HTTP response is ready to be processed. Could
      * be null, in that case no listener is called.
      */
-    public void sendHttpRequest(HttpRequest httpRequest, HttpResponseListener httpResponseListener);
+    void sendHttpRequest(HttpRequest httpRequest, HttpResponseListener httpResponseListener);
 
-    public void cancelHttpRequest(HttpRequest httpRequest);
+    void cancelHttpRequest(HttpRequest httpRequest);
 
     /**
      * Protocol used by {@link Net#newServerSocket(Protocol, int, ServerSocketHints)} and
@@ -382,7 +382,7 @@ public interface Net{
      *
      * @author mzechner
      */
-    public enum Protocol{
+    enum Protocol{
         TCP
     }
 
@@ -396,7 +396,7 @@ public interface Net{
      * @return the {@link ServerSocket}
      * @throws GdxRuntimeException in case the socket couldn't be opened
      */
-    public ServerSocket newServerSocket(Protocol protocol, String hostname, int port, ServerSocketHints hints);
+    ServerSocket newServerSocket(Protocol protocol, String hostname, int port, ServerSocketHints hints);
 
     /**
      * Creates a new server socket on the given port, using the given {@link Protocol}, waiting for incoming connections.
@@ -407,7 +407,7 @@ public interface Net{
      * @return the {@link ServerSocket}
      * @throws GdxRuntimeException in case the socket couldn't be opened
      */
-    public ServerSocket newServerSocket(Protocol protocol, int port, ServerSocketHints hints);
+    ServerSocket newServerSocket(Protocol protocol, int port, ServerSocketHints hints);
 
     /**
      * Creates a new TCP client socket that connects to the given host and port.
@@ -418,7 +418,7 @@ public interface Net{
      * system.
      * @return GdxRuntimeException in case the socket couldn't be opened
      */
-    public Socket newClientSocket(Protocol protocol, String host, int port, SocketHints hints);
+    Socket newClientSocket(Protocol protocol, String host, int port, SocketHints hints);
 
     /**
      * Launches the default browser to display a URI. If the default browser is not able to handle the specified URI, the
@@ -430,5 +430,5 @@ public interface Net{
      * @param URI the URI to be opened.
      * @return false if it is known the uri was not opened, true otherwise.
      */
-    public boolean openURI(String URI);
+    boolean openURI(String URI);
 }

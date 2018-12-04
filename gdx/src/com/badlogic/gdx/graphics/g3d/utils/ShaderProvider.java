@@ -37,5 +37,5 @@ public interface ShaderProvider{
     Shader getShader(Renderable renderable);
 
     /** Disposes all resources created by the provider */
-    public void dispose();
+    void dispose();
 }

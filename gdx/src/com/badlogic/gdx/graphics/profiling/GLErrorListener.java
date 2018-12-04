@@ -34,12 +34,12 @@ public interface GLErrorListener{
      *
      * @see GLInterceptor#resolveErrorNumber(int)
      */
-    public void onError(int error);
+    void onError(int error);
 
     // Basic implementations
 
     /** Listener that will log using Gdx.app.error GL error name and GL function. */
-    public static final GLErrorListener LOGGING_LISTENER = new GLErrorListener(){
+    GLErrorListener LOGGING_LISTENER = new GLErrorListener(){
         @Override
         public void onError(int error){
             String place = null;
@@ -67,7 +67,7 @@ public interface GLErrorListener{
     };
 
     /** Listener that will throw a GdxRuntimeException with error name. */
-    public static final GLErrorListener THROWING_LISTENER = new GLErrorListener(){
+    GLErrorListener THROWING_LISTENER = new GLErrorListener(){
         @Override
         public void onError(int error){
             throw new GdxRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));

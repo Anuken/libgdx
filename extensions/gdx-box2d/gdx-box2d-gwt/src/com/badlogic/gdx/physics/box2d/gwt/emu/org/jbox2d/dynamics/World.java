@@ -1987,7 +1987,7 @@ class WorldQueryWrapper implements TreeCallback{
 
     BroadPhase broadPhase;
     QueryCallback callback;
-};
+}
 
 
 class WorldRayCastWrapper implements TreeRayCastCallback{
@@ -2017,4 +2017,4 @@ class WorldRayCastWrapper implements TreeRayCastCallback{
 
     BroadPhase broadPhase;
     RayCastCallback callback;
-};
+}

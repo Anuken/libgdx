@@ -23,46 +23,46 @@ import com.badlogic.gdx.maps.MapProperties;
 /** @brief Generalises the concept of tile in a TiledMap */
 public interface TiledMapTile{
 
-    public enum BlendMode{
+    enum BlendMode{
         NONE, ALPHA
     }
 
-    public int getId();
+    int getId();
 
-    public void setId(int id);
+    void setId(int id);
 
     /** @return the {@link BlendMode} to use for rendering the tile */
-    public BlendMode getBlendMode();
+    BlendMode getBlendMode();
 
     /**
      * Sets the {@link BlendMode} to use for rendering the tile
      *
      * @param blendMode the blend mode to use for rendering the tile
      */
-    public void setBlendMode(BlendMode blendMode);
+    void setBlendMode(BlendMode blendMode);
 
     /** @return texture region used to render the tile */
-    public TextureRegion getTextureRegion();
+    TextureRegion getTextureRegion();
 
     /** Sets the texture region used to render the tile */
-    public void setTextureRegion(TextureRegion textureRegion);
+    void setTextureRegion(TextureRegion textureRegion);
 
     /** @return the amount to offset the x position when rendering the tile */
-    public float getOffsetX();
+    float getOffsetX();
 
     /** Set the amount to offset the x position when rendering the tile */
-    public void setOffsetX(float offsetX);
+    void setOffsetX(float offsetX);
 
     /** @return the amount to offset the y position when rendering the tile */
-    public float getOffsetY();
+    float getOffsetY();
 
     /** Set the amount to offset the y position when rendering the tile */
-    public void setOffsetY(float offsetY);
+    void setOffsetY(float offsetY);
 
     /** @return tile's properties set */
-    public MapProperties getProperties();
+    MapProperties getProperties();
 
     /** @return collection of objects contained in the tile */
-    public MapObjects getObjects();
+    MapObjects getObjects();
 
 }

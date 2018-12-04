@@ -90,7 +90,7 @@ class SpawnInfluencerPanel extends InfluencerPanel<SpawnInfluencer> implements T
 
     protected void setPrimitiveSpawnShape(PrimitiveSpawnShapeValue shape, boolean showEdges, SpawnSide side){
         setSpawnShapeValue(shape);
-        SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+        SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
         influencer.spawnShapeValue = shape;
         widthPanel.setValue(shape.getSpawnWidth());
         heightPanel.setValue(shape.getSpawnHeight());
@@ -141,7 +141,7 @@ class SpawnInfluencerPanel extends InfluencerPanel<SpawnInfluencer> implements T
     }
 
     public void update(FlameMain editor){
-        SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+        SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
         shapeCombo.setSelectedItem(spawnShapeToString(influencer.spawnShapeValue));
     }
 
@@ -231,7 +231,7 @@ class SpawnInfluencerPanel extends InfluencerPanel<SpawnInfluencer> implements T
 
         edgesCheckbox.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
-                SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+                SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
                 PrimitiveSpawnShapeValue shapeValue = (PrimitiveSpawnShapeValue) influencer.spawnShapeValue;
                 shapeValue.setEdges(edgesCheckbox.isSelected());
                 setEdgesVisible(true);
@@ -241,7 +241,7 @@ class SpawnInfluencerPanel extends InfluencerPanel<SpawnInfluencer> implements T
         sideCombo.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
                 SpawnSide side = (SpawnSide) sideCombo.getSelectedItem();
-                SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+                SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
                 EllipseSpawnShapeValue shapeValue = (EllipseSpawnShapeValue) influencer.spawnShapeValue;
                 shapeValue.setSide(side);
             }
@@ -257,10 +257,10 @@ class SpawnInfluencerPanel extends InfluencerPanel<SpawnInfluencer> implements T
         weightMeshSpawnShapeValue.setMesh(mesh, model);
         meshSpawnShapeValue.setMesh(mesh, model);
         if(shapeCombo.getSelectedItem() == SPAWN_SHAPE_WEIGHT_MESH){
-            SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+            SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
             influencer.spawnShapeValue = weightMeshSpawnShapeValue;
         }else if(shapeCombo.getSelectedItem() == SPAWN_SHAPE_MESH){
-            SpawnInfluencer influencer = (SpawnInfluencer) editor.getEmitter().findInfluencer(SpawnInfluencer.class);
+            SpawnInfluencer influencer = editor.getEmitter().findInfluencer(SpawnInfluencer.class);
             influencer.spawnShapeValue = meshSpawnShapeValue;
         }
         editor.restart();

@@ -29,5 +29,5 @@ import java.awt.image.BufferedImage;
  */
 public interface Effect{
     /** Called to draw the effect. */
-    public void draw(BufferedImage image, Graphics2D g, UnicodeFont unicodeFont, Glyph glyph);
+    void draw(BufferedImage image, Graphics2D g, UnicodeFont unicodeFont, Glyph glyph);
 }

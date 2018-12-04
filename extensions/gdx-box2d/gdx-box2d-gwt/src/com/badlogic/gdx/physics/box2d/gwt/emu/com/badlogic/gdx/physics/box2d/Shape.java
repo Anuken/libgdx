@@ -34,8 +34,6 @@ public abstract class Shape{
         Circle, Polygon, Edge, Chain,
     }
 
-    ;
-
     public final org.jbox2d.collision.shapes.Shape shape;
 
     public Shape(org.jbox2d.collision.shapes.Shape shape){

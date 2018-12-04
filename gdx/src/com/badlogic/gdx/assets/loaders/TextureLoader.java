@@ -43,8 +43,6 @@ public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoade
         Texture texture;
     }
 
-    ;
-
     TextureLoaderInfo info = new TextureLoaderInfo();
 
     public TextureLoader(FileHandleResolver resolver){

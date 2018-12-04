@@ -28,8 +28,6 @@ public class CubemapLoader extends AsynchronousAssetLoader<Cubemap, CubemapLoade
         Cubemap cubemap;
     }
 
-    ;
-
     CubemapLoaderInfo info = new CubemapLoaderInfo();
 
     public CubemapLoader(FileHandleResolver resolver){

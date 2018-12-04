@@ -64,7 +64,7 @@ public class DynamicsInfluencerPanel extends InfluencerPanel<DynamicsInfluencer>
 
         //Add
         for(int i = 0, c = influencer.velocities.size; i < c; ++i){
-            velocities.add(new VelocityWrapper((DynamicsModifier) influencer.velocities.items[i], true));
+            velocities.add(new VelocityWrapper(influencer.velocities.items[i], true));
             velocityTableModel.addRow(new Object[]{"Velocity " + i, true});
         }
 
@@ -175,7 +175,7 @@ public class DynamicsInfluencerPanel extends InfluencerPanel<DynamicsInfluencer>
 
     protected void velocityChecked(int index, boolean isChecked){
         ParticleController controller = editor.getEmitter();
-        DynamicsInfluencer influencer = (DynamicsInfluencer) controller.findInfluencer(DynamicsInfluencer.class);
+        DynamicsInfluencer influencer = controller.findInfluencer(DynamicsInfluencer.class);
         influencer.velocities.clear();
         velocities.get(index).isActive = isChecked;
         for(VelocityWrapper wrapper : velocities){
@@ -263,7 +263,7 @@ public class DynamicsInfluencerPanel extends InfluencerPanel<DynamicsInfluencer>
 
         //Remove the velocity from the table
         ParticleController controller = editor.getEmitter();
-        DynamicsInfluencer influencer = (DynamicsInfluencer) controller.findInfluencer(DynamicsInfluencer.class);
+        DynamicsInfluencer influencer = controller.findInfluencer(DynamicsInfluencer.class);
         influencer.velocities.removeValue(velocities.removeIndex(row).velocityValue, true);
         velocityTableModel.removeRow(row);
 
@@ -277,7 +277,7 @@ public class DynamicsInfluencerPanel extends InfluencerPanel<DynamicsInfluencer>
     protected void createVelocity(Object selectedItem){
         //Add the velocity to the table and to the influencer
         ParticleController controller = editor.getEmitter();
-        DynamicsInfluencer influencer = (DynamicsInfluencer) controller.findInfluencer(DynamicsInfluencer.class);
+        DynamicsInfluencer influencer = controller.findInfluencer(DynamicsInfluencer.class);
         VelocityWrapper wrapper = new VelocityWrapper(createVelocityValue(selectedItem), true);
         velocities.add(wrapper);
         influencer.velocities.add(wrapper.velocityValue);

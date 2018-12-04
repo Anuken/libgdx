@@ -50,7 +50,7 @@ import org.jbox2d.common.Vec2;
  */
 public class Manifold{
 
-    public static enum ManifoldType{
+    public enum ManifoldType{
         CIRCLES, FACE_A, FACE_B
     }
 

@@ -21,7 +21,7 @@ public class StringWriter extends Writer{
         out = new StringBuffer(initialCapacity);
     }
 
-    public void write(char[] b, int offset, int length) throws IOException{
+    public void write(char[] b, int offset, int length){
         out.append(b, offset, length);
     }
 
@@ -33,9 +33,9 @@ public class StringWriter extends Writer{
         return out;
     }
 
-    public void flush() throws IOException{
+    public void flush(){
     }
 
-    public void close() throws IOException{
+    public void close(){
     }
 }

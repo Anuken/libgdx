@@ -202,5 +202,4 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
         }
     }
 
-    ;
 }

@@ -23,15 +23,15 @@ import com.badlogic.gdx.controllers.desktop.ois.OisJoystick.OisPov;
  * @author Nathan Sweet
  */
 public interface OisListener{
-    public void buttonPressed(OisJoystick joystick, int buttonIndex);
+    void buttonPressed(OisJoystick joystick, int buttonIndex);
 
-    public void buttonReleased(OisJoystick joystick, int buttonIndex);
+    void buttonReleased(OisJoystick joystick, int buttonIndex);
 
-    public void axisMoved(OisJoystick joystick, int axisIndex, float value);
+    void axisMoved(OisJoystick joystick, int axisIndex, float value);
 
-    public void povMoved(OisJoystick joystick, int povIndex, OisPov value);
+    void povMoved(OisJoystick joystick, int povIndex, OisPov value);
 
-    public void xSliderMoved(OisJoystick joystick, int sliderIndex, boolean value);
+    void xSliderMoved(OisJoystick joystick, int sliderIndex, boolean value);
 
-    public void ySliderMoved(OisJoystick joystick, int sliderIndex, boolean value);
+    void ySliderMoved(OisJoystick joystick, int sliderIndex, boolean value);
 }

@@ -684,11 +684,10 @@ public abstract class CharBuffer extends Buffer implements Comparable<CharBuffer
      * @param target the target char buffer.
      * @return the number of chars copied or -1 if there are no chars left to be read from this buffer.
      * @throws IllegalArgumentException if {@code target} is this buffer.
-     * @throws IOException if an I/O error occurs.
      * @throws ReadOnlyBufferException if no changes may be made to the contents of {@code target}.
      * @since Android 1.0
      */
-    public int read(CharBuffer target) throws IOException{
+    public int read(CharBuffer target){
         if(target == this){
             throw new IllegalArgumentException();
         }

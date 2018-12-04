@@ -273,9 +273,8 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
      *
      * @param root the root XML element
      * @return a list of filenames for images inside image layers
-     * @throws IOException
      */
-    protected Array<FileHandle> loadImages(Element root, FileHandle tmxFile) throws IOException{
+    protected Array<FileHandle> loadImages(Element root, FileHandle tmxFile){
         Array<FileHandle> images = new Array<FileHandle>();
 
         for(Element imageLayer : root.getChildrenByName("imagelayer")){

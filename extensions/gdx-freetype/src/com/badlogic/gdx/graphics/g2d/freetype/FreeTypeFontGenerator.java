@@ -760,7 +760,7 @@ public class FreeTypeFontGenerator implements Disposable{
     }
 
     /** Font smoothing algorithm. */
-    public static enum Hinting{
+    public enum Hinting{
         /** Disable hinting. Generated glyphs will look blurry. */
         None,
         /** Light hinting with fuzzy edges, but close to the original shape */

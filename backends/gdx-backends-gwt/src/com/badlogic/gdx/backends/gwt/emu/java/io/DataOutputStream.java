@@ -51,7 +51,7 @@ public class DataOutputStream extends OutputStream implements DataOutput{
         os.write(v);
     }
 
-    public void writeChars(String s) throws IOException{
+    public void writeChars(String s){
         throw new RuntimeException("writeChars NYI");
     }
 

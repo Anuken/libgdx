@@ -238,8 +238,7 @@ public class SharedLibraryLoader{
         }
         try{
             new FileOutputStream(testFile).close();
-            if(!canExecute(testFile)) return false;
-            return true;
+            return canExecute(testFile);
         }catch(Throwable ex){
             return false;
         }finally{

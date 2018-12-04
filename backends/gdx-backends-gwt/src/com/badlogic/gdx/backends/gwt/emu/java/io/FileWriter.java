@@ -28,7 +28,7 @@ public class FileWriter{
         file.close();
     }
 
-    public void flush() throws IOException{
+    public void flush(){
         file.flush();
     }
 

@@ -119,11 +119,10 @@ public abstract class Reader implements Readable, Closeable{
      * {@code false}.
      *
      * @return always {@code false}.
-     * @throws IOException if this reader is closed or some other I/O error occurs.
      * @see #read()
      * @see #read(char[])
      * @see #read(char[], int, int) */
-    public boolean ready() throws IOException{
+    public boolean ready(){
         return false;
     }
 

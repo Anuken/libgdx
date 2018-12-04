@@ -34,45 +34,45 @@ import com.badlogic.gdx.graphics.glutils.FileTextureArrayData;
 public interface TextureArrayData{
 
     /** @return whether the TextureArrayData is prepared or not. */
-    public boolean isPrepared();
+    boolean isPrepared();
 
     /**
      * Prepares the TextureArrayData for a call to {@link #consumeTextureArrayData()}. This method can be called from a non OpenGL thread and
      * should thus not interact with OpenGL.
      */
-    public void prepare();
+    void prepare();
 
     /**
      * Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL ES texture. The caller must bind an OpenGL ES texture. A
      * call to {@link #prepare()} must preceed a call to this method. Any internal data structures created in {@link #prepare()}
      * should be disposed of here.
      */
-    public void consumeTextureArrayData();
+    void consumeTextureArrayData();
 
     /** @return the width of this TextureArray */
-    public int getWidth();
+    int getWidth();
 
     /** @return the height of this TextureArray */
-    public int getHeight();
+    int getHeight();
 
     /** @return the layer count of this TextureArray */
-    public int getDepth();
+    int getDepth();
 
     /** @return whether this implementation can cope with a EGL context loss. */
-    public boolean isManaged();
+    boolean isManaged();
 
     /** @return the internal format of this TextureArray */
-    public int getInternalFormat();
+    int getInternalFormat();
 
     /** @return the GL type of this TextureArray */
-    public int getGLType();
+    int getGLType();
 
     /**
      * Provides static method to instantiate the right implementation.
      *
      * @author Tomski
      */
-    public static class Factory{
+    class Factory{
 
         public static TextureArrayData loadFromFiles(Pixmap.Format format, boolean useMipMaps, FileHandle... files){
             return new FileTextureArrayData(format, useMipMaps, files);

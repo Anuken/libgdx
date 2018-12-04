@@ -75,7 +75,7 @@ public class TexturePackerFileProcessor extends FileProcessor{
         // Collect pack.json setting files.
         final ArrayList<File> settingsFiles = new ArrayList();
         FileProcessor settingsProcessor = new FileProcessor(){
-            protected void processFile(Entry inputFile) throws Exception{
+            protected void processFile(Entry inputFile){
                 settingsFiles.add(inputFile.inputFile);
             }
         };
@@ -146,7 +146,7 @@ public class TexturePackerFileProcessor extends FileProcessor{
 
         for(int i = 0, n = rootSettings.scale.length; i < n; i++){
             FileProcessor deleteProcessor = new FileProcessor(){
-                protected void processFile(Entry inputFile) throws Exception{
+                protected void processFile(Entry inputFile){
                     inputFile.inputFile.delete();
                 }
             };

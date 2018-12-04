@@ -61,7 +61,7 @@ public class Compatibility{
         return impl.createString(b, s, l);
     }
 
-    public static String newString(byte[] b, String encoding) throws UnsupportedEncodingException{
+    public static String newString(byte[] b, String encoding){
         return impl.createString(b, encoding);
     }
 

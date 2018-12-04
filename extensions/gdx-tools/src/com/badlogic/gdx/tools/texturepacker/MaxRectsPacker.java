@@ -758,7 +758,7 @@ public class MaxRectsPacker implements Packer{
         }
     }
 
-    static public enum FreeRectChoiceHeuristic{
+    public enum FreeRectChoiceHeuristic{
         /** BSSF: Positions the rectangle against the short side of a free rectangle into which it fits the best. */
         BestShortSideFit,
         /** BLSF: Positions the rectangle against the long side of a free rectangle into which it fits the best. */
@@ -771,5 +771,4 @@ public class MaxRectsPacker implements Packer{
         ContactPointRule
     }
 
-    ;
 }

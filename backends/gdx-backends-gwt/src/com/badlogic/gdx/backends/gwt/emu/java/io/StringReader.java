@@ -18,7 +18,7 @@ public class StringReader extends Reader{
         this.in = in;
     }
 
-    public int read(char[] b, int offset, int length) throws IOException{
+    public int read(char[] b, int offset, int length){
         if(length > in.length() - position){
             length = in.length() - position;
             if(length <= 0){
@@ -30,6 +30,6 @@ public class StringReader extends Reader{
         return length;
     }
 
-    public void close() throws IOException{
+    public void close(){
     }
 }

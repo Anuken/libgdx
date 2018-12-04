@@ -118,8 +118,6 @@ public class CameraInputController extends GestureDetector{
         }
     }
 
-    ;
-
     protected final CameraGestureListener gestureListener;
 
     protected CameraInputController(final CameraGestureListener gestureListener, final Camera camera){

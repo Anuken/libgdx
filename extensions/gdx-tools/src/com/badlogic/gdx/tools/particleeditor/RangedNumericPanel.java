@@ -42,14 +42,14 @@ class RangedNumericPanel extends EditorPanel{
 
         minSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setLowMin((Float) minSlider.getValue());
-                if(!maxSlider.isVisible()) value.setLowMax((Float) minSlider.getValue());
+                value.setLowMin(minSlider.getValue());
+                if(!maxSlider.isVisible()) value.setLowMax(minSlider.getValue());
             }
         });
 
         maxSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setLowMax((Float) maxSlider.getValue());
+                value.setLowMax(maxSlider.getValue());
             }
         });
 
@@ -59,7 +59,7 @@ class RangedNumericPanel extends EditorPanel{
                 maxSlider.setVisible(visible);
                 rangeButton.setText(visible ? "<" : ">");
                 Slider slider = visible ? maxSlider : minSlider;
-                value.setLowMax((Float) slider.getValue());
+                value.setLowMax(slider.getValue());
             }
         });
 

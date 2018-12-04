@@ -50,7 +50,7 @@ class Slider extends JPanel{
         return size;
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         EventQueue.invokeLater(new Runnable(){
             public void run(){
                 JFrame frame = new JFrame();

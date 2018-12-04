@@ -1389,8 +1389,7 @@ public class GLSurfaceViewAPI18 extends SurfaceView implements SurfaceHolder.Cal
                             // When pausing, optionally release the EGL Context:
                             if(pausing && mHaveEglContext){
                                 GLSurfaceViewAPI18 view = mGLSurfaceViewWeakRef.get();
-                                boolean preserveEglContextOnPause = view == null ?
-                                false : view.mPreserveEGLContextOnPause;
+                                boolean preserveEglContextOnPause = view != null && view.mPreserveEGLContextOnPause;
                                 if(!preserveEglContextOnPause || sGLThreadManager.shouldReleaseEGLContextWhenPausing()){
                                     stopEglContextLocked();
                                     if(LOG_SURFACE){

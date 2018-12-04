@@ -53,5 +53,5 @@ public interface RayCastCallback{
      * closest hit, 1 to continue
      * @param fraction
      */
-    public float reportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction);
+    float reportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction);
 }

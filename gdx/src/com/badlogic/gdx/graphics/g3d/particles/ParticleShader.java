@@ -44,7 +44,7 @@ public class ParticleShader extends BaseShader{
         Billboard, Point
     }
 
-    public static enum AlignMode{
+    public enum AlignMode{
         Screen, ViewPoint// , ParticleDirection
     }
 

@@ -24,7 +24,7 @@ public class AssetLoaderParameters<T>{
      * @author mzechner
      */
     public interface LoadedCallback{
-        public void finishedLoading(AssetManager assetManager, String fileName, Class type);
+        void finishedLoading(AssetManager assetManager, String fileName, Class type);
     }
 
     public LoadedCallback loadedCallback;

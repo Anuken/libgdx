@@ -67,7 +67,7 @@ class EditorPanel extends JPanel{
             updateActive();
         }
 
-        boolean alwaysActive = value == null ? true : value.isAlwaysActive();
+        boolean alwaysActive = value == null || value.isAlwaysActive();
         activeButton.setVisible(!alwaysActive);
         if(alwaysActive) contentPanel.setVisible(true);
         if(alwaysActive) titlePanel.setCursor(null);

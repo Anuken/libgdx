@@ -571,8 +571,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
         // circle button on Xperia Play shouldn't need catchBack == true
         if(keyCode == Keys.BUTTON_CIRCLE) return true;
         if(catchBack && keyCode == android.view.KeyEvent.KEYCODE_BACK) return true;
-        if(catchMenu && keyCode == android.view.KeyEvent.KEYCODE_MENU) return true;
-        return false;
+        return catchMenu && keyCode == android.view.KeyEvent.KEYCODE_MENU;
     }
 
     @Override
@@ -799,8 +798,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
             return (Build.VERSION.SDK_INT >= 11 && vibrator != null) ? vibrator.hasVibrator() : vibrator != null;
         if(peripheral == Peripheral.MultitouchScreen) return hasMultitouch;
         if(peripheral == Peripheral.RotationVector) return rotationVectorAvailable;
-        if(peripheral == Peripheral.Pressure) return true;
-        return false;
+        return peripheral == Peripheral.Pressure;
     }
 
     public int getFreePointerIndex(){

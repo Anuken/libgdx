@@ -1814,8 +1814,7 @@ public class ParticleSystem{
             if(obj == null) return false;
             if(getClass() != obj.getClass()) return false;
             Proxy other = (Proxy) obj;
-            if(tag != other.tag) return false;
-            return true;
+            return tag == other.tag;
         }
     }
 
@@ -1956,8 +1955,6 @@ public class ParticleSystem{
         ParticleGroup groupA;
         ParticleGroup groupB;
     }
-
-    ;
 
     static class DestroyParticlesInShapeCallback implements ParticleQueryCallback{
         ParticleSystem system;
@@ -2169,5 +2166,4 @@ public class ParticleSystem{
         }
     }
 
-    ;
 }

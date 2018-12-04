@@ -28,8 +28,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.*;
 
-import java.nio.*;
 import java.lang.StringBuilder;
+import java.nio.*;
 
 /**
  * <p>

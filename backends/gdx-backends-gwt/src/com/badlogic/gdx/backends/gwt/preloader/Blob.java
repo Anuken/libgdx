@@ -39,7 +39,7 @@ public final class Blob{
         return new InputStream(){
 
             @Override
-            public int read() throws IOException{
+            public int read(){
                 if(pos == length()) return -1;
                 return get(pos++) & 0xff;
             }

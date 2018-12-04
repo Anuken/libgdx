@@ -23,7 +23,7 @@ package com.badlogic.gdx.controllers.desktop.ois;
 public class OisJoystick{
     static private final int MIN_AXIS = -32768, MAX_AXIS = 32767;
 
-    static public enum OisPov{
+    public enum OisPov{
         Centered, North, South, East, West, NorthEast, SouthEast, NorthWest, SouthWest
     }
 

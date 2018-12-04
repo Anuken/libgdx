@@ -19,9 +19,9 @@ package com.badlogic.gdx.jnigen.parsing;
 import java.util.ArrayList;
 
 public interface CMethodParser{
-    public CMethodParserResult parse(String headerFile);
+    CMethodParserResult parse(String headerFile);
 
-    public class CMethodParserResult{
+    class CMethodParserResult{
         final ArrayList<CMethod> methods;
 
         public CMethodParserResult(ArrayList<CMethod> methods){
@@ -33,7 +33,7 @@ public interface CMethodParser{
         }
     }
 
-    public static class CMethod{
+    class CMethod{
         final String returnType;
         final String head;
         final String[] argumentTypes;

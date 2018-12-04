@@ -26,5 +26,5 @@ import com.badlogic.gdx.files.FileHandle;
  * @author mzechner
  */
 public interface FileHandleResolver{
-    public FileHandle resolve(String fileName);
+    FileHandle resolve(String fileName);
 }

@@ -481,8 +481,6 @@ public class Lwjgl3Window implements Disposable{
         if(getClass() != obj.getClass())
             return false;
         Lwjgl3Window other = (Lwjgl3Window) obj;
-        if(windowHandle != other.windowHandle)
-            return false;
-        return true;
+        return windowHandle == other.windowHandle;
     }
 }

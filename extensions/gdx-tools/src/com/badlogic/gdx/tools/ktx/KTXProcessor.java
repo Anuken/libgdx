@@ -28,8 +28,7 @@ public class KTXProcessor{
     final static byte[] HEADER_MAGIC = {(byte) 0x0AB, (byte) 0x04B, (byte) 0x054, (byte) 0x058, (byte) 0x020, (byte) 0x031,
     (byte) 0x031, (byte) 0x0BB, (byte) 0x00D, (byte) 0x00A, (byte) 0x01A, (byte) 0x00A};
 
-    public static void convert(String input, String output, boolean genMipmaps, boolean packETC1, boolean genAlphaAtlas)
-    throws Exception{
+    public static void convert(String input, String output, boolean genMipmaps, boolean packETC1, boolean genAlphaAtlas){
         Array<String> opts = new Array<String>(String.class);
         opts.add(input);
         opts.add(output);
@@ -40,7 +39,7 @@ public class KTXProcessor{
     }
 
     public static void convert(String inPx, String inNx, String inPy, String inNy, String inPz, String inNz, String output,
-                               boolean genMipmaps, boolean packETC1, boolean genAlphaAtlas) throws Exception{
+                               boolean genMipmaps, boolean packETC1, boolean genAlphaAtlas){
         Array<String> opts = new Array<String>(String.class);
         opts.add(inPx);
         opts.add(inNx);

@@ -48,7 +48,7 @@ public class NetJavaImpl{
         private final HttpURLConnection connection;
         private HttpStatus status;
 
-        public HttpClientResponse(HttpURLConnection connection) throws IOException{
+        public HttpClientResponse(HttpURLConnection connection){
             this.connection = connection;
             try{
                 this.status = new HttpStatus(connection.getResponseCode());
@@ -171,7 +171,7 @@ public class NetJavaImpl{
 
             asyncExecutor.submit(new AsyncTask<Void>(){
                 @Override
-                public Void call() throws Exception{
+                public Void call(){
                     try{
                         // Set the content for POST and PUT (GET has the information embedded in the URL)
                         if(doingOutPut){

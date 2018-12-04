@@ -42,7 +42,7 @@ public class FileDescriptor{
          * Path that is a fully qualified, absolute filesystem path. To ensure portability across platforms use absolute files only
          * when absolutely (heh) necessary.
          */
-        Absolute;
+        Absolute
     }
 
     protected File file;

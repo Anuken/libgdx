@@ -27,12 +27,12 @@ public interface Clipboard{
      *
      * @return the clipboard content or null
      */
-    public String getContents();
+    String getContents();
 
     /**
      * Sets the content of the system clipboard.
      *
      * @param content the content
      */
-    public void setContents(String content);
+    void setContents(String content);
 }

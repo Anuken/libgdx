@@ -87,14 +87,14 @@ abstract class DirectByteBuffer extends BaseByteBuffer implements HasArrayBuffer
 // if (position == limit) {
 // throw new BufferUnderflowException();
 // }
-        return (byte) byteArray.get(position++);
+        return byteArray.get(position++);
     }
 
     public final byte get(int index){
 // if (index < 0 || index >= limit) {
 // throw new IndexOutOfBoundsException();
 // }
-        return (byte) byteArray.get(index);
+        return byteArray.get(index);
     }
 
     public final double getDouble(){

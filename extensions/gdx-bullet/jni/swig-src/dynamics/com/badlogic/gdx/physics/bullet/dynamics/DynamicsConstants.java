@@ -9,19 +9,19 @@
 package com.badlogic.gdx.physics.bullet.dynamics;
 
 public interface DynamicsConstants{
-    public final static String btRigidBodyDataName = "btRigidBodyFloatData";
-    public final static String btTypedConstraintDataName = "btTypedConstraintFloatData";
-    public final static String btSliderConstraintDataName = "btSliderConstraintData";
-    public final static String btPoint2PointConstraintDataName = "btPoint2PointConstraintFloatData";
-    public final static String btGeneric6DofConstraintDataName = "btGeneric6DofConstraintData";
-    public final static int BT_6DOF_FLAGS_AXIS_SHIFT = 3;
-    public final static String btConeTwistConstraintDataName = "btConeTwistConstraintData";
-    public final static String btGeneric6DofSpringConstraintDataName = "btGeneric6DofSpringConstraintData";
-    public final static String btGeneric6DofSpring2ConstraintDataName = "btGeneric6DofSpring2ConstraintData";
-    public final static int BT_6DOF_FLAGS_AXIS_SHIFT2 = 4;
-    public final static int _BT_USE_CENTER_LIMIT_ = 1;
-    public final static String btHingeConstraintDataName = "btHingeConstraintFloatData";
-    public final static String btGearConstraintDataName = "btGearConstraintFloatData";
-    public final static String btMultiBodyDataName = "btMultiBodyFloatData";
-    public final static String btMultiBodyLinkDataName = "btMultiBodyLinkFloatData";
+    String btRigidBodyDataName = "btRigidBodyFloatData";
+    String btTypedConstraintDataName = "btTypedConstraintFloatData";
+    String btSliderConstraintDataName = "btSliderConstraintData";
+    String btPoint2PointConstraintDataName = "btPoint2PointConstraintFloatData";
+    String btGeneric6DofConstraintDataName = "btGeneric6DofConstraintData";
+    int BT_6DOF_FLAGS_AXIS_SHIFT = 3;
+    String btConeTwistConstraintDataName = "btConeTwistConstraintData";
+    String btGeneric6DofSpringConstraintDataName = "btGeneric6DofSpringConstraintData";
+    String btGeneric6DofSpring2ConstraintDataName = "btGeneric6DofSpring2ConstraintData";
+    int BT_6DOF_FLAGS_AXIS_SHIFT2 = 4;
+    int _BT_USE_CENTER_LIMIT_ = 1;
+    String btHingeConstraintDataName = "btHingeConstraintFloatData";
+    String btGearConstraintDataName = "btGearConstraintFloatData";
+    String btMultiBodyDataName = "btMultiBodyFloatData";
+    String btMultiBodyLinkDataName = "btMultiBodyLinkFloatData";
 }

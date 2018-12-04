@@ -21,11 +21,11 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapRenderer;
 
 public interface TiledMapRenderer extends MapRenderer{
-    public void renderObjects(MapLayer layer);
+    void renderObjects(MapLayer layer);
 
-    public void renderObject(MapObject object);
+    void renderObject(MapObject object);
 
-    public void renderTileLayer(TiledMapTileLayer layer);
+    void renderTileLayer(TiledMapTileLayer layer);
 
-    public void renderImageLayer(TiledMapImageLayer layer);
+    void renderImageLayer(TiledMapImageLayer layer);
 }

@@ -22,7 +22,7 @@ public class InputStreamReader extends Reader{
         this.utf8Decoder = new Utf8Decoder();
     }
 
-    public InputStreamReader(InputStream in, String encoding) throws UnsupportedEncodingException{
+    public InputStreamReader(InputStream in, String encoding){
         this(in);
 
         // FIXME this is bad, but some APIs seem to use "ISO-8859-1", fuckers...

@@ -28,9 +28,9 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
  * @author badlogic
  */
 public interface TextureProvider{
-    public Texture load(String fileName);
+    Texture load(String fileName);
 
-    public static class FileTextureProvider implements TextureProvider{
+    class FileTextureProvider implements TextureProvider{
         private Texture.TextureFilter minFilter, magFilter;
         private Texture.TextureWrap uWrap, vWrap;
         private boolean useMipMaps;
@@ -59,7 +59,7 @@ public interface TextureProvider{
         }
     }
 
-    public static class AssetTextureProvider implements TextureProvider{
+    class AssetTextureProvider implements TextureProvider{
         public final AssetManager assetManager;
 
         public AssetTextureProvider(final AssetManager assetManager){

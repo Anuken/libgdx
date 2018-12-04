@@ -18,7 +18,7 @@ public class BezierTest{
     private static float epsilon = Float.MIN_NORMAL;
     private static float epsilonApprimations = 1e-6f;
 
-    private static enum ImportType{
+    private enum ImportType{
         LibGDXArrays, JavaArrays, JavaVarArgs
     }
 

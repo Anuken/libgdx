@@ -234,7 +234,6 @@ public class AndroidFileHandle extends FileHandle{
                         fileDescriptor.close();
                     }catch(IOException e){
                     }
-                    ;
                 }
             }
         }

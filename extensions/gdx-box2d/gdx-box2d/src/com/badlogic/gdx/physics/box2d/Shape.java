@@ -39,8 +39,6 @@ public abstract class Shape{
         Circle, Edge, Polygon, Chain,
     }
 
-    ;
-
     /** the address of the shape **/
     protected long addr;
 

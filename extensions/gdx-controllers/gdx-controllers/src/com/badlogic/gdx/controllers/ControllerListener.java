@@ -29,14 +29,14 @@ public interface ControllerListener{
      *
      * @param controller
      */
-    public void connected(Controller controller);
+    void connected(Controller controller);
 
     /**
      * A {@link Controller} got disconnected.
      *
      * @param controller
      */
-    public void disconnected(Controller controller);
+    void disconnected(Controller controller);
 
     /**
      * A button on the {@link Controller} was pressed. The buttonCode is controller specific. The
@@ -46,7 +46,7 @@ public interface ControllerListener{
      * @param buttonCode
      * @return whether to hand the event to other listeners.
      */
-    public boolean buttonDown(Controller controller, int buttonCode);
+    boolean buttonDown(Controller controller, int buttonCode);
 
     /**
      * A button on the {@link Controller} was released. The buttonCode is controller specific. The
@@ -56,7 +56,7 @@ public interface ControllerListener{
      * @param buttonCode
      * @return whether to hand the event to other listeners.
      */
-    public boolean buttonUp(Controller controller, int buttonCode);
+    boolean buttonUp(Controller controller, int buttonCode);
 
     /**
      * An axis on the {@link Controller} moved. The axisCode is controller specific. The axis value is in the range [-1, 1]. The
@@ -67,7 +67,7 @@ public interface ControllerListener{
      * @param value the axis value, -1 to 1
      * @return whether to hand the event to other listeners.
      */
-    public boolean axisMoved(Controller controller, int axisCode, float value);
+    boolean axisMoved(Controller controller, int axisCode, float value);
 
     /**
      * A POV on the {@link Controller} moved. The povCode is controller specific. The
@@ -78,7 +78,7 @@ public interface ControllerListener{
      * @param value
      * @return whether to hand the event to other listeners.
      */
-    public boolean povMoved(Controller controller, int povCode, PovDirection value);
+    boolean povMoved(Controller controller, int povCode, PovDirection value);
 
     /**
      * An x-slider on the {@link Controller} moved. The sliderCode is controller specific. The
@@ -89,7 +89,7 @@ public interface ControllerListener{
      * @param value
      * @return whether to hand the event to other listeners.
      */
-    public boolean xSliderMoved(Controller controller, int sliderCode, boolean value);
+    boolean xSliderMoved(Controller controller, int sliderCode, boolean value);
 
     /**
      * An y-slider on the {@link Controller} moved. The sliderCode is controller specific. The
@@ -100,7 +100,7 @@ public interface ControllerListener{
      * @param value
      * @return whether to hand the event to other listeners.
      */
-    public boolean ySliderMoved(Controller controller, int sliderCode, boolean value);
+    boolean ySliderMoved(Controller controller, int sliderCode, boolean value);
 
     /**
      * An accelerometer value on the {@link Controller} changed. The accelerometerCode is controller specific. The
@@ -112,5 +112,5 @@ public interface ControllerListener{
      * @param value
      * @return whether to hand the event to other listeners.
      */
-    public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value);
+    boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value);
 }

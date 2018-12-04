@@ -27,6 +27,6 @@ package com.badlogic.gdx.backends.iosrobovm;
 public interface IOSViewControllerListener{
 
     /** Called when the {@link IOSApplication} root ViewController has appeared */
-    public void viewDidAppear(boolean animated);
+    void viewDidAppear(boolean animated);
 
 }

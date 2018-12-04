@@ -9,5 +9,5 @@
 package com.badlogic.gdx.physics.bullet.softbody;
 
 public interface SoftbodyConstants{
-    public final static String btSoftBodyDataName = "btSoftBodyFloatData";
+    String btSoftBodyDataName = "btSoftBodyFloatData";
 }

@@ -30,43 +30,43 @@ public interface Controller{
      * @param buttonCode
      * @return whether the button is pressed.
      */
-    public boolean getButton(int buttonCode);
+    boolean getButton(int buttonCode);
 
     /**
      * @param axisCode
      * @return the value of the axis, between -1 and 1
      */
-    public float getAxis(int axisCode);
+    float getAxis(int axisCode);
 
     /**
      * @param povCode
      * @return the {@link PovDirection}
      */
-    public PovDirection getPov(int povCode);
+    PovDirection getPov(int povCode);
 
     /**
      * @param sliderCode
      * @return whether the slider is pressed
      */
-    public boolean getSliderX(int sliderCode);
+    boolean getSliderX(int sliderCode);
 
     /**
      * @param sliderCode
      * @return whether the slider is pressed
      */
-    public boolean getSliderY(int sliderCode);
+    boolean getSliderY(int sliderCode);
 
     /**
      * @param accelerometerCode
      * @return the accelerometer values on the 3 axis, in m/s^2
      */
-    public Vector3 getAccelerometer(int accelerometerCode);
+    Vector3 getAccelerometer(int accelerometerCode);
 
     /** @param sensitivity the accelerometer sensitive, 0 (lowest) to 1 (highest) */
-    public void setAccelerometerSensitivity(float sensitivity);
+    void setAccelerometerSensitivity(float sensitivity);
 
     /** @return the device name */
-    public String getName();
+    String getName();
 
     /**
      * Adds a new {@link ControllerListener} to this {@link Controller}. The listener will receive calls in case the state of the
@@ -74,12 +74,12 @@ public interface Controller{
      *
      * @param listener
      */
-    public void addListener(ControllerListener listener);
+    void addListener(ControllerListener listener);
 
     /**
      * Removes the given {@link ControllerListener}
      *
      * @param listener
      */
-    public void removeListener(ControllerListener listener);
+    void removeListener(ControllerListener listener);
 }

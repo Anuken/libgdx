@@ -32,9 +32,9 @@ public interface ImageResolver{
      * @param name
      * @return the Texture for the given image name or null.
      */
-    public TextureRegion getImage(String name);
+    TextureRegion getImage(String name);
 
-    public static class DirectImageResolver implements ImageResolver{
+    class DirectImageResolver implements ImageResolver{
         private final ObjectMap<String, Texture> images;
 
         public DirectImageResolver(ObjectMap<String, Texture> images){
@@ -47,7 +47,7 @@ public interface ImageResolver{
         }
     }
 
-    public static class AssetManagerImageResolver implements ImageResolver{
+    class AssetManagerImageResolver implements ImageResolver{
         private final AssetManager assetManager;
 
         public AssetManagerImageResolver(AssetManager assetManager){
@@ -60,7 +60,7 @@ public interface ImageResolver{
         }
     }
 
-    public static class TextureAtlasImageResolver implements ImageResolver{
+    class TextureAtlasImageResolver implements ImageResolver{
         private final TextureAtlas atlas;
 
         public TextureAtlasImageResolver(TextureAtlas atlas){

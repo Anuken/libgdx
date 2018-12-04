@@ -69,14 +69,14 @@ class RangedNumericPanel extends ParticleValuePanel<RangedNumericValue>{
 
         minSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                RangedNumericPanel.this.value.setLowMin((Float) minSlider.getValue());
-                if(!maxSlider.isVisible()) RangedNumericPanel.this.value.setLowMax((Float) minSlider.getValue());
+                RangedNumericPanel.this.value.setLowMin(minSlider.getValue());
+                if(!maxSlider.isVisible()) RangedNumericPanel.this.value.setLowMax(minSlider.getValue());
             }
         });
 
         maxSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                RangedNumericPanel.this.value.setLowMax((Float) maxSlider.getValue());
+                RangedNumericPanel.this.value.setLowMax(maxSlider.getValue());
             }
         });
 
@@ -86,7 +86,7 @@ class RangedNumericPanel extends ParticleValuePanel<RangedNumericValue>{
                 maxSlider.setVisible(visible);
                 rangeButton.setText(visible ? "<" : ">");
                 Slider slider = visible ? maxSlider : minSlider;
-                RangedNumericPanel.this.value.setLowMax((Float) slider.getValue());
+                RangedNumericPanel.this.value.setLowMax(slider.getValue());
             }
         });
     }

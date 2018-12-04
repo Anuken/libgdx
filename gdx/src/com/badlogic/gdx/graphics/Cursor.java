@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Disposable;
  **/
 public interface Cursor extends Disposable{
 
-    public static enum SystemCursor{
+    enum SystemCursor{
         Arrow,
         Ibeam,
         Crosshair,

@@ -33,7 +33,7 @@ public interface InputProcessor{
      * @param keycode one of the constants in {@link Input.Keys}
      * @return whether the input was processed
      */
-    public boolean keyDown(int keycode);
+    boolean keyDown(int keycode);
 
     /**
      * Called when a key was released
@@ -41,7 +41,7 @@ public interface InputProcessor{
      * @param keycode one of the constants in {@link Input.Keys}
      * @return whether the input was processed
      */
-    public boolean keyUp(int keycode);
+    boolean keyUp(int keycode);
 
     /**
      * Called when a key was typed
@@ -49,7 +49,7 @@ public interface InputProcessor{
      * @param character The character
      * @return whether the input was processed
      */
-    public boolean keyTyped(char character);
+    boolean keyTyped(char character);
 
     /**
      * Called when the screen was touched or a mouse button was pressed. The button parameter will be {@link Buttons#LEFT} on iOS.
@@ -60,7 +60,7 @@ public interface InputProcessor{
      * @param button the button
      * @return whether the input was processed
      */
-    public boolean touchDown(int screenX, int screenY, int pointer, int button);
+    boolean touchDown(int screenX, int screenY, int pointer, int button);
 
     /**
      * Called when a finger was lifted or a mouse button was released. The button parameter will be {@link Buttons#LEFT} on iOS.
@@ -69,7 +69,7 @@ public interface InputProcessor{
      * @param button the button
      * @return whether the input was processed
      */
-    public boolean touchUp(int screenX, int screenY, int pointer, int button);
+    boolean touchUp(int screenX, int screenY, int pointer, int button);
 
     /**
      * Called when a finger or the mouse was dragged.
@@ -77,14 +77,14 @@ public interface InputProcessor{
      * @param pointer the pointer for the event.
      * @return whether the input was processed
      */
-    public boolean touchDragged(int screenX, int screenY, int pointer);
+    boolean touchDragged(int screenX, int screenY, int pointer);
 
     /**
      * Called when the mouse was moved without any buttons being pressed. Will not be called on iOS.
      *
      * @return whether the input was processed
      */
-    public boolean mouseMoved(int screenX, int screenY);
+    boolean mouseMoved(int screenX, int screenY);
 
     /**
      * Called when the mouse wheel was scrolled. Will not be called on iOS.
@@ -93,5 +93,5 @@ public interface InputProcessor{
      * @param amountY the vertical scroll amount, negative or positive depending on the direction the wheel was scrolled.
      * @return whether the input was processed.
      */
-    public boolean scrolled(float amountX, float amountY);
+    boolean scrolled(float amountX, float amountY);
 }

@@ -139,8 +139,7 @@ public class Vec3 implements Serializable{
         Vec3 other = (Vec3) obj;
         if(Float.floatToIntBits(x) != Float.floatToIntBits(other.x)) return false;
         if(Float.floatToIntBits(y) != Float.floatToIntBits(other.y)) return false;
-        if(Float.floatToIntBits(z) != Float.floatToIntBits(other.z)) return false;
-        return true;
+        return Float.floatToIntBits(z) == Float.floatToIntBits(other.z);
     }
 
     public final static float dot(Vec3 a, Vec3 b){

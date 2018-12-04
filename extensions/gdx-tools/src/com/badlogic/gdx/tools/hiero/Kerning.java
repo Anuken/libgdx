@@ -227,7 +227,7 @@ class Kerning{
 
         int position = input.getPosition();
 
-        input.seek((int) (subTablePosition + coverageOffset));
+        input.seek((subTablePosition + coverageOffset));
         int[] coverage = readCoverageTable();
 
         input.seek(position);

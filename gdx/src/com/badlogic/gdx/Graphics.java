@@ -45,7 +45,7 @@ public interface Graphics{
      *
      * @author mzechner
      */
-    public enum GraphicsType{
+    enum GraphicsType{
         AndroidGL, LWJGL, WebGL, iOSGL, JGLFW, Mock, LWJGL3
     }
 
@@ -54,7 +54,7 @@ public interface Graphics{
      *
      * @author mzechner
      */
-    public class DisplayMode{
+    class DisplayMode{
         /** the width in physical pixels **/
         public final int width;
         /** the height in physical pixles **/
@@ -81,7 +81,7 @@ public interface Graphics{
      *
      * @author badlogic
      */
-    public class Monitor{
+    class Monitor{
         public final int virtualX;
         public final int virtualY;
         public final String name;
@@ -94,7 +94,7 @@ public interface Graphics{
     }
 
     /** Class describing the bits per pixel, depth buffer precision, stencil precision and number of MSAA samples. */
-    public static class BufferFormat{
+    class BufferFormat{
         /* number of bits per color channel */
         public final int r, g, b, a;
         /* number of bits for depth and stencil buffer */
@@ -128,31 +128,31 @@ public interface Graphics{
      *
      * @return whether OpenGL ES 3.0 is available
      */
-    public boolean isGL30Available();
+    boolean isGL30Available();
 
     /** @return the {@link GL20} instance */
-    public GL20 getGL20();
+    GL20 getGL20();
 
     /** @return the {@link GL30} instance or null if not supported */
-    public GL30 getGL30();
+    GL30 getGL30();
 
     /** Set the GL20 instance **/
-    public void setGL20(GL20 gl20);
+    void setGL20(GL20 gl20);
 
     /** Set the GL30 instance **/
-    public void setGL30(GL30 gl30);
+    void setGL30(GL30 gl30);
 
     /** @return the width of the client area in logical pixels. */
-    public int getWidth();
+    int getWidth();
 
     /** @return the height of the client area in logical pixels */
-    public int getHeight();
+    int getHeight();
 
     /** @return the width of the framebuffer in physical pixels */
-    public int getBackBufferWidth();
+    int getBackBufferWidth();
 
     /** @return the height of the framebuffer in physical pixels */
-    public int getBackBufferHeight();
+    int getBackBufferHeight();
 
     /**
      * Returns the id of the current frame. The general contract of this method is that the id is incremented only when the
@@ -162,34 +162,34 @@ public interface Graphics{
      *
      * @return the id of the current frame
      */
-    public long getFrameId();
+    long getFrameId();
 
     /** @return the time span between the current frame and the last frame in seconds. Might be smoothed over n frames. */
-    public float getDeltaTime();
+    float getDeltaTime();
 
     /** @return the time span between the current frame and the last frame in seconds, without smoothing **/
-    public float getRawDeltaTime();
+    float getRawDeltaTime();
 
     /** @return the average number of frames per second */
-    public int getFramesPerSecond();
+    int getFramesPerSecond();
 
     /** @return the {@link GraphicsType} of this Graphics instance */
-    public GraphicsType getType();
+    GraphicsType getType();
 
     /** @return the {@link GLVersion} of this Graphics instance */
-    public GLVersion getGLVersion();
+    GLVersion getGLVersion();
 
     /** @return the pixels per inch on the x-axis */
-    public float getPpiX();
+    float getPpiX();
 
     /** @return the pixels per inch on the y-axis */
-    public float getPpiY();
+    float getPpiY();
 
     /** @return the pixels per centimeter on the x-axis */
-    public float getPpcX();
+    float getPpcX();
 
     /** @return the pixels per centimeter on the y-axis. */
-    public float getPpcY();
+    float getPpcY();
 
     /**
      * This is a scaling factor for the Density Independent Pixel unit, following the same conventions as
@@ -198,35 +198,35 @@ public interface Graphics{
      *
      * @return the logical density of the Display.
      */
-    public float getDensity();
+    float getDensity();
 
     /**
      * Whether the given backend supports a display mode change via calling {@link Graphics#setFullscreenMode(DisplayMode)}
      *
      * @return whether display mode changes are supported or not.
      */
-    public boolean supportsDisplayModeChange();
+    boolean supportsDisplayModeChange();
 
     /** @return the primary monitor **/
-    public Monitor getPrimaryMonitor();
+    Monitor getPrimaryMonitor();
 
     /** @return the monitor the application's window is located on */
-    public Monitor getMonitor();
+    Monitor getMonitor();
 
     /** @return the currently connected {@link Monitor}s */
-    public Monitor[] getMonitors();
+    Monitor[] getMonitors();
 
     /** @return the supported fullscreen {@link DisplayMode}(s) of the monitor the window is on */
-    public DisplayMode[] getDisplayModes();
+    DisplayMode[] getDisplayModes();
 
     /** @return the supported fullscreen {@link DisplayMode}s of the given {@link Monitor} */
-    public DisplayMode[] getDisplayModes(Monitor monitor);
+    DisplayMode[] getDisplayModes(Monitor monitor);
 
     /** @return the current {@link DisplayMode} of the monitor the window is on. */
-    public DisplayMode getDisplayMode();
+    DisplayMode getDisplayMode();
 
     /** @return the current {@link DisplayMode} of the given {@link Monitor} */
-    public DisplayMode getDisplayMode(Monitor monitor);
+    DisplayMode getDisplayMode(Monitor monitor);
 
     /**
      * Sets the window to full-screen mode.
@@ -234,7 +234,7 @@ public interface Graphics{
      * @param displayMode the display mode.
      * @return whether the operation succeeded.
      */
-    public boolean setFullscreenMode(DisplayMode displayMode);
+    boolean setFullscreenMode(DisplayMode displayMode);
 
     /**
      * Sets the window to windowed mode.
@@ -243,14 +243,14 @@ public interface Graphics{
      * @param height the height in pixels
      * @return whether the operation succeeded
      */
-    public boolean setWindowedMode(int width, int height);
+    boolean setWindowedMode(int width, int height);
 
     /**
      * Sets the title of the window. Ignored on Android.
      *
      * @param title the title.
      */
-    public void setTitle(String title);
+    void setTitle(String title);
 
     /**
      * Sets the window decoration as enabled or disabled. On Android, this will enable/disable
@@ -264,7 +264,7 @@ public interface Graphics{
      *
      * @param undecorated true if the window border or status bar should be hidden. false otherwise.
      */
-    public void setUndecorated(boolean undecorated);
+    void setUndecorated(boolean undecorated);
 
     /**
      * Sets whether or not the window should be resizable. Ignored on Android.
@@ -277,23 +277,23 @@ public interface Graphics{
      *
      * @param resizable
      */
-    public void setResizable(boolean resizable);
+    void setResizable(boolean resizable);
 
     /**
      * Enable/Disable vsynching. This is a best-effort attempt which might not work on all platforms.
      *
      * @param vsync vsync enabled or not.
      */
-    public void setVSync(boolean vsync);
+    void setVSync(boolean vsync);
 
     /** @return the format of the color, depth and stencil buffer in a {@link BufferFormat} instance */
-    public BufferFormat getBufferFormat();
+    BufferFormat getBufferFormat();
 
     /**
      * @param extension the extension name
      * @return whether the extension is supported
      */
-    public boolean supportsExtension(String extension);
+    boolean supportsExtension(String extension);
 
     /**
      * Sets whether to render continuously. In case rendering is performed non-continuously, the following events will trigger a
@@ -312,16 +312,16 @@ public interface Graphics{
      *
      * @param isContinuous whether the rendering should be continuous or not.
      */
-    public void setContinuousRendering(boolean isContinuous);
+    void setContinuousRendering(boolean isContinuous);
 
     /** @return whether rendering is continuous. */
-    public boolean isContinuousRendering();
+    boolean isContinuousRendering();
 
     /** Requests a new frame to be rendered if the rendering mode is non-continuous. This method can be called from any thread. */
-    public void requestRendering();
+    void requestRendering();
 
     /** Whether the app is fullscreen or not */
-    public boolean isFullscreen();
+    boolean isFullscreen();
 
     /**
      * Create a new cursor represented by the {@link com.badlogic.gdx.graphics.Pixmap}. The Pixmap must be in RGBA8888 format,
@@ -334,7 +334,7 @@ public interface Graphics{
      * @param yHotspot the y location of the hotspot pixel within the cursor image (origin top-left corner)
      * @return a cursor object that can be used by calling {@link #setCursor(Cursor)} or null if not supported
      */
-    public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
+    Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
 
     /**
      * Only viable on the lwjgl-backend and on the gwt-backend. Browsers that support cursor:url() and support the png format (the
@@ -343,10 +343,10 @@ public interface Graphics{
      *
      * @param cursor the mouse cursor as a {@link com.badlogic.gdx.graphics.Cursor}
      */
-    public void setCursor(Cursor cursor);
+    void setCursor(Cursor cursor);
 
     /**
      * Sets one of the predefined {@link SystemCursor}s
      */
-    public void setSystemCursor(SystemCursor systemCursor);
+    void setSystemCursor(SystemCursor systemCursor);
 }

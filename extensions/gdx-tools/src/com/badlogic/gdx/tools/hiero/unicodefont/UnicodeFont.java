@@ -685,10 +685,10 @@ public class UnicodeFont{
                 try{
                     // Java 7+.
                     font2D = Class.forName("sun.font.FontUtilities").getDeclaredMethod("getFont2D", new Class[]{Font.class})
-                    .invoke(null, new Object[]{font});
+                    .invoke(null, font);
                 }catch(Throwable ignored){
                     font2D = Class.forName("sun.font.FontManager").getDeclaredMethod("getFont2D", new Class[]{Font.class})
-                    .invoke(null, new Object[]{font});
+                    .invoke(null, font);
                 }
                 Field platNameField = Class.forName("sun.font.PhysicalFont").getDeclaredField("platName");
                 platNameField.setAccessible(true);
@@ -719,7 +719,7 @@ public class UnicodeFont{
         }
     };
 
-    static public enum RenderType{
+    public enum RenderType{
         Java, Native, FreeType
     }
 }

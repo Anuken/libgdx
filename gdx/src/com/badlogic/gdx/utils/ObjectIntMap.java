@@ -762,7 +762,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>>{
 
     static public class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K>{
         public Keys(ObjectIntMap<K> map){
-            super((ObjectIntMap<K>) map);
+            super(map);
         }
 
         public boolean hasNext(){

@@ -794,9 +794,7 @@ public class DynamicTree implements BroadPhaseStrategy{
         }
         assert (node == m_nodes[node.id]);
 
-        if(node == m_root){
-            assert (node.parent == null);
-        }
+        assert node != m_root || (node.parent == null);
 
         DynamicTreeNode child1 = node.child1;
         DynamicTreeNode child2 = node.child2;

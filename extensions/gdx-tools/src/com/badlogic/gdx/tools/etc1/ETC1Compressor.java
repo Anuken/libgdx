@@ -37,7 +37,7 @@ public class ETC1Compressor{
         }
 
         @Override
-        protected void processFile(Entry entry) throws Exception{
+        protected void processFile(Entry entry){
             System.out.println("Processing " + entry.inputFile);
             Pixmap pixmap = new Pixmap(new FileHandle(entry.inputFile));
             if(pixmap.getFormat() != Format.RGB888 && pixmap.getFormat() != Format.RGB565){

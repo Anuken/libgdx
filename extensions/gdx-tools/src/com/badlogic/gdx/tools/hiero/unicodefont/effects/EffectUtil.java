@@ -110,7 +110,7 @@ public class EffectUtil{
      * and actual value, or a String[2] whose first element is the display value and second element is the actual value.
      */
     static public Value optionValue(String name, final String currentValue, final String[][] options, final String description){
-        return new DefaultValue(name, currentValue.toString()){
+        return new DefaultValue(name, currentValue){
             public void showDialog(){
                 int selectedIndex = -1;
                 DefaultComboBoxModel model = new DefaultComboBoxModel();
@@ -130,7 +130,7 @@ public class EffectUtil{
 
             public String toString(){
                 for(int i = 0; i < options.length; i++)
-                    if(getValue(i).equals(value)) return options[i][0].toString();
+                    if(getValue(i).equals(value)) return options[i][0];
                 return "";
             }
 
@@ -183,7 +183,7 @@ public class EffectUtil{
 
         public String toString(){
             if(value == null) return "";
-            return value.toString();
+            return value;
         }
 
         public boolean showValueDialog(final JComponent component, String description){
@@ -202,8 +202,6 @@ public class EffectUtil{
             return dialog.okPressed;
         }
     }
-
-    ;
 
     /** Provides generic functionality for a dialog to configure a value. */
     static private class ValueDialog extends JDialog{

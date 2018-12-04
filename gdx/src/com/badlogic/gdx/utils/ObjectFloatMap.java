@@ -761,7 +761,7 @@ public class ObjectFloatMap<K> implements Iterable<ObjectFloatMap.Entry<K>>{
 
     static public class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K>{
         public Keys(ObjectFloatMap<K> map){
-            super((ObjectFloatMap<K>) map);
+            super(map);
         }
 
         public boolean hasNext(){

@@ -8,7 +8,7 @@ public class EventManager{
     private static EventManager mInstance;
 
     public interface Listener{
-        public void handle(int aEventType, Object aEventData);
+        void handle(int aEventType, Object aEventData);
     }
 
     private ObjectMap<Integer, Array<Listener>> mListeners;

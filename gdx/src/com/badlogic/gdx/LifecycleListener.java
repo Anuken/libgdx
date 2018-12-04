@@ -29,11 +29,11 @@ package com.badlogic.gdx;
  */
 public interface LifecycleListener{
     /** Called when the {@link Application} is about to pause */
-    public void pause();
+    void pause();
 
     /** Called when the Application is about to be resumed */
-    public void resume();
+    void resume();
 
     /** Called when the {@link Application} is about to be disposed */
-    public void dispose();
+    void dispose();
 }

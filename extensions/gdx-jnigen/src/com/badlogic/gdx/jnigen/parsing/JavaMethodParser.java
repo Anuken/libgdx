@@ -19,15 +19,15 @@ package com.badlogic.gdx.jnigen.parsing;
 import java.util.ArrayList;
 
 public interface JavaMethodParser{
-    public ArrayList<JavaSegment> parse(String classFile) throws Exception;
+    ArrayList<JavaSegment> parse(String classFile) throws Exception;
 
-    public interface JavaSegment{
-        public int getStartIndex();
+    interface JavaSegment{
+        int getStartIndex();
 
-        public int getEndIndex();
+        int getEndIndex();
     }
 
-    public class JniSection implements JavaSegment{
+    class JniSection implements JavaSegment{
         private String nativeCode;
         private final int startIndex;
         private final int endIndex;
@@ -60,7 +60,7 @@ public interface JavaMethodParser{
         }
     }
 
-    public enum ArgumentType{
+    enum ArgumentType{
         Boolean("jboolean"), Byte("jbyte"), Char("jchar"), Short("jshort"), Integer("jint"), Long("jlong"), Float("jfloat"), Double(
         "jdouble"), Buffer("jobject"), ByteBuffer("jobject"), CharBuffer("jobject"), ShortBuffer("jobject"), IntBuffer("jobject"), LongBuffer(
         "jobject"), FloatBuffer("jobject"), DoubleBuffer("jobject"), BooleanArray("jbooleanArray"), ByteArray("jbyteArray"), CharArray(
@@ -124,7 +124,7 @@ public interface JavaMethodParser{
         }
     }
 
-    public static class Argument{
+    class Argument{
         final ArgumentType type;
         private final String name;
 
@@ -148,7 +148,7 @@ public interface JavaMethodParser{
     }
 
     /** @author mzechner */
-    public static class JavaMethod implements JavaSegment{
+    class JavaMethod implements JavaSegment{
         private final String className;
         private final String name;
         private final boolean isStatic;

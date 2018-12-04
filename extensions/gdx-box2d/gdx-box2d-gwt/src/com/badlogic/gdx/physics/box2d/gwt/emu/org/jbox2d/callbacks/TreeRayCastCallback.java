@@ -39,5 +39,5 @@ public interface TreeRayCastCallback{
      * @param nodeId
      * @return the fraction to the node
      */
-    public float raycastCallback(RayCastInput input, int nodeId);
+    float raycastCallback(RayCastInput input, int nodeId);
 }

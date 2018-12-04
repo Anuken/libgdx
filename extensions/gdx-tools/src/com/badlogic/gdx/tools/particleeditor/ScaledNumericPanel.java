@@ -55,24 +55,24 @@ class ScaledNumericPanel extends EditorPanel{
             independentCheckbox.setSelected(((ParticleEmitter.IndependentScaledNumericValue) value).isIndependent());
         lowMinSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setLowMin((Float) lowMinSlider.getValue());
-                if(!lowMaxSlider.isVisible()) value.setLowMax((Float) lowMinSlider.getValue());
+                value.setLowMin(lowMinSlider.getValue());
+                if(!lowMaxSlider.isVisible()) value.setLowMax(lowMinSlider.getValue());
             }
         });
         lowMaxSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setLowMax((Float) lowMaxSlider.getValue());
+                value.setLowMax(lowMaxSlider.getValue());
             }
         });
         highMinSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setHighMin((Float) highMinSlider.getValue());
-                if(!highMaxSlider.isVisible()) value.setHighMax((Float) highMinSlider.getValue());
+                value.setHighMin(highMinSlider.getValue());
+                if(!highMaxSlider.isVisible()) value.setHighMax(highMinSlider.getValue());
             }
         });
         highMaxSlider.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event){
-                value.setHighMax((Float) highMaxSlider.getValue());
+                value.setHighMax(highMaxSlider.getValue());
             }
         });
 
@@ -99,7 +99,7 @@ class ScaledNumericPanel extends EditorPanel{
                 constraints.gridx = visible ? 5 : 4;
                 layout.setConstraints(lowRangeButton, constraints);
                 Slider slider = visible ? lowMaxSlider : lowMinSlider;
-                value.setLowMax((Float) slider.getValue());
+                value.setLowMax(slider.getValue());
             }
         });
 
@@ -113,7 +113,7 @@ class ScaledNumericPanel extends EditorPanel{
                 constraints.gridx = visible ? 5 : 4;
                 layout.setConstraints(highRangeButton, constraints);
                 Slider slider = visible ? highMaxSlider : highMinSlider;
-                value.setHighMax((Float) slider.getValue());
+                value.setHighMax(slider.getValue());
             }
         });
 

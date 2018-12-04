@@ -48,7 +48,7 @@ public interface GroupStrategy{
      * @param group the group
      * @return the {@link ShaderProgram}
      */
-    public ShaderProgram getGroupShader(int group);
+    ShaderProgram getGroupShader(int group);
 
     /**
      * Assigns a group to a decal
@@ -56,7 +56,7 @@ public interface GroupStrategy{
      * @param decal Decal to assign group to
      * @return group assigned
      */
-    public int decideGroup(Decal decal);
+    int decideGroup(Decal decal);
 
     /**
      * Invoked directly before rendering the contents of a group
@@ -64,18 +64,18 @@ public interface GroupStrategy{
      * @param group Group that will be rendered
      * @param contents Array of entries of arrays containing all the decals in the group
      */
-    public void beforeGroup(int group, Array<Decal> contents);
+    void beforeGroup(int group, Array<Decal> contents);
 
     /**
      * Invoked directly after rendering of a group has completed
      *
      * @param group Group which completed rendering
      */
-    public void afterGroup(int group);
+    void afterGroup(int group);
 
     /** Invoked before rendering any group */
-    public void beforeGroups();
+    void beforeGroups();
 
     /** Invoked after having rendered all groups */
-    public void afterGroups();
+    void afterGroups();
 }

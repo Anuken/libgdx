@@ -39,10 +39,10 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 public class ResourceData<T> implements Json.Serializable{
 
     /** This interface must be implemented by any class requiring additional assets to be loaded/saved */
-    public static interface Configurable<T>{
-        public void save(AssetManager manager, ResourceData<T> resources);
+    public interface Configurable<T>{
+        void save(AssetManager manager, ResourceData<T> resources);
 
-        public void load(AssetManager manager, ResourceData<T> resources);
+        void load(AssetManager manager, ResourceData<T> resources);
     }
 
     /**

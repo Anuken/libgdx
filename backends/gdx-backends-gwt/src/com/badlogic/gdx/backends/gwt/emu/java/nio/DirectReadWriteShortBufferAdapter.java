@@ -86,7 +86,7 @@ final class DirectReadWriteShortBufferAdapter extends ShortBuffer implements Has
 // if (position == limit) {
 // throw new BufferUnderflowException();
 // }
-        return (short) shortArray.get(position++);
+        return shortArray.get(position++);
     }
 
     @Override
@@ -94,7 +94,7 @@ final class DirectReadWriteShortBufferAdapter extends ShortBuffer implements Has
 // if (index < 0 || index >= limit) {
 // throw new IndexOutOfBoundsException();
 // }
-        return (short) shortArray.get(index);
+        return shortArray.get(index);
     }
 
     @Override

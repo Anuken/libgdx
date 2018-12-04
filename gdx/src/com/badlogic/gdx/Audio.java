@@ -49,7 +49,7 @@ public interface Audio{
      * @return the AudioDevice
      * @throws GdxRuntimeException in case the device could not be created
      */
-    public AudioDevice newAudioDevice(int samplingRate, boolean isMono);
+    AudioDevice newAudioDevice(int samplingRate, boolean isMono);
 
     /**
      * Creates a new {@link AudioRecorder}. The AudioRecorder has to be disposed after it is no longer used.
@@ -59,7 +59,7 @@ public interface Audio{
      * @return the AudioRecorder
      * @throws GdxRuntimeException in case the recorder could not be created
      */
-    public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono);
+    AudioRecorder newAudioRecorder(int samplingRate, boolean isMono);
 
     /**
      * <p>
@@ -79,7 +79,7 @@ public interface Audio{
      * @return the new Sound
      * @throws GdxRuntimeException in case the sound could not be loaded
      */
-    public Sound newSound(FileHandle fileHandle);
+    Sound newSound(FileHandle fileHandle);
 
     /**
      * Creates a new {@link Music} instance which is used to play back a music stream from a file. Currently supported formats are
@@ -91,5 +91,5 @@ public interface Audio{
      * @return the new Music or null if the Music could not be loaded
      * @throws GdxRuntimeException in case the music could not be loaded
      */
-    public Music newMusic(FileHandle file);
+    Music newMusic(FileHandle file);
 }

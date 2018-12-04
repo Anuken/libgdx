@@ -81,7 +81,7 @@ public class DataInputStream extends FilterInputStream implements DataInput{
         return (a << 24) | (b << 16) | (c << 8) | d;
     }
 
-    public String readLine() throws IOException{
+    public String readLine(){
         throw new RuntimeException("readline NYI");
     }
 
@@ -142,7 +142,7 @@ public class DataInputStream extends FilterInputStream implements DataInput{
         return ((a << 8) | b);
     }
 
-    public int skipBytes(int n) throws IOException{
+    public int skipBytes(int n){
         // note: This is actually a valid implementation of this method, rendering it quite useless...
         return 0;
     }

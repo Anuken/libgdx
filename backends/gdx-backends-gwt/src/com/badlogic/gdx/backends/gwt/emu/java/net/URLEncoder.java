@@ -113,7 +113,7 @@ public class URLEncoder{
             }
         }
         if(start >= 0){
-            convert(s.substring(start, s.length()), buf, enc);
+            convert(s.substring(start), buf, enc);
         }
         return buf.toString();
     }

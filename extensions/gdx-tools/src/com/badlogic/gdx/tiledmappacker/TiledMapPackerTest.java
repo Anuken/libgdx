@@ -30,7 +30,7 @@ public class TiledMapPackerTest{
         NoArgs, DefaultUsage, Verbose, StripUnused, CombineTilesets, UnusedAndCombine, BadOption
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         String path = "../../tests/gdx-tests-android/assets/data/maps/";
         String input = path + "tiled-atlas-src";
         String output = path + "tiled-atlas-processed/deleteMe";

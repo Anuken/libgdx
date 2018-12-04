@@ -36,7 +36,7 @@ public class InflaterInputStream extends InputStream{
     }
 
     @Override
-    public int read() throws IOException{
+    public int read(){
         throw new GdxRuntimeException("InflaterInputStream not supported in GWT");
     }
 

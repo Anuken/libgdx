@@ -41,7 +41,7 @@ public class GwtGraphics implements Graphics{
 
         private final String name;
 
-        private OrientationLockType(String name){
+        OrientationLockType(String name){
             this.name = name;
         }
 
@@ -49,8 +49,6 @@ public class GwtGraphics implements Graphics{
             return name;
         }
     }
-
-    ;
 
     CanvasElement canvas;
     WebGLRenderingContext context;

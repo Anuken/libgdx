@@ -50,7 +50,7 @@ package org.jbox2d.collision;
  */
 public class ContactID implements Comparable<ContactID>{
 
-    public static enum Type{
+    public enum Type{
         VERTEX, FACE
     }
 

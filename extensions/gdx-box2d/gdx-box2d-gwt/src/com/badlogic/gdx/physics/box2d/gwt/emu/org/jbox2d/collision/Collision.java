@@ -885,7 +885,7 @@ public class Collision{
      *
      * @author Daniel Murphy
      */
-    public static enum PointState{
+    public enum PointState{
         /**
          * point does not exist
          */

@@ -112,7 +112,6 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
 
         if(useGLES30){
             context = EAGLContext.alloc().initWithAPI(EAGLRenderingAPI.GLES3);
-            ;
             if(context != null)
                 gl20 = gl30 = new IOSGLES30();
             else

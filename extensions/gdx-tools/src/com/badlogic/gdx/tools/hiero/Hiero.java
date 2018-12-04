@@ -309,7 +309,7 @@ public class Hiero extends JFrame{
     }
 
     void open(File file){
-        EffectPanel[] panels = (EffectPanel[]) effectPanels.toArray(new EffectPanel[effectPanels.size()]);
+        EffectPanel[] panels = effectPanels.toArray(new EffectPanel[effectPanels.size()]);
         for(int i = 0; i < panels.length; i++)
             panels[i].remove();
 
@@ -1293,9 +1293,8 @@ public class Hiero extends JFrame{
             if(getClass() != obj.getClass()) return false;
             final EffectPanel other = (EffectPanel) obj;
             if(effect == null){
-                if(other.effect != null) return false;
-            }else if(!effect.equals(other.effect)) return false;
-            return true;
+                return other.effect == null;
+            }else return effect.equals(other.effect);
         }
 
     }
@@ -1526,7 +1525,7 @@ public class Hiero extends JFrame{
         EXTENDED_CHARS = buffer.toString();
     }
 
-    public static void main(final String[] args) throws Exception{
+    public static void main(final String[] args){
         SwingUtilities.invokeLater(new Runnable(){
             public void run(){
                 new Hiero(args);

@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.Array;
  * {@link GroupStrategy GroupStrategies}.
  */
 public interface GroupPlug{
-    public void beforeGroup(Array<Decal> contents);
+    void beforeGroup(Array<Decal> contents);
 
-    public void afterGroup();
+    void afterGroup();
 }

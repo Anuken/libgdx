@@ -21,7 +21,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class SMSound{
 
     public interface SMSoundCallback{
-        public void onfinish();
+        void onfinish();
     }
 
     /** Constants for play state. */

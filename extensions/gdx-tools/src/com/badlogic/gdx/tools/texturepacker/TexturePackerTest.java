@@ -107,7 +107,7 @@ public class TexturePackerTest extends ApplicationAdapter{
         renderer.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         new LwjglApplication(new TexturePackerTest(), "", 640, 480);
     }
 }

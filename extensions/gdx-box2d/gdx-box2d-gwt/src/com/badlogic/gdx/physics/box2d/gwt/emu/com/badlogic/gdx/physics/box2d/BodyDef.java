@@ -34,7 +34,7 @@ public class BodyDef{
 
         private int value;
 
-        private BodyType(int value){
+        BodyType(int value){
             this.value = value;
         }
 
@@ -42,8 +42,6 @@ public class BodyDef{
             return value;
         }
     }
-
-    ;
 
     /** The body type: static, kinematic, or dynamic. Note: if a dynamic body would have zero mass, the mass is set to one. **/
     public BodyType type = BodyType.StaticBody;

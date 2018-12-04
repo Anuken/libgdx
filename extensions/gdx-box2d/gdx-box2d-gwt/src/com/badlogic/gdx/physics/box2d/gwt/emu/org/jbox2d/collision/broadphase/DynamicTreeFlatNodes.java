@@ -477,7 +477,7 @@ public class DynamicTreeFlatNodes implements BroadPhaseStrategy{
     private final void freeNode(int node){
         assert (node != NULL_NODE);
         assert (0 < m_nodeCount);
-        m_parent[node] = m_freeList != NULL_NODE ? m_freeList : NULL_NODE;
+        m_parent[node] = m_freeList;
         m_height[node] = -1;
         m_freeList = node;
         m_nodeCount--;
@@ -777,9 +777,7 @@ public class DynamicTreeFlatNodes implements BroadPhaseStrategy{
             return;
         }
 
-        if(node == m_root){
-            assert (m_parent[node] == NULL_NODE);
-        }
+        assert node != m_root || (m_parent[node] == NULL_NODE);
 
         int child1 = m_child1[node];
         int child2 = m_child2[node];
