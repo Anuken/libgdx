@@ -96,7 +96,7 @@ public class InputTest extends GdxTest implements InputProcessor {
 	}
 
 	@Override
-	public boolean scrolled (int amount) {
+	public boolean scrolled (float amountX, float amountY) {
 		Gdx.app.log("Input Test", "scrolled: " + amount);
 		return false;
 	}
