@@ -19,7 +19,7 @@ package com.badlogic.gdx.tiledmappacker;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.collection.IntMap;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -18,7 +18,7 @@ package com.badlogic.gdx;
 
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.Preferences;
+import com.badlogic.gdx.utils.io.Preferences;
 
 /**
  * <p>

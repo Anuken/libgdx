@@ -19,6 +19,7 @@ package com.badlogic.gdx.backends.lwjgl3.audio;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.audio.AudioRecorder;
+import com.badlogic.gdx.collection.*;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.*;

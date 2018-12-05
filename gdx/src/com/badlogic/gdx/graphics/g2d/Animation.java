@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
 /**

@@ -30,9 +30,9 @@ import apple.uikit.protocol.UIApplicationDelegate;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.iosmoe.objectal.OALAudioSession;
 import com.badlogic.gdx.backends.iosmoe.objectal.OALSimpleAudio;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.Preferences;
+import com.badlogic.gdx.utils.io.Preferences;
 import org.moe.natj.general.Pointer;
 import org.moe.natj.objc.ann.Selector;
 

@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.input;
 
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.SnapshotArray;
 
 /**
  * An {@link InputProcessor} that delegates to an ordered list of other InputProcessors. Delegation for an event stops if a

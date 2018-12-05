@@ -29,7 +29,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.glutils.FacedCubemapData;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.HashMap;

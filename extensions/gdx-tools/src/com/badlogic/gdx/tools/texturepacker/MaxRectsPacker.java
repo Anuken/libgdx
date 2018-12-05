@@ -18,8 +18,8 @@ package com.badlogic.gdx.tools.texturepacker;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.*;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Sort;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.Sort;
 
 import java.util.Comparator;
 

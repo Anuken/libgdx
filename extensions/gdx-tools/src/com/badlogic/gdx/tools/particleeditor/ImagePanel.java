@@ -18,7 +18,7 @@ package com.badlogic.gdx.tools.particleeditor;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.SpriteMode;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import javax.swing.*;
 import java.awt.*;

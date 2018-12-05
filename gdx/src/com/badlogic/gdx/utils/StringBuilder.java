@@ -918,10 +918,8 @@ public class StringBuilder implements Appendable, CharSequence{
                 append(prefix);
         }
         if(value >= 10000){
-            if(value >= 1000000000000000000L)
-                append0(digits[(int) (value % 10000000000000000000D / 1000000000000000000L)]);
-            if(value >= 100000000000000000L)
-                append0(digits[(int) (value % 1000000000000000000L / 100000000000000000L)]);
+            if(value >= 1000000000000000000L) append0(digits[(int) (value % 10000000000000000000D / 1000000000000000000L)]);
+            if(value >= 100000000000000000L) append0(digits[(int) (value % 1000000000000000000L / 100000000000000000L)]);
             if(value >= 10000000000000000L) append0(digits[(int) (value % 100000000000000000L / 10000000000000000L)]);
             if(value >= 1000000000000000L) append0(digits[(int) (value % 10000000000000000L / 1000000000000000L)]);
             if(value >= 100000000000000L) append0(digits[(int) (value % 1000000000000000L / 100000000000000L)]);

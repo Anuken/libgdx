@@ -4,7 +4,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.ByteBuffer;

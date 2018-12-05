@@ -16,6 +16,8 @@
 
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.collection.Array;
+
 /** @author xoppa */
 public class PerformanceCounters{
     private final static float nano2seconds = 1f / 1000000000.0f;

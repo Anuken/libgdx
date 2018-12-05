@@ -19,8 +19,8 @@ package com.badlogic.gdx.tools.particleeditor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

@@ -22,7 +22,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 /**
  * Makes {@link FreeTypeFontGenerator} managable via {@link AssetManager}.

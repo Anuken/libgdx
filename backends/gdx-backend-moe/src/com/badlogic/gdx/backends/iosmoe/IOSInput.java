@@ -35,9 +35,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.pooling.Pool;
 import org.moe.natj.general.ann.NInt;
 
 public class IOSInput implements Input{

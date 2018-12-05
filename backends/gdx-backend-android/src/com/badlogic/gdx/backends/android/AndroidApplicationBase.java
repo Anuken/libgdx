@@ -23,8 +23,8 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.SnapshotArray;
 
 /**
  * Interface that abstracts the Android application class usages, so that libGDX can be used with a fragment (or with any other

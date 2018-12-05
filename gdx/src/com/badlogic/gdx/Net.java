@@ -19,7 +19,7 @@ package com.badlogic.gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.net.*;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
 import java.io.InputStream;
 import java.io.OutputStream;

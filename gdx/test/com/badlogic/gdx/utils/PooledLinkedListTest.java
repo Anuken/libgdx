@@ -1,5 +1,6 @@
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.collection.PooledLinkedList;
 import org.junit.Before;
 import org.junit.Test;
 

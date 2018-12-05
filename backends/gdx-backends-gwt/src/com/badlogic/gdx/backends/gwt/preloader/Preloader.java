@@ -21,9 +21,9 @@ import com.badlogic.gdx.backends.gwt.GwtFileHandle;
 import com.badlogic.gdx.backends.gwt.preloader.AssetDownloader.AssetLoaderListener;
 import com.badlogic.gdx.backends.gwt.preloader.AssetFilter.AssetType;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
 

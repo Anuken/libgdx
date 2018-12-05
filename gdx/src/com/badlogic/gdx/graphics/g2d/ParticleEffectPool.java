@@ -17,8 +17,8 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.utils.pooling.Pool;
 
 public class ParticleEffectPool extends Pool<PooledEffect>{
     private final ParticleEffect effect;

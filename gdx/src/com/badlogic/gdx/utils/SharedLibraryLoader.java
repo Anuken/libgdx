@@ -16,6 +16,8 @@
 
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.utils.io.StreamUtils;
+
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.HashSet;

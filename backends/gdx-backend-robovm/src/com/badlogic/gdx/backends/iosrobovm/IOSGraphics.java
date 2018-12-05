@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.glkit.*;

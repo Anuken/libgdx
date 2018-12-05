@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.tools.hiero;
 
-import com.badlogic.gdx.utils.IntArray;
-import com.badlogic.gdx.utils.IntIntMap;
+import com.badlogic.gdx.collection.IntArray;
+import com.badlogic.gdx.collection.IntIntMap;
 
 import java.io.*;
 

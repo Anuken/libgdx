@@ -13,7 +13,7 @@ LOCAL_SRC_FILES := android/AndroidGL20.cpp\
 	com.badlogic.gdx.graphics.g2d.Gdx2DPixmap.cpp\
 	com.badlogic.gdx.graphics.glutils.ETC1.cpp\
 	com.badlogic.gdx.math.Matrix4.cpp\
-	com.badlogic.gdx.utils.BufferUtils.cpp\
+	com.badlogic.gdx.utils.io.BufferUtils.cpp\
 	etc1/etc1_utils.cpp\
 	gdx2d/gdx2d.c\
 	gdx2d/jpgd.cpp\

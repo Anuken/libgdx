@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.input;
 
-import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**

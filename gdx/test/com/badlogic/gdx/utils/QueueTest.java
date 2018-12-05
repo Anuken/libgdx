@@ -1,5 +1,6 @@
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.collection.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 

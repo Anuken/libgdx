@@ -1,7 +1,7 @@
 package com.badlogic.gdx.tools.flame;
 
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.ObjectMap;
 
 /** @author Inferno */
 public class EventManager{

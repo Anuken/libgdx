@@ -1,6 +1,6 @@
 package com.badlogic.gdx.math;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 /**
  * This class represents a cumulative distribution.

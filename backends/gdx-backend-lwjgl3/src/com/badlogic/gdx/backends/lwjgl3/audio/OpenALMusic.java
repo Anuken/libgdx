@@ -19,7 +19,7 @@ package com.badlogic.gdx.backends.lwjgl3.audio;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.FloatArray;
+import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;

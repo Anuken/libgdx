@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.maps;
 
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap;
 
 import java.util.Iterator;
 

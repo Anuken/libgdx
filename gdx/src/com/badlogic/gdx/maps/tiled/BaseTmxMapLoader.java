@@ -16,11 +16,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.geom.Polygon;
 import com.badlogic.gdx.math.geom.Polyline;
-import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.serialization.Base64Coder;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
-import com.badlogic.gdx.utils.XmlReader;
-import com.badlogic.gdx.utils.XmlReader.Element;
+import com.badlogic.gdx.utils.io.StreamUtils;
+import com.badlogic.gdx.utils.serialization.XmlReader;
+import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

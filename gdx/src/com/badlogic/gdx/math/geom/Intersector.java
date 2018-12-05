@@ -20,8 +20,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.geom.Plane.PlaneSide;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.FloatArray;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.FloatArray;
 
 import java.util.Arrays;
 import java.util.List;

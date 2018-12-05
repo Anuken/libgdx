@@ -1,6 +1,6 @@
 package com.badlogic.gdx.tools.flame;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;

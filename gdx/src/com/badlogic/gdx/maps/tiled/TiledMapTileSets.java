@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.maps.tiled;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import java.util.Iterator;
 

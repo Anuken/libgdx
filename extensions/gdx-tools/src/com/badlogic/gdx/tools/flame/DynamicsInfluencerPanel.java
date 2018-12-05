@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsInfluencer;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsModifier;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsModifier.*;
 import com.badlogic.gdx.tools.flame.FlameMain.ControllerType;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

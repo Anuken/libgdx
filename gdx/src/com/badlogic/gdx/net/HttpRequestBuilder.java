@@ -17,9 +17,9 @@
 package com.badlogic.gdx.net;
 
 import com.badlogic.gdx.Net.HttpRequest;
-import com.badlogic.gdx.utils.Base64Coder;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Pools;
+import com.badlogic.gdx.utils.serialization.Base64Coder;
+import com.badlogic.gdx.utils.serialization.Json;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.io.InputStream;
 import java.util.Map;

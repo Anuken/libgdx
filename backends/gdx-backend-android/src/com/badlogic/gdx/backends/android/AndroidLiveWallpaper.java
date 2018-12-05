@@ -26,7 +26,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.io.Preferences;
 
 /**
  * An implementation of the {@link Application} interface to be used with an AndroidLiveWallpaperService. Not directly

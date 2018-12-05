@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics;
 
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap;
 
 /**
  * A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the

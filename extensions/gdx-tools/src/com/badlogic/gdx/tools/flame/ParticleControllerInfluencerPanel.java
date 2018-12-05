@@ -3,7 +3,7 @@ package com.badlogic.gdx.tools.flame;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ParticleControllerInfluencer;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import java.awt.*;
 

@@ -18,10 +18,10 @@ package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.utils.ByteArray;
+import com.badlogic.gdx.collection.ByteArray;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;

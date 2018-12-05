@@ -29,7 +29,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.NumericValue;
 import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import javax.swing.*;

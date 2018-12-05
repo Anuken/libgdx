@@ -22,7 +22,7 @@ import com.badlogic.gdx.backends.iosmoe.objectal.ALChannelSource;
 import com.badlogic.gdx.backends.iosmoe.objectal.ALSource;
 import com.badlogic.gdx.backends.iosmoe.objectal.OALSimpleAudio;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.collection.IntArray;
 
 
 public class IOSSound implements Sound{

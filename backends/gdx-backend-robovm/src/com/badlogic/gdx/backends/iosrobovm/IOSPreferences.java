@@ -17,7 +17,7 @@
 package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Preferences;
+import com.badlogic.gdx.utils.io.Preferences;
 import org.robovm.apple.foundation.*;
 
 import java.io.File;

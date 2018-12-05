@@ -19,10 +19,10 @@ package com.badlogic.gdx.math;
 import com.badlogic.gdx.math.geom.GeometryUtils;
 import com.badlogic.gdx.math.geom.Intersector;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.utils.BooleanArray;
-import com.badlogic.gdx.utils.FloatArray;
-import com.badlogic.gdx.utils.IntArray;
-import com.badlogic.gdx.utils.ShortArray;
+import com.badlogic.gdx.collection.BooleanArray;
+import com.badlogic.gdx.collection.FloatArray;
+import com.badlogic.gdx.collection.IntArray;
+import com.badlogic.gdx.collection.ShortArray;
 
 /**
  * Delaunay triangulation. Adapted from Paul Bourke's triangulate: http://paulbourke.net/papers/triangulate/

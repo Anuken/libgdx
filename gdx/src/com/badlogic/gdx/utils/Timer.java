@@ -20,6 +20,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.LifecycleListener;
+import com.badlogic.gdx.collection.Array;
 
 /**
  * Executes tasks in the future on the main loop thread.

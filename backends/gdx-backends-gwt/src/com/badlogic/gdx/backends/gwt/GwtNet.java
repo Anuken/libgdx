@@ -19,7 +19,7 @@ package com.badlogic.gdx.backends.gwt;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.*;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
 

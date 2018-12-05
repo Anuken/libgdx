@@ -28,8 +28,8 @@ import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.IntArray;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.collection.IntArray;
+import com.badlogic.gdx.collection.ObjectMap;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

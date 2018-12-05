@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoader.TextureParameter>{
     TextureData data;

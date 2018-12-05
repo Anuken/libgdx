@@ -2,7 +2,7 @@ package com.badlogic.gdx.math;
 
 import com.badlogic.gdx.math.geom.Bezier;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

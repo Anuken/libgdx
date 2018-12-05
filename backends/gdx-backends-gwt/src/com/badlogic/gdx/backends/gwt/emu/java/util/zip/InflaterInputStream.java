@@ -18,7 +18,7 @@
 package java.util.zip;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

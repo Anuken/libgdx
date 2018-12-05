@@ -25,7 +25,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 

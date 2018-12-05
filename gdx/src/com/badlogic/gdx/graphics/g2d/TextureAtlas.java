@@ -18,6 +18,9 @@ package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.ObjectMap;
+import com.badlogic.gdx.collection.ObjectSet;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +29,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

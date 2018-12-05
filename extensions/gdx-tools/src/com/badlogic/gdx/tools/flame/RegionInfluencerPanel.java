@@ -3,7 +3,7 @@ package com.badlogic.gdx.tools.flame;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import javax.swing.*;
 import java.awt.*;

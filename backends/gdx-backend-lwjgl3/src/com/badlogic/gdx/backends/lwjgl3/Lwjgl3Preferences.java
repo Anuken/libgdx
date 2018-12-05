@@ -17,10 +17,10 @@
 package com.badlogic.gdx.backends.lwjgl3;
 
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.utils.Preferences;
+import com.badlogic.gdx.utils.io.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.*;
 import java.util.HashMap;

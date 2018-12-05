@@ -18,7 +18,7 @@ package com.badlogic.gdx.physics.box2d;
 
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 /**
  * A rigid body. These are created via World.CreateBody.

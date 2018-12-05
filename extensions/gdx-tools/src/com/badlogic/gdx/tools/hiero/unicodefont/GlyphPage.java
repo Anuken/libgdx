@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.tools.hiero.unicodefont.UnicodeFont.RenderType;
 import com.badlogic.gdx.tools.hiero.unicodefont.effects.ColorEffect;
 import com.badlogic.gdx.tools.hiero.unicodefont.effects.Effect;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 

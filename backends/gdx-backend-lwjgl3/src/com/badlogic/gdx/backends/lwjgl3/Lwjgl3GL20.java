@@ -29,7 +29,7 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
 
     private void ensureBufferCapacity(int numBytes){
         if(buffer == null || buffer.capacity() < numBytes){
-            buffer = com.badlogic.gdx.utils.BufferUtils.newByteBuffer(numBytes);
+            buffer = com.badlogic.gdx.utils.io.BufferUtils.newByteBuffer(numBytes);
             floatBuffer = buffer.asFloatBuffer();
             intBuffer = buffer.asIntBuffer();
         }

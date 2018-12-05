@@ -26,9 +26,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegionLoader.PolygonRegionParameters;
 import com.badlogic.gdx.math.EarClippingTriangulator;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

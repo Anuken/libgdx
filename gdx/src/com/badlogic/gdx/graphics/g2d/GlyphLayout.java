@@ -16,12 +16,16 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.Glyph;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.utils.pooling.Pool;
+import com.badlogic.gdx.utils.pooling.Pool.Poolable;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.lang.StringBuilder;
 

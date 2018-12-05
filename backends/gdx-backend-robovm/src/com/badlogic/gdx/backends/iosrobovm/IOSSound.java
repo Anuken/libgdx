@@ -22,7 +22,7 @@ import com.badlogic.gdx.backends.iosrobovm.objectal.ALChannelSource;
 import com.badlogic.gdx.backends.iosrobovm.objectal.ALSource;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.collection.IntArray;
 import org.robovm.apple.foundation.NSArray;
 
 /**

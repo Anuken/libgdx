@@ -20,6 +20,9 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.IntArray;
+import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -29,7 +32,8 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.XmlReader.Element;
+import com.badlogic.gdx.utils.serialization.SerializationException;
+import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
 import java.io.IOException;
 

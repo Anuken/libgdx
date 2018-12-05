@@ -22,8 +22,8 @@ import com.badlogic.gdx.math.geom.Intersector;
 import com.badlogic.gdx.math.geom.Polygon;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ShortArray;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.ShortArray;
 
 /**
  * Renders polygon filled with a repeating TextureRegion with specified density

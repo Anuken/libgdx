@@ -16,7 +16,10 @@
 
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.io.PropertiesUtils;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.IOException;
 import java.io.Reader;

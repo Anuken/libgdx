@@ -20,7 +20,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Alias;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Rect;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Resampling;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

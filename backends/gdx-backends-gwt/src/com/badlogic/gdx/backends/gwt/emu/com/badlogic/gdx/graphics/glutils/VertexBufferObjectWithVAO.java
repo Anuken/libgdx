@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.collection.IntArray;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.lwjgl3;
 
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;

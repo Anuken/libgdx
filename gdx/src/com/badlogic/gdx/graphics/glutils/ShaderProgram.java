@@ -18,6 +18,9 @@ package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.ObjectIntMap;
+import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,6 +30,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.io.BufferUtils;
 
 import java.lang.StringBuilder;
 import java.nio.*;

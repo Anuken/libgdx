@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.UBJsonReader;
+import com.badlogic.gdx.utils.serialization.JsonReader;
+import com.badlogic.gdx.utils.serialization.UBJsonReader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

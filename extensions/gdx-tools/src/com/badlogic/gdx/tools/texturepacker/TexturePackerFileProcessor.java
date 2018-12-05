@@ -20,9 +20,9 @@ import com.badlogic.gdx.tools.FileProcessor;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.ProgressListener;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.serialization.Json;
+import com.badlogic.gdx.utils.serialization.JsonReader;
+import com.badlogic.gdx.collection.ObjectMap;
 
 import java.io.File;
 import java.io.FileReader;
