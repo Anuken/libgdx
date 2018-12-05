@@ -17,7 +17,7 @@
 package com.badlogic.gdx.maps.objects;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Polyline;
+import com.badlogic.gdx.math.geom.Polyline;
 
 /** @brief Represents {@link Polyline} map objects */
 public class PolylineMapObject extends MapObject{

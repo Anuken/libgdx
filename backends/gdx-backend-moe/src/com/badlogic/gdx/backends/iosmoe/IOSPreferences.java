@@ -20,7 +20,7 @@ import apple.foundation.NSMutableDictionary;
 import apple.foundation.NSNumber;
 import apple.foundation.NSString;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Preferences;
 import org.moe.natj.objc.ObjCRuntime;
 
 import java.io.File;

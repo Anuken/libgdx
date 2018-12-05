@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.physics.box2d;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.geom.Vector2;
 
 /**
  * A body definition holds all the data needed to construct a rigid body. You can safely re-use body definitions. Shapes are added

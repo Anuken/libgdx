@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.controllers;
 
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.geom.Vector3;
 
 /**
  * Registered with {@link Controllers} or a specific {@link Controller} instance to receive events.

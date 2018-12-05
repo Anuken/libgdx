@@ -16,7 +16,9 @@
 
 package com.badlogic.gdx;
 
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.Preferences;
 
 /**
  * <p>
@@ -194,8 +196,6 @@ public interface Application{
      * to a variable to be used in the Runnable. For example:
      * <p><code>
      * final Graphics graphics = Gdx.graphics;
-     *
-     * @param runnable the runnable.
      */
     void postRunnable(Runnable runnable);
 
@@ -209,15 +209,60 @@ public interface Application{
     /**
      * Adds a new {@link LifecycleListener} to the application. This can be used by extensions to hook into the lifecycle more
      * easily. The {@link ApplicationListener} methods are sufficient for application level development.
-     *
-     * @param listener
      */
     void addLifecycleListener(LifecycleListener listener);
 
     /**
      * Removes the {@link LifecycleListener}.
-     *
-     * @param listener
      */
     void removeLifecycleListener(LifecycleListener listener);
+
+    /**
+     * A LifecycleListener can be added to an {@link Application} via {@link Application#addLifecycleListener(LifecycleListener)}. It
+     * will receive notification of pause, resume and dispose events. This is mainly meant to be used by extensions that need to
+     * manage resources based on the life-cycle. Normal, application level development should rely on the {@link ApplicationListener}
+     * interface.</p>
+     * <p>
+     * The methods will be invoked on the rendering thread. The methods will be executed before the {@link ApplicationListener}
+     * methods are executed.
+     *
+     * @author mzechner
+     */
+    interface LifecycleListener{
+        /** Called when the {@link Application} is about to pause */
+        void pause();
+
+        /** Called when the Application is about to be resumed */
+        void resume();
+
+        /** Called when the {@link Application} is about to be disposed */
+        void dispose();
+    }
+
+    /**
+     * The ApplicationLogger provides an interface for a LibGDX Application to log messages and exceptions.
+     * A default implementations is provided for each backend, custom implementations can be provided and set using
+     * {@link Application#setApplicationLogger(ApplicationLogger) }
+     */
+    interface ApplicationLogger{
+
+        /** Logs a message with a tag */
+        void log(String tag, String message);
+
+        /** Logs a message and exception with a tag */
+        void log(String tag, String message, Throwable exception);
+
+        /** Logs an error message with a tag */
+        void error(String tag, String message);
+
+        /** Logs an error message and exception with a tag */
+        void error(String tag, String message, Throwable exception);
+
+        /** Logs a debug message with a tag */
+        void debug(String tag, String message);
+
+        /** Logs a debug message and exception with a tag */
+        void debug(String tag, String message, Throwable exception);
+
+    }
 }

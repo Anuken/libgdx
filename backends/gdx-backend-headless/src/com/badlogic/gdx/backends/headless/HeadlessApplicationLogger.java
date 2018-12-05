@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.headless;
 
-import com.badlogic.gdx.ApplicationLogger;
+import com.badlogic.gdx.Application.ApplicationLogger;
 
 /**
  * Default implementation of {@link ApplicationLogger} for headless

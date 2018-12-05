@@ -14,7 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.math;
+package com.badlogic.gdx.math.geom;
+
+import com.badlogic.gdx.math.MathUtils;
 
 public class Polyline implements Shape2D{
     private float[] localVertices;

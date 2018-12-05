@@ -17,8 +17,8 @@
 package com.badlogic.gdx.backends.lwjgl3;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputEventQueue;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.InputEventQueue;
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.badlogic.gdx.utils.Disposable;
 import org.lwjgl.glfw.*;

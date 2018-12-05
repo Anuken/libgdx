@@ -20,7 +20,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.GraphicsType;
-import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;

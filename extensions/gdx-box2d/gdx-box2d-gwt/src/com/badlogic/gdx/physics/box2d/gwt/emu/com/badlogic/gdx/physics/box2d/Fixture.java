@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.physics.box2d;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
 import org.jbox2d.collision.shapes.ShapeType;
 import org.jbox2d.common.Vec2;

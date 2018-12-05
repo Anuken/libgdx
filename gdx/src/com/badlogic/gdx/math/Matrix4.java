@@ -16,6 +16,9 @@
 
 package com.badlogic.gdx.math;
 
+import com.badlogic.gdx.math.geom.Affine2;
+import com.badlogic.gdx.math.geom.Vector3;
+
 import java.io.Serializable;
 
 /**

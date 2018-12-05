@@ -29,7 +29,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
 import static com.badlogic.gdx.graphics.g2d.Batch.*;

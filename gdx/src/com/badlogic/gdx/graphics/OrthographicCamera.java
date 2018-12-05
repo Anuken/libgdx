@@ -18,8 +18,8 @@ package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.math.geom.Vector3;
 
 /**
  * A camera with orthographic projection.

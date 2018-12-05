@@ -1,6 +1,9 @@
 package com.badlogic.gdx.math;
 
-import com.badlogic.gdx.math.Intersector.SplitTriangle;
+import com.badlogic.gdx.math.geom.Intersector;
+import com.badlogic.gdx.math.geom.Intersector.SplitTriangle;
+import com.badlogic.gdx.math.geom.Plane;
+import com.badlogic.gdx.math.geom.Vector3;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

@@ -14,7 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.math;
+package com.badlogic.gdx.math.geom;
+
+import com.badlogic.gdx.math.Interpolation;
 
 /**
  * Encapsulates a general vector. Allows chaining operations by returning a reference to itself in all modification methods. See

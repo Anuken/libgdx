@@ -18,7 +18,7 @@ package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.Application.LifecycleListener;
 
 /**
  * Executes tasks in the future on the main loop thread.

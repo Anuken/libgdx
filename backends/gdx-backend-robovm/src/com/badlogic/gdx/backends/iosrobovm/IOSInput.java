@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegate;

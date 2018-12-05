@@ -40,7 +40,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.utils.Pool;
 
 import java.util.ArrayList;

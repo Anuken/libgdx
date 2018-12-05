@@ -22,8 +22,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 /**

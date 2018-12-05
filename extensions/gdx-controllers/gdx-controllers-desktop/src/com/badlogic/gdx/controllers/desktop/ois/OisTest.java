@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.controllers.desktop.ois;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.controllers.desktop.DesktopControllersBuild;
 import com.badlogic.gdx.controllers.desktop.OisControllers;
 import com.badlogic.gdx.controllers.desktop.ois.OisJoystick.OisPov;
@@ -27,7 +27,7 @@ public class OisTest{
         DesktopControllersBuild.main(null);
         new SharedLibraryLoader("libs/gdx-controllers-desktop-natives.jar").load("gdx-controllers-desktop");
 
-        ApplicationAdapter app = new ApplicationAdapter(){
+        ApplicationListener app = new ApplicationListener(){
             Ois ois;
 
             public void create(){

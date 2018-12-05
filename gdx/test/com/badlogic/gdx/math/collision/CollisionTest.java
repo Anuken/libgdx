@@ -1,6 +1,6 @@
 package com.badlogic.gdx.math.collision;
 
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.geom.Vector3;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

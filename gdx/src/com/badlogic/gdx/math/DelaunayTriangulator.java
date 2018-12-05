@@ -16,6 +16,9 @@
 
 package com.badlogic.gdx.math;
 
+import com.badlogic.gdx.math.geom.GeometryUtils;
+import com.badlogic.gdx.math.geom.Intersector;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.BooleanArray;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.IntArray;

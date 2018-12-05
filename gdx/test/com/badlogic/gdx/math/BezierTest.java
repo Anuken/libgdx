@@ -1,5 +1,7 @@
 package com.badlogic.gdx.math;
 
+import com.badlogic.gdx.math.geom.Bezier;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.Array;
 import org.junit.Assert;
 import org.junit.Before;

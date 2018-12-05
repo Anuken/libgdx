@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.gwt;
 
-import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Preferences;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 

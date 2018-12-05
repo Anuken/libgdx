@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
  *
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class Array<T> implements Iterable<T>{
     /**
      * Provides direct access to the underlying array. If the Array's generic type is not Object, this field may only be accessed
@@ -40,7 +41,6 @@ public class Array<T> implements Iterable<T>{
     public boolean ordered;
 
     private ArrayIterable iterable;
-    private Predicate.PredicateIterable<T> predicateIterable;
 
     /** Creates an ordered array with a capacity of 16. */
     public Array(){
@@ -497,22 +497,10 @@ public class Array<T> implements Iterable<T>{
      * Returns an iterator for the items in the array. Remove is supported. Note that the same iterator instance is returned each
      * time this method is called. Use the {@link ArrayIterator} constructor for nested or multithreaded iteration.
      */
+    @Override
     public Iterator<T> iterator(){
         if(iterable == null) iterable = new ArrayIterable(this);
         return iterable.iterator();
-    }
-
-    /**
-     * Returns an iterable for the selected items in the array. Remove is supported, but not between hasNext() and next(). Note
-     * that the same iterable instance is returned each time this method is called. Use the {@link Predicate.PredicateIterable}
-     * constructor for nested or multithreaded iteration.
-     */
-    public Iterable<T> select(Predicate<T> predicate){
-        if(predicateIterable == null)
-            predicateIterable = new Predicate.PredicateIterable<T>(this, predicate);
-        else
-            predicateIterable.set(this, predicate);
-        return predicateIterable;
     }
 
     /**
@@ -624,8 +612,6 @@ public class Array<T> implements Iterable<T>{
         int index;
         boolean valid = true;
 
-// ArrayIterable<T> iterable;
-
         public ArrayIterator(Array<T> array){
             this(array, true);
         }
@@ -637,7 +623,6 @@ public class Array<T> implements Iterable<T>{
 
         public boolean hasNext(){
             if(!valid){
-// System.out.println(iterable.lastAcquire);
                 throw new GdxRuntimeException("#iterator() cannot be used nested.");
             }
             return index < array.size;
@@ -646,7 +631,6 @@ public class Array<T> implements Iterable<T>{
         public T next(){
             if(index >= array.size) throw new NoSuchElementException(String.valueOf(index));
             if(!valid){
-// System.out.println(iterable.lastAcquire);
                 throw new GdxRuntimeException("#iterator() cannot be used nested.");
             }
             return array.items[index++];
@@ -672,8 +656,6 @@ public class Array<T> implements Iterable<T>{
         private final boolean allowRemove;
         private ArrayIterator iterator1, iterator2;
 
-// java.io.StringWriter lastAcquire = new java.io.StringWriter();
-
         public ArrayIterable(Array<T> array){
             this(array, true);
         }
@@ -684,13 +666,9 @@ public class Array<T> implements Iterable<T>{
         }
 
         public Iterator<T> iterator(){
-// lastAcquire.getBuffer().setLength(0);
-// new Throwable().printStackTrace(new java.io.PrintWriter(lastAcquire));
             if(iterator1 == null){
                 iterator1 = new ArrayIterator(array, allowRemove);
                 iterator2 = new ArrayIterator(array, allowRemove);
-// iterator1.iterable = this;
-// iterator2.iterable = this;
             }
             if(!iterator1.valid){
                 iterator1.index = 0;

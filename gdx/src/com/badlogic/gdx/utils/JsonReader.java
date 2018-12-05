@@ -86,7 +86,7 @@ public class JsonReader implements BaseJsonReader{
         int[] stack = new int[4];
 
         int s = 0;
-        Array<String> names = new Array(8);
+        Array<String> names = new Array<>(8);
         boolean needsUnescape = false, stringIsName = false, stringIsUnquoted = false;
         RuntimeException parseRuntimeEx = null;
 
@@ -662,8 +662,8 @@ public class JsonReader implements BaseJsonReader{
 
     // line 337 "JsonReader.rl"
 
-    private final Array<JsonValue> elements = new Array(8);
-    private final Array<JsonValue> lastChild = new Array(8);
+    private final Array<JsonValue> elements = new Array<>(8);
+    private final Array<JsonValue> lastChild = new Array<>(8);
     private JsonValue root, current;
 
     private void addChild(String name, JsonValue child){

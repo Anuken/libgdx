@@ -1338,7 +1338,7 @@ public class Hiero extends JFrame{
         }
     }
 
-    class Renderer extends ApplicationAdapter{
+    class Renderer implements ApplicationListener{
         SpriteBatch batch;
         int width, height;
 

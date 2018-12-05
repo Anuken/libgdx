@@ -33,7 +33,7 @@ import apple.uikit.protocol.UIAlertViewDelegate;
 import apple.uikit.protocol.UITextFieldDelegate;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;

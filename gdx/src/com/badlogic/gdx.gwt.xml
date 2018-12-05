@@ -4,7 +4,6 @@
 
         <!--  -->
         <include name="Application.java"/>
-        <include name="ApplicationAdapter.java"/>
         <include name="ApplicationListener.java"/>
         <include name="ApplicationLogger.java"/>
         <include name="Audio.java"/>
@@ -13,15 +12,12 @@
         <include name="Gdx.java"/>
         <include name="Graphics.java"/>
         <include name="Input.java"/>
-        <include name="InputAdapter.java"/>
         <include name="InputMultiplexer.java"/>
         <include name="InputProcessor.java"/>
         <include name="InputProcessorQueue.java"/>
         <include name="LifecycleListener.java"/>
         <include name="Net.java"/>
         <include name="Preferences.java"/>
-        <include name="Screen.java"/>
-        <include name="ScreenAdapter.java"/>
         <include name="Version.java"/>
 
         <!-- assets -->

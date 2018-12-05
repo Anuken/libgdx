@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.physics.box2d.joints;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import org.jbox2d.common.Vec2;

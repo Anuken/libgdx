@@ -20,7 +20,7 @@ import android.content.Context;
 import android.hardware.input.InputManager;
 import android.hardware.input.InputManager.InputDeviceListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.LifecycleListener;
+import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
 /**

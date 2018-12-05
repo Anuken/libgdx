@@ -469,6 +469,18 @@ public class I18NBundle{
         return result;
     }
 
+    /**Checks whether a specified key is present in this bundle.*/
+    public boolean has(String key){
+        if(properties.containsKey(key)){
+            return true;
+        }
+
+        if(parent != null){
+            return parent.has(key);
+        }
+        return false;
+    }
+
     /**
      * Gets the string with the specified key from this bundle or one of its parent after replacing the given arguments if they
      * occur.

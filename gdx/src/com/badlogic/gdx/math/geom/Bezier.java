@@ -14,8 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.math;
+package com.badlogic.gdx.math.geom;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -25,7 +26,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * @author Xoppa
  */
 public class Bezier<T extends Vector<T>> implements Path<T>{
-    // TODO implement Serializable
 
     /**
      * Simple linear interpolation

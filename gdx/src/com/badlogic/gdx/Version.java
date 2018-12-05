@@ -16,37 +16,23 @@
 
 package com.badlogic.gdx;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
-
 /**
  * The version of libgdx
  *
  * @author mzechner
  */
 public class Version{
-    /** the current version of libgdx as a String in the major.minor.revision format **/
-    public static final String VERSION = "1.9.10";
-
     /** the current major version of libgdx **/
-    public static final int MAJOR;
+    public static final int MAJOR = 1;
 
     /** the current minor version of libgdx **/
-    public static final int MINOR;
+    public static final int MINOR = 9;
 
     /** the current revision version of libgdx **/
-    public static final int REVISION;
+    public static final int REVISION = 10;
 
-    static{
-        try{
-            String[] v = VERSION.split("\\.");
-            MAJOR = v.length < 1 ? 0 : Integer.valueOf(v[0]);
-            MINOR = v.length < 2 ? 0 : Integer.valueOf(v[1]);
-            REVISION = v.length < 3 ? 0 : Integer.valueOf(v[2]);
-        }catch(Throwable t){
-            // Should never happen
-            throw new GdxRuntimeException("Invalid version " + VERSION, t);
-        }
-    }
+    /** the current version of libgdx as a String in the major.minor.revision format **/
+    public static final String VERSION = MAJOR + "." + MINOR + "." + REVISION;
 
     public static boolean isHigher(int major, int minor, int revision){
         return isHigherEqual(major, minor, revision + 1);

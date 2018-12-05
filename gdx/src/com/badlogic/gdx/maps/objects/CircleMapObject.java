@@ -17,7 +17,7 @@
 package com.badlogic.gdx.maps.objects;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.geom.Circle;
 
 /** @brief Represents {@link Circle} shaped map objects */
 public class CircleMapObject extends MapObject{

@@ -18,7 +18,6 @@ package com.badlogic.gdx.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
-import com.badlogic.gdx.InputProcessor;
 
 import java.io.DataOutputStream;
 import java.net.Socket;

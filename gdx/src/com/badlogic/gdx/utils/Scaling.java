@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.utils;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.geom.Vector2;
 
 /**
  * Various scaling types for fitting one rectangle into another.

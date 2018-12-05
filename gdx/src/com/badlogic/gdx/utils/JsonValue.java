@@ -180,12 +180,6 @@ public class JsonValue implements Iterable<JsonValue>{
         return child;
     }
 
-    /** @deprecated Use the size property instead. Returns this number of children in the array or object. */
-    @Deprecated
-    public int size(){
-        return size;
-    }
-
     /**
      * Returns this value as a string.
      *

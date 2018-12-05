@@ -18,6 +18,10 @@ package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.geom.Intersector;
+import com.badlogic.gdx.math.geom.Polygon;
+import com.badlogic.gdx.math.geom.Rectangle;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ShortArray;
 
