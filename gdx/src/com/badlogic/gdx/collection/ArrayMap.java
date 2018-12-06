@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.ObjectMap.Entry;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -404,7 +404,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
     public void shuffle(){
         for(int i = size - 1; i >= 0; i--){
-            int ii = MathUtils.random(i);
+            int ii = Mathf.random(i);
             K tempKey = keys[i];
             keys[i] = keys[ii];
             keys[ii] = tempKey;

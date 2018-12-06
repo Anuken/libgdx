@@ -1270,19 +1270,19 @@ public class Matrix4 implements Serializable{
 
     /** @return the scale factor on the X axis (non-negative) */
     public float getScaleX(){
-        return (MathUtils.isZero(val[Matrix4.M01]) && MathUtils.isZero(val[Matrix4.M02])) ? Math.abs(val[Matrix4.M00])
+        return (Mathf.isZero(val[Matrix4.M01]) && Mathf.isZero(val[Matrix4.M02])) ? Math.abs(val[Matrix4.M00])
         : (float) Math.sqrt(getScaleXSquared());
     }
 
     /** @return the scale factor on the Y axis (non-negative) */
     public float getScaleY(){
-        return (MathUtils.isZero(val[Matrix4.M10]) && MathUtils.isZero(val[Matrix4.M12])) ? Math.abs(val[Matrix4.M11])
+        return (Mathf.isZero(val[Matrix4.M10]) && Mathf.isZero(val[Matrix4.M12])) ? Math.abs(val[Matrix4.M11])
         : (float) Math.sqrt(getScaleYSquared());
     }
 
     /** @return the scale factor on the X axis (non-negative) */
     public float getScaleZ(){
-        return (MathUtils.isZero(val[Matrix4.M20]) && MathUtils.isZero(val[Matrix4.M21])) ? Math.abs(val[Matrix4.M22])
+        return (Mathf.isZero(val[Matrix4.M20]) && Mathf.isZero(val[Matrix4.M21])) ? Math.abs(val[Matrix4.M22])
         : (float) Math.sqrt(getScaleZSquared());
     }
 
@@ -1760,8 +1760,8 @@ public class Matrix4 implements Serializable{
 
     /** @return True if this matrix has any rotation or scaling, false otherwise */
     public boolean hasRotationOrScaling(){
-        return !(MathUtils.isEqual(val[M00], 1) && MathUtils.isEqual(val[M11], 1) && MathUtils.isEqual(val[M22], 1)
-        && MathUtils.isZero(val[M01]) && MathUtils.isZero(val[M02]) && MathUtils.isZero(val[M10]) && MathUtils.isZero(val[M12])
-        && MathUtils.isZero(val[M20]) && MathUtils.isZero(val[M21]));
+        return !(Mathf.isEqual(val[M00], 1) && Mathf.isEqual(val[M11], 1) && Mathf.isEqual(val[M22], 1)
+        && Mathf.isZero(val[M01]) && Mathf.isZero(val[M02]) && Mathf.isZero(val[M10]) && Mathf.isZero(val[M12])
+        && Mathf.isZero(val[M20]) && Mathf.isZero(val[M21]));
     }
 }

@@ -21,7 +21,7 @@ import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.collection.*;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.*;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
@@ -284,8 +284,8 @@ public class OpenALAudio implements Audio{
         if(!soundIdToSource.containsKey(soundId)) return;
         int sourceId = soundIdToSource.get(soundId);
 
-        AL10.alSource3f(sourceId, AL10.AL_POSITION, MathUtils.cos((pan - 1) * MathUtils.PI / 2), 0,
-        MathUtils.sin((pan + 1) * MathUtils.PI / 2));
+        AL10.alSource3f(sourceId, AL10.AL_POSITION, Mathf.cos((pan - 1) * Mathf.PI / 2), 0,
+        Mathf.sin((pan + 1) * Mathf.PI / 2));
         AL10.alSourcef(sourceId, AL10.AL_GAIN, volume);
     }
 

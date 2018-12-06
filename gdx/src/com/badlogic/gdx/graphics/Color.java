@@ -99,6 +99,17 @@ public class Color{
     }
 
     /**
+     * Constructor, sets the components of the color
+     *
+     * @param r the red component
+     * @param g the green component
+     * @param b the blue component
+     */
+    public Color(float r, float g, float b){
+        this(r, g, b, 1f);
+    }
+
+    /**
      * Constructs a new color using the given color
      *
      * @param color the color
@@ -135,7 +146,7 @@ public class Color{
     }
 
     /**
-     * Multiplies all components of this Color with the given value.
+     * Multiplies RGB components of this Color with the given value.
      *
      * @param value the value
      * @return this color
@@ -144,7 +155,6 @@ public class Color{
         this.r *= value;
         this.g *= value;
         this.b *= value;
-        this.a *= value;
         return clamp();
     }
 
@@ -158,7 +168,6 @@ public class Color{
         this.r += color.r;
         this.g += color.g;
         this.b += color.b;
-        this.a += color.a;
         return clamp();
     }
 
@@ -172,7 +181,6 @@ public class Color{
         this.r -= color.r;
         this.g -= color.g;
         this.b -= color.b;
-        this.a -= color.a;
         return clamp();
     }
 
@@ -246,6 +254,21 @@ public class Color{
     }
 
     /**
+     * Adds the given color component values to this Color's values.
+     *
+     * @param r Red component
+     * @param g Green component
+     * @param b Blue component
+     * @return this Color for chaining
+     */
+    public Color add(float r, float g, float b){
+        this.r += r;
+        this.g += g;
+        this.b += b;
+        return clamp();
+    }
+
+    /**
      * Subtracts the given values from this Color's component values.
      *
      * @param r Red component
@@ -259,6 +282,21 @@ public class Color{
         this.g -= g;
         this.b -= b;
         this.a -= a;
+        return clamp();
+    }
+
+    /**
+     * Subtracts the given values from this Color's component values.
+     *
+     * @param r Red component
+     * @param g Green component
+     * @param b Blue component
+     * @return this Color for chaining
+     */
+    public Color sub(float r, float g, float b){
+        this.r -= r;
+        this.g -= g;
+        this.b -= b;
         return clamp();
     }
 
@@ -551,6 +589,16 @@ public class Color{
         color.b = ((c & 0x00ff0000) >>> 16) / 255f;
         color.g = ((c & 0x0000ff00) >>> 8) / 255f;
         color.r = ((c & 0x000000ff)) / 255f;
+    }
+
+    /**Creates a grayscale color.*/
+    public static Color fromGray(float value){
+        return new Color(value, value, value);
+    }
+
+    /**Creates a color from 0-255 scaled RGB values.*/
+    public static Color fromRGB(int r, int g, int b){
+        return new Color(r / 255f, g / 255f, b / 255f);
     }
 
     /**

@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.io.BufferUtils;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.typedarrays.shared.ArrayBufferView;
@@ -40,7 +40,7 @@ public final class ScreenUtils{
 
     /**
      * Returns the default framebuffer contents as a {@link TextureRegion} with a width and height equal to the current screen
-     * size. The base {@link Texture} always has {@link MathUtils#nextPowerOfTwo} dimensions and RGBA8888 {@link Format}. It can be
+     * size. The base {@link Texture} always has {@link Mathf#nextPowerOfTwo} dimensions and RGBA8888 {@link Format}. It can be
      * accessed via {@link TextureRegion#getTexture}. The texture is not managed and has to be reloaded manually on a context loss.
      * The returned TextureRegion is flipped along the Y axis by default.
      */
@@ -52,7 +52,7 @@ public final class ScreenUtils{
 
     /**
      * Returns a portion of the default framebuffer contents specified by x, y, width and height as a {@link TextureRegion} with
-     * the same dimensions. The base {@link Texture} always has {@link MathUtils#nextPowerOfTwo} dimensions and RGBA8888
+     * the same dimensions. The base {@link Texture} always has {@link Mathf#nextPowerOfTwo} dimensions and RGBA8888
      * {@link Format}. It can be accessed via {@link TextureRegion#getTexture}. This texture is not managed and has to be reloaded
      * manually on a context loss. If the width and height specified are larger than the framebuffer dimensions, the Texture will
      * be padded accordingly. Pixels that fall outside of the current screen will have RGBA values of 0.
@@ -63,8 +63,8 @@ public final class ScreenUtils{
      * @param h the height of the framebuffer contents to capture
      */
     public static TextureRegion getFrameBufferTexture(int x, int y, int w, int h){
-        final int potW = MathUtils.nextPowerOfTwo(w);
-        final int potH = MathUtils.nextPowerOfTwo(h);
+        final int potW = Mathf.nextPowerOfTwo(w);
+        final int potH = Mathf.nextPowerOfTwo(h);
 
         final Pixmap pixmap = getFrameBufferPixmap(x, y, w, h);
         final Pixmap potPixmap = new Pixmap(potW, potH, Format.RGBA8888);

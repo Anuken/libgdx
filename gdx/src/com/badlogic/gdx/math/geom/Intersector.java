@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Plane.PlaneSide;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
@@ -418,7 +418,7 @@ public final class Intersector{
 
         Vector3 pvec = v2.set(ray.direction).crs(edge2);
         float det = edge1.dot(pvec);
-        if(MathUtils.isZero(det)){
+        if(Mathf.isZero(det)){
             p.set(t1, t2, t3);
             if(p.testPoint(ray.origin) == PlaneSide.OnPlane && Intersector.isPointInTriangle(ray.origin, t1, t2, t3)){
                 if(intersection != null) intersection.set(ray.origin);
@@ -441,7 +441,7 @@ public final class Intersector{
         if(t < 0) return false;
 
         if(intersection != null){
-            if(t <= MathUtils.FLOAT_ROUNDING_ERROR){
+            if(t <= Mathf.FLOAT_ROUNDING_ERROR){
                 intersection.set(ray.origin);
             }else{
                 ray.getEndPoint(intersection, t);

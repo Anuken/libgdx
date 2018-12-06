@@ -543,7 +543,7 @@ public class BitmapFontCache{
      */
     public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
                                boolean wrap, String truncate){
-        GlyphLayout layout = Pools.obtain(GlyphLayout.class);
+        GlyphLayout layout = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
         pooledLayouts.add(layout);
         layout.setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
         addText(layout, x, y);
@@ -569,11 +569,7 @@ public class BitmapFontCache{
         return font;
     }
 
-    /**
-     * Specifies whether to use integer positions or not. Default is to use them so filtering doesn't kick in as badly.
-     *
-     * @param use
-     */
+    /**Specifies whether to use integer positions or not. Default is to use them so filtering doesn't kick in as badly.*/
     public void setUseIntegerPositions(boolean use){
         this.integer = use;
     }

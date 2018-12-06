@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.lwjgl3.audio;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.BufferUtils;
@@ -153,8 +153,8 @@ public abstract class OpenALMusic implements Music{
         this.pan = pan;
         if(audio.noDevice) return;
         if(sourceID == -1) return;
-        alSource3f(sourceID, AL_POSITION, MathUtils.cos((pan - 1) * MathUtils.PI / 2), 0,
-        MathUtils.sin((pan + 1) * MathUtils.PI / 2));
+        alSource3f(sourceID, AL_POSITION, Mathf.cos((pan - 1) * Mathf.PI / 2), 0,
+        Mathf.sin((pan + 1) * Mathf.PI / 2));
         alSourcef(sourceID, AL_GAIN, volume);
     }
 

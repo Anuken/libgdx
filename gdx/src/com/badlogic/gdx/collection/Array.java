@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Select;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -489,7 +489,7 @@ public class Array<T> implements Iterable<T>{
     public void shuffle(){
         T[] items = this.items;
         for(int i = size - 1; i >= 0; i--){
-            int ii = MathUtils.random(i);
+            int ii = Mathf.random(i);
             T temp = items[i];
             items[i] = items[ii];
             items[ii] = temp;
@@ -521,7 +521,7 @@ public class Array<T> implements Iterable<T>{
     /** Returns a random item from the array, or null if the array is empty. */
     public T random(){
         if(size == 0) return null;
-        return items[MathUtils.random(0, size - 1)];
+        return items[Mathf.random(0, size - 1)];
     }
 
     /**

@@ -136,21 +136,21 @@ public class Vector3 implements Serializable, Vector<Vector3>{
      * @return This vector for chaining
      */
     public Vector3 setFromSpherical(float azimuthalAngle, float polarAngle){
-        float cosPolar = MathUtils.cos(polarAngle);
-        float sinPolar = MathUtils.sin(polarAngle);
+        float cosPolar = Mathf.cos(polarAngle);
+        float sinPolar = Mathf.sin(polarAngle);
 
-        float cosAzim = MathUtils.cos(azimuthalAngle);
-        float sinAzim = MathUtils.sin(azimuthalAngle);
+        float cosAzim = Mathf.cos(azimuthalAngle);
+        float sinAzim = Mathf.sin(azimuthalAngle);
 
         return this.set(cosAzim * sinPolar, sinAzim * sinPolar, cosPolar);
     }
 
     @Override
     public Vector3 setToRandomDirection(){
-        float u = MathUtils.random();
-        float v = MathUtils.random();
+        float u = Mathf.random();
+        float v = Mathf.random();
 
-        float theta = MathUtils.PI2 * u; // azimuthal angle
+        float theta = Mathf.PI2 * u; // azimuthal angle
         float phi = (float) Math.acos(2f * v - 1f); // polar angle
 
         return this.setFromSpherical(theta, phi);
@@ -592,7 +592,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     @Override
     public boolean isOnLine(Vector3 other){
-        return len2(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x) <= MathUtils.FLOAT_ROUNDING_ERROR;
+        return len2(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x) <= Mathf.FLOAT_ROUNDING_ERROR;
     }
 
     @Override
@@ -617,12 +617,12 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     @Override
     public boolean isPerpendicular(Vector3 vector){
-        return MathUtils.isZero(dot(vector));
+        return Mathf.isZero(dot(vector));
     }
 
     @Override
     public boolean isPerpendicular(Vector3 vector, float epsilon){
-        return MathUtils.isZero(dot(vector), epsilon);
+        return Mathf.isZero(dot(vector), epsilon);
     }
 
     @Override
@@ -785,17 +785,17 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     }
 
     /**
-     * Compares this vector with the other vector using MathUtils.FLOAT_ROUNDING_ERROR for fuzzy equality testing
+     * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
      *
      * @param other other vector to compare
      * @return true if vector are equal, otherwise false
      */
     public boolean epsilonEquals(final Vector3 other){
-        return epsilonEquals(other, MathUtils.FLOAT_ROUNDING_ERROR);
+        return epsilonEquals(other, Mathf.FLOAT_ROUNDING_ERROR);
     }
 
     /**
-     * Compares this vector with the other vector using MathUtils.FLOAT_ROUNDING_ERROR for fuzzy equality testing
+     * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
      *
      * @param x x component of the other vector to compare
      * @param y y component of the other vector to compare
@@ -803,7 +803,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
      * @return true if vector are equal, otherwise false
      */
     public boolean epsilonEquals(float x, float y, float z){
-        return epsilonEquals(x, y, z, MathUtils.FLOAT_ROUNDING_ERROR);
+        return epsilonEquals(x, y, z, Mathf.FLOAT_ROUNDING_ERROR);
     }
 
     @Override

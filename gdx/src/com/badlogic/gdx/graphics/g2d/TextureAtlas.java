@@ -49,8 +49,10 @@ import static com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat;
 public class TextureAtlas implements Disposable{
     static final String[] tuple = new String[4];
 
-    private final ObjectSet<Texture> textures = new ObjectSet(4);
-    private final Array<AtlasRegion> regions = new Array();
+    private final ObjectSet<Texture> textures = new ObjectSet<>(4);
+    private final Array<AtlasRegion> regions = new Array<>();
+    private final ObjectMap<String, AtlasRegion> regionmap = new ObjectMap<>();
+    private AtlasRegion error;
 
     public static class TextureAtlasData{
         public static class Page{
@@ -96,8 +98,8 @@ public class TextureAtlas implements Disposable{
             public int[] pads;
         }
 
-        final Array<Page> pages = new Array();
-        final Array<Region> regions = new Array();
+        final Array<Page> pages = new Array<>();
+        final Array<Region> regions = new Array<>();
 
         public TextureAtlasData(FileHandle packFile, FileHandle imagesDir, boolean flip){
             BufferedReader reader = new BufferedReader(new InputStreamReader(packFile.read()), 64);
@@ -273,7 +275,10 @@ public class TextureAtlas implements Disposable{
             atlasRegion.pads = region.pads;
             if(region.flip) atlasRegion.flip(false, true);
             regions.add(atlasRegion);
+            regionmap.put(atlasRegion.name, atlasRegion);
         }
+
+        error = findRegion("error");
     }
 
     /** Adds a region to the atlas. The specified texture will be disposed when the atlas is disposed. */
@@ -285,6 +290,7 @@ public class TextureAtlas implements Disposable{
         region.originalHeight = height;
         region.index = -1;
         regions.add(region);
+        regionmap.put(name, region);
         return region;
     }
 
@@ -300,15 +306,21 @@ public class TextureAtlas implements Disposable{
     }
 
     /**
-     * Returns the first region found with the specified name. This method uses string comparison to find the region, so the result
-     * should be cached rather than calling this method multiple times.
+     * Returns the first region found with the specified name. This method's performance is no longer garbage.
      *
-     * @return The region, or null.
+     * @return The region, or the error region (if it is defined), or null.
      */
     public AtlasRegion findRegion(String name){
-        for(int i = 0, n = regions.size; i < n; i++)
-            if(regions.get(i).name.equals(name)) return regions.get(i);
-        return null;
+        AtlasRegion r = regionmap.get(name);
+        if(r == null && error == null && !(name.equals("error")))
+            throw new IllegalArgumentException("The region \"" + name + "\" does not exist!");
+        if(r == null) return error;
+        return r;
+    }
+
+    public TextureRegion findRegion(String name, TextureRegion def){
+        TextureRegion region = regionmap.get(name);
+        return region == null || region == error ? def : region;
     }
 
     /**
@@ -325,6 +337,10 @@ public class TextureAtlas implements Disposable{
             return region;
         }
         return null;
+    }
+
+    public boolean hasRegion(String s){
+        return regionmap.containsKey(s);
     }
 
     /**

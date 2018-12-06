@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -55,9 +55,9 @@ public class TexturePacker{
         this.settings = settings;
 
         if(settings.pot){
-            if(settings.maxWidth != MathUtils.nextPowerOfTwo(settings.maxWidth))
+            if(settings.maxWidth != Mathf.nextPowerOfTwo(settings.maxWidth))
                 throw new RuntimeException("If pot is true, maxWidth must be a power of two: " + settings.maxWidth);
-            if(settings.maxHeight != MathUtils.nextPowerOfTwo(settings.maxHeight))
+            if(settings.maxHeight != Mathf.nextPowerOfTwo(settings.maxHeight))
                 throw new RuntimeException("If pot is true, maxHeight must be a power of two: " + settings.maxHeight);
         }
 
@@ -193,8 +193,8 @@ public class TexturePacker{
                 height += edgePadY * 2;
             }
             if(settings.pot){
-                width = MathUtils.nextPowerOfTwo(width);
-                height = MathUtils.nextPowerOfTwo(height);
+                width = Mathf.nextPowerOfTwo(width);
+                height = Mathf.nextPowerOfTwo(height);
             }
             if(settings.multipleOfFour){
                 width = width % 4 == 0 ? width : width + 4 - (width % 4);

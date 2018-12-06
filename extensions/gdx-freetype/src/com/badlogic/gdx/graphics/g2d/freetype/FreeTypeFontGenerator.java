@@ -33,7 +33,7 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker.PackStrategy;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker.SkylineStrategy;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType.*;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.io.BufferUtils;
@@ -407,7 +407,7 @@ public class FreeTypeFontGenerator implements Disposable{
                 packStrategy = new GuillotineStrategy();
             }else{
                 int maxGlyphHeight = (int) Math.ceil(data.lineHeight);
-                size = MathUtils.nextPowerOfTwo((int) Math.sqrt(maxGlyphHeight * maxGlyphHeight * charactersLength));
+                size = Mathf.nextPowerOfTwo((int) Math.sqrt(maxGlyphHeight * maxGlyphHeight * charactersLength));
                 if(maxTextureSize > 0) size = Math.min(size, maxTextureSize);
                 packStrategy = new SkylineStrategy();
             }

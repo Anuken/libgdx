@@ -18,24 +18,20 @@ package com.badlogic.gdx.math.geom;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.pooling.Pool;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 /**
  * Returns a list of points at integer coordinates for a line on a 2D grid, using the Bresenham algorithm.
  * <p>
  * <p>
  * Instances of this class own the returned array of points and the points themselves to avoid garbage collection as much as
- * possible. Calling any of the methods will result in the reuse of the previously returned array and vectors, expect
+ * possible. Calling any of the methods will result in the reuse of the previously returned array and vectors.
  *
  * @author badlogic
  */
 public class Bresenham2{
-    private final Array<GridPoint2> points = new Array<GridPoint2>();
-    private final Pool<GridPoint2> pool = new Pool<GridPoint2>(){
-        @Override
-        protected GridPoint2 newObject(){
-            return new GridPoint2();
-        }
-    };
+    private final Array<GridPoint2> points = new Array<>();
+    private final Pool<GridPoint2> pool = Pools.get(GridPoint2.class, GridPoint2::new);
 
     /**
      * Returns a list of {@link GridPoint2} instances along the given line, at integer coordinates.

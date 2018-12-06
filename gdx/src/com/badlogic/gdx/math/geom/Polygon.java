@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 
 /** Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0). */
 public class Polygon implements Shape2D{
@@ -74,8 +74,8 @@ public class Polygon implements Shape2D{
         final float scaleY = this.scaleY;
         final boolean scale = scaleX != 1 || scaleY != 1;
         final float rotation = this.rotation;
-        final float cos = MathUtils.cosDeg(rotation);
-        final float sin = MathUtils.sinDeg(rotation);
+        final float cos = Mathf.cosDeg(rotation);
+        final float sin = Mathf.sinDeg(rotation);
 
         for(int i = 0, n = localVertices.length; i < n; i += 2){
             float x = localVertices[i] - originX;

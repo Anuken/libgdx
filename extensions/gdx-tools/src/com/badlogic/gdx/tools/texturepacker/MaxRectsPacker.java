@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.texturepacker;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.*;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.Sort;
@@ -257,8 +257,8 @@ public class MaxRectsPacker implements Packer{
 
         public BinarySearch(int min, int max, int fuzziness, boolean pot, boolean mod4){
             if(pot){
-                this.min = (int) (Math.log(MathUtils.nextPowerOfTwo(min)) / Math.log(2));
-                this.max = (int) (Math.log(MathUtils.nextPowerOfTwo(max)) / Math.log(2));
+                this.min = (int) (Math.log(Mathf.nextPowerOfTwo(min)) / Math.log(2));
+                this.max = (int) (Math.log(Mathf.nextPowerOfTwo(max)) / Math.log(2));
             }else if(mod4){
                 this.min = min % 4 == 0 ? min : min + 4 - (min % 4);
                 this.max = max % 4 == 0 ? max : max + 4 - (max % 4);

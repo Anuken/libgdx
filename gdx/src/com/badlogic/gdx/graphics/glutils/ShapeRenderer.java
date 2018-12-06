@@ -20,7 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
@@ -515,8 +515,8 @@ public class ShapeRenderer implements Disposable{
                      float degrees, Color col1, Color col2, Color col3, Color col4){
         check(ShapeType.Line, ShapeType.Filled, 8);
 
-        float cos = MathUtils.cosDeg(degrees);
-        float sin = MathUtils.sinDeg(degrees);
+        float cos = Mathf.cosDeg(degrees);
+        float sin = Mathf.sinDeg(degrees);
         float fx = -originX;
         float fy = -originY;
         float fx2 = width - originX;
@@ -863,11 +863,11 @@ public class ShapeRenderer implements Disposable{
     public void arc(float x, float y, float radius, float start, float degrees, int segments){
         if(segments <= 0) throw new IllegalArgumentException("segments must be > 0.");
         float colorBits = color.toFloatBits();
-        float theta = (2 * MathUtils.PI * (degrees / 360.0f)) / segments;
-        float cos = MathUtils.cos(theta);
-        float sin = MathUtils.sin(theta);
-        float cx = radius * MathUtils.cos(start * MathUtils.degreesToRadians);
-        float cy = radius * MathUtils.sin(start * MathUtils.degreesToRadians);
+        float theta = (2 * Mathf.PI * (degrees / 360.0f)) / segments;
+        float cos = Mathf.cos(theta);
+        float sin = Mathf.sin(theta);
+        float cx = radius * Mathf.cos(start * Mathf.degreesToRadians);
+        float cy = radius * Mathf.sin(start * Mathf.degreesToRadians);
 
         if(shapeType == ShapeType.Line){
             check(ShapeType.Line, ShapeType.Filled, segments * 2 + 2);
@@ -923,9 +923,9 @@ public class ShapeRenderer implements Disposable{
     public void circle(float x, float y, float radius, int segments){
         if(segments <= 0) throw new IllegalArgumentException("segments must be > 0.");
         float colorBits = color.toFloatBits();
-        float angle = 2 * MathUtils.PI / segments;
-        float cos = MathUtils.cos(angle);
-        float sin = MathUtils.sin(angle);
+        float angle = 2 * Mathf.PI / segments;
+        float cos = Mathf.cos(angle);
+        float sin = Mathf.sin(angle);
         float cx = radius, cy = 0;
         if(shapeType == ShapeType.Line){
             check(ShapeType.Line, ShapeType.Filled, segments * 2 + 2);
@@ -979,29 +979,29 @@ public class ShapeRenderer implements Disposable{
         if(segments <= 0) throw new IllegalArgumentException("segments must be > 0.");
         check(ShapeType.Line, ShapeType.Filled, segments * 3);
         float colorBits = color.toFloatBits();
-        float angle = 2 * MathUtils.PI / segments;
+        float angle = 2 * Mathf.PI / segments;
 
         float cx = x + width / 2, cy = y + height / 2;
         if(shapeType == ShapeType.Line){
             for(int i = 0; i < segments; i++){
                 renderer.color(colorBits);
-                renderer.vertex(cx + (width * 0.5f * MathUtils.cos(i * angle)), cy + (height * 0.5f * MathUtils.sin(i * angle)), 0);
+                renderer.vertex(cx + (width * 0.5f * Mathf.cos(i * angle)), cy + (height * 0.5f * Mathf.sin(i * angle)), 0);
 
                 renderer.color(colorBits);
-                renderer.vertex(cx + (width * 0.5f * MathUtils.cos((i + 1) * angle)),
-                cy + (height * 0.5f * MathUtils.sin((i + 1) * angle)), 0);
+                renderer.vertex(cx + (width * 0.5f * Mathf.cos((i + 1) * angle)),
+                cy + (height * 0.5f * Mathf.sin((i + 1) * angle)), 0);
             }
         }else{
             for(int i = 0; i < segments; i++){
                 renderer.color(colorBits);
-                renderer.vertex(cx + (width * 0.5f * MathUtils.cos(i * angle)), cy + (height * 0.5f * MathUtils.sin(i * angle)), 0);
+                renderer.vertex(cx + (width * 0.5f * Mathf.cos(i * angle)), cy + (height * 0.5f * Mathf.sin(i * angle)), 0);
 
                 renderer.color(colorBits);
                 renderer.vertex(cx, cy, 0);
 
                 renderer.color(colorBits);
-                renderer.vertex(cx + (width * 0.5f * MathUtils.cos((i + 1) * angle)),
-                cy + (height * 0.5f * MathUtils.sin((i + 1) * angle)), 0);
+                renderer.vertex(cx + (width * 0.5f * Mathf.cos((i + 1) * angle)),
+                cy + (height * 0.5f * Mathf.sin((i + 1) * angle)), 0);
             }
         }
     }
@@ -1016,11 +1016,11 @@ public class ShapeRenderer implements Disposable{
         if(segments <= 0) throw new IllegalArgumentException("segments must be > 0.");
         check(ShapeType.Line, ShapeType.Filled, segments * 3);
         float colorBits = color.toFloatBits();
-        float angle = 2 * MathUtils.PI / segments;
+        float angle = 2 * Mathf.PI / segments;
 
-        rotation = MathUtils.PI * rotation / 180f;
-        float sin = MathUtils.sin(rotation);
-        float cos = MathUtils.cos(rotation);
+        rotation = Mathf.PI * rotation / 180f;
+        float sin = Mathf.sin(rotation);
+        float cos = Mathf.cos(rotation);
 
         float cx = x + width / 2, cy = y + height / 2;
         float x1 = width * 0.5f;
@@ -1030,8 +1030,8 @@ public class ShapeRenderer implements Disposable{
                 renderer.color(colorBits);
                 renderer.vertex(cx + cos * x1 - sin * y1, cy + sin * x1 + cos * y1, 0);
 
-                x1 = (width * 0.5f * MathUtils.cos((i + 1) * angle));
-                y1 = (height * 0.5f * MathUtils.sin((i + 1) * angle));
+                x1 = (width * 0.5f * Mathf.cos((i + 1) * angle));
+                y1 = (height * 0.5f * Mathf.sin((i + 1) * angle));
 
                 renderer.color(colorBits);
                 renderer.vertex(cx + cos * x1 - sin * y1, cy + sin * x1 + cos * y1, 0);
@@ -1044,8 +1044,8 @@ public class ShapeRenderer implements Disposable{
                 renderer.color(colorBits);
                 renderer.vertex(cx, cy, 0);
 
-                x1 = (width * 0.5f * MathUtils.cos((i + 1) * angle));
-                y1 = (height * 0.5f * MathUtils.sin((i + 1) * angle));
+                x1 = (width * 0.5f * Mathf.cos((i + 1) * angle));
+                y1 = (height * 0.5f * Mathf.sin((i + 1) * angle));
 
                 renderer.color(colorBits);
                 renderer.vertex(cx + cos * x1 - sin * y1, cy + sin * x1 + cos * y1, 0);
@@ -1066,9 +1066,9 @@ public class ShapeRenderer implements Disposable{
         if(segments <= 0) throw new IllegalArgumentException("segments must be > 0.");
         check(ShapeType.Line, ShapeType.Filled, segments * 4 + 2);
         float colorBits = color.toFloatBits();
-        float angle = 2 * MathUtils.PI / segments;
-        float cos = MathUtils.cos(angle);
-        float sin = MathUtils.sin(angle);
+        float angle = 2 * Mathf.PI / segments;
+        float cos = Mathf.cos(angle);
+        float sin = Mathf.sin(angle);
         float cx = radius, cy = 0;
         if(shapeType == ShapeType.Line){
             for(int i = 0; i < segments; i++){

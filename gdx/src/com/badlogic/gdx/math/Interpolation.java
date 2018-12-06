@@ -105,19 +105,19 @@ public abstract class Interpolation{
 
     static public final Interpolation sine = new Interpolation(){
         public float apply(float a){
-            return (1 - MathUtils.cos(a * MathUtils.PI)) / 2;
+            return (1 - Mathf.cos(a * Mathf.PI)) / 2;
         }
     };
 
     static public final Interpolation sineIn = new Interpolation(){
         public float apply(float a){
-            return 1 - MathUtils.cos(a * MathUtils.PI / 2);
+            return 1 - Mathf.cos(a * Mathf.PI / 2);
         }
     };
 
     static public final Interpolation sineOut = new Interpolation(){
         public float apply(float a){
-            return MathUtils.sin(a * MathUtils.PI / 2);
+            return Mathf.sin(a * Mathf.PI / 2);
         }
     };
 
@@ -248,17 +248,17 @@ public abstract class Interpolation{
             this.value = value;
             this.power = power;
             this.scale = scale;
-            this.bounces = bounces * MathUtils.PI * (bounces % 2 == 0 ? 1 : -1);
+            this.bounces = bounces * Mathf.PI * (bounces % 2 == 0 ? 1 : -1);
         }
 
         public float apply(float a){
             if(a <= 0.5f){
                 a *= 2;
-                return (float) Math.pow(value, power * (a - 1)) * MathUtils.sin(a * bounces) * scale / 2;
+                return (float) Math.pow(value, power * (a - 1)) * Mathf.sin(a * bounces) * scale / 2;
             }
             a = 1 - a;
             a *= 2;
-            return 1 - (float) Math.pow(value, power * (a - 1)) * MathUtils.sin((a) * bounces) * scale / 2;
+            return 1 - (float) Math.pow(value, power * (a - 1)) * Mathf.sin((a) * bounces) * scale / 2;
         }
     }
 
@@ -269,7 +269,7 @@ public abstract class Interpolation{
 
         public float apply(float a){
             if(a >= 0.99) return 1;
-            return (float) Math.pow(value, power * (a - 1)) * MathUtils.sin(a * bounces) * scale;
+            return (float) Math.pow(value, power * (a - 1)) * Mathf.sin(a * bounces) * scale;
         }
     }
 
@@ -281,7 +281,7 @@ public abstract class Interpolation{
         public float apply(float a){
             if(a == 0) return 0;
             a = 1 - a;
-            return (1 - (float) Math.pow(value, power * (a - 1)) * MathUtils.sin(a * bounces) * scale);
+            return (1 - (float) Math.pow(value, power * (a - 1)) * Mathf.sin(a * bounces) * scale);
         }
     }
 

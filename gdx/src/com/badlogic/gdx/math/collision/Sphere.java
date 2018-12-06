@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.collision;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.NumberUtils;
 
@@ -34,7 +34,7 @@ public class Sphere implements Serializable{
     /** the center of the sphere **/
     public final Vector3 center;
 
-    private static final float PI_4_3 = MathUtils.PI * 4f / 3f;
+    private static final float PI_4_3 = Mathf.PI * 4f / 3f;
 
     /**
      * Constructs a sphere with the given center and radius
@@ -77,6 +77,6 @@ public class Sphere implements Serializable{
     }
 
     public float surfaceArea(){
-        return 4 * MathUtils.PI * this.radius * this.radius;
+        return 4 * Mathf.PI * this.radius * this.radius;
     }
 }

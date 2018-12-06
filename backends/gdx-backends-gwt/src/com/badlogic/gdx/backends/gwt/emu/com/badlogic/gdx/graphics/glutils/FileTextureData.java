@@ -21,7 +21,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class FileTextureData implements TextureData{
@@ -69,8 +69,8 @@ public class FileTextureData implements TextureData{
         if(Gdx.gl20 == null && copyToPOT){
             int pixmapWidth = pixmap.getWidth();
             int pixmapHeight = pixmap.getHeight();
-            int potWidth = MathUtils.nextPowerOfTwo(pixmapWidth);
-            int potHeight = MathUtils.nextPowerOfTwo(pixmapHeight);
+            int potWidth = Mathf.nextPowerOfTwo(pixmapWidth);
+            int potHeight = Mathf.nextPowerOfTwo(pixmapHeight);
             if(pixmapWidth != potWidth || pixmapHeight != potHeight){
                 Pixmap tmp = new Pixmap(potWidth, potHeight, pixmap.getFormat());
                 tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmapWidth, pixmapHeight);

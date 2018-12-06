@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.Matrix4;
 
 /**
@@ -276,8 +276,8 @@ public class SpriteBatch implements Batch{
 
         // rotate
         if(rotation != 0){
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
+            final float cos = Mathf.cosDeg(rotation);
+            final float sin = Mathf.sinDeg(rotation);
 
             x1 = cos * p1x - sin * p1y;
             y1 = sin * p1x + cos * p1y;
@@ -688,8 +688,8 @@ public class SpriteBatch implements Batch{
 
         // rotate
         if(rotation != 0){
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
+            final float cos = Mathf.cosDeg(rotation);
+            final float sin = Mathf.sinDeg(rotation);
 
             x1 = cos * p1x - sin * p1y;
             y1 = sin * p1x + cos * p1y;
@@ -808,8 +808,8 @@ public class SpriteBatch implements Batch{
 
         // rotate
         if(rotation != 0){
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
+            final float cos = Mathf.cosDeg(rotation);
+            final float sin = Mathf.sinDeg(rotation);
 
             x1 = cos * p1x - sin * p1y;
             y1 = sin * p1x + cos * p1y;

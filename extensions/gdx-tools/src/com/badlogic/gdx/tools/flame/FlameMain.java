@@ -57,7 +57,7 @@ import com.badlogic.gdx.graphics.g3d.particles.values.GradientColorValue;
 import com.badlogic.gdx.graphics.g3d.particles.values.NumericValue;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.io.StreamUtils;
@@ -178,7 +178,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
 
     public FlameMain(){
         super("Flame");
-        MathUtils.random = new RandomXS128();
+        Mathf.random = new RandomXS128();
         particleSystem = ParticleSystem.get();
         effect = new ParticleEffect();
         particleSystem.add(effect);

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
@@ -160,7 +160,7 @@ public class Animation<T>{
             case LOOP_RANDOM:
                 int lastFrameNumber = (int) ((lastStateTime) / frameDuration);
                 if(lastFrameNumber != frameNumber){
-                    frameNumber = MathUtils.random(keyFrames.length - 1);
+                    frameNumber = Mathf.random(keyFrames.length - 1);
                 }else{
                     frameNumber = this.lastFrameNumber;
                 }

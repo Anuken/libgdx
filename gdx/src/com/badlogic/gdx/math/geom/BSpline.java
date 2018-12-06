@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
 
 /** @author Xoppa */
@@ -310,7 +310,7 @@ public class BSpline<T extends Vector<T>> implements Path<T>{
         float L3Sqr = P3.dst2(P1);
         float L1 = (float) Math.sqrt(L1Sqr);
         float s = (L2Sqr + L1Sqr - L3Sqr) / (2 * L1);
-        float u = MathUtils.clamp((L1 - s) / L1, 0f, 1f);
+        float u = Mathf.clamp((L1 - s) / L1, 0f, 1f);
         return (n + u) / spanCount;
     }
 

@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.collection.Array;
@@ -437,8 +437,8 @@ public class ParticleEmitter{
         if((updateFlags & UPDATE_ANGLE) == 0){
             angle = particle.angle + particle.angleDiff * angleValue.getScale(0);
             particle.angle = angle;
-            particle.angleCos = MathUtils.cosDeg(angle);
-            particle.angleSin = MathUtils.sinDeg(angle);
+            particle.angleCos = Mathf.cosDeg(angle);
+            particle.angleSin = Mathf.sinDeg(angle);
         }
 
         float spriteWidth = sprite.getWidth();
@@ -498,8 +498,8 @@ public class ParticleEmitter{
             case square:{
                 float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
                 float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
-                x += MathUtils.random(width) - width / 2;
-                y += MathUtils.random(height) - height / 2;
+                x += Mathf.random(width) - width / 2;
+                y += Mathf.random(height) - height / 2;
                 break;
             }
             case ellipse:{
@@ -513,17 +513,17 @@ public class ParticleEmitter{
                     float spawnAngle;
                     switch(spawnShapeValue.side){
                         case top:
-                            spawnAngle = -MathUtils.random(179f);
+                            spawnAngle = -Mathf.random(179f);
                             break;
                         case bottom:
-                            spawnAngle = MathUtils.random(179f);
+                            spawnAngle = Mathf.random(179f);
                             break;
                         default:
-                            spawnAngle = MathUtils.random(360f);
+                            spawnAngle = Mathf.random(360f);
                             break;
                     }
-                    float cosDeg = MathUtils.cosDeg(spawnAngle);
-                    float sinDeg = MathUtils.sinDeg(spawnAngle);
+                    float cosDeg = Mathf.cosDeg(spawnAngle);
+                    float sinDeg = Mathf.sinDeg(spawnAngle);
                     x += cosDeg * radiusX;
                     y += sinDeg * radiusX / scaleY;
                     if((updateFlags & UPDATE_ANGLE) == 0){
@@ -534,8 +534,8 @@ public class ParticleEmitter{
                 }else{
                     float radius2 = radiusX * radiusX;
                     while(true){
-                        float px = MathUtils.random(width) - radiusX;
-                        float py = MathUtils.random(height) - radiusY;
+                        float px = Mathf.random(width) - radiusX;
+                        float py = Mathf.random(height) - radiusY;
                         if(px * px + py * py <= radius2){
                             x += px;
                             y += py / scaleY;
@@ -549,11 +549,11 @@ public class ParticleEmitter{
                 float width = spawnWidth + (spawnWidthDiff * spawnWidthValue.getScale(percent));
                 float height = spawnHeight + (spawnHeightDiff * spawnHeightValue.getScale(percent));
                 if(width != 0){
-                    float lineX = width * MathUtils.random();
+                    float lineX = width * Mathf.random();
                     x += lineX;
                     y += lineX * (height / width);
                 }else
-                    y += height * MathUtils.random();
+                    y += height * Mathf.random();
                 break;
             }
         }
@@ -590,8 +590,8 @@ public class ParticleEmitter{
             float velocityX, velocityY;
             if((updateFlags & UPDATE_ANGLE) != 0){
                 float angle = particle.angle + particle.angleDiff * angleValue.getScale(percent);
-                velocityX = velocity * MathUtils.cosDeg(angle);
-                velocityY = velocity * MathUtils.sinDeg(angle);
+                velocityX = velocity * Mathf.cosDeg(angle);
+                velocityY = velocity * Mathf.sinDeg(angle);
                 if((updateFlags & UPDATE_ROTATION) != 0){
                     float rotation = particle.rotation + particle.rotationDiff * rotationValue.getScale(percent);
                     if(aligned) rotation += angle;
@@ -1303,7 +1303,7 @@ public class ParticleEmitter{
         private float lowMin, lowMax;
 
         public float newLowValue(){
-            return lowMin + (lowMax - lowMin) * MathUtils.random();
+            return lowMin + (lowMax - lowMin) * Mathf.random();
         }
 
         public void setLow(float value){
@@ -1371,7 +1371,7 @@ public class ParticleEmitter{
         private boolean relative;
 
         public float newHighValue(){
-            return highMin + (highMax - highMin) * MathUtils.random();
+            return highMin + (highMax - highMin) * Mathf.random();
         }
 
         public void setHigh(float value){

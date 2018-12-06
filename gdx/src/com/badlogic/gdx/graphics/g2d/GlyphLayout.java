@@ -100,7 +100,7 @@ public class GlyphLayout implements Poolable{
 
         boolean markupEnabled = fontData.markupEnabled;
 
-        Pool<GlyphRun> glyphRunPool = Pools.get(GlyphRun.class);
+        Pool<GlyphRun> glyphRunPool = Pools.get(GlyphRun.class, GlyphRun::new);
         Array<GlyphRun> runs = this.runs;
         glyphRunPool.freeAll(runs);
         runs.clear();
@@ -112,7 +112,7 @@ public class GlyphLayout implements Poolable{
         Array<Color> colorStack = this.colorStack;
         Color nextColor = color;
         colorStack.add(color);
-        Pool<Color> colorPool = Pools.get(Color.class);
+        Pool<Color> colorPool = Pools.get(Color.class, Color::new);
 
         int runStart = start;
         outer:
@@ -488,7 +488,7 @@ public class GlyphLayout implements Poolable{
     }
 
     public void reset(){
-        Pools.get(GlyphRun.class).freeAll(runs);
+        Pools.get(GlyphRun.class, GlyphRun::new).freeAll(runs);
         runs.clear();
 
         width = 0;

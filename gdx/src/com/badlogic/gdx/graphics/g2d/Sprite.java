@@ -18,7 +18,7 @@ package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
 
@@ -470,8 +470,8 @@ public class Sprite extends TextureRegion{
                 localY2 *= scaleY;
             }
             if(rotation != 0){
-                final float cos = MathUtils.cosDeg(rotation);
-                final float sin = MathUtils.sinDeg(rotation);
+                final float cos = Mathf.cosDeg(rotation);
+                final float sin = Mathf.sinDeg(rotation);
                 final float localXCos = localX * cos;
                 final float localXSin = localX * sin;
                 final float localYCos = localY * cos;

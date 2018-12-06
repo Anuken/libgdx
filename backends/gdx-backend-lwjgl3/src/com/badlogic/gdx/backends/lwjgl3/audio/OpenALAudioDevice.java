@@ -17,7 +17,7 @@
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
 import com.badlogic.gdx.audio.AudioDevice;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
@@ -71,7 +71,7 @@ public class OpenALAudioDevice implements AudioDevice{
         int end = Math.min(offset + numSamples, samples.length);
         for(int i = offset, ii = 0; i < end; i++){
             float floatSample = samples[i];
-            floatSample = MathUtils.clamp(floatSample, -1f, 1f);
+            floatSample = Mathf.clamp(floatSample, -1f, 1f);
             int intSample = (int) (floatSample * 32767);
             bytes[ii++] = (byte) (intSample & 0xFF);
             bytes[ii++] = (byte) ((intSample >> 8) & 0xFF);

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StringBuilder;
 
@@ -75,7 +75,7 @@ public class ObjectSet<T> implements Iterable<T>{
      */
     public ObjectSet(int initialCapacity, float loadFactor){
         if(initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-        initialCapacity = MathUtils.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
+        initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
         if(initialCapacity > 1 << 30)
             throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
         capacity = initialCapacity;
@@ -215,7 +215,7 @@ public class ObjectSet<T> implements Iterable<T>{
         int i = 0, pushIterations = this.pushIterations;
         do{
             // Replace the key and value for one of the hashes.
-            switch(MathUtils.random(2)){
+            switch(Mathf.random(2)){
                 case 0:
                     evictedKey = key1;
                     keyTable[index1] = insertKey;
@@ -340,7 +340,7 @@ public class ObjectSet<T> implements Iterable<T>{
         if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
         if(size > maximumCapacity) maximumCapacity = size;
         if(capacity <= maximumCapacity) return;
-        maximumCapacity = MathUtils.nextPowerOfTwo(maximumCapacity);
+        maximumCapacity = Mathf.nextPowerOfTwo(maximumCapacity);
         resize(maximumCapacity);
     }
 
@@ -422,7 +422,7 @@ public class ObjectSet<T> implements Iterable<T>{
         if(additionalCapacity < 0)
             throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
         int sizeNeeded = size + additionalCapacity;
-        if(sizeNeeded >= threshold) resize(MathUtils.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
+        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
     }
 
     private void resize(int newSize){

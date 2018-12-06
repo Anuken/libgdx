@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.StringBuilder;
 
 import java.util.BitSet;
@@ -307,7 +307,7 @@ public class BooleanArray{
     public void shuffle(){
         boolean[] items = this.items;
         for(int i = size - 1; i >= 0; i--){
-            int ii = MathUtils.random(i);
+            int ii = Mathf.random(i);
             boolean temp = items[i];
             items[i] = items[ii];
             items[ii] = temp;
@@ -325,7 +325,7 @@ public class BooleanArray{
     /** Returns a random item from the array, or false if the array is empty. */
     public boolean random(){
         if(size == 0) return false;
-        return items[MathUtils.random(0, size - 1)];
+        return items[Mathf.random(0, size - 1)];
     }
 
     public boolean[] toArray(){

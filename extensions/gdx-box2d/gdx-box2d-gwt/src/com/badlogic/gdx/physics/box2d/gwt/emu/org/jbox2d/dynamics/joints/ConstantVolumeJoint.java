@@ -192,7 +192,7 @@ public class ConstantVolumeJoint extends Joint{
             m_impulse *= step.step.dtRatio;
             // float lambda = -2.0f * crossMassSum / dotMassSum;
             // System.out.println(crossMassSum + " " +dotMassSum);
-            // lambda = MathUtils.clamp(lambda, -Settings.maxLinearCorrection,
+            // lambda = Mathf.clamp(lambda, -Settings.maxLinearCorrection,
             // Settings.maxLinearCorrection);
             // m_impulse = lambda;
             for(int i = 0; i < bodies.length; ++i){
@@ -228,7 +228,7 @@ public class ConstantVolumeJoint extends Joint{
         }
         float lambda = -2.0f * crossMassSum / dotMassSum;
         // System.out.println(crossMassSum + " " +dotMassSum);
-        // lambda = MathUtils.clamp(lambda, -Settings.maxLinearCorrection,
+        // lambda = Mathf.clamp(lambda, -Settings.maxLinearCorrection,
         // Settings.maxLinearCorrection);
         m_impulse += lambda;
         // System.out.println(m_impulse);

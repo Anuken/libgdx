@@ -217,9 +217,9 @@ public class IOSInput implements Input{
 //		R[3] = mX;	R[4] = mY;	R[5] = mZ;
 //		R[6] = gX;	R[7] = gY;	R[8] = gZ;
 //		
-//		rotation[0] = (float) Math.atan2(R[1], R[4]) * MathUtils.radDeg;
-//		rotation[1] = (float) Math.asin(-R[7]) * MathUtils.radDeg;
-//		rotation[2] = (float) Math.atan2(-R[6], R[8]) * MathUtils.radDeg;
+//		rotation[0] = (float) Math.atan2(R[1], R[4]) * Mathf.radDeg;
+//		rotation[1] = (float) Math.asin(-R[7]) * Mathf.radDeg;
+//		rotation[2] = (float) Math.atan2(-R[6], R[8]) * Mathf.radDeg;
 //	}
 
     @Override

@@ -45,62 +45,6 @@ import java.nio.ByteBuffer;
  * @author badlogicgames@gmail.com
  */
 public class Pixmap implements Disposable{
-    /**
-     * Different pixel formats.
-     *
-     * @author mzechner
-     */
-    public enum Format{
-        Alpha, Intensity, LuminanceAlpha, RGB565, RGBA4444, RGB888, RGBA8888;
-
-        public static int toGdx2DPixmapFormat(Format format){
-            if(format == Alpha) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
-            if(format == Intensity) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
-            if(format == LuminanceAlpha) return Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA;
-            if(format == RGB565) return Gdx2DPixmap.GDX2D_FORMAT_RGB565;
-            if(format == RGBA4444) return Gdx2DPixmap.GDX2D_FORMAT_RGBA4444;
-            if(format == RGB888) return Gdx2DPixmap.GDX2D_FORMAT_RGB888;
-            if(format == RGBA8888) return Gdx2DPixmap.GDX2D_FORMAT_RGBA8888;
-            throw new GdxRuntimeException("Unknown Format: " + format);
-        }
-
-        public static Format fromGdx2DPixmapFormat(int format){
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_ALPHA) return Alpha;
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA) return LuminanceAlpha;
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGB565) return RGB565;
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA4444) return RGBA4444;
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGB888) return RGB888;
-            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA8888) return RGBA8888;
-            throw new GdxRuntimeException("Unknown Gdx2DPixmap Format: " + format);
-        }
-
-        public static int toGlFormat(Format format){
-            return Gdx2DPixmap.toGlFormat(toGdx2DPixmapFormat(format));
-        }
-
-        public static int toGlType(Format format){
-            return Gdx2DPixmap.toGlType(toGdx2DPixmapFormat(format));
-        }
-    }
-
-    /**
-     * Blending functions to be set with {@link Pixmap#setBlending}.
-     *
-     * @author mzechner
-     */
-    public enum Blending{
-        None, SourceOver
-    }
-
-    /**
-     * Filters to be used with {@link Pixmap#drawPixmap(Pixmap, int, int, int, int, int, int, int, int)}.
-     *
-     * @author mzechner
-     */
-    public enum Filter{
-        NearestNeighbour, BiLinear
-    }
-
     private Blending blending = Blending.SourceOver;
     private Filter filter = Filter.BiLinear;
 
@@ -453,5 +397,61 @@ public class Pixmap implements Disposable{
     /** @return the currently set {@link Filter} */
     public Filter getFilter(){
         return filter;
+    }
+
+    /**
+     * Different pixel formats.
+     *
+     * @author mzechner
+     */
+    public enum Format{
+        Alpha, Intensity, LuminanceAlpha, RGB565, RGBA4444, RGB888, RGBA8888;
+
+        public static int toGdx2DPixmapFormat(Format format){
+            if(format == Alpha) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
+            if(format == Intensity) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
+            if(format == LuminanceAlpha) return Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA;
+            if(format == RGB565) return Gdx2DPixmap.GDX2D_FORMAT_RGB565;
+            if(format == RGBA4444) return Gdx2DPixmap.GDX2D_FORMAT_RGBA4444;
+            if(format == RGB888) return Gdx2DPixmap.GDX2D_FORMAT_RGB888;
+            if(format == RGBA8888) return Gdx2DPixmap.GDX2D_FORMAT_RGBA8888;
+            throw new GdxRuntimeException("Unknown Format: " + format);
+        }
+
+        public static Format fromGdx2DPixmapFormat(int format){
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_ALPHA) return Alpha;
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_LUMINANCE_ALPHA) return LuminanceAlpha;
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGB565) return RGB565;
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA4444) return RGBA4444;
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGB888) return RGB888;
+            if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA8888) return RGBA8888;
+            throw new GdxRuntimeException("Unknown Gdx2DPixmap Format: " + format);
+        }
+
+        public static int toGlFormat(Format format){
+            return Gdx2DPixmap.toGlFormat(toGdx2DPixmapFormat(format));
+        }
+
+        public static int toGlType(Format format){
+            return Gdx2DPixmap.toGlType(toGdx2DPixmapFormat(format));
+        }
+    }
+
+    /**
+     * Blending functions to be set with {@link Pixmap#setBlending}.
+     *
+     * @author mzechner
+     */
+    public enum Blending{
+        None, SourceOver
+    }
+
+    /**
+     * Filters to be used with {@link Pixmap#drawPixmap(Pixmap, int, int, int, int, int, int, int, int)}.
+     *
+     * @author mzechner
+     */
+    public enum Filter{
+        NearestNeighbour, BiLinear
     }
 }

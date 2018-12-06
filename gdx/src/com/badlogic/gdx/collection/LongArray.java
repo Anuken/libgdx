@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.StringBuilder;
 
 import java.util.Arrays;
@@ -352,7 +352,7 @@ public class LongArray{
     public void shuffle(){
         long[] items = this.items;
         for(int i = size - 1; i >= 0; i--){
-            int ii = MathUtils.random(i);
+            int ii = Mathf.random(i);
             long temp = items[i];
             items[i] = items[ii];
             items[ii] = temp;
@@ -370,7 +370,7 @@ public class LongArray{
     /** Returns a random item from the array, or zero if the array is empty. */
     public long random(){
         if(size == 0) return 0;
-        return items[MathUtils.random(0, size - 1)];
+        return items[Mathf.random(0, size - 1)];
     }
 
     public long[] toArray(){

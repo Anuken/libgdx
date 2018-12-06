@@ -18,7 +18,7 @@ package com.badlogic.gdx.physics.box2d.graphics;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -50,7 +50,7 @@ public class ParticleEmitterBox2D extends ParticleEmitter{
     final RayCastCallback rayCallBack = new RayCastCallback(){
         public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction){
             ParticleEmitterBox2D.this.particleCollided = true;
-            ParticleEmitterBox2D.this.normalAngle = MathUtils.atan2(normal.y, normal.x) * MathUtils.radiansToDegrees;
+            ParticleEmitterBox2D.this.normalAngle = Mathf.atan2(normal.y, normal.x) * Mathf.radiansToDegrees;
             return fraction;
         }
     };
@@ -128,8 +128,8 @@ public class ParticleEmitterBox2D extends ParticleEmitter{
             if(particleCollided){
                 // perfect reflection
                 angle = 2f * normalAngle - angle - 180f;
-                angleCos = MathUtils.cosDeg(angle);
-                angleSin = MathUtils.sinDeg(angle);
+                angleCos = Mathf.cosDeg(angle);
+                angleSin = Mathf.sinDeg(angle);
                 velocityX *= angleCos;
                 velocityY *= angleSin;
             }

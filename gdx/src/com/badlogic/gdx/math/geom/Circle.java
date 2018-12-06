@@ -13,7 +13,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -233,14 +233,14 @@ public class Circle implements Serializable, Shape2D{
         return x + "," + y + "," + radius;
     }
 
-    /** @return The circumference of this circle (as 2 * {@link MathUtils#PI2}) * {@code radius} */
+    /** @return The circumference of this circle (as 2 * {@link Mathf#PI2}) * {@code radius} */
     public float circumference(){
-        return this.radius * MathUtils.PI2;
+        return this.radius * Mathf.PI2;
     }
 
-    /** @return The area of this circle (as {@link MathUtils#PI} * radius * radius). */
+    /** @return The area of this circle (as {@link Mathf#PI} * radius * radius). */
     public float area(){
-        return this.radius * this.radius * MathUtils.PI;
+        return this.radius * this.radius * Mathf.PI;
     }
 
     @Override

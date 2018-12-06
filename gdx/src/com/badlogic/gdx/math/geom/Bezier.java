@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -214,7 +214,7 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
         float l3Sqr = p3.dst2(p1);
         float l1 = (float) Math.sqrt(l1Sqr);
         float s = (l2Sqr + l1Sqr - l3Sqr) / (2 * l1);
-        return MathUtils.clamp((l1 - s) / l1, 0f, 1f);
+        return Mathf.clamp((l1 - s) / l1, 0f, 1f);
     }
 
     @Override

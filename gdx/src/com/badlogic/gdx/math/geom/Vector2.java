@@ -17,7 +17,7 @@
 package com.badlogic.gdx.math.geom;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.NumberUtils;
@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author badlogicgames@gmail.com
  */
-public class Vector2 implements Serializable, Vector<Vector2>{
+public class Vector2 implements Serializable, Vector<Vector2>, Position{
     private static final long serialVersionUID = 913902788239530931L;
 
     public final static Vector2 X = new Vector2(1, 0);
@@ -92,6 +92,12 @@ public class Vector2 implements Serializable, Vector<Vector2>{
     public Vector2 set(Vector2 v){
         x = v.x;
         y = v.y;
+        return this;
+    }
+
+    public Vector2 set(Position v){
+        x = v.getX();
+        y = v.getY();
         return this;
     }
 
@@ -364,7 +370,7 @@ public class Vector2 implements Serializable, Vector<Vector2>{
      * (typically counter-clockwise) and between 0 and 360.
      */
     public float angle(){
-        float angle = (float) Math.atan2(y, x) * MathUtils.radiansToDegrees;
+        float angle = Mathf.atan2(y, x) * Mathf.radiansToDegrees;
         if(angle < 0) angle += 360;
         return angle;
     }
@@ -374,7 +380,7 @@ public class Vector2 implements Serializable, Vector<Vector2>{
      * (typically counter-clockwise.) between -180 and +180
      */
     public float angle(Vector2 reference){
-        return (float) Math.atan2(crs(reference), dot(reference)) * MathUtils.radiansToDegrees;
+        return (float) Math.atan2(crs(reference), dot(reference)) * Mathf.radiansToDegrees;
     }
 
     /**
@@ -399,7 +405,7 @@ public class Vector2 implements Serializable, Vector<Vector2>{
      * @param degrees The angle in degrees to set.
      */
     public Vector2 setAngle(float degrees){
-        return setAngleRad(degrees * MathUtils.degreesToRadians);
+        return setAngleRad(degrees * Mathf.degreesToRadians);
     }
 
     /**
@@ -420,7 +426,7 @@ public class Vector2 implements Serializable, Vector<Vector2>{
      * @param degrees the angle in degrees
      */
     public Vector2 rotate(float degrees){
-        return rotateRad(degrees * MathUtils.degreesToRadians);
+        return rotateRad(degrees * Mathf.degreesToRadians);
     }
 
     /**
@@ -439,8 +445,8 @@ public class Vector2 implements Serializable, Vector<Vector2>{
      * @param radians the angle in radians
      */
     public Vector2 rotateRad(float radians){
-        float cos = (float) Math.cos(radians);
-        float sin = (float) Math.sin(radians);
+        float cos = Mathf.cos(radians);
+        float sin = Mathf.sin(radians);
 
         float newX = this.x * cos - this.y * sin;
         float newY = this.x * sin + this.y * cos;
@@ -489,8 +495,8 @@ public class Vector2 implements Serializable, Vector<Vector2>{
 
     @Override
     public Vector2 setToRandomDirection(){
-        float theta = MathUtils.random(0f, MathUtils.PI2);
-        return this.set(MathUtils.cos(theta), MathUtils.sin(theta));
+        float theta = Mathf.random(0f, Mathf.PI2);
+        return this.set(Mathf.cos(theta), Mathf.sin(theta));
     }
 
     @Override
@@ -530,24 +536,24 @@ public class Vector2 implements Serializable, Vector<Vector2>{
     }
 
     /**
-     * Compares this vector with the other vector using MathUtils.FLOAT_ROUNDING_ERROR for fuzzy equality testing
+     * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
      *
      * @param other other vector to compare
      * @return true if vector are equal, otherwise false
      */
     public boolean epsilonEquals(final Vector2 other){
-        return epsilonEquals(other, MathUtils.FLOAT_ROUNDING_ERROR);
+        return epsilonEquals(other, Mathf.FLOAT_ROUNDING_ERROR);
     }
 
     /**
-     * Compares this vector with the other vector using MathUtils.FLOAT_ROUNDING_ERROR for fuzzy equality testing
+     * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
      *
      * @param x x component of the other vector to compare
      * @param y y component of the other vector to compare
      * @return true if vector are equal, otherwise false
      */
     public boolean epsilonEquals(float x, float y){
-        return epsilonEquals(x, y, MathUtils.FLOAT_ROUNDING_ERROR);
+        return epsilonEquals(x, y, Mathf.FLOAT_ROUNDING_ERROR);
     }
 
     @Override
@@ -572,12 +578,12 @@ public class Vector2 implements Serializable, Vector<Vector2>{
 
     @Override
     public boolean isOnLine(Vector2 other){
-        return MathUtils.isZero(x * other.y - y * other.x);
+        return Mathf.isZero(x * other.y - y * other.x);
     }
 
     @Override
     public boolean isOnLine(Vector2 other, float epsilon){
-        return MathUtils.isZero(x * other.y - y * other.x, epsilon);
+        return Mathf.isZero(x * other.y - y * other.x, epsilon);
     }
 
     @Override
@@ -602,12 +608,12 @@ public class Vector2 implements Serializable, Vector<Vector2>{
 
     @Override
     public boolean isPerpendicular(Vector2 vector){
-        return MathUtils.isZero(dot(vector));
+        return Mathf.isZero(dot(vector));
     }
 
     @Override
     public boolean isPerpendicular(Vector2 vector, float epsilon){
-        return MathUtils.isZero(dot(vector), epsilon);
+        return Mathf.isZero(dot(vector), epsilon);
     }
 
     @Override
@@ -625,5 +631,15 @@ public class Vector2 implements Serializable, Vector<Vector2>{
         this.x = 0;
         this.y = 0;
         return this;
+    }
+
+    @Override
+    public float getX(){
+        return x;
+    }
+
+    @Override
+    public float getY(){
+        return y;
     }
 }

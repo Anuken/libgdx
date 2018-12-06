@@ -19,7 +19,7 @@ package com.badlogic.gdx.graphics.g2d;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
@@ -395,7 +395,7 @@ public class NinePatch{
         if(rotation != 0){
             for(int i = 0; i < n; i += 5){
                 float vx = (vertices[i] - worldOriginX) * scaleX, vy = (vertices[i + 1] - worldOriginY) * scaleY;
-                float cos = MathUtils.cosDeg(rotation), sin = MathUtils.sinDeg(rotation);
+                float cos = Mathf.cosDeg(rotation), sin = Mathf.sinDeg(rotation);
                 vertices[i] = cos * vx - sin * vy + worldOriginX;
                 vertices[i + 1] = sin * vx + cos * vy + worldOriginY;
             }

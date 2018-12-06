@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 
 /**
@@ -232,8 +232,8 @@ public class PolygonSprite{
         final float worldOriginY = y + originY;
         final float sX = width / region.region.getRegionWidth();
         final float sY = height / region.region.getRegionHeight();
-        final float cos = MathUtils.cosDeg(rotation);
-        final float sin = MathUtils.sinDeg(rotation);
+        final float cos = Mathf.cosDeg(rotation);
+        final float sin = Mathf.sinDeg(rotation);
 
         float fx, fy;
         for(int i = 0, v = 0, n = regionVertices.length; i < n; i += 2, v += 5){

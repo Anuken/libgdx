@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -205,9 +205,9 @@ public class Ellipse implements Serializable, Shape2D{
         return this;
     }
 
-    /** @return The area of this {@link Ellipse} as {@link MathUtils#PI} * {@link Ellipse#width} * {@link Ellipse#height} */
+    /** @return The area of this {@link Ellipse} as {@link Mathf#PI} * {@link Ellipse#width} * {@link Ellipse#height} */
     public float area(){
-        return MathUtils.PI * (this.width * this.height) / 4;
+        return Mathf.PI * (this.width * this.height) / 4;
     }
 
     /**
@@ -222,10 +222,10 @@ public class Ellipse implements Serializable, Shape2D{
         float b = this.height / 2;
         if(a * 3 > b || b * 3 > a){
             // If one dimension is three times as long as the other...
-            return (float) (MathUtils.PI * ((3 * (a + b)) - Math.sqrt((3 * a + b) * (a + 3 * b))));
+            return (float) (Mathf.PI * ((3 * (a + b)) - Math.sqrt((3 * a + b) * (a + 3 * b))));
         }else{
             // We can use the simpler approximation, then
-            return (float) (MathUtils.PI2 * Math.sqrt((a * a + b * b) / 2));
+            return (float) (Mathf.PI2 * Math.sqrt((a * a + b * b) / 2));
         }
     }
 

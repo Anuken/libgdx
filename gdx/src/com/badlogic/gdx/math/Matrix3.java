@@ -163,7 +163,7 @@ public class Matrix3 implements Serializable{
      * @return This matrix for the purpose of chaining operations.
      */
     public Matrix3 setToRotation(float degrees){
-        return setToRotationRad(MathUtils.degreesToRadians * degrees);
+        return setToRotationRad(Mathf.degreesToRadians * degrees);
     }
 
     /**
@@ -193,7 +193,7 @@ public class Matrix3 implements Serializable{
     }
 
     public Matrix3 setToRotation(Vector3 axis, float degrees){
-        return setToRotation(axis, MathUtils.cosDeg(degrees), MathUtils.sinDeg(degrees));
+        return setToRotation(axis, Mathf.cosDeg(degrees), Mathf.sinDeg(degrees));
     }
 
     public Matrix3 setToRotation(Vector3 axis, float cos, float sin){
@@ -511,7 +511,7 @@ public class Matrix3 implements Serializable{
      * @return This matrix for the purpose of chaining.
      */
     public Matrix3 rotate(float degrees){
-        return rotateRad(MathUtils.degreesToRadians * degrees);
+        return rotateRad(Mathf.degreesToRadians * degrees);
     }
 
     /**
@@ -610,7 +610,7 @@ public class Matrix3 implements Serializable{
     }
 
     public float getRotation(){
-        return MathUtils.radiansToDegrees * (float) Math.atan2(val[M10], val[M00]);
+        return Mathf.radiansToDegrees * (float) Math.atan2(val[M10], val[M00]);
     }
 
     public float getRotationRad(){

@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 
 /** @author Nathan Sweet */
 public final class GeometryUtils{
@@ -113,7 +113,7 @@ public final class GeometryUtils{
         float dx21 = x2 - x1, dy21 = y2 - y1;
         float dx32 = x3 - x2, dy32 = y3 - y2;
         float det = dx32 * dy21 - dx21 * dy32;
-        return Math.abs(det) < MathUtils.FLOAT_ROUNDING_ERROR;
+        return Math.abs(det) < Mathf.FLOAT_ROUNDING_ERROR;
     }
 
     static public Vector2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3, Vector2 centroid){
@@ -128,7 +128,7 @@ public final class GeometryUtils{
         float dx32 = x3 - x2, dy32 = y3 - y2;
         float dx13 = x1 - x3, dy13 = y1 - y3;
         float det = dx32 * dy21 - dx21 * dy32;
-        if(Math.abs(det) < MathUtils.FLOAT_ROUNDING_ERROR)
+        if(Math.abs(det) < Mathf.FLOAT_ROUNDING_ERROR)
             throw new IllegalArgumentException("Triangle points must not be colinear.");
         det *= 2;
         float sqr1 = x1 * x1 + y1 * y1, sqr2 = x2 * x2 + y2 * y2, sqr3 = x3 * x3 + y3 * y3;
@@ -138,13 +138,13 @@ public final class GeometryUtils{
 
     static public float triangleCircumradius(float x1, float y1, float x2, float y2, float x3, float y3){
         float m1, m2, mx1, mx2, my1, my2, x, y;
-        if(Math.abs(y2 - y1) < MathUtils.FLOAT_ROUNDING_ERROR){
+        if(Math.abs(y2 - y1) < Mathf.FLOAT_ROUNDING_ERROR){
             m2 = -(x3 - x2) / (y3 - y2);
             mx2 = (x2 + x3) / 2;
             my2 = (y2 + y3) / 2;
             x = (x2 + x1) / 2;
             y = m2 * (x - mx2) + my2;
-        }else if(Math.abs(y3 - y2) < MathUtils.FLOAT_ROUNDING_ERROR){
+        }else if(Math.abs(y3 - y2) < Mathf.FLOAT_ROUNDING_ERROR){
             m1 = -(x2 - x1) / (y2 - y1);
             mx1 = (x1 + x2) / 2;
             my1 = (y1 + y2) / 2;

@@ -184,8 +184,8 @@ public final class Affine2 implements Serializable{
      * @return This matrix for the purpose of chaining operations.
      */
     public Affine2 setToRotation(float degrees){
-        float cos = MathUtils.cosDeg(degrees);
-        float sin = MathUtils.sinDeg(degrees);
+        float cos = Mathf.cosDeg(degrees);
+        float sin = Mathf.sinDeg(degrees);
 
         m00 = cos;
         m01 = -sin;
@@ -203,8 +203,8 @@ public final class Affine2 implements Serializable{
      * @return This matrix for the purpose of chaining operations.
      */
     public Affine2 setToRotationRad(float radians){
-        float cos = MathUtils.cos(radians);
-        float sin = MathUtils.sin(radians);
+        float cos = Mathf.cos(radians);
+        float sin = Mathf.sin(radians);
 
         m00 = cos;
         m01 = -sin;
@@ -280,8 +280,8 @@ public final class Affine2 implements Serializable{
             m10 = 0;
             m11 = scaleY;
         }else{
-            float sin = MathUtils.sinDeg(degrees);
-            float cos = MathUtils.cosDeg(degrees);
+            float sin = Mathf.sinDeg(degrees);
+            float cos = Mathf.cosDeg(degrees);
 
             m00 = cos * scaleX;
             m01 = -sin * scaleY;
@@ -325,8 +325,8 @@ public final class Affine2 implements Serializable{
             m10 = 0;
             m11 = scaleY;
         }else{
-            float sin = MathUtils.sin(radians);
-            float cos = MathUtils.cos(radians);
+            float sin = Mathf.sin(radians);
+            float cos = Mathf.cos(radians);
 
             m00 = cos * scaleX;
             m01 = -sin * scaleY;
@@ -587,8 +587,8 @@ public final class Affine2 implements Serializable{
     public Affine2 rotate(float degrees){
         if(degrees == 0) return this;
 
-        float cos = MathUtils.cosDeg(degrees);
-        float sin = MathUtils.sinDeg(degrees);
+        float cos = Mathf.cosDeg(degrees);
+        float sin = Mathf.sinDeg(degrees);
 
         float tmp00 = m00 * cos + m01 * sin;
         float tmp01 = m00 * -sin + m01 * cos;
@@ -611,8 +611,8 @@ public final class Affine2 implements Serializable{
     public Affine2 rotateRad(float radians){
         if(radians == 0) return this;
 
-        float cos = MathUtils.cos(radians);
-        float sin = MathUtils.sin(radians);
+        float cos = Mathf.cos(radians);
+        float sin = Mathf.sin(radians);
 
         float tmp00 = m00 * cos + m01 * sin;
         float tmp01 = m00 * -sin + m01 * cos;
@@ -635,8 +635,8 @@ public final class Affine2 implements Serializable{
     public Affine2 preRotate(float degrees){
         if(degrees == 0) return this;
 
-        float cos = MathUtils.cosDeg(degrees);
-        float sin = MathUtils.sinDeg(degrees);
+        float cos = Mathf.cosDeg(degrees);
+        float sin = Mathf.sinDeg(degrees);
 
         float tmp00 = cos * m00 - sin * m10;
         float tmp01 = cos * m01 - sin * m11;
@@ -663,8 +663,8 @@ public final class Affine2 implements Serializable{
     public Affine2 preRotateRad(float radians){
         if(radians == 0) return this;
 
-        float cos = MathUtils.cos(radians);
-        float sin = MathUtils.sin(radians);
+        float cos = Mathf.cos(radians);
+        float sin = Mathf.sin(radians);
 
         float tmp00 = cos * m00 - sin * m10;
         float tmp01 = cos * m01 - sin * m11;

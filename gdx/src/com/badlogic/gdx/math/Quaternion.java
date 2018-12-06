@@ -141,8 +141,8 @@ public class Quaternion implements Serializable{
      * @return this quaternion
      */
     public Quaternion setEulerAngles(float yaw, float pitch, float roll){
-        return setEulerAnglesRad(yaw * MathUtils.degreesToRadians, pitch * MathUtils.degreesToRadians, roll
-        * MathUtils.degreesToRadians);
+        return setEulerAnglesRad(yaw * Mathf.degreesToRadians, pitch * Mathf.degreesToRadians, roll
+        * Mathf.degreesToRadians);
     }
 
     /**
@@ -192,8 +192,8 @@ public class Quaternion implements Serializable{
      */
     public float getRollRad(){
         final int pole = getGimbalPole();
-        return pole == 0 ? MathUtils.atan2(2f * (w * z + y * x), 1f - 2f * (x * x + z * z)) : (float) pole * 2f
-        * MathUtils.atan2(y, w);
+        return pole == 0 ? Mathf.atan2(2f * (w * z + y * x), 1f - 2f * (x * x + z * z)) : (float) pole * 2f
+        * Mathf.atan2(y, w);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Quaternion implements Serializable{
      * @return the rotation around the z axis in degrees (between -180 and +180)
      */
     public float getRoll(){
-        return getRollRad() * MathUtils.radiansToDegrees;
+        return getRollRad() * Mathf.radiansToDegrees;
     }
 
     /**
@@ -212,7 +212,7 @@ public class Quaternion implements Serializable{
      */
     public float getPitchRad(){
         final int pole = getGimbalPole();
-        return pole == 0 ? (float) Math.asin(MathUtils.clamp(2f * (w * x - z * y), -1f, 1f)) : (float) pole * MathUtils.PI * 0.5f;
+        return pole == 0 ? (float) Math.asin(Mathf.clamp(2f * (w * x - z * y), -1f, 1f)) : (float) pole * Mathf.PI * 0.5f;
     }
 
     /**
@@ -221,7 +221,7 @@ public class Quaternion implements Serializable{
      * @return the rotation around the x axis in degrees (between -90 and +90)
      */
     public float getPitch(){
-        return getPitchRad() * MathUtils.radiansToDegrees;
+        return getPitchRad() * Mathf.radiansToDegrees;
     }
 
     /**
@@ -230,7 +230,7 @@ public class Quaternion implements Serializable{
      * @return the rotation around the y axis in radians (between -PI and +PI)
      */
     public float getYawRad(){
-        return getGimbalPole() == 0 ? MathUtils.atan2(2f * (y * w + x * z), 1f - 2f * (y * y + x * x)) : 0f;
+        return getGimbalPole() == 0 ? Mathf.atan2(2f * (y * w + x * z), 1f - 2f * (y * y + x * x)) : 0f;
     }
 
     /**
@@ -239,7 +239,7 @@ public class Quaternion implements Serializable{
      * @return the rotation around the y axis in degrees (between -180 and +180)
      */
     public float getYaw(){
-        return getYawRad() * MathUtils.radiansToDegrees;
+        return getYawRad() * Mathf.radiansToDegrees;
     }
 
     public final static float len2(final float x, final float y, final float z, final float w){
@@ -258,7 +258,7 @@ public class Quaternion implements Serializable{
      */
     public Quaternion nor(){
         float len = len2();
-        if(len != 0.f && !MathUtils.isEqual(len, 1f)){
+        if(len != 0.f && !Mathf.isEqual(len, 1f)){
             len = (float) Math.sqrt(len);
             w /= len;
             x /= len;
@@ -442,13 +442,13 @@ public class Quaternion implements Serializable{
 
     /** @return If this quaternion is an identity Quaternion */
     public boolean isIdentity(){
-        return MathUtils.isZero(x) && MathUtils.isZero(y) && MathUtils.isZero(z) && MathUtils.isEqual(w, 1f);
+        return Mathf.isZero(x) && Mathf.isZero(y) && Mathf.isZero(z) && Mathf.isEqual(w, 1f);
     }
 
     /** @return If this quaternion is an identity Quaternion */
     public boolean isIdentity(final float tolerance){
-        return MathUtils.isZero(x, tolerance) && MathUtils.isZero(y, tolerance) && MathUtils.isZero(z, tolerance)
-        && MathUtils.isEqual(w, 1f, tolerance);
+        return Mathf.isZero(x, tolerance) && Mathf.isZero(y, tolerance) && Mathf.isZero(z, tolerance)
+        && Mathf.isEqual(w, 1f, tolerance);
     }
 
     // todo : the setFromAxis(v3,float) method should replace the set(v3,float) method
@@ -485,7 +485,7 @@ public class Quaternion implements Serializable{
      * @return This quaternion for chaining.
      */
     public Quaternion setFromAxis(final float x, final float y, final float z, final float degrees){
-        return setFromAxisRad(x, y, z, degrees * MathUtils.degreesToRadians);
+        return setFromAxisRad(x, y, z, degrees * Mathf.degreesToRadians);
     }
 
     /**
@@ -501,7 +501,7 @@ public class Quaternion implements Serializable{
         float d = Vector3.len(x, y, z);
         if(d == 0f) return idt();
         d = 1f / d;
-        float l_ang = radians < 0 ? MathUtils.PI2 - (-radians % MathUtils.PI2) : radians % MathUtils.PI2;
+        float l_ang = radians < 0 ? Mathf.PI2 - (-radians % Mathf.PI2) : radians % Mathf.PI2;
         float l_sin = (float) Math.sin(l_ang / 2);
         float l_cos = (float) Math.cos(l_ang / 2);
         return this.set(d * x * l_sin, d * y * l_sin, d * z * l_sin, l_cos).nor();
@@ -638,7 +638,7 @@ public class Quaternion implements Serializable{
      * @return This quaternion for chaining
      */
     public Quaternion setFromCross(final Vector3 v1, final Vector3 v2){
-        final float dot = MathUtils.clamp(v1.dot(v2), -1f, 1f);
+        final float dot = Mathf.clamp(v1.dot(v2), -1f, 1f);
         final float angle = (float) Math.acos(dot);
         return setFromAxisRad(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x, angle);
     }
@@ -655,7 +655,7 @@ public class Quaternion implements Serializable{
      * @return This quaternion for chaining
      */
     public Quaternion setFromCross(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
-        final float dot = MathUtils.clamp(Vector3.dot(x1, y1, z1, x2, y2, z2), -1f, 1f);
+        final float dot = Mathf.clamp(Vector3.dot(x1, y1, z1, x2, y2, z2), -1f, 1f);
         final float angle = (float) Math.acos(dot);
         return setFromAxisRad(y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2, angle);
     }
@@ -872,7 +872,7 @@ public class Quaternion implements Serializable{
      * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle">calculation</a>
      */
     public float getAxisAngle(Vector3 axis){
-        return getAxisAngleRad(axis) * MathUtils.radiansToDegrees;
+        return getAxisAngleRad(axis) * Mathf.radiansToDegrees;
     }
 
     /**
@@ -892,7 +892,7 @@ public class Quaternion implements Serializable{
             this.nor(); // if w>1 acos and sqrt will produce errors, this cant happen if quaternion is normalised
         float angle = (float) (2.0 * Math.acos(this.w));
         double s = Math.sqrt(1 - this.w * this.w); // assuming quaternion normalised then w is less than 1, so term always positive.
-        if(s < MathUtils.FLOAT_ROUNDING_ERROR){ // test to avoid divide by zero, s is always positive due to sqrt
+        if(s < Mathf.FLOAT_ROUNDING_ERROR){ // test to avoid divide by zero, s is always positive due to sqrt
             // if s close to zero then direction of axis not important
             axis.x = this.x; // if it is important that axis is normalised then replace with x=1; y=z=0;
             axis.y = this.y;
@@ -924,7 +924,7 @@ public class Quaternion implements Serializable{
      * @return the angle in degrees of the rotation
      */
     public float getAngle(){
-        return getAngleRad() * MathUtils.radiansToDegrees;
+        return getAngleRad() * Mathf.radiansToDegrees;
     }
 
     /**
@@ -974,7 +974,7 @@ public class Quaternion implements Serializable{
     public float getAngleAroundRad(final float axisX, final float axisY, final float axisZ){
         final float d = Vector3.dot(this.x, this.y, this.z, axisX, axisY, axisZ);
         final float l2 = Quaternion.len2(axisX * d, axisY * d, axisZ * d, this.w);
-        return MathUtils.isZero(l2) ? 0f : (float) (2.0 * Math.acos(MathUtils.clamp(
+        return Mathf.isZero(l2) ? 0f : (float) (2.0 * Math.acos(Mathf.clamp(
         (float) ((d < 0 ? -this.w : this.w) / Math.sqrt(l2)), -1f, 1f)));
     }
 
@@ -997,7 +997,7 @@ public class Quaternion implements Serializable{
      * @return the angle in degrees of the rotation around the specified axis
      */
     public float getAngleAround(final float axisX, final float axisY, final float axisZ){
-        return getAngleAroundRad(axisX, axisY, axisZ) * MathUtils.radiansToDegrees;
+        return getAngleAroundRad(axisX, axisY, axisZ) * Mathf.radiansToDegrees;
     }
 
     /**

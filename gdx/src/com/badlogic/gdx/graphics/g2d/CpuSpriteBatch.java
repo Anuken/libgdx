@@ -19,7 +19,7 @@ package com.badlogic.gdx.graphics.g2d;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -347,8 +347,8 @@ public class CpuSpriteBatch extends SpriteBatch{
 
         // rotate
         if(rotation != 0){
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
+            final float cos = Mathf.cosDeg(rotation);
+            final float sin = Mathf.sinDeg(rotation);
 
             x1 = cos * p1x - sin * p1y;
             y1 = sin * p1x + cos * p1y;
@@ -469,8 +469,8 @@ public class CpuSpriteBatch extends SpriteBatch{
 
         // rotate
         if(rotation != 0){
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
+            final float cos = Mathf.cosDeg(rotation);
+            final float sin = Mathf.sinDeg(rotation);
 
             x1 = cos * p1x - sin * p1y;
             y1 = sin * p1x + cos * p1y;

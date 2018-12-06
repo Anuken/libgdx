@@ -19,7 +19,7 @@ package com.badlogic.gdx.graphics.glutils;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.io.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -92,7 +92,7 @@ public class ETC1{
         }
 
         private void checkNPOT(){
-            if(!MathUtils.isPowerOfTwo(width) || !MathUtils.isPowerOfTwo(height)){
+            if(!Mathf.isPowerOfTwo(width) || !Mathf.isPowerOfTwo(height)){
                 System.out.println("ETC1Data " + "warning: non-power-of-two ETC1 textures may crash the driver of PowerVR GPUs");
             }
         }

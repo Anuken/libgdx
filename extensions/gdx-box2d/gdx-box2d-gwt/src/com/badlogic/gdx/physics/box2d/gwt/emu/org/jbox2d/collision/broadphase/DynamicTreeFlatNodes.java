@@ -438,7 +438,7 @@ public class DynamicTreeFlatNodes implements BroadPhaseStrategy{
     // DynamicTreeNode parent = allocateNode();
     // parent.child1 = child1;
     // parent.child2 = child2;
-    // parent.height = 1 + MathUtils.max(child1.height, child2.height);
+    // parent.height = 1 + Mathf.max(child1.height, child2.height);
     // parent.aabb.combine(child1.aabb, child2.aabb);
     // parent.parent = null;
     //

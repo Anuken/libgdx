@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.glutils.ETC1;
 import com.badlogic.gdx.graphics.glutils.ETC1.ETC1Data;
 import com.badlogic.gdx.graphics.glutils.KTXTextureData;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -167,7 +167,7 @@ public class KTXProcessor{
                         texHeight = facePixmap.getHeight();
                     }
                     if(isGenMipMaps){
-                        if(!MathUtils.isPowerOfTwo(texWidth) || !MathUtils.isPowerOfTwo(texHeight))
+                        if(!Mathf.isPowerOfTwo(texWidth) || !Mathf.isPowerOfTwo(texHeight))
                             throw new GdxRuntimeException(
                             "Invalid input : mipmap generation is only available for power of two textures : " + file);
                         nLevels = Math.max(Integer.SIZE - Integer.numberOfLeadingZeros(texWidth),
