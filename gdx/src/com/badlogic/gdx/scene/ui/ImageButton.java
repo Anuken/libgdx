@@ -26,7 +26,7 @@ import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.TextureRegionDrawable;
 import com.badlogic.gdx.scene.ui.layout.Cell;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A button with a child {@link Image} to display an image. This is useful when the button must be larger than the image and the
@@ -41,36 +41,36 @@ public class ImageButton extends Button{
     private ImageButtonStyle style;
 
     public ImageButton(){
-        this(skin.get(ImageButtonStyle.class));
+        this(scene.skin.get(ImageButtonStyle.class));
     }
 
     public ImageButton(String icon){
-        this(skin.get(ImageButtonStyle.class));
-        ImageButtonStyle style = new ImageButtonStyle(skin.get(ImageButtonStyle.class));
-        style.imageUp = skin.getDrawable(icon);
+        this(scene.skin.get(ImageButtonStyle.class));
+        ImageButtonStyle style = new ImageButtonStyle(scene.skin.get(ImageButtonStyle.class));
+        style.imageUp = scene.skin.getDrawable(icon);
 
         setStyle(style);
     }
 
     public ImageButton(String icon, String stylen){
-        this(skin.get(stylen, ImageButtonStyle.class));
-        ImageButtonStyle style = new ImageButtonStyle(skin.get(stylen, ImageButtonStyle.class));
-        style.imageUp = skin.getDrawable(icon);
+        this(scene.skin.get(stylen, ImageButtonStyle.class));
+        ImageButtonStyle style = new ImageButtonStyle(scene.skin.get(stylen, ImageButtonStyle.class));
+        style.imageUp = scene.skin.getDrawable(icon);
 
         setStyle(style);
     }
 
     public ImageButton(TextureRegion region){
-        this(skin.get(ImageButtonStyle.class));
-        ImageButtonStyle style = new ImageButtonStyle(skin.get(ImageButtonStyle.class));
+        this(scene.skin.get(ImageButtonStyle.class));
+        ImageButtonStyle style = new ImageButtonStyle(scene.skin.get(ImageButtonStyle.class));
         style.imageUp = new TextureRegionDrawable(region);
 
         setStyle(style);
     }
 
     public ImageButton(TextureRegion region, String stylen){
-        this(skin.get(ImageButtonStyle.class));
-        ImageButtonStyle style = new ImageButtonStyle(skin.get(stylen, ImageButtonStyle.class));
+        this(scene.skin.get(ImageButtonStyle.class));
+        ImageButtonStyle style = new ImageButtonStyle(scene.skin.get(stylen, ImageButtonStyle.class));
         style.imageUp = new TextureRegionDrawable(region);
 
         setStyle(style);
@@ -88,7 +88,7 @@ public class ImageButton extends Button{
     public ImageButton(Drawable imageUp){
         this(new ImageButtonStyle(null, null, null, imageUp, null, null));
 
-        ImageButtonStyle style = new ImageButtonStyle(skin.get(ImageButtonStyle.class));
+        ImageButtonStyle style = new ImageButtonStyle(scene.skin.get(ImageButtonStyle.class));
         style.imageUp = imageUp;
         setStyle(style);
     }

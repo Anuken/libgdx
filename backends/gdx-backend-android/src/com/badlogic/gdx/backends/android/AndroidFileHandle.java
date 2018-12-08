@@ -19,7 +19,7 @@ package com.badlogic.gdx.backends.android;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.io.StreamUtils;
@@ -56,7 +56,7 @@ public class AndroidFileHandle extends FileHandle{
     public FileHandle sibling(String name){
         name = name.replace('\\', '/');
         if(file.getPath().length() == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
-        return Gdx.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's inside the obb
+        return Core.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's inside the obb
     }
 
     public FileHandle parent(){
@@ -245,7 +245,7 @@ public class AndroidFileHandle extends FileHandle{
     }
 
     public File file(){
-        if(type == FileType.Local) return new File(Gdx.files.getLocalStoragePath(), file.getPath());
+        if(type == FileType.Local) return new File(Core.files.getLocalStoragePath(), file.getPath());
         return super.file();
     }
 

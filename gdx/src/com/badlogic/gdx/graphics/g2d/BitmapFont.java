@@ -22,7 +22,7 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.files.FileHandle;
@@ -73,7 +73,7 @@ public class BitmapFont implements Disposable{
      * display text without bothering without generating a bitmap font yourself.
      */
     public BitmapFont(){
-        this(Gdx.files.classpath("com/badlogic/gdx/utils/arial-15.fnt"), Gdx.files.classpath("com/badlogic/gdx/utils/arial-15.png"),
+        this(Core.files.classpath("com/badlogic/gdx/utils/arial-15.fnt"), Core.files.classpath("com/badlogic/gdx/utils/arial-15.png"),
         false, true);
     }
 
@@ -84,7 +84,7 @@ public class BitmapFont implements Disposable{
      * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner.
      */
     public BitmapFont(boolean flip){
-        this(Gdx.files.classpath("com/badlogic/gdx/utils/arial-15.fnt"), Gdx.files.classpath("com/badlogic/gdx/utils/arial-15.png"),
+        this(Core.files.classpath("com/badlogic/gdx/utils/arial-15.fnt"), Core.files.classpath("com/badlogic/gdx/utils/arial-15.png"),
         flip, true);
     }
 
@@ -193,9 +193,9 @@ public class BitmapFont implements Disposable{
             for(int i = 0; i < n; i++){
                 FileHandle file;
                 if(data.fontFile == null)
-                    file = Gdx.files.internal(data.imagePaths[i]);
+                    file = Core.files.internal(data.imagePaths[i]);
                 else
-                    file = Gdx.files.getFileHandle(data.imagePaths[i], data.fontFile.type());
+                    file = Core.files.getFileHandle(data.imagePaths[i], data.fontFile.type());
                 regions.add(new TextureRegion(new Texture(file, false)));
             }
             ownsTexture = true;

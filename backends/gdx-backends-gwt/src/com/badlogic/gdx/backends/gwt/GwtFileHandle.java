@@ -17,7 +17,7 @@
 package com.badlogic.gdx.backends.gwt;
 
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.gwt.preloader.Preloader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -41,7 +41,7 @@ public class GwtFileHandle extends FileHandle{
 
     public GwtFileHandle(String path){
         this.type = FileType.Internal;
-        this.preloader = ((GwtApplication) Gdx.app).getPreloader();
+        this.preloader = ((GwtApplication) Core.app).getPreloader();
         this.file = fixSlashes(path);
     }
 

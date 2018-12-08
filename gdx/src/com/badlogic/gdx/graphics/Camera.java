@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -230,7 +230,7 @@ public abstract class Camera{
     public Vector3 unproject(Vector3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight){
         float x = screenCoords.x, y = screenCoords.y;
         x = x - viewportX;
-        y = Gdx.graphics.getHeight() - y - 1;
+        y = Core.graphics.getHeight() - y - 1;
         y = y - viewportY;
         screenCoords.x = (2 * x) / viewportWidth - 1;
         screenCoords.y = (2 * y) / viewportHeight - 1;
@@ -250,7 +250,7 @@ public abstract class Camera{
      * @return the mutated and unprojected screenCoords {@link Vector3}
      */
     public Vector3 unproject(Vector3 screenCoords){
-        unproject(screenCoords, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        unproject(screenCoords, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
         return screenCoords;
     }
 
@@ -263,7 +263,7 @@ public abstract class Camera{
      * @return the mutated and projected worldCoords {@link Vector3}
      */
     public Vector3 project(Vector3 worldCoords){
-        project(worldCoords, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        project(worldCoords, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
         return worldCoords;
     }
 
@@ -316,6 +316,6 @@ public abstract class Camera{
      * @return the picking Ray.
      */
     public Ray getPickRay(float screenX, float screenY){
-        return getPickRay(screenX, screenY, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return getPickRay(screenX, screenY, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
     }
 }

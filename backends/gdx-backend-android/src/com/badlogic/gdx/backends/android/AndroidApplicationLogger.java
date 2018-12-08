@@ -17,40 +17,23 @@
 package com.badlogic.gdx.backends.android;
 
 import android.util.Log;
-import com.badlogic.gdx.Application.ApplicationLogger;
+import com.badlogic.gdx.utils.Log.LogHandler;
+import com.badlogic.gdx.utils.Strings;
 
-/**
- * Default implementation of {@link ApplicationLogger} for android
- */
-public class AndroidApplicationLogger implements ApplicationLogger{
+public class AndroidApplicationLogger extends LogHandler{
 
     @Override
-    public void log(String tag, String message){
-        Log.i(tag, message);
+    public void info(String text, Object... args){
+        Log.i(appName, Strings.formatArgs(text, args));
     }
 
     @Override
-    public void log(String tag, String message, Throwable exception){
-        Log.i(tag, message, exception);
+    public void warn(String text, Object... args){
+        Log.w(appName, Strings.formatArgs(text, args));
     }
 
     @Override
-    public void error(String tag, String message){
-        Log.e(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        Log.e(tag, message, exception);
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        Log.d(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        Log.d(tag, message, exception);
+    public void err(String text, Object... args){
+        Log.e(appName, Strings.formatArgs(text, args));
     }
 }

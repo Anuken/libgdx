@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.profiling;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import static com.badlogic.gdx.graphics.profiling.GLInterceptor.resolveErrorNumber;
@@ -58,7 +58,7 @@ public interface GLErrorListener{
             }
 
             if(place != null){
-                Gdx.app.error("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);
+                Core.app.error("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);
             }else{
                 StringBuilder sb = new StringBuilder("Error ");
                 sb.append(resolveErrorNumber(error));
@@ -71,7 +71,7 @@ public interface GLErrorListener{
                 }catch(Exception ignored){
                     sb.append(" (Failed to print stack trace: ").append(ignored).append(")");
                 }
-                Gdx.app.error("GLProfiler", sb.toString());
+                Core.app.error("GLProfiler", sb.toString());
                 // GWT backend seems to have trouble printing stack traces reliably
             }
         }

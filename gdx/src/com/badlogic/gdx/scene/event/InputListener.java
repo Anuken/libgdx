@@ -16,25 +16,13 @@
 
 package com.badlogic.gdx.scene.event;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 
 /**
  * EventListener for low-level input events. Unpacks {@link InputEvent}s and calls the appropriate method. By default the methods
  * here do nothing with the event. Users are expected to override the methods they are interested in, like this:
- * <p>
- * <pre>
- * actor.addListener(new InputListener() {
- * 	public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
- * 		Gdx.app.log(&quot;Example&quot;, &quot;touch started at (&quot; + x + &quot;, &quot; + y + &quot;)&quot;);
- * 		return false;
- *    }
- *
- * 	public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
- * 		Gdx.app.log(&quot;Example&quot;, &quot;touch done at (&quot; + x + &quot;, &quot; + y + &quot;)&quot;);
- *    }
- * });
- * </pre>
  */
 public class InputListener implements EventListener{
     static private final Vector2 tmpCoords = new Vector2();
@@ -43,35 +31,35 @@ public class InputListener implements EventListener{
         if(!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
 
-        switch(event.getType()){
+        switch(event.type){
             case keyDown:
-                return keyDown(event, event.getKeyCode());
+                return keyDown(event, event.keyCode);
             case keyUp:
-                return keyUp(event, event.getKeyCode());
+                return keyUp(event, event.keyCode);
             case keyTyped:
-                return keyTyped(event, event.getCharacter());
+                return keyTyped(event, event.character);
         }
 
         event.toCoordinates(event.getListenerActor(), tmpCoords);
 
-        switch(event.getType()){
+        switch(event.type){
             case touchDown:
-                return touchDown(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getButton());
+                return touchDown(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
             case touchUp:
-                touchUp(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getButton());
+                touchUp(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
                 return true;
             case touchDragged:
-                touchDragged(event, tmpCoords.x, tmpCoords.y, event.getPointer());
+                touchDragged(event, tmpCoords.x, tmpCoords.y, event.pointer);
                 return true;
             case mouseMoved:
                 return mouseMoved(event, tmpCoords.x, tmpCoords.y);
             case scrolled:
-                return scrolled(event, tmpCoords.x, tmpCoords.y, event.getScrollAmount());
+                return scrolled(event, tmpCoords.x, tmpCoords.y, event.scrollAmountX, event.scrollAmountY);
             case enter:
-                enter(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getRelatedActor());
+                enter(event, tmpCoords.x, tmpCoords.y, event.pointer, event.relatedActor);
                 return false;
             case exit:
-                exit(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getRelatedActor());
+                exit(event, tmpCoords.x, tmpCoords.y, event.pointer, event.relatedActor);
                 return false;
         }
         return false;
@@ -84,7 +72,7 @@ public class InputListener implements EventListener{
      *
      * @see InputEvent
      */
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
         return false;
     }
 
@@ -94,7 +82,7 @@ public class InputListener implements EventListener{
      *
      * @see InputEvent
      */
-    public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
     }
 
     /**
@@ -137,17 +125,17 @@ public class InputListener implements EventListener{
     }
 
     /** Called when the mouse wheel has been scrolled. When true is returned, the event is {@link Event#handle() handled}. */
-    public boolean scrolled(InputEvent event, float x, float y, int amount){
+    public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY){
         return false;
     }
 
     /** Called when a key goes down. When true is returned, the event is {@link Event#handle() handled}. */
-    public boolean keyDown(InputEvent event, int keycode){
+    public boolean keyDown(InputEvent event, KeyCode keycode){
         return false;
     }
 
     /** Called when a key goes up. When true is returned, the event is {@link Event#handle() handled}. */
-    public boolean keyUp(InputEvent event, int keycode){
+    public boolean keyUp(InputEvent event, KeyCode keycode){
         return false;
     }
 

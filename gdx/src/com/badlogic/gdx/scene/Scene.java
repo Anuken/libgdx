@@ -17,7 +17,7 @@
 package com.badlogic.gdx.scene;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
@@ -60,22 +60,23 @@ public class Scene implements Disposable, InputProcessor{
     private final Color debugColor = new Color(0, 1, 0, 0.85f);
     private Viewport viewport;
     private boolean ownsBatch;
-    private Group root;
     private int mouseScreenX, mouseScreenY;
     private Element mouseOverActor;
     private Element keyboardFocus, scrollFocus;
     private boolean actionsRequestRendering = true;
     private ShapeRenderer debugShapes;
-    private boolean debugInvisible, debugAll, debugUnderMouse, debugParentUnderMouse;
+    private boolean debugAll, debugUnderMouse, debugParentUnderMouse;
     private Debug debugTableUnderMouse = Debug.none;
+
+    public final Skin skin;
+    public final Group root;
 
     /**
      * Creates a stage with a {@link ScalingViewport} set The stage will use its own {@link Batch}
      * which will be disposed when the stage is disposed.
      */
-    public Scene(){
-        this(new SpriteBatch());
-        System.out.println("construct invoked");
+    public Scene(Skin skin){
+        this(skin, new SpriteBatch());
         ownsBatch = true;
     }
 
@@ -83,8 +84,8 @@ public class Scene implements Disposable, InputProcessor{
      * Creates a stage with the specified viewport. The stage will use its own {@link Batch} which will be disposed when the stage
      * is disposed.
      */
-    public Scene(Viewport viewport){
-        this(new SpriteBatch());
+    public Scene(Skin skin, Viewport viewport){
+        this(skin, new SpriteBatch());
         ownsBatch = true;
     }
 
@@ -94,10 +95,11 @@ public class Scene implements Disposable, InputProcessor{
      *
      * @param batch Will not be disposed if {@link #dispose()} is called, handle disposal yourself.
      */
-    public Scene(Batch batch){
+    public Scene(Skin skin, Batch batch){
         if(batch == null) throw new IllegalArgumentException("batch cannot be null.");
 
         this.batch = batch;
+        this.skin = skin;
         this.viewport = new ScreenViewport(){
             @Override
             public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor){
@@ -109,7 +111,7 @@ public class Scene implements Disposable, InputProcessor{
         root = new Group();
         root.setScene(this);
 
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        viewport.update(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
     }
 
     public void draw(){
@@ -133,7 +135,7 @@ public class Scene implements Disposable, InputProcessor{
         }
 
         if(debugUnderMouse || debugParentUnderMouse || debugTableUnderMouse != Debug.none){
-            screenToStageCoordinates(tempCoords.set(Gdx.input.getX(), Gdx.input.getY()));
+            screenToStageCoordinates(tempCoords.set(Core.input.getX(), Core.input.getY()));
             Element actor = hit(tempCoords.x, tempCoords.y, true);
             if(actor == null) return;
 
@@ -157,7 +159,7 @@ public class Scene implements Disposable, InputProcessor{
             if(debugAll) root.debugAll();
         }
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Core.gl.glEnable(GL20.GL_BLEND);
         debugShapes.setProjectionMatrix(viewport.getCamera().combined);
         debugShapes.begin();
         root.drawDebug(debugShapes);
@@ -177,7 +179,7 @@ public class Scene implements Disposable, InputProcessor{
 
     /** Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}, limited to a minimum of 30fps. */
     public void act(){
-        act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        act(Math.min(Core.graphics.getDeltaTime(), 1 / 30f));
     }
 
     /**
@@ -212,7 +214,7 @@ public class Scene implements Disposable, InputProcessor{
             pointerOverActors[pointer] = fireEnterAndExit(overLast, pointerScreenX[pointer], pointerScreenY[pointer], pointer);
         }
         // Update over actor for the mouse on the desktop.
-        ApplicationType type = Gdx.app.getType();
+        ApplicationType type = Core.app.getType();
         if(type == ApplicationType.Desktop || type == ApplicationType.Applet || type == ApplicationType.WebGL)
             mouseOverActor = fireEnterAndExit(mouseOverActor, mouseScreenX, mouseScreenY, -1);
 
@@ -788,19 +790,6 @@ public class Scene implements Disposable, InputProcessor{
         return viewport.getCamera();
     }
 
-    /** Returns the root group which holds all actors in the stage. */
-    public Group getRoot(){
-        return root;
-    }
-
-    /**
-     * Replaces the root group. Usually this is not necessary but a subclass may be desired in some cases, eg being notified of
-     * {@link Group#childrenChanged()}.
-     */
-    public void setRoot(Group root){
-        this.root = root;
-    }
-
     /**
      * Returns the {@link Element} at the specified location in stage coordinates. Hit testing is performed in the order the actors
      * were inserted into the stage, last inserted actors being tested first. To get stage coordinates from screen coordinates, use
@@ -879,11 +868,6 @@ public class Scene implements Disposable, InputProcessor{
         return debugColor;
     }
 
-    /** If true, debug lines are shown for actors even when {@link Element#isVisible()} is false. */
-    public void setDebugInvisible(boolean debugInvisible){
-        this.debugInvisible = debugInvisible;
-    }
-
     public boolean isDebugAll(){
         return debugAll;
     }
@@ -956,7 +940,7 @@ public class Scene implements Disposable, InputProcessor{
         int x1 = x0 + viewport.getScreenWidth();
         int y0 = viewport.getScreenY();
         int y1 = y0 + viewport.getScreenHeight();
-        screenY = Gdx.graphics.getHeight() - screenY;
+        screenY = Core.graphics.getHeight() - screenY;
         return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
     }
 

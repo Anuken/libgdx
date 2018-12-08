@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.scene.ui;
 
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Timer;
@@ -35,7 +35,7 @@ import static com.badlogic.gdx.scene.actions.Actions.*;
 public class TooltipManager{
     static private TooltipManager instance;
     static private Files files;
-    final Array<Tooltip> shown = new Array();
+    final Array<Tooltip> shown = new Array<>();
     /**
      * Seconds from when an actor is hovered to when the tooltip is shown. Default is 2. Call {@link #hideAll()} after changing to
      * reset internal state.
@@ -87,8 +87,8 @@ public class TooltipManager{
     };
 
     static public TooltipManager getInstance(){
-        if(files == null || files != Gdx.files){
-            files = Gdx.files;
+        if(files == null || files != Core.files){
+            files = Core.files;
             instance = new TooltipManager();
         }
         return instance;

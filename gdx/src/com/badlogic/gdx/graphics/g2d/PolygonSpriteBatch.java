@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
@@ -139,7 +139,7 @@ public class PolygonSpriteBatch implements PolygonBatch{
             throw new IllegalArgumentException("Can't have more than 32767 vertices per batch: " + maxVertices);
 
         Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexArray;
-        if(Gdx.gl30 != null){
+        if(Core.gl30 != null){
             vertexDataType = VertexDataType.VertexBufferObjectWithVAO;
         }
         mesh = new Mesh(vertexDataType, false, maxVertices, maxTriangles * 3,
@@ -156,7 +156,7 @@ public class PolygonSpriteBatch implements PolygonBatch{
         }else
             shader = defaultShader;
 
-        projectionMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        projectionMatrix.setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class PolygonSpriteBatch implements PolygonBatch{
         if(drawing) throw new IllegalStateException("PolygonSpriteBatch.end must be called before begin.");
         renderCalls = 0;
 
-        Gdx.gl.glDepthMask(false);
+        Core.gl.glDepthMask(false);
         if(customShader != null)
             customShader.begin();
         else
@@ -181,7 +181,7 @@ public class PolygonSpriteBatch implements PolygonBatch{
         lastTexture = null;
         drawing = false;
 
-        GL20 gl = Gdx.gl;
+        GL20 gl = Core.gl;
         gl.glDepthMask(true);
         if(isBlendingEnabled()) gl.glDisable(GL20.GL_BLEND);
 
@@ -1208,11 +1208,11 @@ public class PolygonSpriteBatch implements PolygonBatch{
         mesh.setVertices(vertices, 0, vertexIndex);
         mesh.setIndices(triangles, 0, triangleIndex);
         if(blendingDisabled){
-            Gdx.gl.glDisable(GL20.GL_BLEND);
+            Core.gl.glDisable(GL20.GL_BLEND);
         }else{
-            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Core.gl.glEnable(GL20.GL_BLEND);
             if(blendSrcFunc != -1)
-                Gdx.gl.glBlendFuncSeparate(blendSrcFunc, blendDstFunc, blendSrcFuncAlpha, blendDstFuncAlpha);
+                Core.gl.glBlendFuncSeparate(blendSrcFunc, blendDstFunc, blendSrcFuncAlpha, blendDstFuncAlpha);
         }
 
         mesh.render(customShader != null ? customShader : shader, GL20.GL_TRIANGLES, 0, trianglesInBatch);

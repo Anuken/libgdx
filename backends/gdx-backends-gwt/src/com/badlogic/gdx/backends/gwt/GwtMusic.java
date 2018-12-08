@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.gwt;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.gwt.soundmanager2.SMSound;
 import com.badlogic.gdx.backends.gwt.soundmanager2.SMSound.SMSoundCallback;
@@ -34,7 +34,7 @@ public class GwtMusic implements Music, SMSoundCallback{
     private OnCompletionListener onCompletionListener;
 
     public GwtMusic(FileHandle file){
-        String url = ((GwtApplication) Gdx.app).getBaseUrl() + file.path();
+        String url = ((GwtApplication) Core.app).getBaseUrl() + file.path();
         sound = SoundManager.createSound(url);
         soundOptions = new SMSoundOptions();
         soundOptions.callback = this;

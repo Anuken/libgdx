@@ -275,7 +275,6 @@ public interface Graphics{
      * <p>
      * Supported on all GDX desktop backends.
      *
-     * @param resizable
      */
     void setResizable(boolean resizable);
 
@@ -302,7 +301,7 @@ public interface Graphics{
      * <ul>
      * <li>A call to {@link #requestRendering()}</li>
      * <li>Input events from the touch screen/mouse or keyboard</li>
-     * <li>A {@link Runnable} is posted to the rendering thread via {@link Application#postRunnable(Runnable)}. In the case
+     * <li>A {@link Runnable} is posted to the rendering thread via {@link Application#post(Runnable)}. In the case
      * of a multi-window app, all windows will request rendering if a runnable is posted to the application. To avoid this,
      * post a runnable to the window instead. </li>
      * </ul>

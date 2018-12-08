@@ -16,10 +16,9 @@
 
 package com.badlogic.gdx.scene.ui;
 
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.utils.Align;
-import io.anuke.ucore.core.Core;
-import io.anuke.ucore.function.Supplier;
 import com.badlogic.gdx.scene.Action;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
@@ -28,8 +27,9 @@ import com.badlogic.gdx.scene.event.*;
 import com.badlogic.gdx.scene.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.scene.ui.layout.Unit;
+import com.badlogic.gdx.utils.Align;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * Displays a dialog, which is a modal window containing a content table with a button table underneath it.
@@ -54,12 +54,12 @@ public class Dialog extends Window{
     FocusListener focusListener;
 
     public Dialog(String title){
-        super(title, skin.get(WindowStyle.class));
+        super(title, scene.skin.get(WindowStyle.class));
         initialize();
     }
 
     public Dialog(String title, String windowStyleName){
-        super(title, skin.get(windowStyleName, WindowStyle.class));
+        super(title, scene.skin.get(windowStyleName, WindowStyle.class));
         initialize();
     }
 
@@ -100,8 +100,8 @@ public class Dialog extends Window{
 
             private void focusChanged(FocusEvent event){
                 Scene stage = getScene();
-                if(isModal && stage != null && stage.getRoot().getChildren().size > 0
-                        && stage.getRoot().getChildren().peek() == Dialog.this){ // Dialog is top most actor.
+                if(isModal && stage != null && stage.root.getChildren().size > 0
+                        && stage.root.getChildren().peek() == Dialog.this){ // Dialog is top most actor.
                     Element newFocusedActor = event.getRelatedActor();
                     if(newFocusedActor != null && !newFocusedActor.isDescendantOf(Dialog.this) &&
                             !(newFocusedActor.equals(previousKeyboardFocus) || newFocusedActor.equals(previousScrollFocus)))
@@ -123,7 +123,7 @@ public class Dialog extends Window{
         Label titleLabel = getTitleLabel();
         Table titleTable = getTitleTable();
 
-        ImageButton closeButton = new ImageButton(skin.get("close-window", ImageButtonStyle.class));
+        ImageButton closeButton = new ImageButton(scene.skin.get("close-window", ImageButtonStyle.class));
 
         float scl = Unit.dp.scl(1f);
 
@@ -177,12 +177,6 @@ public class Dialog extends Window{
                 return false;
             }
         });
-    }
-
-    /** Sets style to 'dialog'. */
-    public Dialog setDialog(){
-        setStyle(skin.get("dialog", WindowStyle.class));
-        return this;
     }
 
     public boolean isShown(){

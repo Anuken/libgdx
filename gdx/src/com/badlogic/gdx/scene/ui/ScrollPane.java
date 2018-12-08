@@ -16,14 +16,14 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Mathf;
+import com.badlogic.gdx.math.geom.Rectangle;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.ActorGestureListener;
@@ -38,8 +38,7 @@ import com.badlogic.gdx.scene.utils.Cullable;
 import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.scene.utils.ScissorStack;
 
-import static io.anuke.ucore.core.Core.scene;
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A group that scrolls a child widget using scrollbars and/or mouse or touch dragging.
@@ -92,12 +91,12 @@ public class ScrollPane extends WidgetGroup{
 
     /** @param widget May be null. */
     public ScrollPane(Element widget){
-        this(widget, skin.get(ScrollPaneStyle.class));
+        this(widget, scene.skin.get(ScrollPaneStyle.class));
     }
 
     /** @param widget May be null. */
     public ScrollPane(Element widget, String styleName){
-        this(widget, skin.get(styleName, ScrollPaneStyle.class));
+        this(widget, scene.skin.get(styleName, ScrollPaneStyle.class));
     }
 
     /** @param widget May be null. */
@@ -273,10 +272,10 @@ public class ScrollPane extends WidgetGroup{
 
     void clamp(){
         if(!clamp) return;
-        scrollX(overscrollX ? MathUtils.clamp(amountX, -overscrollDistance, maxX + overscrollDistance)
-                : MathUtils.clamp(amountX, 0, maxX));
-        scrollY(overscrollY ? MathUtils.clamp(amountY, -overscrollDistance, maxY + overscrollDistance)
-                : MathUtils.clamp(amountY, 0, maxY));
+        scrollX(overscrollX ? Mathf.clamp(amountX, -overscrollDistance, maxX + overscrollDistance)
+                : Mathf.clamp(amountX, 0, maxX));
+        scrollY(overscrollY ? Mathf.clamp(amountY, -overscrollDistance, maxY + overscrollDistance)
+                : Mathf.clamp(amountY, 0, maxY));
     }
 
     /**
@@ -387,7 +386,7 @@ public class ScrollPane extends WidgetGroup{
 
         if(animating){
             Scene stage = getScene();
-            if(stage != null && stage.getActionsRequestRendering()) Gdx.graphics.requestRendering();
+            if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
         }
     }
 
@@ -486,7 +485,7 @@ public class ScrollPane extends WidgetGroup{
                 maxX -= scrollbarWidth;
             }
         }
-        scrollX(MathUtils.clamp(amountX, 0, maxX));
+        scrollX(Mathf.clamp(amountX, 0, maxX));
         //scrollY(MathUtils.clamp(amountY, 0, maxY));
 
         // Set the bounds and scroll knob sizes if scrollbars are needed.
@@ -800,27 +799,27 @@ public class ScrollPane extends WidgetGroup{
     }
 
     public float getVisualScrollPercentX(){
-        return MathUtils.clamp(visualAmountX / maxX, 0, 1);
+        return Mathf.clamp(visualAmountX / maxX, 0, 1);
     }
 
     public float getVisualScrollPercentY(){
-        return MathUtils.clamp(visualAmountY / maxY, 0, 1);
+        return Mathf.clamp(visualAmountY / maxY, 0, 1);
     }
 
     public float getScrollPercentX(){
-        return MathUtils.clamp(amountX / maxX, 0, 1);
+        return Mathf.clamp(amountX / maxX, 0, 1);
     }
 
     public void setScrollPercentX(float percentX){
-        scrollX(maxX * MathUtils.clamp(percentX, 0, 1));
+        scrollX(maxX * Mathf.clamp(percentX, 0, 1));
     }
 
     public float getScrollPercentY(){
-        return MathUtils.clamp(amountY / maxY, 0, 1);
+        return Mathf.clamp(amountY / maxY, 0, 1);
     }
 
     public void setScrollPercentY(float percentY){
-        scrollY(maxY * MathUtils.clamp(percentY, 0, 1));
+        scrollY(maxY * Mathf.clamp(percentY, 0, 1));
     }
 
     public void setFlickScroll(boolean flickScroll){
@@ -857,7 +856,7 @@ public class ScrollPane extends WidgetGroup{
             if(x + width > amountX + areaWidth) amountX = x + width - areaWidth;
             if(x < amountX) amountX = x;
         }
-        scrollX(MathUtils.clamp(amountX, 0, maxX));
+        scrollX(Mathf.clamp(amountX, 0, maxX));
 
         float amountY = this.amountY;
         if(centerVertical){
@@ -866,7 +865,7 @@ public class ScrollPane extends WidgetGroup{
             if(amountY > maxY - y - height + areaHeight) amountY = maxY - y - height + areaHeight;
             if(amountY < maxY - y) amountY = maxY - y;
         }
-        scrollY(MathUtils.clamp(amountY, 0, maxY));
+        scrollY(Mathf.clamp(amountY, 0, maxY));
     }
 
     /** Returns the maximum scroll value in the x direction. */
@@ -911,7 +910,7 @@ public class ScrollPane extends WidgetGroup{
     }
 
     public void setScrollX(float pixels){
-        scrollX(MathUtils.clamp(pixels, 0, maxX));
+        scrollX(Mathf.clamp(pixels, 0, maxX));
     }
 
     /** Returns true if the widget is larger than the scroll pane vertically. */
@@ -920,7 +919,7 @@ public class ScrollPane extends WidgetGroup{
     }
 
     public void setScrollY(float pixels){
-        scrollY(MathUtils.clamp(pixels, 0, maxY));
+        scrollY(Mathf.clamp(pixels, 0, maxY));
     }
 
     /** Disables scrolling in a direction. The widget will be sized to the FlickScrollPane in the disabled direction. */

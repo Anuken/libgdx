@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.hiero.unicodefont;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -657,7 +657,7 @@ public class UnicodeFont{
         }else{
             String fontFile = getFontFile();
             if(fontFile != null){
-                generator = new FreeTypeFontGenerator(Gdx.files.absolute(fontFile));
+                generator = new FreeTypeFontGenerator(Core.files.absolute(fontFile));
                 FreeTypeFontParameter param = new FreeTypeFontParameter();
                 param.size = font.getSize();
                 param.incremental = true;
@@ -704,7 +704,7 @@ public class UnicodeFont{
     /** @param ttfFileRef The file system or classpath location of the TrueTypeFont file. */
     static private Font createFont(String ttfFileRef){
         try{
-            return Font.createFont(Font.TRUETYPE_FONT, Gdx.files.absolute(ttfFileRef).read());
+            return Font.createFont(Font.TRUETYPE_FONT, Core.files.absolute(ttfFileRef).read());
         }catch(FontFormatException ex){
             throw new GdxRuntimeException("Invalid font: " + ttfFileRef, ex);
         }catch(IOException ex){

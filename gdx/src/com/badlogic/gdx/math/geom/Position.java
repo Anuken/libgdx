@@ -4,6 +4,10 @@ import com.badlogic.gdx.math.Mathf;
 
 /**Represents a point in 2-D space.*/
 public interface Position{
+    Position x = new FixedPosition(1, 0);
+    Position y = new FixedPosition(0, 1);
+    Position zero = new FixedPosition(0, 0);
+
     float getX();
     float getY();
 

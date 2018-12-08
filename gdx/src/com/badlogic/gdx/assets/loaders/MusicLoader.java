@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.assets.loaders;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -50,7 +50,7 @@ public class MusicLoader extends AsynchronousAssetLoader<Music, MusicLoader.Musi
 
     @Override
     public void loadAsync(AssetManager manager, String fileName, FileHandle file, MusicParameter parameter){
-        music = Gdx.audio.newMusic(file);
+        music = Core.audio.newMusic(file);
     }
 
     @Override

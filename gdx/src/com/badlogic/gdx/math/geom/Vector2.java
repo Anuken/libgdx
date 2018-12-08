@@ -32,10 +32,6 @@ import java.io.Serializable;
 public class Vector2 implements Serializable, Vector<Vector2>, Position{
     private static final long serialVersionUID = 913902788239530931L;
 
-    public final static Vector2 X = new Vector2(1, 0);
-    public final static Vector2 Y = new Vector2(0, 1);
-    public final static Vector2 Zero = new Vector2(0, 0);
-
     /** the x-component of this vector **/
     public float x;
     /** the y-component of this vector **/

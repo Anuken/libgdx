@@ -18,15 +18,16 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.geom.Circle;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
 import com.badlogic.gdx.scene.style.Drawable;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 /**
  * An on-screen joystick. The movement area of the joystick is circular, centered on the touchpad, and its size determined by the
@@ -72,7 +73,7 @@ public class Touchpad extends Element{
 
         addListener(new InputListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                 if(touched) return false;
                 touched = true;
                 calculatePositionAndValue(x, y, false);
@@ -85,7 +86,7 @@ public class Touchpad extends Element{
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+            public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
                 touched = false;
                 calculatePositionAndValue(x, y, resetOnTouchUp);
             }

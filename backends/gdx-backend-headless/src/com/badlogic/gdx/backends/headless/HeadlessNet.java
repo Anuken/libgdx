@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.headless;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.*;
 
@@ -68,10 +68,10 @@ public class HeadlessNet implements Net{
                     result = true;
                 }
             }else{
-                Gdx.app.error("HeadlessNet", "Opening URIs on this environment is not supported. Ignoring.");
+                Core.app.error("HeadlessNet", "Opening URIs on this environment is not supported. Ignoring.");
             }
         }catch(Throwable t){
-            Gdx.app.error("HeadlessNet", "Failed to open URI. ", t);
+            Core.app.error("HeadlessNet", "Failed to open URI. ", t);
         }
         return result;
     }

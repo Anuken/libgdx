@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.android;
 
 import android.content.res.AssetFileDescriptor;
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.android.ZipResourceFile.ZipEntryRO;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -43,7 +43,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle{
 
     private void initialize(){
         path = file.getPath().replace('\\', '/');
-        expansionFile = ((AndroidFiles) Gdx.files).getExpansionFile();
+        expansionFile = ((AndroidFiles) Core.files).getExpansionFile();
         assetFd = expansionFile.getAssetFileDescriptor(getPath());
 
         // needed for listing entries and exists() of directories
@@ -83,7 +83,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle{
     public FileHandle sibling(String name){
         if(file.getPath().length() == 0)
             throw new GdxRuntimeException("Cannot get the sibling of the root.");
-        return Gdx.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's not inside the obb
+        return Core.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's not inside the obb
     }
 
     @Override

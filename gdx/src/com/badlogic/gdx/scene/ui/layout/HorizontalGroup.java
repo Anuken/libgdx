@@ -16,15 +16,15 @@
 
 package com.badlogic.gdx.scene.ui.layout;
 
+import com.badlogic.gdx.collection.FloatArray;
+import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.FloatArray;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.Label;
 import com.badlogic.gdx.scene.utils.Layout;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * A group that lays out its children side by side horizontally, with optional wrapping. This can be easier than using

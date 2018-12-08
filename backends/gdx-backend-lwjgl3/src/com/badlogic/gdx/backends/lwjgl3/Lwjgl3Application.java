@@ -43,8 +43,6 @@ public class Lwjgl3Application implements Application{
     private final Net net;
     private final ObjectMap<String, Preferences> preferences = new ObjectMap<String, Preferences>();
     private final Lwjgl3Clipboard clipboard;
-    private int logLevel = LOG_INFO;
-    private ApplicationLogger applicationLogger;
     private volatile boolean running = true;
     private final Array<Runnable> runnables = new Array<Runnable>();
     private final Array<Runnable> executedRunnables = new Array<Runnable>();
@@ -67,23 +65,22 @@ public class Lwjgl3Application implements Application{
 
     public Lwjgl3Application(ApplicationListener listener, Lwjgl3ApplicationConfiguration config){
         initializeGlfw();
-        setApplicationLogger(new Lwjgl3ApplicationLogger());
         this.config = Lwjgl3ApplicationConfiguration.copy(config);
         if(this.config.title == null) this.config.title = listener.getClass().getSimpleName();
-        Gdx.app = this;
+        Core.app = this;
         if(!config.disableAudio){
             try{
-                this.audio = Gdx.audio = new OpenALAudio(config.audioDeviceSimultaneousSources,
+                this.audio = Core.audio = new OpenALAudio(config.audioDeviceSimultaneousSources,
                 config.audioDeviceBufferCount, config.audioDeviceBufferSize);
             }catch(Throwable t){
-                log("Lwjgl3Application", "Couldn't initialize audio, disabling audio", t);
-                this.audio = Gdx.audio = new MockAudio();
+                Log.info("[Lwjgl3Application] Couldn't initialize audio, disabling audio", t);
+                this.audio = Core.audio = new MockAudio();
             }
         }else{
-            this.audio = Gdx.audio = new MockAudio();
+            this.audio = Core.audio = new MockAudio();
         }
-        this.files = Gdx.files = new Lwjgl3Files();
-        this.net = Gdx.net = new Lwjgl3Net();
+        this.files = Core.files = new Lwjgl3Files();
+        this.net = Core.net = new Lwjgl3Net();
         this.clipboard = new Lwjgl3Clipboard();
 
         Lwjgl3Window window = createWindow(config, listener, 0);
@@ -228,55 +225,6 @@ public class Lwjgl3Application implements Application{
         return net;
     }
 
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
-    }
 
     @Override
     public ApplicationType getType(){
@@ -316,7 +264,7 @@ public class Lwjgl3Application implements Application{
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
         }
@@ -345,7 +293,7 @@ public class Lwjgl3Application implements Application{
      * Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
      * <p>
      * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation
-     * is postponed with {@link Application#postRunnable(Runnable)} until after all existing windows are updated.
+     * is postponed with {@link Application#post(Runnable)} until after all existing windows are updated.
      */
     public Lwjgl3Window newWindow(ApplicationListener listener, Lwjgl3WindowConfiguration config){
         Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
@@ -361,7 +309,7 @@ public class Lwjgl3Application implements Application{
             createWindow(window, config, sharedContext);
         }else{
             // creation of additional windows is deferred to avoid GL context trouble
-            postRunnable(new Runnable(){
+            post(new Runnable(){
                 public void run(){
                     createWindow(window, config, sharedContext);
                     windows.add(window);

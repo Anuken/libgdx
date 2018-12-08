@@ -16,45 +16,25 @@
 
 package com.badlogic.gdx.backends.iosrobovm;
 
-import com.badlogic.gdx.Application.ApplicationLogger;
+import com.badlogic.gdx.utils.Log.LogHandler;
+import com.badlogic.gdx.utils.Strings;
 import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSString;
 
-/**
- * Default implementation of {@link ApplicationLogger} for ios
- */
-public class IOSApplicationLogger implements ApplicationLogger{
+public class IOSApplicationLogger extends LogHandler{
 
     @Override
-    public void log(String tag, String message){
-        Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
+    public void info(String text, Object... args){
+        Foundation.log("%@", new NSString("[info] " + Strings.formatArgs(text, args)));
     }
 
     @Override
-    public void log(String tag, String message, Throwable exception){
-        Foundation.log("%@", new NSString("[info] " + tag + ": " + message));
-        exception.printStackTrace();
+    public void warn(String text, Object... args){
+        Foundation.log("%@", new NSString("[warn] " + Strings.formatArgs(text, args)));
     }
 
     @Override
-    public void error(String tag, String message){
-        Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
-        exception.printStackTrace();
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
-        exception.printStackTrace();
+    public void err(String text, Object... args){
+        Foundation.log("%@", new NSString("[error] " + Strings.formatArgs(text, args)));
     }
 }

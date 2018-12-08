@@ -23,7 +23,7 @@ import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.ui.layout.Cell;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A checkbox is a button that contains an image indicating the checked or unchecked state and a label.
@@ -36,11 +36,11 @@ public class CheckBox extends TextButton{
     private CheckBoxStyle style;
 
     public CheckBox(String text){
-        this(text, skin.get(CheckBoxStyle.class));
+        this(text, scene.skin.get(CheckBoxStyle.class));
     }
 
     public CheckBox(String text, String styleName){
-        this(text, skin.get(styleName, CheckBoxStyle.class));
+        this(text, scene.skin.get(styleName, CheckBoxStyle.class));
     }
 
     public CheckBox(String text, CheckBoxStyle style){

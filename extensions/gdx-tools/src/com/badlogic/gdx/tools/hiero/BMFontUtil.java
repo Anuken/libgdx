@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.hiero;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.tools.hiero.unicodefont.Glyph;
 import com.badlogic.gdx.tools.hiero.unicodefont.GlyphPage;
 import com.badlogic.gdx.tools.hiero.unicodefont.UnicodeFont;
@@ -107,7 +107,7 @@ public class BMFontUtil{
         else{
             Kerning kerning = new Kerning();
             try{
-                kerning.load(Gdx.files.internal(ttfFileRef).read(), font.getSize());
+                kerning.load(Core.files.internal(ttfFileRef).read(), font.getSize());
             }catch(IOException ex){
                 System.out.println("Unable to read kerning information from font: " + ttfFileRef);
                 ex.printStackTrace();

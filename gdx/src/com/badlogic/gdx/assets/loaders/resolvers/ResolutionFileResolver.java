@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.assets.loaders.resolvers;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -108,7 +108,7 @@ public class ResolutionFileResolver implements FileHandleResolver{
     }
 
     static public Resolution choose(Resolution... descriptors){
-        int w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
+        int w = Core.graphics.getWidth(), h = Core.graphics.getHeight();
 
         // Prefer the shortest side.
         Resolution best = descriptors[0];

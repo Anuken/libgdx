@@ -26,6 +26,7 @@ import com.badlogic.gdx.math.geom.Vector3;
  */
 public class PerspectiveCamera extends Camera{
     /** the field of view of the height, in degrees **/
+    final Vector3 tmp = new Vector3();
     public float fieldOfView = 67;
 
     public PerspectiveCamera(){
@@ -47,7 +48,6 @@ public class PerspectiveCamera extends Camera{
         update();
     }
 
-    final Vector3 tmp = new Vector3();
 
     @Override
     public void update(){

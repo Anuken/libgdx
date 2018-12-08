@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tools.hiero;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -1359,8 +1359,8 @@ public class Hiero extends JFrame{
         }
 
         public void render(){
-            int viewWidth = Gdx.graphics.getWidth();
-            int viewHeight = Gdx.graphics.getHeight();
+            int viewWidth = Core.graphics.getWidth();
+            int viewHeight = Core.graphics.getHeight();
 
             if(sampleTextRadio.isSelected()){
                 GL11.glClearColor(renderingBackgroundColor.r, renderingBackgroundColor.g, renderingBackgroundColor.b,

@@ -16,23 +16,20 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.FloatArray;
+import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout.GlyphRun;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
-import io.anuke.ucore.function.Consumer;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.Mathf;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
 import com.badlogic.gdx.scene.Scene;
@@ -45,12 +42,14 @@ import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.scene.utils.Disableable;
 import com.badlogic.gdx.scene.utils.UIUtils;
-import io.anuke.ucore.util.Bundles;
-import io.anuke.ucore.util.Mathf;
-import io.anuke.ucore.util.OS;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Timer.Task;
+import com.badlogic.gdx.utils.pooling.Pools;
 
-import static io.anuke.ucore.core.Core.skin;
+import java.lang.StringBuilder;
+
+import static com.badlogic.gdx.Core.bundle;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A single-line text input field.
@@ -122,16 +121,16 @@ public class TextField extends Element implements Disableable{
     }
 
     public TextField(String text){
-        this(text, skin.get(TextFieldStyle.class));
+        this(text, scene.skin.get(TextFieldStyle.class));
     }
 
     public TextField(String text, String styleName){
-        this(text, skin.get(styleName, TextFieldStyle.class));
+        this(text, scene.skin.get(styleName, TextFieldStyle.class));
     }
 
     public TextField(String text, TextFieldStyle style){
         setStyle(style);
-        clipboard = Gdx.app.getClipboard();
+        clipboard = Core.app.getClipboard();
         initialize();
         setText(text);
         setSize(getPrefWidth(), getPrefHeight());
@@ -439,7 +438,7 @@ public class TextField extends Element implements Disableable{
     }
 
     private void blink(){
-        if(!Gdx.graphics.isContinuousRendering()){
+        if(!Core.graphics.isContinuousRendering()){
             cursorOn = true;
             return;
         }
@@ -540,7 +539,7 @@ public class TextField extends Element implements Disableable{
                 textField = current.findNextTextField(getScene().getElements(), null, tmp2, tmp1, up);
             }
             if(textField == null){
-                Gdx.input.setOnscreenKeyboardVisible(false);
+                Core.input.setOnscreenKeyboardVisible(false);
                 break;
             }
             if(stage.setKeyboardFocus(textField)) break;
@@ -608,8 +607,8 @@ public class TextField extends Element implements Disableable{
      * @param messageText may be null.
      */
     public void setMessageText(String messageText){
-        if(messageText.startsWith("$") && Bundles.enabled() && Bundles.has(messageText.substring(1))){
-            this.messageText = Bundles.get(messageText.substring(1));
+        if(messageText != null && messageText.startsWith("$") && bundle != null && bundle.has(messageText.substring(1))){
+            this.messageText = bundle.get(messageText.substring(1));
         }else{
             this.messageText = messageText;
         }
@@ -853,7 +852,7 @@ public class TextField extends Element implements Disableable{
     static public class DefaultOnscreenKeyboard implements OnscreenKeyboard{
         @Override
         public void show(boolean visible){
-            Gdx.input.setOnscreenKeyboardVisible(visible);
+            Core.input.setOnscreenKeyboardVisible(visible);
         }
     }
 
@@ -909,7 +908,7 @@ public class TextField extends Element implements Disableable{
     }
 
     class KeyRepeatTask extends Task{
-        int keycode;
+        KeyCode keycode;
 
         public void run(){
             inputListener.keyDown(null, keycode);
@@ -918,6 +917,7 @@ public class TextField extends Element implements Disableable{
 
     /** Basic input listener for the text field */
     public class TextFieldClickListener extends com.badlogic.gdx.scene.event.ClickListener{
+        @Override
         public void clicked(InputEvent event, float x, float y){
             int count = getTapCount() % 4;
             if(count == 0) clearSelection();
@@ -928,9 +928,10 @@ public class TextField extends Element implements Disableable{
             if(count == 3) selectAll();
         }
 
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
             if(!super.touchDown(event, x, y, pointer, button)) return false;
-            if(pointer == 0 && button != 0) return false;
+            if(pointer == 0 && button != KeyCode.MOUSE_LEFT) return false;
             if(disabled) return true;
             setCursorPosition(x, y);
             selectionStart = cursor;
@@ -941,12 +942,14 @@ public class TextField extends Element implements Disableable{
             return true;
         }
 
+        @Override
         public void touchDragged(InputEvent event, float x, float y, int pointer){
             super.touchDragged(event, x, y, pointer);
             setCursorPosition(x, y);
         }
 
-        public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+        @Override
+        public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
             if(selectionStart == cursor) hasSelection = false;
             super.touchUp(event, x, y, pointer, button);
         }
@@ -965,7 +968,8 @@ public class TextField extends Element implements Disableable{
             cursor = text.length();
         }
 
-        public boolean keyDown(InputEvent event, int keycode){
+        @Override
+        public boolean keyDown(InputEvent event, KeyCode keycode){
             if(disabled) return false;
 
             lastBlink = 0;
@@ -979,23 +983,23 @@ public class TextField extends Element implements Disableable{
             boolean jump = ctrl && !passwordMode;
 
             if(ctrl){
-                if(keycode == Keys.V){
+                if(keycode == KeyCode.V){
                     paste(clipboard.getContents(), true);
                     repeat = true;
                 }
-                if(keycode == Keys.C || keycode == Keys.INSERT){
+                if(keycode == KeyCode.C || keycode == KeyCode.INSERT){
                     copy();
                     return true;
                 }
-                if(keycode == Keys.X){
+                if(keycode == KeyCode.X){
                     cut(true);
                     return true;
                 }
-                if(keycode == Keys.A){
+                if(keycode == KeyCode.A){
                     selectAll();
                     return true;
                 }
-                if(keycode == Keys.Z){
+                if(keycode == KeyCode.Z){
                     String oldText = text;
                     setText(undoText);
                     undoText = oldText;
@@ -1005,28 +1009,28 @@ public class TextField extends Element implements Disableable{
             }
 
             if(UIUtils.shift()){
-                if(keycode == Keys.INSERT) paste(clipboard.getContents(), true);
-                if(keycode == Keys.FORWARD_DEL) cut(true);
+                if(keycode == KeyCode.INSERT) paste(clipboard.getContents(), true);
+                if(keycode == KeyCode.FORWARD_DEL) cut(true);
                 selection:
                 {
                     int temp = cursor;
                     keys:
                     {
-                        if(keycode == Keys.LEFT){
+                        if(keycode == KeyCode.LEFT){
                             moveCursor(false, jump);
                             repeat = true;
                             break keys;
                         }
-                        if(keycode == Keys.RIGHT){
+                        if(keycode == KeyCode.RIGHT){
                             moveCursor(true, jump);
                             repeat = true;
                             break keys;
                         }
-                        if(keycode == Keys.HOME){
+                        if(keycode == KeyCode.HOME){
                             goHome(jump);
                             break keys;
                         }
-                        if(keycode == Keys.END){
+                        if(keycode == KeyCode.END){
                             goEnd(jump);
                             break keys;
                         }
@@ -1039,26 +1043,26 @@ public class TextField extends Element implements Disableable{
                 }
             }else{
                 // Cursor movement or other keys (kills selection).
-                if(keycode == Keys.LEFT){
+                if(keycode == KeyCode.LEFT){
                     moveCursor(false, jump);
                     clearSelection();
                     repeat = true;
                 }
-                if(keycode == Keys.RIGHT){
+                if(keycode == KeyCode.RIGHT){
                     moveCursor(true, jump);
                     clearSelection();
                     repeat = true;
                 }
-                if(keycode == Keys.HOME){
+                if(keycode == KeyCode.HOME){
                     goHome(jump);
                     clearSelection();
                 }
-                if(keycode == Keys.END){
+                if(keycode == KeyCode.END){
                     goEnd(jump);
                     clearSelection();
                 }
             }
-            cursor = MathUtils.clamp(cursor, 0, text.length());
+            cursor = Mathf.clamp(cursor, 0, text.length());
 
             if(repeat){
                 scheduleKeyRepeatTask(keycode);
@@ -1066,7 +1070,7 @@ public class TextField extends Element implements Disableable{
             return true;
         }
 
-        protected void scheduleKeyRepeatTask(int keycode){
+        protected void scheduleKeyRepeatTask(KeyCode keycode){
             if(!keyRepeatTask.isScheduled() || keyRepeatTask.keycode != keycode){
                 keyRepeatTask.keycode = keycode;
                 keyRepeatTask.cancel();
@@ -1074,12 +1078,14 @@ public class TextField extends Element implements Disableable{
             }
         }
 
-        public boolean keyUp(InputEvent event, int keycode){
+        @Override
+        public boolean keyUp(InputEvent event, KeyCode keycode){
             if(disabled) return false;
             keyRepeatTask.cancel();
             return true;
         }
 
+        @Override
         public boolean keyTyped(InputEvent event, char character){
             if(disabled) return false;
 
@@ -1096,7 +1102,7 @@ public class TextField extends Element implements Disableable{
             Scene stage = getScene();
             if(stage == null || stage.getKeyboardFocus() != TextField.this) return false;
 
-            if(OS.isMac && Gdx.input.isKeyPressed(Keys.SYM)) return true;
+            if(OS.isMac && Core.input.isKeyPressed(KeyCode.SYM)) return true;
 
             if((character == TAB) && focusTraversal){
                 next(UIUtils.shift());

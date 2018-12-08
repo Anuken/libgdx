@@ -17,8 +17,9 @@
 package com.badlogic.gdx.scene.event;
 
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 
 /**
@@ -42,27 +43,31 @@ public class ActorGestureListener implements EventListener{
 
     /** @see GestureDetector#GestureDetector(float, float, float, float, com.badlogic.gdx.input.GestureDetector.GestureListener) */
     public ActorGestureListener(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay){
-        detector = new GestureDetector(halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureAdapter(){
+        detector = new GestureDetector(halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, new GestureListener(){
             private final Vector2 initialPointer1 = new Vector2(), initialPointer2 = new Vector2();
             private final Vector2 pointer1 = new Vector2(), pointer2 = new Vector2();
 
-            public boolean tap(float stageX, float stageY, int count, int button){
+            @Override
+            public boolean tap(float stageX, float stageY, int count, KeyCode button){
                 actor.stageToLocalCoordinates(tmpCoords.set(stageX, stageY));
                 ActorGestureListener.this.tap(event, tmpCoords.x, tmpCoords.y, count, button);
                 return true;
             }
 
+            @Override
             public boolean longPress(float stageX, float stageY){
                 actor.stageToLocalCoordinates(tmpCoords.set(stageX, stageY));
                 return ActorGestureListener.this.longPress(actor, tmpCoords.x, tmpCoords.y);
             }
 
-            public boolean fling(float velocityX, float velocityY, int button){
+            @Override
+            public boolean fling(float velocityX, float velocityY, KeyCode button){
                 stageToLocalAmount(tmpCoords.set(velocityX, velocityY));
                 ActorGestureListener.this.fling(event, tmpCoords.x, tmpCoords.y, button);
                 return true;
             }
 
+            @Override
             public boolean pan(float stageX, float stageY, float deltaX, float deltaY){
                 stageToLocalAmount(tmpCoords.set(deltaX, deltaY));
                 deltaX = tmpCoords.x;
@@ -72,11 +77,13 @@ public class ActorGestureListener implements EventListener{
                 return true;
             }
 
+            @Override
             public boolean zoom(float initialDistance, float distance){
                 ActorGestureListener.this.zoom(event, initialDistance, distance);
                 return true;
             }
 
+            @Override
             public boolean pinch(Vector2 stageInitialPointer1, Vector2 stageInitialPointer2, Vector2 stagePointer1,
                                  Vector2 stagePointer2){
                 actor.stageToLocalCoordinates(initialPointer1.set(stageInitialPointer1));
@@ -98,38 +105,38 @@ public class ActorGestureListener implements EventListener{
         if(!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
 
-        switch(event.getType()){
+        switch(event.type){
             case touchDown:
                 actor = event.getListenerActor();
                 touchDownTarget = event.getTarget();
-                detector.touchDown(event.getStageX(), event.getStageY(), event.getPointer(), event.getButton());
-                actor.stageToLocalCoordinates(tmpCoords.set(event.getStageX(), event.getStageY()));
-                touchDown(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getButton());
+                detector.touchDown(event.stageX, event.stageY, event.pointer, event.keyCode);
+                actor.stageToLocalCoordinates(tmpCoords.set(event.stageX, event.stageY));
+                touchDown(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
                 return true;
             case touchUp:
                 if(event.isTouchFocusCancel()) return false;
                 this.event = event;
                 actor = event.getListenerActor();
-                detector.touchUp(event.getStageX(), event.getStageY(), event.getPointer(), event.getButton());
-                actor.stageToLocalCoordinates(tmpCoords.set(event.getStageX(), event.getStageY()));
-                touchUp(event, tmpCoords.x, tmpCoords.y, event.getPointer(), event.getButton());
+                detector.touchUp(event.stageX, event.stageY, event.pointer, event.keyCode);
+                actor.stageToLocalCoordinates(tmpCoords.set(event.stageX, event.stageY));
+                touchUp(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
                 return true;
             case touchDragged:
                 this.event = event;
                 actor = event.getListenerActor();
-                detector.touchDragged(event.getStageX(), event.getStageY(), event.getPointer());
+                detector.touchDragged(event.stageX, event.stageY, event.pointer);
                 return true;
         }
         return false;
     }
 
-    public void touchDown(InputEvent event, float x, float y, int pointer, int button){
+    public void touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
     }
 
-    public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
     }
 
-    public void tap(InputEvent event, float x, float y, int count, int button){
+    public void tap(InputEvent event, float x, float y, int count, KeyCode button){
     }
 
     /**
@@ -140,7 +147,7 @@ public class ActorGestureListener implements EventListener{
         return false;
     }
 
-    public void fling(InputEvent event, float velocityX, float velocityY, int button){
+    public void fling(InputEvent event, float velocityX, float velocityY, KeyCode button){
     }
 
     /** The delta is the difference in stage coordinates since the last pan. */

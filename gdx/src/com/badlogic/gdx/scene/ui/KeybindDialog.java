@@ -1,7 +1,7 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -291,7 +291,7 @@ public class KeybindDialog extends Dialog{
 
             rebindDialog.addListener(new InputListener(){
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                    if(Gdx.app.getType() == ApplicationType.Android) return false;
+                    if(Core.app.getType() == ApplicationType.Android) return false;
                     rebind(Input.findByType(Type.mouse, button, false));
                     return false;
                 }

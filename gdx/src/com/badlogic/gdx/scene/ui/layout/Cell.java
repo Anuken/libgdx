@@ -11,7 +11,6 @@ import com.badlogic.gdx.scene.ui.Button;
 import com.badlogic.gdx.scene.ui.ButtonGroup;
 import com.badlogic.gdx.scene.ui.Label;
 import com.badlogic.gdx.scene.ui.TextButton;
-import com.badlogic.gdx.scene.ui.layout.Value.Fixed;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
@@ -245,13 +244,13 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
     public Cell<T> size(float size){
-        size(new Fixed(size));
+        size(e -> size);
         return this;
     }
 
     /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified values. */
     public Cell<T> size(float width, float height){
-        size(new Fixed(width), new Fixed(height));
+        size(e -> width, e -> height);
         return this;
     }
 
@@ -265,7 +264,7 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
     public Cell<T> width(float width){
-        width(new Fixed(width));
+        width(e -> (width));
         return this;
     }
 
@@ -279,7 +278,7 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the minHeight, prefHeight, and maxHeight to the specified value. */
     public Cell<T> height(float height){
-        height(new Fixed(height));
+        height(e -> height);
         return this;
     }
 
@@ -314,23 +313,23 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the minWidth and minHeight to the specified value. */
     public Cell<T> minSize(float size){
-        minSize(new Fixed(size));
+        minSize(e -> (size));
         return this;
     }
 
     /** Sets the minWidth and minHeight to the specified values. */
     public Cell<T> minSize(float width, float height){
-        minSize(new Fixed(width), new Fixed(height));
+        minSize(e -> (width), e -> (height));
         return this;
     }
 
     public Cell<T> minWidth(float minWidth){
-        this.minWidth = new Fixed(minWidth);
+        this.minWidth = e -> (minWidth);
         return this;
     }
 
     public Cell<T> minHeight(float minHeight){
-        this.minHeight = new Fixed(minHeight);
+        this.minHeight = e -> (minHeight);
         return this;
     }
 
@@ -359,13 +358,13 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the prefWidth and prefHeight to the specified value. */
     public Cell<T> prefSize(float width, float height){
-        prefSize(new Fixed(width), new Fixed(height));
+        prefSize(e -> (width), e -> (height));
         return this;
     }
 
     /** Sets the prefWidth and prefHeight to the specified values. */
     public Cell<T> prefSize(float size){
-        prefSize(new Fixed(size));
+        prefSize(e -> (size));
         return this;
     }
 
@@ -408,23 +407,23 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the maxWidth and maxHeight to the specified value. */
     public Cell<T> maxSize(float size){
-        maxSize(new Fixed(size));
+        maxSize(e -> (size));
         return this;
     }
 
     /** Sets the maxWidth and maxHeight to the specified values. */
     public Cell<T> maxSize(float width, float height){
-        maxSize(new Fixed(width), new Fixed(height));
+        maxSize(e -> (width), e -> (height));
         return this;
     }
 
     public Cell<T> maxWidth(float maxWidth){
-        this.maxWidth = new Fixed(maxWidth);
+        this.maxWidth = e -> (maxWidth);
         return this;
     }
 
     public Cell<T> maxHeight(float maxHeight){
-        this.maxHeight = new Fixed(maxHeight);
+        this.maxHeight = e -> (maxHeight);
         return this;
     }
 
@@ -477,7 +476,7 @@ public class Cell<T extends Element> implements Poolable{
     /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. */
     public Cell<T> space(float space){
         if(space < 0) throw new IllegalArgumentException("space cannot be < 0.");
-        space(new Fixed(space));
+        space(e -> (space));
         return this;
     }
 
@@ -486,31 +485,31 @@ public class Cell<T extends Element> implements Poolable{
         if(left < 0) throw new IllegalArgumentException("left cannot be < 0.");
         if(bottom < 0) throw new IllegalArgumentException("bottom cannot be < 0.");
         if(right < 0) throw new IllegalArgumentException("right cannot be < 0.");
-        space(new Fixed(top), new Fixed(left), new Fixed(bottom), new Fixed(right));
+        space(e -> (top), e -> (left), e -> (bottom), e -> (right));
         return this;
     }
 
     public Cell<T> spaceTop(float spaceTop){
         if(spaceTop < 0) throw new IllegalArgumentException("spaceTop cannot be < 0.");
-        this.spaceTop = new Fixed(spaceTop);
+        this.spaceTop = e -> (spaceTop);
         return this;
     }
 
     public Cell<T> spaceLeft(float spaceLeft){
         if(spaceLeft < 0) throw new IllegalArgumentException("spaceLeft cannot be < 0.");
-        this.spaceLeft = new Fixed(spaceLeft);
+        this.spaceLeft = e -> (spaceLeft);
         return this;
     }
 
     public Cell<T> spaceBottom(float spaceBottom){
         if(spaceBottom < 0) throw new IllegalArgumentException("spaceBottom cannot be < 0.");
-        this.spaceBottom = new Fixed(spaceBottom);
+        this.spaceBottom = e -> (spaceBottom);
         return this;
     }
 
     public Cell<T> spaceRight(float spaceRight){
         if(spaceRight < 0) throw new IllegalArgumentException("spaceRight cannot be < 0.");
-        this.spaceRight = new Fixed(spaceRight);
+        this.spaceRight = e -> (spaceRight);
         return this;
     }
 
@@ -562,32 +561,32 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Sets the marginTop, marginLeft, marginBottom, and marginRight to the specified value. */
     public Cell<T> pad(float pad){
-        pad(new Fixed(pad));
+        pad(e -> (pad));
         return this;
     }
 
     public Cell<T> pad(float top, float left, float bottom, float right){
-        pad(new Fixed(top), new Fixed(left), new Fixed(bottom), new Fixed(right));
+        pad(e -> (top), e -> (left), e -> (bottom), e -> (right));
         return this;
     }
 
     public Cell<T> padTop(float padTop){
-        this.padTop = new Fixed(padTop);
+        this.padTop = e -> (padTop);
         return this;
     }
 
     public Cell<T> padLeft(float padLeft){
-        this.padLeft = new Fixed(padLeft);
+        this.padLeft = e -> (padLeft);
         return this;
     }
 
     public Cell<T> padBottom(float padBottom){
-        this.padBottom = new Fixed(padBottom);
+        this.padBottom = e -> (padBottom);
         return this;
     }
 
     public Cell<T> padRight(float padRight){
-        this.padRight = new Fixed(padRight);
+        this.padRight = e -> (padRight);
         return this;
     }
 

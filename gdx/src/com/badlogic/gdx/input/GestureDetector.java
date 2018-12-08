@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.input;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -40,7 +40,8 @@ public class GestureDetector implements InputProcessor{
     private int tapCount;
     private long lastTapTime;
     private float lastTapX, lastTapY;
-    private int lastTapButton, lastTapPointer;
+    private int lastTapPointer;
+    private KeyCode lastTapButton;
     boolean longPressFired;
     private boolean pinching;
     private boolean panning;
@@ -69,13 +70,11 @@ public class GestureDetector implements InputProcessor{
     }
 
     /**
-     * @param halfTapSquareSize half width in pixels of the square around an initial touch event, see
-     * {@link GestureListener#tap(float, float, int, int)}.
+     * @param halfTapSquareSize half width in pixels of the square around an initial touch event
      * @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.
      * @param longPressDuration time in seconds that must pass for the detector to fire a
      * {@link GestureListener#longPress(float, float)} event.
-     * @param maxFlingDelay time in seconds the finger must have been dragged for a fling event to be fired, see
-     * {@link GestureListener#fling(float, float, int)}
+     * @param maxFlingDelay time in seconds the finger must have been dragged for a fling event to be fired
      * @param listener May be null if the listener will be set later.
      */
     public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay,
@@ -84,15 +83,12 @@ public class GestureDetector implements InputProcessor{
     }
 
     /**
-     * @param halfTapRectangleWidth half width in pixels of the rectangle around an initial touch event, see
-     * {@link GestureListener#tap(float, float, int, int)}.
-     * @param halfTapRectangleHeight half height in pixels of the rectangle around an initial touch event, see
-     * {@link GestureListener#tap(float, float, int, int)}.
+     * @param halfTapRectangleWidth half width in pixels of the rectangle around an initial touch event
+     * @param halfTapRectangleHeight half height in pixels of the rectangle around an initial touch event
      * @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.
      * @param longPressDuration time in seconds that must pass for the detector to fire a
      * {@link GestureListener#longPress(float, float)} event.
-     * @param maxFlingDelay time in seconds the finger must have been dragged for a fling event to be fired, see
-     * {@link GestureListener#fling(float, float, int)}
+     * @param maxFlingDelay time in seconds the finger must have been dragged for a fling event to be fired
      * @param listener May be null if the listener will be set later.
      */
     public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval, float longPressDuration, float maxFlingDelay,
@@ -106,18 +102,18 @@ public class GestureDetector implements InputProcessor{
     }
 
     @Override
-    public boolean touchDown(int x, int y, int pointer, int button){
+    public boolean touchDown(int x, int y, int pointer, KeyCode button){
         return touchDown((float) x, (float) y, pointer, button);
     }
 
-    public boolean touchDown(float x, float y, int pointer, int button){
+    public boolean touchDown(float x, float y, int pointer, KeyCode button){
         if(pointer > 1) return false;
 
         if(pointer == 0){
             pointer1.set(x, y);
-            gestureStartTime = Gdx.input.getCurrentEventTime();
+            gestureStartTime = Core.input.getCurrentEventTime();
             tracker.start(x, y, gestureStartTime);
-            if(Gdx.input.isTouched(1)){
+            if(Core.input.isTouched(1)){
                 // Start pinch.
                 inTapRectangle = false;
                 pinching = true;
@@ -169,7 +165,7 @@ public class GestureDetector implements InputProcessor{
         }
 
         // update tracker
-        tracker.update(x, y, Gdx.input.getCurrentEventTime());
+        tracker.update(x, y, Core.input.getCurrentEventTime());
 
         // check if we are still tapping.
         if(inTapRectangle && !isWithinTapRectangle(x, y, tapRectangleCenterX, tapRectangleCenterY)){
@@ -187,11 +183,11 @@ public class GestureDetector implements InputProcessor{
     }
 
     @Override
-    public boolean touchUp(int x, int y, int pointer, int button){
+    public boolean touchUp(int x, int y, int pointer, KeyCode button){
         return touchUp((float) x, (float) y, pointer, button);
     }
 
-    public boolean touchUp(float x, float y, int pointer, int button){
+    public boolean touchUp(float x, float y, int pointer, KeyCode button){
         if(pointer > 1) return false;
 
         // check if we are still tapping.
@@ -226,10 +222,10 @@ public class GestureDetector implements InputProcessor{
             // we are in pan mode again, reset velocity tracker
             if(pointer == 0){
                 // first pointer has lifted off, set up panning to use the second pointer...
-                tracker.start(pointer2.x, pointer2.y, Gdx.input.getCurrentEventTime());
+                tracker.start(pointer2.x, pointer2.y, Core.input.getCurrentEventTime());
             }else{
                 // second pointer has lifted off, set up panning to use the first pointer...
-                tracker.start(pointer1.x, pointer1.y, Gdx.input.getCurrentEventTime());
+                tracker.start(pointer1.x, pointer1.y, Core.input.getCurrentEventTime());
             }
             return false;
         }
@@ -240,7 +236,7 @@ public class GestureDetector implements InputProcessor{
 
         // handle fling
         gestureStartTime = 0;
-        long time = Gdx.input.getCurrentEventTime();
+        long time = Core.input.getCurrentEventTime();
         if(time - tracker.lastTime < maxFlingDelay){
             tracker.update(x, y, time);
             handled = listener.fling(tracker.getVelocityX(), tracker.getVelocityY(), button) || handled;
@@ -318,8 +314,7 @@ public class GestureDetector implements InputProcessor{
      * @author mzechner
      */
     public interface GestureListener{
-        /** @see InputProcessor#touchDown(int, int, int, int) */
-        default boolean touchDown(float x, float y, int pointer, int button){ return false; }
+        default boolean touchDown(float x, float y, int pointer, KeyCode button){ return false; }
 
         /**
          * Called when a tap occured. A tap happens if a touch went down on the screen and was lifted again without moving outside
@@ -328,7 +323,7 @@ public class GestureDetector implements InputProcessor{
          *
          * @param count the number of taps.
          */
-        default boolean tap(float x, float y, int count, int button){ return false; }
+        default boolean tap(float x, float y, int count, KeyCode button){ return false; }
 
         default boolean longPress(float x, float y){ return false; }
 
@@ -339,7 +334,7 @@ public class GestureDetector implements InputProcessor{
          * @param velocityX velocity on x in seconds
          * @param velocityY velocity on y in seconds
          */
-        default boolean fling(float velocityX, float velocityY, int button){ return false; }
+        default boolean fling(float velocityX, float velocityY, KeyCode button){ return false; }
 
         /**
          * Called when the user drags a finger over the screen.
@@ -350,7 +345,7 @@ public class GestureDetector implements InputProcessor{
         default boolean pan(float x, float y, float deltaX, float deltaY){ return false; }
 
         /** Called when no longer panning. */
-        default boolean panStop(float x, float y, int pointer, int button){ return false; }
+        default boolean panStop(float x, float y, int pointer, KeyCode button){ return false; }
 
         /**
          * Called when the user performs a pinch zoom gesture. The original distance is the distance in pixels when the gesture

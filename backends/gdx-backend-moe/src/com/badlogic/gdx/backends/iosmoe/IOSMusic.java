@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.iosmoe;
 
 import apple.avfoundation.AVAudioPlayer;
 import apple.avfoundation.protocol.AVAudioPlayerDelegate;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.iosmoe.objectal.OALAudioTrack;
 import org.moe.natj.objc.ObjCRuntime;
@@ -35,7 +35,7 @@ public class IOSMusic implements Music{
             public void audioPlayerDidFinishPlayingSuccessfully(AVAudioPlayer player, boolean flag){
                 final OnCompletionListener listener = onCompletionListener;
                 if(onCompletionListener != null){
-                    Gdx.app.postRunnable(new Runnable(){
+                    Core.app.post(new Runnable(){
                         @Override
                         public void run(){
                             listener.onCompletion(IOSMusic.this);

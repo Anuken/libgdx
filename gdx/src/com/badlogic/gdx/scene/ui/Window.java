@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
@@ -34,7 +35,7 @@ import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.utils.Align;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A table that can be dragged and act as a modal window. The top padding is used as the window's title height.
@@ -59,11 +60,11 @@ public class Window extends Table{
     private WindowStyle style;
 
     public Window(String title){
-        this(title, skin.get(WindowStyle.class));
+        this(title, scene.skin.get(WindowStyle.class));
     }
 
     public Window(String title, String styleName){
-        this(title, skin.get(styleName, WindowStyle.class));
+        this(title, scene.skin.get(styleName, WindowStyle.class));
     }
 
     public Window(String title, WindowStyle style){
@@ -87,7 +88,8 @@ public class Window extends Table{
         setHeight(150);
 
         addCaptureListener(new InputListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                 toFront();
                 return false;
             }
@@ -114,8 +116,9 @@ public class Window extends Table{
                     edge = MOVE;
             }
 
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                if(button == 0){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
+                if(button == KeyCode.MOUSE_LEFT){
                     updateEdge(x, y);
                     dragging = edge != 0;
                     startX = x;
@@ -126,10 +129,12 @@ public class Window extends Table{
                 return edge != 0 || isModal;
             }
 
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
                 dragging = false;
             }
 
+            @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer){
                 if(!dragging) return;
                 float width = getWidth(), height = getHeight();
@@ -138,7 +143,7 @@ public class Window extends Table{
                 float minWidth = getMinWidth();
                 float minHeight = getMinHeight();
                 Scene stage = getScene();
-                boolean clampPosition = keepWithinStage && getParent() == stage.getRoot();
+                boolean clampPosition = keepWithinStage && getParent() == stage.root;
 
                 if((edge & MOVE) != 0){
                     float amountX = x - startX, amountY = y - startY;
@@ -231,7 +236,7 @@ public class Window extends Table{
                 setPosition(getX(Align.top), camera.position.y + parentHeight / 2 / orthographicCamera.zoom, Align.top);
             if(getY(Align.bottom) - camera.position.y < -parentHeight / 2 / orthographicCamera.zoom)
                 setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2 / orthographicCamera.zoom, Align.bottom);
-        }else if(getParent() == stage.getRoot()){
+        }else if(getParent() == stage.root){
             float parentWidth = stage.getWidth();
             float parentHeight = stage.getHeight();
             if(getX() < 0) setX(0);

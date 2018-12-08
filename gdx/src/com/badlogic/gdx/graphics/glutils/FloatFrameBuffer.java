@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -64,7 +64,7 @@ public class FloatFrameBuffer extends FrameBuffer{
         attachmentSpec.isGpuOnly
         );
         Texture result = new Texture(data);
-        if(Gdx.app.getType() == ApplicationType.Desktop || Gdx.app.getType() == ApplicationType.Applet)
+        if(Core.app.getType() == ApplicationType.Desktop || Core.app.getType() == ApplicationType.Applet)
             result.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         else
             // no filtering for float textures in OpenGL ES

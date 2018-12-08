@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
@@ -156,7 +156,7 @@ public class Cubemap extends GLTexture{
         unsafeSetFilter(minFilter, magFilter, true);
         unsafeSetWrap(uWrap, vWrap, true);
         data.consumeCubemapData();
-        Gdx.gl.glBindTexture(glTarget, 0);
+        Core.gl.glBindTexture(glTarget, 0);
     }
 
     public CubemapData getCubemapData(){
@@ -171,7 +171,7 @@ public class Cubemap extends GLTexture{
     @Override
     protected void reload(){
         if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged Cubemap");
-        glHandle = Gdx.gl.glGenTexture();
+        glHandle = Core.gl.glGenTexture();
         load(data);
     }
 
@@ -200,7 +200,7 @@ public class Cubemap extends GLTexture{
         if(glHandle == 0) return;
         delete();
         if(data.isManaged())
-            if(managedCubemaps.get(Gdx.app) != null) managedCubemaps.get(Gdx.app).removeValue(this, true);
+            if(managedCubemaps.get(Core.app) != null) managedCubemaps.get(Core.app).removeValue(this, true);
     }
 
     private static void addManagedCubemap(Application app, Cubemap cubemap){
@@ -265,7 +265,7 @@ public class Cubemap extends GLTexture{
 
                     // unload the c, create a new gl handle then reload it.
                     assetManager.unload(fileName);
-                    cubemap.glHandle = Gdx.gl.glGenTexture();
+                    cubemap.glHandle = Core.gl.glGenTexture();
                     assetManager.load(fileName, Cubemap.class, params);
                 }
             }
@@ -298,7 +298,7 @@ public class Cubemap extends GLTexture{
 
     /** @return the number of managed cubemaps currently loaded */
     public static int getNumManagedCubemaps(){
-        return managedCubemaps.get(Gdx.app).size;
+        return managedCubemaps.get(Core.app).size;
     }
 
 }

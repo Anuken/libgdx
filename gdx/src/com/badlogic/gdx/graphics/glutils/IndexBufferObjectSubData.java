@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.io.BufferUtils;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -84,10 +84,10 @@ public class IndexBufferObjectSubData implements IndexData{
     }
 
     private int createBufferObject(){
-        int result = Gdx.gl20.glGenBuffer();
-        Gdx.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, result);
-        Gdx.gl20.glBufferData(GL20.GL_ELEMENT_ARRAY_BUFFER, byteBuffer.capacity(), null, usage);
-        Gdx.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        int result = Core.gl20.glGenBuffer();
+        Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, result);
+        Core.gl20.glBufferData(GL20.GL_ELEMENT_ARRAY_BUFFER, byteBuffer.capacity(), null, usage);
+        Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
         return result;
     }
 
@@ -124,7 +124,7 @@ public class IndexBufferObjectSubData implements IndexData{
         byteBuffer.limit(count << 1);
 
         if(isBound){
-            Gdx.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
+            Core.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
             isDirty = false;
         }
     }
@@ -140,7 +140,7 @@ public class IndexBufferObjectSubData implements IndexData{
         byteBuffer.limit(buffer.limit() << 1);
 
         if(isBound){
-            Gdx.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
+            Core.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
             isDirty = false;
         }
     }
@@ -155,7 +155,7 @@ public class IndexBufferObjectSubData implements IndexData{
         buffer.position(0);
 
         if(isBound){
-            Gdx.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
+            Core.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
             isDirty = false;
         }
     }
@@ -179,10 +179,10 @@ public class IndexBufferObjectSubData implements IndexData{
         if(bufferHandle == 0)
             throw new GdxRuntimeException("IndexBufferObject cannot be used after it has been disposed.");
 
-        Gdx.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, bufferHandle);
+        Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, bufferHandle);
         if(isDirty){
             byteBuffer.limit(buffer.limit() * 2);
-            Gdx.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
+            Core.gl20.glBufferSubData(GL20.GL_ELEMENT_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
             isDirty = false;
         }
         isBound = true;
@@ -190,7 +190,7 @@ public class IndexBufferObjectSubData implements IndexData{
 
     /** Unbinds this IndexBufferObject. */
     public void unbind(){
-        Gdx.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
         isBound = false;
     }
 
@@ -202,7 +202,7 @@ public class IndexBufferObjectSubData implements IndexData{
 
     /** Disposes this IndexBufferObject and all its associated OpenGL resources. */
     public void dispose(){
-        GL20 gl = Gdx.gl20;
+        GL20 gl = Core.gl20;
         gl.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
         gl.glDeleteBuffer(bufferHandle);
         bufferHandle = 0;

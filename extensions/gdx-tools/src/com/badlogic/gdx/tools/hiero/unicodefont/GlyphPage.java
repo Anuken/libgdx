@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.hiero.unicodefont;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -226,7 +226,7 @@ public class GlyphPage{
             pageGlyphs.add(glyph);
         }
 
-        Gdx.gl.glTexSubImage2D(texture.glTarget, 0, pageX, pageY, width, height, format, GL11.GL_UNSIGNED_BYTE, glyphPixels);
+        Core.gl.glTexSubImage2D(texture.glTarget, 0, pageX, pageY, width, height, format, GL11.GL_UNSIGNED_BYTE, glyphPixels);
 
         float u = pageX / (float) texture.getWidth();
         float v = pageY / (float) texture.getHeight();

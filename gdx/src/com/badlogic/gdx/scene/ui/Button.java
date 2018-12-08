@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.function.BooleanProvider;
 import com.badlogic.gdx.graphics.Color;
@@ -36,10 +36,9 @@ import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.scene.utils.Disableable;
 import com.badlogic.gdx.utils.pooling.Pools;
-import io.anuke.ucore.core.Graphics;
-import io.anuke.ucore.util.Pooling;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.input;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A button is a {@link Table} with a checked state and additional {@link ButtonStyle style} fields for pressed, unpressed, and
@@ -67,12 +66,12 @@ public class Button extends Table implements Disableable{
 
     public Button(String styleName){
         initialize();
-        setStyle(skin.get(styleName, ButtonStyle.class));
+        setStyle(scene.skin.get(styleName, ButtonStyle.class));
         setSize(getPrefWidth(), getPrefHeight());
     }
 
     public Button(Element child, String styleName){
-        this(child, skin.get(styleName, ButtonStyle.class));
+        this(child, scene.skin.get(styleName, ButtonStyle.class));
     }
 
     public Button(Element child, ButtonStyle style){
@@ -187,7 +186,7 @@ public class Button extends Table implements Disableable{
         Vector2 v = new Vector2();
 
         forEach(element -> {
-            element.stageToLocalCoordinates(v.set(Graphics.mouse().x, Graphics.mouse().y));
+            element.stageToLocalCoordinates(v.set(input.mouseX(), input.mouseY()));
             if(element instanceof Button && (((Button) element).getClickListener().isOver(element, v.x, v.y))){
                 b[0] = true;
             }
@@ -247,9 +246,9 @@ public class Button extends Table implements Disableable{
         drawOver = false;
 
         if(isOver){
-            transitionTime += Gdx.graphics.getDeltaTime() * 60f;
+            transitionTime += Core.graphics.getDeltaTime() * 60f;
         }else{
-            transitionTime -= Gdx.graphics.getDeltaTime() * 60f;
+            transitionTime -= Core.graphics.getDeltaTime() * 60f;
             if(transitionTime < 0) transitionTime = 0;
         }
 
@@ -297,7 +296,7 @@ public class Button extends Table implements Disableable{
 
         Scene stage = getScene();
         if(stage != null && stage.getActionsRequestRendering() && isPressed != clickListener.isPressed())
-            Gdx.graphics.requestRendering();
+            Core.graphics.requestRendering();
     }
 
     @Override

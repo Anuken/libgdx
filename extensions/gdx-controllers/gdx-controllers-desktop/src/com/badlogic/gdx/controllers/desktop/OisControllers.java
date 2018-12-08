@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.controllers.desktop;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics.GraphicsType;
 import com.badlogic.gdx.controllers.ControlType;
 import com.badlogic.gdx.controllers.Controller;
@@ -96,7 +96,7 @@ public class OisControllers{
                     }
                 }
                 ois.update();
-                Gdx.app.postRunnable(this);
+                Core.app.post(this);
             }
         }.run();
     }
@@ -247,13 +247,13 @@ public class OisControllers{
         }
 
         try{
-            if(Gdx.graphics.getType() == GraphicsType.JGLFW)
-                return (Long) Gdx.graphics.getClass().getDeclaredMethod("getWindow").invoke(null);
+            if(Core.graphics.getType() == GraphicsType.JGLFW)
+                return (Long) Core.graphics.getClass().getDeclaredMethod("getWindow").invoke(null);
 
-            if(Gdx.graphics.getType() == GraphicsType.LWJGL){
-                if(Gdx.app.getClass().getName().equals("com.badlogic.gdx.backends.lwjgl.LwjglCanvas")){
+            if(Core.graphics.getType() == GraphicsType.LWJGL){
+                if(Core.app.getClass().getName().equals("com.badlogic.gdx.backends.lwjgl.LwjglCanvas")){
                     Class canvasClass = Class.forName("com.badlogic.gdx.backends.lwjgl.LwjglCanvas");
-                    Object canvas = canvasClass.getDeclaredMethod("getCanvas").invoke(Gdx.app);
+                    Object canvas = canvasClass.getDeclaredMethod("getCanvas").invoke(Core.app);
                     return (Long) invokeMethod(invokeMethod(SwingUtilities.windowForComponent((Component) canvas), "getPeer"), "getHWnd");
                 }
 

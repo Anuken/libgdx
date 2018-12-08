@@ -47,10 +47,6 @@ import java.lang.reflect.Method;
  * @author mzechner
  */
 public class AndroidApplication extends Activity implements AndroidApplicationBase{
-    static{
-        GdxNativesLoader.load();
-    }
-
     protected AndroidGraphics graphics;
     protected AndroidInput input;
     protected AndroidAudio audio;
@@ -64,12 +60,15 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     protected final Array<Runnable> executedRunnables = new Array<Runnable>();
     protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
     private final Array<AndroidEventListener> androidEventListeners = new Array<AndroidEventListener>();
-    protected int logLevel = LOG_INFO;
-    protected ApplicationLogger applicationLogger;
     protected boolean useImmersiveMode = false;
     protected boolean hideStatusBar = false;
     private int wasFocusChanged = -1;
     private boolean isWaitingForAudio = false;
+
+    static{
+        GdxNativesLoader.load();
+        Log.setLogger(new AndroidApplicationLogger());
+    }
 
     /**
      * This method has to be called in the {@link Activity#onCreate(Bundle)} method. It sets up all the things necessary to get
@@ -130,7 +129,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         if(this.getVersion() < MINIMUM_SDK){
             throw new GdxRuntimeException("LibGDX requires Android API Level " + MINIMUM_SDK + " or later.");
         }
-        setApplicationLogger(new AndroidApplicationLogger());
         graphics = new AndroidGraphics(this, config, config.resolutionStrategy == null ? new FillResolutionStrategy()
         : config.resolutionStrategy);
         input = AndroidInputFactory.newAndroidInput(this, this, graphics.view, config);
@@ -163,18 +161,18 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
             }
         });
 
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
 
         if(!isForView){
             try{
                 requestWindowFeature(Window.FEATURE_NO_TITLE);
             }catch(Exception ex){
-                log("AndroidApplication", "Content already displayed, cannot request FEATURE_NO_TITLE", ex);
+                Log.err("[AndroidApplication] Content already displayed, cannot request FEATURE_NO_TITLE", ex);
             }
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -191,7 +189,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
                 Method method = vlistener.getDeclaredMethod("createListener", AndroidApplicationBase.class);
                 method.invoke(o, this);
             }catch(Exception e){
-                log("AndroidApplication", "Failed to create AndroidVisibilityListener", e);
+                Log.err("[AndroidApplication] Failed to create AndroidVisibilityListener", e);
             }
         }
 
@@ -223,7 +221,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
             if(getVersion() <= 13) m.invoke(rootView, 0x0);
             m.invoke(rootView, 0x1);
         }catch(Exception e){
-            log("AndroidApplication", "Can't hide status bar", e);
+            Log.err("[AndroidApplication] Can't hide status bar", e);
         }
     }
 
@@ -256,7 +254,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             m.invoke(view, code);
         }catch(Exception e){
-            log("AndroidApplication", "Can't set immersive mode", e);
+            Log.err("[AndroidApplication] Can't set immersive mode", e);
         }
     }
 
@@ -289,12 +287,12 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
     @Override
     protected void onResume(){
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
 
         input.onResume();
 
@@ -382,10 +380,10 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
-            Gdx.graphics.requestRendering();
+            Core.graphics.requestRendering();
         }
     }
 
@@ -405,56 +403,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
                 AndroidApplication.this.finish();
             }
         });
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
     }
 
     @Override

@@ -31,7 +31,7 @@ import apple.glkit.protocol.GLKViewDelegate;
 import apple.opengles.EAGLContext;
 import apple.opengles.enums.EAGLRenderingAPI;
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.iosmoe.custom.HWMachine;
@@ -115,7 +115,7 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
             if(context != null)
                 gl20 = gl30 = new IOSGLES30();
             else
-                Gdx.app.log("IOGraphics", "OpenGL ES 3.0 not supported, falling back on 2.0");
+                Core.app.log("IOGraphics", "OpenGL ES 3.0 not supported, falling back on 2.0");
         }
         if(context == null){
             context = EAGLContext.alloc().initWithAPI(EAGLRenderingAPI.GLES2);
@@ -289,8 +289,8 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
     public void setGL20(GL20 gl20){
         this.gl20 = gl20;
         if(gl30 == null){
-            Gdx.gl = gl20;
-            Gdx.gl20 = gl20;
+            Core.gl = gl20;
+            Core.gl20 = gl20;
         }
     }
 
@@ -310,9 +310,9 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
         if(gl30 != null){
             this.gl20 = gl30;
 
-            Gdx.gl = gl20;
-            Gdx.gl20 = gl20;
-            Gdx.gl30 = gl30;
+            Core.gl = gl20;
+            Core.gl20 = gl20;
+            Core.gl30 = gl30;
         }
     }
 
@@ -452,7 +452,7 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
 
     @Override
     public boolean supportsExtension(String extension){
-        if(extensions == null) extensions = Gdx.gl.glGetString(GL20.GL_EXTENSIONS);
+        if(extensions == null) extensions = Core.gl.glGetString(GL20.GL_EXTENSIONS);
         return extensions.contains(extension);
     }
 

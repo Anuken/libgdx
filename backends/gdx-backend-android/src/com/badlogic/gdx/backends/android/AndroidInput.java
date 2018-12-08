@@ -37,7 +37,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.InputProcessor;
@@ -228,7 +228,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
                 alert.setView(input);
                 alert.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
-                        Gdx.app.postRunnable(new Runnable(){
+                        Core.app.post(new Runnable(){
                             @Override
                             public void run(){
                                 listener.input(input.getText().toString());
@@ -238,7 +238,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
                 });
                 alert.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
-                        Gdx.app.postRunnable(new Runnable(){
+                        Core.app.post(new Runnable(){
                             @Override
                             public void run(){
                                 listener.canceled();
@@ -249,7 +249,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
                 alert.setOnCancelListener(new OnCancelListener(){
                     @Override
                     public void onCancel(DialogInterface arg0){
-                        Gdx.app.postRunnable(new Runnable(){
+                        Core.app.post(new Runnable(){
                             @Override
                             public void run(){
                                 listener.canceled();
@@ -477,7 +477,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
             event.type = TouchEvent.TOUCH_UP;
             touchEvents.add(event);
         }
-        Gdx.app.getGraphics().requestRendering();
+        Core.app.getGraphics().requestRendering();
     }
 
     @Override
@@ -756,7 +756,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
             }
         }else
             compassAvailable = false;
-        Gdx.app.log("AndroidInput", "sensor listener setup");
+        Core.app.log("AndroidInput", "sensor listener setup");
     }
 
     void unregisterSensorListeners(){
@@ -779,7 +779,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
             }
             manager = null;
         }
-        Gdx.app.log("AndroidInput", "sensor listener tear down");
+        Core.app.log("AndroidInput", "sensor listener tear down");
     }
 
     @Override
@@ -840,7 +840,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
         for(int i = 0; i < len; i++){
             sb.append(i + ":" + realId[i] + " ");
         }
-        Gdx.app.log("AndroidInput", "Pointer ID lookup failed: " + pointerId + ", " + sb.toString());
+        Core.app.log("AndroidInput", "Pointer ID lookup failed: " + pointerId + ", " + sb.toString());
         return -1;
     }
 

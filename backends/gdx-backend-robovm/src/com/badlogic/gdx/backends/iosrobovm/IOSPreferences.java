@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.backends.iosrobovm;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.io.Preferences;
 import org.robovm.apple.foundation.*;
 
@@ -182,7 +182,7 @@ public class IOSPreferences implements Preferences{
     public void flush(){
         NSAutoreleasePool pool = new NSAutoreleasePool();
         if(!nsDictionary.write(file, false)){
-            Gdx.app.debug("IOSPreferences", "Failed to write NSDictionary to file " + file);
+            Core.app.debug("IOSPreferences", "Failed to write NSDictionary to file " + file);
         }
         pool.close();
     }

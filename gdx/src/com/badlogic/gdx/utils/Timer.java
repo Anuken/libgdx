@@ -17,8 +17,8 @@
 package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.collection.Array;
 
@@ -49,7 +49,7 @@ public class Timer{
 
     static private TimerThread thread(){
         synchronized(threadLock){
-            if(thread == null || thread.files != Gdx.files){
+            if(thread == null || thread.files != Core.files){
                 if(thread != null) thread.dispose();
                 thread = new TimerThread();
             }
@@ -156,7 +156,7 @@ public class Timer{
                     waitMillis = Math.min(waitMillis, task.intervalMillis);
                     if(task.repeatCount > 0) task.repeatCount--;
                 }
-                task.app.postRunnable(task);
+                task.app.post(task);
             }
         }
         return waitMillis;
@@ -220,7 +220,7 @@ public class Timer{
         volatile Timer timer;
 
         public Task(){
-            app = Gdx.app; // Store which app to postRunnable (eg for multiple LwjglAWTCanvas).
+            app = Core.app; // Store which app to post (eg for multiple LwjglAWTCanvas).
             if(app == null) throw new IllegalStateException("Gdx.app not available.");
         }
 
@@ -277,13 +277,13 @@ public class Timer{
      */
     static class TimerThread implements Runnable, LifecycleListener{
         final Files files;
-        final Array<Timer> instances = new Array(1);
+        final Array<Timer> instances = new Array<>(1);
         Timer instance;
         private long pauseMillis;
 
         public TimerThread(){
-            files = Gdx.files;
-            Gdx.app.addLifecycleListener(this);
+            files = Core.files;
+            Core.app.addLifecycleListener(this);
             resume();
 
             Thread thread = new Thread(this, "Timer");
@@ -291,10 +291,11 @@ public class Timer{
             thread.start();
         }
 
+        @Override
         public void run(){
             while(true){
                 synchronized(threadLock){
-                    if(thread != this || files != Gdx.files) break;
+                    if(thread != this || files != Core.files) break;
 
                     long waitMillis = 5000;
                     if(pauseMillis == 0){
@@ -308,7 +309,7 @@ public class Timer{
                         }
                     }
 
-                    if(thread != this || files != Gdx.files) break;
+                    if(thread != this || files != Core.files) break;
 
                     try{
                         if(waitMillis > 0) threadLock.wait(waitMillis);
@@ -319,6 +320,7 @@ public class Timer{
             dispose();
         }
 
+        @Override
         public void resume(){
             synchronized(threadLock){
                 long delayMillis = System.nanoTime() / 1000000 - pauseMillis;
@@ -329,6 +331,7 @@ public class Timer{
             }
         }
 
+        @Override
         public void pause(){
             synchronized(threadLock){
                 pauseMillis = System.nanoTime() / 1000000;
@@ -336,13 +339,14 @@ public class Timer{
             }
         }
 
+        @Override
         public void dispose(){ // OK to call multiple times.
             synchronized(threadLock){
                 if(thread == this) thread = null;
                 instances.clear();
                 threadLock.notifyAll();
             }
-            Gdx.app.removeLifecycleListener(this);
+            Core.app.removeLifecycleListener(this);
         }
     }
 }

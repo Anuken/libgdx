@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.assets.loaders.resolvers;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.backends.gwt.GwtFileHandle;
 import com.badlogic.gdx.files.FileHandle;
@@ -57,10 +57,10 @@ public class ResolutionFileResolver implements FileHandleResolver{
 
     static public Resolution choose(Resolution... descriptors){
         int width = 0;
-        if(Gdx.graphics.getWidth() > Gdx.graphics.getHeight()){
-            width = Gdx.graphics.getHeight();
+        if(Core.graphics.getWidth() > Core.graphics.getHeight()){
+            width = Core.graphics.getHeight();
         }else{
-            width = Gdx.graphics.getWidth();
+            width = Core.graphics.getWidth();
         }
 
         Resolution bestDesc = null;

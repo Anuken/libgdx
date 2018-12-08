@@ -239,7 +239,7 @@ public interface Net{
          * @throws IllegalArgumentException if redirection is disabled on the GWT backend.
          */
         public void setFollowRedirects(boolean followRedirects) throws IllegalArgumentException{
-            if(followRedirects || Gdx.app.getType() != ApplicationType.WebGL){
+            if(followRedirects || Core.app.getType() != ApplicationType.WebGL){
                 this.followRedirects = followRedirects;
             }else{
                 throw new IllegalArgumentException("Following redirects can't be disabled using the GWT/WebGL backend!");
@@ -332,7 +332,7 @@ public interface Net{
 
         /**
          * Called when the {@link HttpRequest} has been processed and there is a {@link HttpResponse} ready. Passing data to the
-         * rendering thread should be done using {@link Application#postRunnable(java.lang.Runnable runnable)} {@link HttpResponse}
+         * rendering thread should be done using {@link Application#post(java.lang.Runnable runnable)} {@link HttpResponse}
          * contains the {@link HttpStatus} and should be used to determine if the request was successful or not (see more info at
          * {@link HttpStatus#getStatusCode()}). For example:
          *

@@ -99,19 +99,6 @@ import com.badlogic.gdx.utils.io.Preferences;
  * @author mzechner
  */
 public interface Application{
-    /**
-     * Enumeration of possible {@link Application} types
-     *
-     * @author mzechner
-     */
-    enum ApplicationType{
-        Android, Desktop, HeadlessDesktop, Applet, WebGL, iOS
-    }
-
-    int LOG_NONE = 0;
-    int LOG_DEBUG = 3;
-    int LOG_INFO = 2;
-    int LOG_ERROR = 1;
 
     /** @return the {@link ApplicationListener} instance */
     ApplicationListener getApplicationListener();
@@ -130,41 +117,6 @@ public interface Application{
 
     /** @return the {@link Net} instance */
     Net getNet();
-
-    /** Logs a message to the console or logcat */
-    void log(String tag, String message);
-
-    /** Logs a message to the console or logcat */
-    void log(String tag, String message, Throwable exception);
-
-    /** Logs an error message to the console or logcat */
-    void error(String tag, String message);
-
-    /** Logs an error message to the console or logcat */
-    void error(String tag, String message, Throwable exception);
-
-    /** Logs a debug message to the console or logcat */
-    void debug(String tag, String message);
-
-    /** Logs a debug message to the console or logcat */
-    void debug(String tag, String message, Throwable exception);
-
-    /**
-     * Sets the log level. {@link #LOG_NONE} will mute all log output. {@link #LOG_ERROR} will only let error messages through.
-     * {@link #LOG_INFO} will let all non-debug messages through, and {@link #LOG_DEBUG} will let all messages through.
-     *
-     * @param logLevel {@link #LOG_NONE}, {@link #LOG_ERROR}, {@link #LOG_INFO}, {@link #LOG_DEBUG}.
-     */
-    void setLogLevel(int logLevel);
-
-    /** Gets the log level. */
-    int getLogLevel();
-
-    /** Sets the current Application logger. Calls to {@link #log(String, String)} are delegated to this {@link ApplicationLogger} */
-    void setApplicationLogger(ApplicationLogger applicationLogger);
-
-    /** @return the current {@link ApplicationLogger} */
-    ApplicationLogger getApplicationLogger();
 
     /** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */
     ApplicationType getType();
@@ -191,13 +143,13 @@ public interface Application{
     /**
      * Posts a {@link Runnable} on the main loop thread.
      * <p>
-     * In a multi-window application, the {@linkplain Gdx#graphics} and {@linkplain Gdx#input} values may be
+     * In a multi-window application, the {@linkplain Core#graphics} and {@linkplain Core#input} values may be
      * unpredictable at the time the Runnable is executed. If graphics or input are needed, they can be copied
      * to a variable to be used in the Runnable. For example:
      * <p><code>
      * final Graphics graphics = Gdx.graphics;
      */
-    void postRunnable(Runnable runnable);
+    void post(Runnable runnable);
 
     /**
      * Schedule an exit from the application. On android, this will cause a call to pause() and dispose() some time in the future,
@@ -240,29 +192,11 @@ public interface Application{
     }
 
     /**
-     * The ApplicationLogger provides an interface for a LibGDX Application to log messages and exceptions.
-     * A default implementations is provided for each backend, custom implementations can be provided and set using
-     * {@link Application#setApplicationLogger(ApplicationLogger) }
+     * Enumeration of possible {@link Application} types
+     *
+     * @author mzechner
      */
-    interface ApplicationLogger{
-
-        /** Logs a message with a tag */
-        void log(String tag, String message);
-
-        /** Logs a message and exception with a tag */
-        void log(String tag, String message, Throwable exception);
-
-        /** Logs an error message with a tag */
-        void error(String tag, String message);
-
-        /** Logs an error message and exception with a tag */
-        void error(String tag, String message, Throwable exception);
-
-        /** Logs a debug message with a tag */
-        void debug(String tag, String message);
-
-        /** Logs a debug message and exception with a tag */
-        void debug(String tag, String message, Throwable exception);
-
+    enum ApplicationType{
+        Android, Desktop, HeadlessDesktop, Applet, WebGL, iOS
     }
 }

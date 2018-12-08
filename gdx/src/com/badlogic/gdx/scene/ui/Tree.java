@@ -16,12 +16,11 @@
 
 package com.badlogic.gdx.scene.ui;
 
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
-import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scene.event.ClickListener;
 import com.badlogic.gdx.scene.event.InputEvent;
@@ -30,6 +29,8 @@ import com.badlogic.gdx.scene.ui.layout.WidgetGroup;
 import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.scene.utils.Selection;
 import com.badlogic.gdx.scene.utils.UIUtils;
+
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A tree widget where each node has an icon, actor, and child nodes.
@@ -41,7 +42,7 @@ import com.badlogic.gdx.scene.utils.UIUtils;
  * @author Nathan Sweet
  */
 public class Tree extends WidgetGroup{
-    final Array<Node> rootNodes = new Array();
+    final Array<Node> rootNodes = new Array<>();
     final Selection<Node> selection;
     TreeStyle style;
     float ySpacing = 4, iconSpacingLeft = 2, iconSpacingRight = 2, padding = 0, indentSpacing;
@@ -49,14 +50,14 @@ public class Tree extends WidgetGroup{
     private float leftColumnWidth, prefWidth, prefHeight;
     private boolean sizeInvalid = true;
     private Node foundNode;
-    private com.badlogic.gdx.scene.event.ClickListener clickListener;
+    private ClickListener clickListener;
 
-    public Tree(Skin skin){
-        this(skin.get(TreeStyle.class));
+    public Tree(){
+        this(scene.skin.get(TreeStyle.class));
     }
 
-    public Tree(Skin skin, String styleName){
-        this(skin.get(styleName, TreeStyle.class));
+    public Tree(String styleName){
+        this(scene.skin.get(styleName, TreeStyle.class));
     }
 
     public Tree(TreeStyle style){

@@ -17,7 +17,7 @@
 package com.badlogic.gdx.files;
 
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtFileHandle;
 
@@ -32,7 +32,7 @@ import java.io.OutputStream;
  */
 public abstract class FileHandleStream extends GwtFileHandle{
     public FileHandleStream(String path){
-        super(((GwtApplication) Gdx.app).getPreloader(), path, FileType.Internal);
+        super(((GwtApplication) Core.app).getPreloader(), path, FileType.Internal);
     }
 
     public boolean isDirectory(){

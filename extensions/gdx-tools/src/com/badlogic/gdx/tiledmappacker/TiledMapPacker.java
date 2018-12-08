@@ -14,7 +14,7 @@
 package com.badlogic.gdx.tiledmappacker;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -527,7 +527,7 @@ public class TiledMapPacker{
                     throw new RuntimeException("Error processing map: " + e.getMessage());
                 }
                 System.out.println("Finished processing.");
-                Gdx.app.exit();
+                Core.app.exit();
             }
         }, config);
     }

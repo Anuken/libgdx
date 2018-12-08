@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.scene.event;
 
-import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
@@ -27,108 +27,17 @@ import com.badlogic.gdx.scene.Scene;
  * @see InputListener
  */
 public class InputEvent extends Event{
-    private Type type;
-    private float stageX, stageY;
-    private int pointer, button, keyCode, scrollAmount;
-    private char character;
-    private Element relatedActor;
+    public Type type;
+    public float stageX, stageY;
+    public int pointer;
+    public float scrollAmountX, scrollAmountY;
+    public KeyCode keyCode;
+    public char character;
+    public Element relatedActor;
 
     public void reset(){
         super.reset();
         relatedActor = null;
-        button = -1;
-    }
-
-    /** The stage x coordinate where the event occurred. Valid for: touchDown, touchDragged, touchUp, mouseMoved, enter, and exit. */
-    public float getStageX(){
-        return stageX;
-    }
-
-    public void setStageX(float stageX){
-        this.stageX = stageX;
-    }
-
-    /** The stage x coordinate where the event occurred. Valid for: touchDown, touchDragged, touchUp, mouseMoved, enter, and exit. */
-    public float getStageY(){
-        return stageY;
-    }
-
-    public void setStageY(float stageY){
-        this.stageY = stageY;
-    }
-
-    /** The type of input event. */
-    public Type getType(){
-        return type;
-    }
-
-    public void setType(Type type){
-        this.type = type;
-    }
-
-    /**
-     * The pointer index for the event. The first touch is index 0, second touch is index 1, etc. Always -1 on desktop. Valid for:
-     * touchDown, touchDragged, touchUp, enter, and exit.
-     */
-    public int getPointer(){
-        return pointer;
-    }
-
-    public void setPointer(int pointer){
-        this.pointer = pointer;
-    }
-
-    /**
-     * The index for the mouse button pressed. Always 0 on Android. Valid for: touchDown and touchUp.
-     *
-     * @see Buttons
-     */
-    public int getButton(){
-        return button;
-    }
-
-    public void setButton(int button){
-        this.button = button;
-    }
-
-    /** The key code of the key that was pressed. Valid for: keyDown and keyUp. */
-    public int getKeyCode(){
-        return keyCode;
-    }
-
-    public void setKeyCode(int keyCode){
-        this.keyCode = keyCode;
-    }
-
-    /** The character for the key that was type. Valid for: keyTyped. */
-    public char getCharacter(){
-        return character;
-    }
-
-    public void setCharacter(char character){
-        this.character = character;
-    }
-
-    /** The amount the mouse was scrolled. Valid for: scrolled. */
-    public int getScrollAmount(){
-        return scrollAmount;
-    }
-
-    public void setScrollAmount(int scrollAmount){
-        this.scrollAmount = scrollAmount;
-    }
-
-    /**
-     * The actor related to the event. Valid for: enter and exit. For enter, this is the actor being exited, or null. For exit,
-     * this is the actor being entered, or null.
-     */
-    public Element getRelatedActor(){
-        return relatedActor;
-    }
-
-    /** @param relatedActor May be null. */
-    public void setRelatedActor(Element relatedActor){
-        this.relatedActor = relatedActor;
     }
 
     /**
@@ -147,6 +56,7 @@ public class InputEvent extends Event{
         return stageX == Integer.MIN_VALUE || stageY == Integer.MIN_VALUE;
     }
 
+    @Override
     public String toString(){
         return type.toString();
     }

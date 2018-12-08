@@ -16,18 +16,18 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.IntArray;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
 import com.badlogic.gdx.scene.style.Drawable;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 /** A multiple-line text input field, entirely based on {@link TextField} */
 public class TextArea extends TextField{
@@ -380,13 +380,13 @@ public class TextArea extends TextField{
         }
 
         @Override
-        public boolean keyDown(InputEvent event, int keycode){
+        public boolean keyDown(InputEvent event, KeyCode keycode){
             boolean result = super.keyDown(event, keycode);
             Scene stage = getScene();
             if(stage != null && stage.getKeyboardFocus() == TextArea.this){
                 boolean repeat = false;
-                boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-                if(keycode == Input.Keys.DOWN){
+                boolean shift = Core.input.isKeyPressed(KeyCode.SHIFT_LEFT) || Core.input.isKeyPressed(KeyCode.SHIFT_RIGHT);
+                if(keycode == KeyCode.DOWN){
                     if(shift){
                         if(!hasSelection){
                             selectionStart = cursor;
@@ -398,7 +398,7 @@ public class TextArea extends TextField{
                     moveCursorLine(cursorLine + 1);
                     repeat = true;
 
-                }else if(keycode == Input.Keys.UP){
+                }else if(keycode == KeyCode.UP){
                     if(shift){
                         if(!hasSelection){
                             selectionStart = cursor;

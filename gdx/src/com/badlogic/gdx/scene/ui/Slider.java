@@ -16,12 +16,12 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Interpolation;
-import io.anuke.ucore.function.Consumer;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scene.event.HandCursorListener;
@@ -29,10 +29,9 @@ import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.pooling.Pools;
 
-import static io.anuke.ucore.core.Core.skin;
-
+import static com.badlogic.gdx.Core.scene;
 /**
  * A slider is a horizontal indicator that allows a user to set a value. The slider has a range (min, max) and a stepping between
  * each value the slider represents.
@@ -53,11 +52,11 @@ public class Slider extends ProgressBar{
     private float threshold;
 
     public Slider(float min, float max, float stepSize, boolean vertical){
-        this(min, max, stepSize, vertical, skin.get("default-" + (vertical ? "vertical" : "horizontal"), SliderStyle.class));
+        this(min, max, stepSize, vertical, scene.skin.get("default-" + (vertical ? "vertical" : "horizontal"), SliderStyle.class));
     }
 
     public Slider(float min, float max, float stepSize, boolean vertical, String styleName){
-        this(min, max, stepSize, vertical, skin.get(styleName, SliderStyle.class));
+        this(min, max, stepSize, vertical, scene.skin.get(styleName, SliderStyle.class));
     }
 
     /**
@@ -160,7 +159,7 @@ public class Slider extends ProgressBar{
         }
 
         float oldValue = value;
-        if(!Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && !Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) value = snap(value);
+        if(!Core.input.isKeyPressed(KeyCode.SHIFT_LEFT) && !Core.input.isKeyPressed(KeyCode.SHIFT_RIGHT)) value = snap(value);
         boolean valueSet = setValue(value);
         if(value == oldValue) position = oldPosition;
         return valueSet;

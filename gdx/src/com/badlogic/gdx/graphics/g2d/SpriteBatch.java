@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
@@ -101,14 +101,14 @@ public class SpriteBatch implements Batch{
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if(size > 8191) throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
 
-        VertexDataType vertexDataType = (Gdx.gl30 != null) ? VertexDataType.VertexBufferObjectWithVAO : VertexDataType.VertexArray;
+        VertexDataType vertexDataType = (Core.gl30 != null) ? VertexDataType.VertexBufferObjectWithVAO : VertexDataType.VertexArray;
 
         mesh = new Mesh(vertexDataType, false, size * 4, size * 6,
         new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
         new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
         new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
-        projectionMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        projectionMatrix.setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
 
         vertices = new float[size * Sprite.SPRITE_SIZE];
 
@@ -172,7 +172,7 @@ public class SpriteBatch implements Batch{
         if(drawing) throw new IllegalStateException("SpriteBatch.end must be called before begin.");
         renderCalls = 0;
 
-        Gdx.gl.glDepthMask(false);
+        Core.gl.glDepthMask(false);
         if(customShader != null)
             customShader.begin();
         else
@@ -189,7 +189,7 @@ public class SpriteBatch implements Batch{
         lastTexture = null;
         drawing = false;
 
-        GL20 gl = Gdx.gl;
+        GL20 gl = Core.gl;
         gl.glDepthMask(true);
         if(isBlendingEnabled()) gl.glDisable(GL20.GL_BLEND);
 
@@ -967,11 +967,11 @@ public class SpriteBatch implements Batch{
         mesh.getIndicesBuffer().limit(count);
 
         if(blendingDisabled){
-            Gdx.gl.glDisable(GL20.GL_BLEND);
+            Core.gl.glDisable(GL20.GL_BLEND);
         }else{
-            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Core.gl.glEnable(GL20.GL_BLEND);
             if(blendSrcFunc != -1)
-                Gdx.gl.glBlendFuncSeparate(blendSrcFunc, blendDstFunc, blendSrcFuncAlpha, blendDstFuncAlpha);
+                Core.gl.glBlendFuncSeparate(blendSrcFunc, blendDstFunc, blendSrcFuncAlpha, blendDstFuncAlpha);
         }
 
         mesh.render(customShader != null ? customShader : shader, GL20.GL_TRIANGLES, 0, count);

@@ -17,29 +17,28 @@
 package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.function.BooleanConsumer;
+import com.badlogic.gdx.function.Consumer;
+import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.ext.Draw;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.ui.*;
 import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 import com.badlogic.gdx.scene.ui.TextField.TextFieldFilter;
-import com.badlogic.gdx.scene.ui.layout.Value.Fixed;
 import com.badlogic.gdx.scene.utils.Elements;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.utils.pooling.Pools;
-import io.anuke.ucore.function.BooleanConsumer;
-import io.anuke.ucore.function.Consumer;
-import io.anuke.ucore.function.Supplier;
-import io.anuke.ucore.graphics.Draw;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A group that sizes and positions children using table constraints. By default, {@link #getTouchable()} is
@@ -173,8 +172,8 @@ public class Table extends WidgetGroup{
      * @see #setBackground(Drawable)
      */
     public void setBackground(String drawableName){
-        if(skin == null) throw new IllegalStateException("Table must have a skin set to use this method.");
-        setBackground(skin.getDrawable(drawableName));
+        if(scene.skin == null) throw new IllegalStateException("Table must have a skin set to use this method.");
+        setBackground(scene.skin.getDrawable(drawableName));
     }
 
     /** @see #setBackground(Drawable) */
@@ -356,7 +355,7 @@ public class Table extends WidgetGroup{
 
     /** Adds a new cell with a label. */
     public Cell<Label> add(CharSequence text, String labelStyleName, float scl){
-        Label l = new Label(text, skin.get(labelStyleName, LabelStyle.class));
+        Label l = new Label(text, scene.skin.get(labelStyleName, LabelStyle.class));
         l.setFontScale(scl);
         return add(l);
     }
@@ -370,17 +369,17 @@ public class Table extends WidgetGroup{
 
     /** Adds a new cell with a label. */
     public Cell<Label> add(CharSequence text, String labelStyleName){
-        return add(new Label(text, skin.get(labelStyleName, LabelStyle.class)));
+        return add(new Label(text, scene.skin.get(labelStyleName, LabelStyle.class)));
     }
 
     /** Adds a new cell with a label. */
     public Cell<Label> add(CharSequence text, Color color){
-        return add(new Label(text, new LabelStyle(skin.getFont("default-font"), color)));
+        return add(new Label(text, new LabelStyle(scene.skin.getFont("default-font"), color)));
     }
 
     /** Adds a new cell with a label. */
     public Cell<Label> add(CharSequence text, String fontName, String colorName){
-        return add(new Label(text, new LabelStyle(skin.getFont(fontName), skin.getColor(colorName))));
+        return add(new Label(text, new LabelStyle(scene.skin.getFont(fontName), scene.skin.getColor(colorName))));
     }
 
     /** Adds a cell without an actor. */
@@ -773,43 +772,43 @@ public class Table extends WidgetGroup{
 
     /** Sets the marginTop, marginLeft, marginBottom, and marginRight around the table to the specified value. */
     public Table margin(float pad){
-        margin(new Fixed(pad));
+        margin(e -> (pad));
         return this;
     }
 
     public Table margin(float top, float left, float bottom, float right){
-        padTop = new Fixed(top);
-        padLeft = new Fixed(left);
-        padBottom = new Fixed(bottom);
-        padRight = new Fixed(right);
+        padTop = e -> (top);
+        padLeft = e -> (left);
+        padBottom = e -> (bottom);
+        padRight = e -> (right);
         sizeInvalid = true;
         return this;
     }
 
     /** Padding at the top edge of the table. */
     public Table marginTop(float padTop){
-        this.padTop = new Fixed(padTop);
+        this.padTop = e -> (padTop);
         sizeInvalid = true;
         return this;
     }
 
     /** Padding at the left edge of the table. */
     public Table marginLeft(float padLeft){
-        this.padLeft = new Fixed(padLeft);
+        this.padLeft = e -> (padLeft);
         sizeInvalid = true;
         return this;
     }
 
     /** Padding at the bottom edge of the table. */
     public Table marginBottom(float padBottom){
-        this.padBottom = new Fixed(padBottom);
+        this.padBottom = e -> (padBottom);
         sizeInvalid = true;
         return this;
     }
 
     /** Padding at the right edge of the table. */
     public Table marginRight(float padRight){
-        this.padRight = new Fixed(padRight);
+        this.padRight = e -> (padRight);
         sizeInvalid = true;
         return this;
     }

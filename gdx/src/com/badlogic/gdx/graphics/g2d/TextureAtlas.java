@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.collection.ObjectSet;
@@ -212,7 +212,7 @@ public class TextureAtlas implements Disposable{
      * images.
      */
     public TextureAtlas(String internalPackFile){
-        this(Gdx.files.internal(internalPackFile));
+        this(Core.files.internal(internalPackFile));
     }
 
     /** Loads the specified pack file, using the parent directory of the pack file to find the page images. */

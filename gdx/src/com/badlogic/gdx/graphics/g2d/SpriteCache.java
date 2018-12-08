@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -140,7 +140,7 @@ public class SpriteCache implements Disposable{
             mesh.setIndices(indices);
         }
 
-        projectionMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        projectionMatrix.setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
     }
 
     /** Sets the color used to tint images when they are added to the SpriteCache. Default is {@link Color#WHITE}. */
@@ -864,7 +864,7 @@ public class SpriteCache implements Disposable{
         renderCalls = 0;
         combinedMatrix.set(projectionMatrix).mul(transformMatrix);
 
-        Gdx.gl20.glDepthMask(false);
+        Core.gl20.glDepthMask(false);
 
         if(customShader != null){
             customShader.begin();
@@ -888,7 +888,7 @@ public class SpriteCache implements Disposable{
         drawing = false;
 
         shader.end();
-        GL20 gl = Gdx.gl20;
+        GL20 gl = Core.gl20;
         gl.glDepthMask(true);
         if(customShader != null)
             mesh.unbind(customShader);

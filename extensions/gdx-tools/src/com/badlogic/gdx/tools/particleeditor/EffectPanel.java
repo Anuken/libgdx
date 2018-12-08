@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.particleeditor;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.collection.Array;
@@ -147,7 +147,7 @@ class EffectPanel extends JPanel{
         ParticleEffect effect = new ParticleEffect();
         try{
             File effectFile = new File(dir, file);
-            effect.loadEmitters(Gdx.files.absolute(effectFile.getAbsolutePath()));
+            effect.loadEmitters(Core.files.absolute(effectFile.getAbsolutePath()));
             if(mergeIntoCurrent){
                 for(ParticleEmitter emitter : effect.getEmitters()){
                     addEmitter(emitter.getName(), false, emitter);

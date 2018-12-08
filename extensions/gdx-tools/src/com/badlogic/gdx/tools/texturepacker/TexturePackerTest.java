@@ -17,7 +17,7 @@
 package com.badlogic.gdx.tools.texturepacker;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -41,7 +41,7 @@ public class TexturePackerTest extends ApplicationAdapter{
     }
 
     public void render(){
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Core.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Settings settings = new Settings();
         settings.fast = false;
@@ -104,7 +104,7 @@ public class TexturePackerTest extends ApplicationAdapter{
     }
 
     public void resize(int width, int height){
-        renderer.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        renderer.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight()));
     }
 
     public static void main(String[] args){

@@ -1,6 +1,6 @@
 package com.badlogic.gdx.scenes.scene2d.utils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.google.gwt.user.client.Window.Navigator;
@@ -11,7 +11,7 @@ public class UIUtils{
     static public boolean isLinux = Navigator.getPlatform().contains("Linux");
 
     static public boolean left(){
-        return Gdx.input.isButtonPressed(Buttons.LEFT);
+        return Core.input.isButtonPressed(Buttons.LEFT);
     }
 
     static public boolean left(int button){
@@ -19,7 +19,7 @@ public class UIUtils{
     }
 
     static public boolean right(){
-        return Gdx.input.isButtonPressed(Buttons.RIGHT);
+        return Core.input.isButtonPressed(Buttons.RIGHT);
     }
 
     static public boolean right(int button){
@@ -27,7 +27,7 @@ public class UIUtils{
     }
 
     static public boolean middle(){
-        return Gdx.input.isButtonPressed(Buttons.MIDDLE);
+        return Core.input.isButtonPressed(Buttons.MIDDLE);
     }
 
     static public boolean middle(int button){
@@ -35,7 +35,7 @@ public class UIUtils{
     }
 
     static public boolean shift(){
-        return Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
+        return Core.input.isKeyPressed(Keys.SHIFT_LEFT) || Core.input.isKeyPressed(Keys.SHIFT_RIGHT);
     }
 
     static public boolean shift(int keycode){
@@ -44,9 +44,9 @@ public class UIUtils{
 
     static public boolean ctrl(){
         if(isMac)
-            return Gdx.input.isKeyPressed(Keys.SYM);
+            return Core.input.isKeyPressed(Keys.SYM);
         else
-            return Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT);
+            return Core.input.isKeyPressed(Keys.CONTROL_LEFT) || Core.input.isKeyPressed(Keys.CONTROL_RIGHT);
     }
 
     static public boolean ctrl(int keycode){
@@ -57,7 +57,7 @@ public class UIUtils{
     }
 
     static public boolean alt(){
-        return Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT);
+        return Core.input.isKeyPressed(Keys.ALT_LEFT) || Core.input.isKeyPressed(Keys.ALT_RIGHT);
     }
 
     static public boolean alt(int keycode){

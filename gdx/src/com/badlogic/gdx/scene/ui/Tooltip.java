@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.InputEvent;
@@ -126,7 +126,7 @@ public class Tooltip<T extends Element> extends InputListener{
 
     public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
         if(pointer != -1) return;
-        if(Gdx.input.isTouched()) return;
+        if(Core.input.isTouched()) return;
         Element actor = event.getListenerActor();
         if(fromActor != null && fromActor.isDescendantOf(actor)) return;
         setContainerPosition(actor, x, y);

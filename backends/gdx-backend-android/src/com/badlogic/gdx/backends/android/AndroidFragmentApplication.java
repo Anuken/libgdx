@@ -179,12 +179,12 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
             }
         });
 
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
         createWakeLock(config.useWakelock);
         useImmersiveMode(config.useImmersiveMode);
         if(config.useImmersiveMode && getVersion() >= Build.VERSION_CODES.KITKAT){
@@ -231,12 +231,12 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
 
     @Override
     public void onResume(){
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
 
         input.onResume();
 
@@ -312,10 +312,10 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
-            Gdx.graphics.requestRendering();
+            Core.graphics.requestRendering();
         }
     }
 

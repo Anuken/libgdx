@@ -23,7 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 
 /**
@@ -304,8 +304,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
 
             notifyPreviewState();
             notifyOffsetsChanged();
-            if(!Gdx.graphics.isContinuousRendering()){
-                Gdx.graphics.requestRendering();
+            if(!Core.graphics.isContinuousRendering()){
+                Core.graphics.requestRendering();
             }
         }
 
@@ -425,8 +425,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
 
                 notifyPreviewState();
                 notifyOffsetsChanged();
-                if(!Gdx.graphics.isContinuousRendering()){
-                    Gdx.graphics.requestRendering();
+                if(!Core.graphics.isContinuousRendering()){
+                    Core.graphics.requestRendering();
                 }
             }
         }
@@ -524,7 +524,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
                 if(!iconDropConsumed){ // same type of synchronization as in notifyOffsetsChanged()
                     iconDropConsumed = true;
 
-                    app.postRunnable(new Runnable(){
+                    app.post(new Runnable(){
                         @Override
                         public void run(){
                             boolean isCurrent = false;
@@ -574,8 +574,8 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
 
             // can fail if linkedApp == null, so we repeat it in Engine.onResume
             notifyOffsetsChanged();
-            if(!Gdx.graphics.isContinuousRendering()){
-                Gdx.graphics.requestRendering();
+            if(!Core.graphics.isContinuousRendering()){
+                Core.graphics.requestRendering();
             }
 
             super.onOffsetsChanged(xOffset, yOffset, xOffsetStep, yOffsetStep, xPixelOffset, yPixelOffset);
@@ -587,7 +587,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
 // times and with various patterns on various devices - user application must be prepared for that
                     offsetsConsumed = true;
 
-                    app.postRunnable(new Runnable(){
+                    app.post(new Runnable(){
                         @Override
                         public void run(){
                             boolean isCurrent = false;
@@ -608,7 +608,7 @@ public abstract class AndroidLiveWallpaperService extends WallpaperService{
             // notify preview state to app listener
             if(linkedEngine == this && app.listener instanceof AndroidWallpaperListener){
                 final boolean currentPreviewState = linkedEngine.isPreview();
-                app.postRunnable(new Runnable(){
+                app.post(new Runnable(){
                     @Override
                     public void run(){
                         boolean shouldNotify = false;

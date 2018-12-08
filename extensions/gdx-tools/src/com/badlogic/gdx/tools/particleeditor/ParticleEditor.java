@@ -17,8 +17,8 @@
 package com.badlogic.gdx.tools.particleeditor;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.badlogic.gdx.files.FileHandle;
@@ -292,16 +292,16 @@ public class ParticleEditor extends JFrame{
             backgroundColor = new GradientColorValue();
             backgroundColor.setColors(new float[]{0f, 0f, 0f});
 
-            font = new BitmapFont(Gdx.files.getFileHandle("default.fnt", FileType.Internal), Gdx.files.getFileHandle("default.png",
+            font = new BitmapFont(Core.files.getFileHandle("default.fnt", FileType.Internal), Core.files.getFileHandle("default.png",
             FileType.Internal), true);
             effectPanel.newExampleEmitter("Untitled", true);
             // if (resources.openFile("/editor-bg.png") != null) bgImage = new Image(gl, "/editor-bg.png");
-            Gdx.input.setInputProcessor(this);
+            Core.input.setInputProcessor(this);
         }
 
         @Override
         public void resize(int width, int height){
-            Gdx.gl.glViewport(0, 0, width, height);
+            Core.gl.glViewport(0, 0, width, height);
 
             if(pixelsPerMeter.getValue() <= 0){
                 pixelsPerMeter.setValue(1);
@@ -316,14 +316,14 @@ public class ParticleEditor extends JFrame{
         }
 
         public void render(){
-            int viewWidth = Gdx.graphics.getWidth();
-            int viewHeight = Gdx.graphics.getHeight();
+            int viewWidth = Core.graphics.getWidth();
+            int viewHeight = Core.graphics.getHeight();
 
-            float delta = Math.max(0, Gdx.graphics.getDeltaTime() * deltaMultiplier.getValue());
+            float delta = Math.max(0, Core.graphics.getDeltaTime() * deltaMultiplier.getValue());
 
             float[] colors = backgroundColor.getColors();
-            Gdx.gl.glClearColor(colors[0], colors[1], colors[2], 1.0f);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Core.gl.glClearColor(colors[0], colors[1], colors[2], 1.0f);
+            Core.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             if((pixelsPerMeter.getValue() != pixelsPerMeterPrev) || (zoomLevel.getValue() != zoomLevelPrev)){
                 if(pixelsPerMeter.getValue() <= 0){
@@ -377,7 +377,7 @@ public class ParticleEditor extends JFrame{
 
             spriteBatch.setProjectionMatrix(textCamera.combined);
 
-            font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 5, 15);
+            font.draw(spriteBatch, "FPS: " + Core.graphics.getFramesPerSecond(), 5, 15);
             font.draw(spriteBatch, "Count: " + activeCount, 5, 35);
             font.draw(spriteBatch, "Max: " + lastMaxActive, 5, 55);
             font.draw(spriteBatch, (int) (getEmitter().getPercentComplete() * 100) + "%", 5, 75);
@@ -398,16 +398,16 @@ public class ParticleEditor extends JFrame{
                     String imageName = new File(imagePath.replace('\\', '/')).getName();
                     FileHandle file;
                     if(imagePath.equals(ParticleEditor.DEFAULT_PARTICLE) || imagePath.equals(ParticleEditor.DEFAULT_PREMULT_PARTICLE)){
-                        file = Gdx.files.classpath(imagePath);
+                        file = Core.files.classpath(imagePath);
                     }else{
                         if((imagePath.contains("/") || imagePath.contains("\\")) && !imageName.contains("..")){
-                            file = Gdx.files.absolute(imagePath);
+                            file = Core.files.absolute(imagePath);
                             if(!file.exists()){
                                 // try to use image in effect directory
-                                file = Gdx.files.absolute(new File(effectFile.getParentFile(), imageName).getAbsolutePath());
+                                file = Core.files.absolute(new File(effectFile.getParentFile(), imageName).getAbsolutePath());
                             }
                         }else{
-                            file = Gdx.files.absolute(new File(effectFile.getParentFile(), imagePath).getAbsolutePath());
+                            file = Core.files.absolute(new File(effectFile.getParentFile(), imagePath).getAbsolutePath());
                         }
                     }
                     sprites.add(new Sprite(new Texture(file)));

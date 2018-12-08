@@ -25,7 +25,7 @@ import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 import com.badlogic.gdx.scene.ui.layout.Cell;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A button with a child {@link Label} to display text.
@@ -37,11 +37,11 @@ public class TextButton extends Button{
     private TextButtonStyle style;
 
     public TextButton(String text){
-        this(text, skin.get(TextButtonStyle.class));
+        this(text, scene.skin.get(TextButtonStyle.class));
     }
 
     public TextButton(String text, String styleName){
-        this(text, skin.get(styleName, TextButtonStyle.class));
+        this(text, scene.skin.get(styleName, TextButtonStyle.class));
     }
 
     public TextButton(String text, TextButtonStyle style){

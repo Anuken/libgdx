@@ -1,14 +1,14 @@
 package com.badlogic.gdx.scene.utils;
 
+import com.badlogic.gdx.function.BooleanConsumer;
+import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.graphics.Color;
-import io.anuke.ucore.function.BooleanConsumer;
-import io.anuke.ucore.function.Consumer;
 import com.badlogic.gdx.scene.ui.CheckBox;
 import com.badlogic.gdx.scene.ui.ImageButton;
 import com.badlogic.gdx.scene.ui.TextButton;
 import com.badlogic.gdx.scene.ui.TextField;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.scene;
 
 public class Elements{
 
@@ -36,14 +36,14 @@ public class Elements{
     }
 
     public static ImageButton newImageButton(String icon, Runnable listener){
-        ImageButton button = new ImageButton(skin.getDrawable(icon));
+        ImageButton button = new ImageButton(scene.skin.getDrawable(icon));
         if(listener != null)
             button.changed(listener);
         return button;
     }
 
     public static ImageButton newImageButton(String icon, float size, Runnable listener){
-        ImageButton button = new ImageButton(skin.getDrawable(icon));
+        ImageButton button = new ImageButton(scene.skin.getDrawable(icon));
         button.resizeImage(size);
         if(listener != null)
             button.changed(listener);
@@ -59,7 +59,7 @@ public class Elements{
     }
 
     public static ImageButton newImageButton(String icon, float size, Color color, Runnable listener){
-        ImageButton button = new ImageButton(skin.getDrawable(icon));
+        ImageButton button = new ImageButton(scene.skin.getDrawable(icon));
         button.resizeImage(size);
         button.getImage().setColor(color);
         if(listener != null)

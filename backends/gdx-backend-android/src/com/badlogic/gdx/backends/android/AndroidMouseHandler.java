@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.android;
 
 import android.view.InputDevice;
 import android.view.MotionEvent;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.android.AndroidInput.TouchEvent;
 
 /**
@@ -59,7 +59,7 @@ public class AndroidMouseHandler{
 
             }
         }
-        Gdx.app.getGraphics().requestRendering();
+        Core.app.getGraphics().requestRendering();
         return true;
     }
 
@@ -75,7 +75,7 @@ public class AndroidMouseHandler{
             actionStr = "SCROLL";
         else
             actionStr = "UNKNOWN (" + action + ")";
-        Gdx.app.log("AndroidMouseHandler", "action " + actionStr);
+        Core.app.log("AndroidMouseHandler", "action " + actionStr);
     }
 
     private void postTouchEvent(AndroidInput input, int type, int x, int y, int scrollAmountX, int scrollAmountY, long timeStamp){

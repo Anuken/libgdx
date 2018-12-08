@@ -1,7 +1,7 @@
 package com.badlogic.gdx.tools.ktx;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglNativesLoader;
 import com.badlogic.gdx.files.FileHandle;
@@ -337,10 +337,10 @@ public class KTXProcessor{
                 out.close();
                 System.out.println("Finished");
             }catch(Exception e){
-                Gdx.app.error("KTXProcessor", "Error writing to file: " + output.getName(), e);
+                Core.app.error("KTXProcessor", "Error writing to file: " + output.getName(), e);
             }
 
-            Gdx.app.exit();
+            Core.app.exit();
         }
     }
 

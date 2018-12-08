@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.Matrix3;
@@ -75,7 +75,7 @@ public class Mesh implements Disposable{
         this.indices = indices;
         this.isVertexArray = isVertexArray;
 
-        addManagedMesh(Gdx.app, this);
+        addManagedMesh(Core.app, this);
     }
 
     /**
@@ -92,7 +92,7 @@ public class Mesh implements Disposable{
         indices = new IndexBufferObject(isStatic, maxIndices);
         isVertexArray = false;
 
-        addManagedMesh(Gdx.app, this);
+        addManagedMesh(Core.app, this);
     }
 
     /**
@@ -109,7 +109,7 @@ public class Mesh implements Disposable{
         indices = new IndexBufferObject(isStatic, maxIndices);
         isVertexArray = false;
 
-        addManagedMesh(Gdx.app, this);
+        addManagedMesh(Core.app, this);
     }
 
     /**
@@ -128,11 +128,11 @@ public class Mesh implements Disposable{
         indices = new IndexBufferObject(staticIndices, maxIndices);
         isVertexArray = false;
 
-        addManagedMesh(Gdx.app, this);
+        addManagedMesh(Core.app, this);
     }
 
     private VertexData makeVertexBuffer(boolean isStatic, int maxVertices, VertexAttributes vertexAttributes){
-        if(Gdx.gl30 != null){
+        if(Core.gl30 != null){
             return new VertexBufferObjectWithVAO(isStatic, maxVertices, vertexAttributes);
         }else{
             return new VertexBufferObject(isStatic, maxVertices, vertexAttributes);
@@ -187,7 +187,7 @@ public class Mesh implements Disposable{
                 break;
         }
 
-        addManagedMesh(Gdx.app, this);
+        addManagedMesh(Core.app, this);
     }
 
     /**
@@ -552,11 +552,11 @@ public class Mesh implements Disposable{
                 int oldLimit = buffer.limit();
                 buffer.position(offset);
                 buffer.limit(offset + count);
-                Gdx.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, buffer);
+                Core.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, buffer);
                 buffer.position(oldPosition);
                 buffer.limit(oldLimit);
             }else{
-                Gdx.gl20.glDrawArrays(primitiveType, offset, count);
+                Core.gl20.glDrawArrays(primitiveType, offset, count);
             }
         }else{
             if(indices.getNumIndices() > 0){
@@ -565,9 +565,9 @@ public class Mesh implements Disposable{
                     + count + ", offset: " + offset + ", max: " + indices.getNumMaxIndices() + ")");
                 }
 
-                Gdx.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, offset * 2);
+                Core.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, offset * 2);
             }else{
-                Gdx.gl20.glDrawArrays(primitiveType, offset, count);
+                Core.gl20.glDrawArrays(primitiveType, offset, count);
             }
         }
 
@@ -576,7 +576,7 @@ public class Mesh implements Disposable{
 
     /** Frees all resources associated with this Mesh */
     public void dispose(){
-        if(meshes.get(Gdx.app) != null) meshes.get(Gdx.app).removeValue(this, true);
+        if(meshes.get(Core.app) != null) meshes.get(Core.app).removeValue(this, true);
         vertices.dispose();
         indices.dispose();
     }

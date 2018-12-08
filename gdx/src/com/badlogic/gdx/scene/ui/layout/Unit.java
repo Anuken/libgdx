@@ -1,8 +1,7 @@
 package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
-import io.anuke.ucore.util.Mathf;
+import com.badlogic.gdx.Core;
 
 public enum Unit{
     px{
@@ -18,13 +17,13 @@ public enum Unit{
         public float scl(float amount){
             if(scl < 0f){
                 //calculate scaling value if it hasn't been set yet
-                if(Gdx.app.getType() == ApplicationType.Desktop){
+                if(Core.app.getType() == ApplicationType.Desktop){
                     scl = 1f * product;
-                }else if(Gdx.app.getType() == ApplicationType.WebGL){
+                }else if(Core.app.getType() == ApplicationType.WebGL){
                     scl = 1f;
                 }else{
                     //mobile scaling
-                    scl = Math.max(Mathf.round2(Gdx.graphics.getDensity() / 1.5f + addition, 0.5f), 1f);
+                    scl = Math.max(Math.round((Core.graphics.getDensity() / 1.5f + addition) / 0.5) * 0.5f, 1f);
                 }
             }
             return amount * scl;

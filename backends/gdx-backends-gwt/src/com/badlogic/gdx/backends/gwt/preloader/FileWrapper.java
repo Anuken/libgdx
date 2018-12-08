@@ -18,7 +18,7 @@ package com.badlogic.gdx.backends.gwt.preloader;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.io.StreamUtils;
 
@@ -100,7 +100,7 @@ public class FileWrapper{
      * {@link FileType#Absolute} and {@link FileType#External} file handles.
      */
     public File file(){
-        if(type == FileType.External) return new File(Gdx.files.getExternalStoragePath(), file.getPath());
+        if(type == FileType.External) return new File(Core.files.getExternalStoragePath(), file.getPath());
         return file;
     }
 

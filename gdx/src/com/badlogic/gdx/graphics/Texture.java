@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
@@ -118,7 +118,7 @@ public class Texture extends GLTexture{
     TextureData data;
 
     public Texture(String internalPath){
-        this(Gdx.files.internal(internalPath));
+        this(Core.files.internal(internalPath));
     }
 
     public Texture(FileHandle file){
@@ -150,13 +150,13 @@ public class Texture extends GLTexture{
     }
 
     public Texture(TextureData data){
-        this(GL20.GL_TEXTURE_2D, Gdx.gl.glGenTexture(), data);
+        this(GL20.GL_TEXTURE_2D, Core.gl.glGenTexture(), data);
     }
 
     protected Texture(int glTarget, int glHandle, TextureData data){
         super(glTarget, glHandle);
         load(data);
-        if(data.isManaged()) addManagedTexture(Gdx.app, this);
+        if(data.isManaged()) addManagedTexture(Core.app, this);
     }
 
     public void load(TextureData data){
@@ -171,7 +171,7 @@ public class Texture extends GLTexture{
 
         unsafeSetFilter(minFilter, magFilter, true);
         unsafeSetWrap(uWrap, vWrap, true);
-        Gdx.gl.glBindTexture(glTarget, 0);
+        Core.gl.glBindTexture(glTarget, 0);
     }
 
     /**
@@ -181,7 +181,7 @@ public class Texture extends GLTexture{
     @Override
     protected void reload(){
         if(!isManaged()) throw new GdxRuntimeException("Tried to reload unmanaged Texture");
-        glHandle = Gdx.gl.glGenTexture();
+        glHandle = Core.gl.glGenTexture();
         load(data);
     }
 
@@ -197,7 +197,7 @@ public class Texture extends GLTexture{
         if(data.isManaged()) throw new GdxRuntimeException("can't draw to a managed texture");
 
         bind();
-        Gdx.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),
+        Core.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),
         pixmap.getPixels());
     }
 
@@ -234,7 +234,7 @@ public class Texture extends GLTexture{
         if(glHandle == 0) return;
         delete();
         if(data.isManaged())
-            if(managedTextures.get(Gdx.app) != null) managedTextures.get(Gdx.app).removeValue(this, true);
+            if(managedTextures.get(Core.app) != null) managedTextures.get(Core.app).removeValue(this, true);
     }
 
     public String toString(){
@@ -305,7 +305,7 @@ public class Texture extends GLTexture{
 
                     // unload the texture, create a new gl handle then reload it.
                     assetManager.unload(fileName);
-                    texture.glHandle = Gdx.gl.glGenTexture();
+                    texture.glHandle = Core.gl.glGenTexture();
                     assetManager.load(fileName, Texture.class, params);
                 }
             }
@@ -338,6 +338,6 @@ public class Texture extends GLTexture{
 
     /** @return the number of managed textures currently loaded */
     public static int getNumManagedTextures(){
-        return managedTextures.get(Gdx.app).size;
+        return managedTextures.get(Core.app).size;
     }
 }

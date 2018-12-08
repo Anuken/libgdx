@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.scene.event;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.scene.Element;
 
@@ -36,8 +36,8 @@ public class ClickListener extends InputListener{
 
     private float tapSquareSize = 14, touchDownX = -1, touchDownY = -1;
     private int pressedPointer = -1;
-    private int pressedButton = -1;
-    private int button;
+    private KeyCode pressedButton;
+    private KeyCode button = KeyCode.MOUSE_LEFT;
     private boolean pressed, over, overAny, cancelled;
     private long visualPressedTime;
     private long tapCountInterval = (long) (0.4f * 1000000000L);
@@ -45,22 +45,18 @@ public class ClickListener extends InputListener{
     private long lastTapTime;
     private boolean stop = false;
 
-    /**
-     * Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks.
-     *
-     * @see #ClickListener(int)
-     */
+    /**Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks.*/
     public ClickListener(){
     }
 
-    /** @see #setButton(int) */
-    public ClickListener(int button){
+    public ClickListener(KeyCode button){
         this.button = button;
     }
 
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+    @Override
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
         if(pressed) return false;
-        if(pointer == 0 && this.button != -1 && button != this.button) return false;
+        if(pointer == 0 && this.button != null && button != this.button) return false;
         pressed = true;
         pressedPointer = pointer;
         pressedButton = button;
@@ -70,22 +66,24 @@ public class ClickListener extends InputListener{
         return true;
     }
 
+    @Override
     public void touchDragged(InputEvent event, float x, float y, int pointer){
         if(pointer != pressedPointer || cancelled) return;
         pressed = isOver(event.getListenerActor(), x, y);
-        if(pressed && pointer == 0 && button != -1 && !Gdx.input.isButtonPressed(button)) pressed = false;
+        if(pressed && pointer == 0 && button != null && !Core.input.isKeyPressed(button)) pressed = false;
         if(!pressed){
             // Once outside the tap square, don't use the tap square anymore.
             invalidateTapSquare();
         }
     }
 
-    public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+    @Override
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
         if(pointer == pressedPointer){
             if(!cancelled){
                 boolean touchUpOver = isOver(event.getListenerActor(), x, y);
                 // Ignore touch up if the wrong mouse button.
-                if(touchUpOver && pointer == 0 && this.button != -1 && button != this.button) touchUpOver = false;
+                if(touchUpOver && pointer == 0 && this.button != null && button != this.button) touchUpOver = false;
                 if(touchUpOver){
                     long time = TimeUtils.nanoTime();
                     if(time - lastTapTime > tapCountInterval) tapCount = 0;
@@ -97,16 +95,18 @@ public class ClickListener extends InputListener{
             }
             pressed = false;
             pressedPointer = -1;
-            pressedButton = -1;
+            pressedButton = null;
             cancelled = false;
         }
     }
 
+    @Override
     public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
         if(pointer == -1 && !cancelled) over = true;
         if(!cancelled) overAny = true;
     }
 
+    @Override
     public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
         if(pointer == -1 && !cancelled) over = false;
         if(!cancelled) overAny = false;
@@ -196,7 +196,7 @@ public class ClickListener extends InputListener{
     }
 
     /** The button that initially pressed this button or -1 if the button is not pressed. */
-    public int getPressedButton(){
+    public KeyCode getPressedButton(){
         return pressedButton;
     }
 
@@ -205,13 +205,12 @@ public class ClickListener extends InputListener{
         return pressedPointer;
     }
 
-    /** @see #setButton(int) */
-    public int getButton(){
+    public KeyCode getButton(){
         return button;
     }
 
-    /** Sets the button to listen for, all other buttons are ignored. Default is {@link Buttons#LEFT}. Use -1 for any button. */
-    public void setButton(int button){
+    /** Sets the button to listen for, all other buttons are ignored. Use null for any button. */
+    public void setButton(KeyCode button){
         this.button = button;
     }
 }

@@ -16,15 +16,12 @@
 
 package com.badlogic.gdx.backends.gwt;
 
-import com.badlogic.gdx.Application.ApplicationLogger;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.utils.Log.LogHandler;
+import com.badlogic.gdx.utils.Strings;
 import com.google.gwt.user.client.ui.TextArea;
 
-/**
- * Default implementation of {@link ApplicationLogger} for gwt
- */
-public class GwtApplicationLogger implements ApplicationLogger{
-
+public class GwtApplicationLogger extends LogHandler{
     private TextArea log;
 
     public GwtApplicationLogger(TextArea log){
@@ -32,71 +29,47 @@ public class GwtApplicationLogger implements ApplicationLogger{
     }
 
     @Override
-    public void log(String tag, String message){
+    public void info(String text, Object... args){
+        String res = Strings.formatArgs(text, args);
         checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message);
+        log.setText(log.getText() + "\n" + res);
         log.setCursorPos(log.getText().length() - 1);
-        System.out.println(tag + ": " + message);
+        System.out.println(res);
     }
 
     @Override
-    public void log(String tag, String message, Throwable exception){
+    public void warn(String text, Object... args){
+        String res = Strings.formatArgs(text, args);
         checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
+        log.setText(log.getText() + "\n" + res);
         log.setCursorPos(log.getText().length() - 1);
-        System.out.println(tag + ": " + message + "\n" + exception.getMessage());
-        System.out.println(getStackTrace(exception));
+        System.out.println(res);
     }
 
     @Override
-    public void error(String tag, String message){
+    public void err(String text, Object... args){
+        String res = Strings.formatArgs(text, args);
         checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
+        log.setText(log.getText() + "\n" + res);
         log.setCursorPos(log.getText().length() - 1);
-        System.err.println(tag + ": " + message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
-        log.setCursorPos(log.getText().length() - 1);
-        System.err.println(tag + ": " + message + "\n" + exception.getMessage() + "\n");
-        System.out.println(getStackTrace(exception));
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message + "\n");
-        log.setCursorPos(log.getText().length() - 1);
-        System.out.println(tag + ": " + message + "\n");
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        checkLogLabel();
-        log.setText(log.getText() + "\n" + tag + ": " + message + "\n" + getMessages(exception) + "\n");
-        log.setCursorPos(log.getText().length() - 1);
-        System.out.println(tag + ": " + message + "\n" + exception.getMessage());
-        System.out.println(getStackTrace(exception));
+        System.out.println(res);
     }
 
     private void checkLogLabel(){
         if(log == null){
-            ((GwtApplication) Gdx.app).log = log = new TextArea();
+            ((GwtApplication) Core.app).log = log = new TextArea();
 
             // It's possible that log functions are called
             // before the app is initialized. E.g. SoundManager can call log functions before the app is initialized.
             // Since graphics is null, we're getting errors. The log size will be updated later, in case graphics was null
-            if(Gdx.graphics != null){
-                log.setSize(Gdx.graphics.getWidth() + "px", "200px");
+            if(Core.graphics != null){
+                log.setSize(Core.graphics.getWidth() + "px", "200px");
             }else{
                 log.setSize("400px", "200px"); // Dummy value
             }
 
             log.setReadOnly(true);
-            ((GwtApplication) Gdx.app).getRootPanel().add(log);
+            ((GwtApplication) Core.app).getRootPanel().add(log);
         }
     }
 

@@ -18,20 +18,21 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.ext.Draw;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Scaling;
-import io.anuke.ucore.core.Core;
-import io.anuke.ucore.graphics.Draw;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.NinePatchDrawable;
 import com.badlogic.gdx.scene.style.TextureRegionDrawable;
 import com.badlogic.gdx.scene.style.TransformDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
+
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * Displays a {@link Drawable}, scaled various way within the widgets bounds. The preferred size is the min size of the drawable.
@@ -162,7 +163,7 @@ public class Image extends Element{
     }
 
     public void setDrawable(String drawableName){
-        setDrawable(Core.skin.getDrawable(drawableName));
+        setDrawable(scene.skin.getDrawable(drawableName));
     }
 
     /** @return May be null. */

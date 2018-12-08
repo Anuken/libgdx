@@ -1,6 +1,6 @@
 package com.badlogic.gdx.scene.style;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
@@ -32,7 +32,7 @@ public class SkinReader{
             float scale = value.getFloat("scale", -1f);
 
             FileHandle fontFile = skin.getFile().parent().child(path);
-            if(!fontFile.exists()) fontFile = Gdx.files.internal(path);
+            if(!fontFile.exists()) fontFile = Core.files.internal(path);
             if(!fontFile.exists()) throw new SerializationException("Font file not found: " + fontFile);
 
             // Use a region with the same name as the font, else use a PNG file in the same directory as the FNT file.

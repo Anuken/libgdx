@@ -1,6 +1,6 @@
 package com.badlogic.gdx.controllers.lwjgl3;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerManager;
@@ -14,11 +14,11 @@ public class Lwjgl3ControllerManager implements ControllerManager{
     final Array<ControllerListener> listeners = new Array<ControllerListener>();
 
     public Lwjgl3ControllerManager(){
-        Gdx.app.postRunnable(new Runnable(){
+        Core.app.post(new Runnable(){
             @Override
             public void run(){
                 pollState();
-                Gdx.app.postRunnable(this);
+                Core.app.post(this);
             }
         });
     }

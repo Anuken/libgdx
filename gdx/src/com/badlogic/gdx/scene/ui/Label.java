@@ -29,9 +29,9 @@ import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
-import io.anuke.ucore.util.Bundles;
 
-import static io.anuke.ucore.core.Core.skin;
+import static com.badlogic.gdx.Core.bundle;
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A text label, with optional word wrapping.
@@ -58,20 +58,19 @@ public class Label extends Element{
     private String ellipsis;
 
     public Label(Supplier<CharSequence> sup){
-        this("", new LabelStyle(skin.get(LabelStyle.class)));
+        this("", new LabelStyle(scene.skin.get(LabelStyle.class)));
         update(() -> setText(sup.get()));
         try{
             setText(sup.get());
-        }catch(Exception ignored){
-        }
+        }catch(Exception ignored){}
     }
 
     public Label(CharSequence text){
-        this(text, skin.get(LabelStyle.class));
+        this(text, scene.skin.get(LabelStyle.class));
     }
 
     public Label(CharSequence text, String styleName){
-        this(text, skin.get(styleName, LabelStyle.class));
+        this(text, scene.skin.get(styleName, LabelStyle.class));
     }
 
     /**
@@ -79,7 +78,7 @@ public class Label extends Element{
      * color.
      */
     public Label(CharSequence text, String fontName, Color color){
-        this(text, new LabelStyle(skin.getFont(fontName), color));
+        this(text, new LabelStyle(scene.skin.getFont(fontName), color));
     }
 
     /**
@@ -87,7 +86,7 @@ public class Label extends Element{
      * skin.
      */
     public Label(CharSequence text, String fontName, String colorName){
-        this(text, new LabelStyle(skin.getFont(fontName), skin.getColor(colorName)));
+        this(text, new LabelStyle(scene.skin.getFont(fontName), scene.skin.getColor(colorName)));
     }
 
     public Label(CharSequence text, LabelStyle style){
@@ -139,11 +138,12 @@ public class Label extends Element{
         return text;
     }
 
-    /** @param newText May be null, "" will be used. */
+    /** @param newText May be null, "" will be used.
+     * If this text starts with '$', this label will look in {@link com.badlogic.gdx.Core#bundle} for matching text.*/
     public void setText(CharSequence newText){
-        if(Bundles.enabled() && newText != null && newText.length() > 0 && newText.charAt(0) == '$'){
+        if(bundle != null && newText != null && newText.length() > 0 && newText.charAt(0) == '$'){
             String out = newText.toString().substring(1);
-            setTextInternal(Bundles.get(out, out));
+            setTextInternal(bundle.get(out, out));
         }else{
             setTextInternal(newText);
         }

@@ -1,6 +1,6 @@
 package com.badlogic.gdx.scene;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.DelayedRemovalArray;
 import com.badlogic.gdx.graphics.Color;
@@ -74,7 +74,7 @@ class BaseElement implements Layout{
     public void act(float delta){
         Array<Action> actions = this.actions;
         if(actions.size > 0){
-            if(stage != null && stage.getActionsRequestRendering()) Gdx.graphics.requestRendering();
+            if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
             for(int i = 0; i < actions.size; i++){
                 Action action = actions.get(i);
                 if(action.act(delta) && i < actions.size){
@@ -261,7 +261,7 @@ class BaseElement implements Layout{
         action.setActor(elem());
         actions.add(action);
 
-        if(stage != null && stage.getActionsRequestRendering()) Gdx.graphics.requestRendering();
+        if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
     }
 
     public void actions(Action... actions){

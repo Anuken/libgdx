@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnKeyListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.android.AndroidInput;
 import com.badlogic.gdx.backends.android.AndroidInputThreePlus;
@@ -48,19 +48,19 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
     };
 
     public AndroidControllers(){
-        Gdx.app.addLifecycleListener(this);
+        Core.app.addLifecycleListener(this);
         gatherControllers(false);
         setupEventQueue();
-        ((AndroidInput) Gdx.input).addKeyListener(this);
-        ((AndroidInputThreePlus) Gdx.input).addGenericMotionListener(this);
+        ((AndroidInput) Core.input).addKeyListener(this);
+        ((AndroidInputThreePlus) Core.input).addGenericMotionListener(this);
 
         // use InputManager on Android +4.1 to receive (dis-)connect events
-        if(Gdx.app.getVersion() >= 16){
+        if(Core.app.getVersion() >= 16){
             try{
                 String className = "com.badlogic.gdx.controllers.android.ControllerLifeCycleListener";
                 Class.forName(className).getConstructor(AndroidControllers.class).newInstance(this);
             }catch(Exception e){
-                Gdx.app.log(TAG, "Couldn't register controller life-cycle listener");
+                Core.app.log(TAG, "Couldn't register controller life-cycle listener");
             }
         }
     }
@@ -129,7 +129,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
                     eventPool.freeAll(eventQueue);
                     eventQueue.clear();
                 }
-                Gdx.app.postRunnable(this);
+                Core.app.post(this);
             }
         }.run();
     }
@@ -245,7 +245,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
                 }
                 eventQueue.add(event);
             }
-            return keyCode != KeyEvent.KEYCODE_BACK || Gdx.input.isCatchBackKey();
+            return keyCode != KeyEvent.KEYCODE_BACK || Core.input.isCatchBackKey();
         }else{
             return false;
         }
@@ -287,7 +287,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
         }else{
             controllers.add(controller);
         }
-        Gdx.app.log(TAG, "added controller '" + name + "'");
+        Core.app.log(TAG, "added controller '" + name + "'");
     }
 
     protected void removeController(int deviceId){
@@ -299,7 +299,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
                 event.controller = controller;
                 eventQueue.add(event);
             }
-            Gdx.app.log(TAG, "removed controller '" + controller.getName() + "'");
+            Core.app.log(TAG, "removed controller '" + controller.getName() + "'");
         }
     }
 
@@ -330,13 +330,13 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
 
     @Override
     public void pause(){
-        Gdx.app.log(TAG, "controllers paused");
+        Core.app.log(TAG, "controllers paused");
     }
 
     @Override
     public void resume(){
         gatherControllers(true);
-        Gdx.app.log(TAG, "controllers resumed");
+        Core.app.log(TAG, "controllers resumed");
     }
 
     @Override

@@ -63,8 +63,6 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
     protected final Array<Runnable> runnables = new Array<Runnable>();
     protected final Array<Runnable> executedRunnables = new Array<Runnable>();
     protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
-    protected int logLevel = LOG_INFO;
-    protected ApplicationLogger applicationLogger;
 
     /**
      * This method has to be called in the Activity#onCreate(Bundle) method. It sets up all the things necessary to get input,
@@ -122,7 +120,7 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
     }
 
     private void init(ApplicationListener listener, AndroidApplicationConfiguration config, boolean isForView){
-        setApplicationLogger(new AndroidApplicationLogger());
+        Log.setLogger(new AndroidApplicationLogger());
         graphics = new AndroidGraphics(this, config, config.resolutionStrategy == null ? new FillResolutionStrategy()
         : config.resolutionStrategy);
         input = AndroidInputFactory.newAndroidInput(this, this, graphics.view, config);
@@ -154,12 +152,12 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
             }
         });
 
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
 
         if(!isForView){
             setFullscreen(true);
@@ -193,7 +191,7 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
             m.invoke(rootView, 0x0);
             m.invoke(rootView, 0x1);
         }catch(Exception e){
-            log("AndroidApplication", "Can't hide status bar", e);
+            Log.info("[AndroidApplication] Can't hide status bar", e);
         }
     }
 
@@ -222,12 +220,12 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
 
     @Override
     public void onDreamingStarted(){
-        Gdx.app = this;
-        Gdx.input = this.getInput();
-        Gdx.audio = this.getAudio();
-        Gdx.files = this.getFiles();
-        Gdx.graphics = this.getGraphics();
-        Gdx.net = this.getNet();
+        Core.app = this;
+        Core.input = this.getInput();
+        Core.audio = this.getAudio();
+        Core.files = this.getFiles();
+        Core.graphics = this.getGraphics();
+        Core.net = this.getNet();
 
         getInput().registerSensorListeners();
 
@@ -308,10 +306,10 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
-            Gdx.graphics.requestRendering();
+            Core.graphics.requestRendering();
         }
     }
 
@@ -331,56 +329,6 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
                 AndroidDaydream.this.finish();
             }
         });
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
     }
 
     @Override

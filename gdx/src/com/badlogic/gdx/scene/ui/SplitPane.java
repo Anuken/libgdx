@@ -18,9 +18,9 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.geom.Rectangle;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.InputEvent;
@@ -30,6 +30,7 @@ import com.badlogic.gdx.scene.ui.layout.Container;
 import com.badlogic.gdx.scene.ui.layout.WidgetGroup;
 import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.scene.utils.ScissorStack;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * A container that contains two widgets and is divided either horizontally or vertically. The user may resize the widgets. The
@@ -92,9 +93,10 @@ public class SplitPane extends WidgetGroup{
         addListener(new InputListener(){
             int draggingPointer = -1;
 
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                 if(draggingPointer != -1) return false;
-                if(pointer == 0 && button != 0) return false;
+                if(pointer == 0 && button != KeyCode.MOUSE_LEFT) return false;
                 if(handleBounds.contains(x, y)){
                     draggingPointer = pointer;
                     lastPoint.set(x, y);
@@ -104,10 +106,12 @@ public class SplitPane extends WidgetGroup{
                 return false;
             }
 
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
                 if(pointer == draggingPointer) draggingPointer = -1;
             }
 
+            @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer){
                 if(pointer != draggingPointer) return;
 

@@ -16,13 +16,13 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.Skin;
@@ -31,7 +31,7 @@ import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.scene.utils.Disableable;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 /**
  * A progress bar is a widget that visually displays the progress of some activity or a value within given range. The progress
@@ -112,7 +112,7 @@ public class ProgressBar extends Element implements Disableable{
         if(animateTime > 0){
             animateTime -= delta;
             Scene stage = getScene();
-            if(stage != null && stage.getActionsRequestRendering()) Gdx.graphics.requestRendering();
+            if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
         }
     }
 
@@ -299,7 +299,7 @@ public class ProgressBar extends Element implements Disableable{
      * bar knob's range.
      */
     protected float clamp(float value){
-        return MathUtils.clamp(value, min, max);
+        return Mathf.clamp(value, min, max);
     }
 
     /** Sets the range of this progress bar. The progress bar's current value is clamped to the range. */

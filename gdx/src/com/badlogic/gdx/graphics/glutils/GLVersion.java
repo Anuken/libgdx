@@ -17,7 +17,7 @@
 package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,7 +75,7 @@ public class GLVersion{
             minorVersion = resultSplit.length < 2 ? 0 : parseInt(resultSplit[1], 0);
             releaseVersion = resultSplit.length < 3 ? 0 : parseInt(resultSplit[2], 0);
         }else{
-            Gdx.app.log(TAG, "Invalid version string: " + versionString);
+            Log.err("[LibGDX GL] Invalid version string: " + versionString);
             majorVersion = 2;
             minorVersion = 0;
             releaseVersion = 0;
@@ -87,7 +87,7 @@ public class GLVersion{
         try{
             return Integer.parseInt(v);
         }catch(NumberFormatException nfe){
-            Gdx.app.error("LibGDX GL", "Error parsing number: " + v + ", assuming: " + defaultValue);
+            Log.err("[LibGDX GL] Error parsing number: " + v + ", assuming: " + defaultValue);
             return defaultValue;
         }
     }

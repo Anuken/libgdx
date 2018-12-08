@@ -16,7 +16,7 @@
 package com.badlogic.gdx.tools.flame;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.input.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -191,7 +191,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
         addWindowListener(new WindowAdapter(){
             public void windowClosed(WindowEvent event){
                 //System.exit(0);
-                Gdx.app.exit();
+                Core.app.exit();
             }
         });
 
@@ -600,7 +600,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
 
         public void create(){
             if(ui != null) return;
-            int w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
+            int w = Core.graphics.getWidth(), h = Core.graphics.getHeight();
             modelBatch = new ModelBatch();
             environment = new Environment();
             environment.add(new DirectionalLight().set(Color.WHITE, 0, 0, -1));
@@ -699,8 +699,8 @@ public class FlameMain extends JFrame implements AssetErrorListener{
 
         @Override
         public void resize(int width, int height){
-            Gdx.input.setInputProcessor(new InputMultiplexer(ui, cameraInputController));
-            Gdx.gl.glViewport(0, 0, width, height);
+            Core.input.setInputProcessor(new InputMultiplexer(ui, cameraInputController));
+            Core.gl.glViewport(0, 0, width, height);
 
             worldCamera.viewportWidth = width;
             worldCamera.viewportHeight = height;
@@ -710,7 +710,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
         }
 
         public void render(){
-            float delta = Math.max(0, Gdx.graphics.getDeltaTime() * deltaMultiplier.getValue());
+            float delta = Math.max(0, Core.graphics.getDeltaTime() * deltaMultiplier.getValue());
             update(delta);
             renderWorld();
         }
@@ -733,15 +733,15 @@ public class FlameMain extends JFrame implements AssetErrorListener{
                 modelInstanceCountLabel.setText(stringBuilder);
             }
             stringBuilder.delete(0, stringBuilder.length);
-            stringBuilder.append("FPS : ").append(Gdx.graphics.getFramesPerSecond());
+            stringBuilder.append("FPS : ").append(Core.graphics.getFramesPerSecond());
             fpsLabel.setText(stringBuilder);
-            ui.act(Gdx.graphics.getDeltaTime());
+            ui.act(Core.graphics.getDeltaTime());
         }
 
         private void renderWorld(){
             float[] colors = backgroundColor.getColors();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-            Gdx.gl.glClearColor(colors[0], colors[1], colors[2], 0);
+            Core.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+            Core.gl.glClearColor(colors[0], colors[1], colors[2], 0);
             modelBatch.begin(worldCamera);
             if(isDrawXYZ) modelBatch.render(xyzInstance);
             if(isDrawXZPlane) modelBatch.render(xzPlaneInstance);

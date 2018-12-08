@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.FloatCounter;
 
 /**
@@ -73,7 +72,7 @@ public class PerformanceCounter{
      */
     public void tick(final float delta){
         if(!valid){
-            Gdx.app.error("PerformanceCounter", "Invalid data, check if you called PerformanceCounter#stop()");
+            Log.err("[PerformanceCounter] Invalid data, check if you called PerformanceCounter#stop()");
             return;
         }
 

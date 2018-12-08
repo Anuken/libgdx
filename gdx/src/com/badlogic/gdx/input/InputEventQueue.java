@@ -74,19 +74,19 @@ public class InputEventQueue implements InputProcessor{
                     i += q[i];
                     break;
                 case KEY_DOWN:
-                    localProcessor.keyDown(q[i++]);
+                    localProcessor.keyDown(KeyCode.byOrdinal(q[i++]));
                     break;
                 case KEY_UP:
-                    localProcessor.keyUp(q[i++]);
+                    localProcessor.keyUp(KeyCode.byOrdinal(q[i++]));
                     break;
                 case KEY_TYPED:
                     localProcessor.keyTyped((char) q[i++]);
                     break;
                 case TOUCH_DOWN:
-                    localProcessor.touchDown(q[i++], q[i++], q[i++], q[i++]);
+                    localProcessor.touchDown(q[i++], q[i++], q[i++], KeyCode.byOrdinal(q[i++]));
                     break;
                 case TOUCH_UP:
-                    localProcessor.touchUp(q[i++], q[i++], q[i++], q[i++]);
+                    localProcessor.touchUp(q[i++], q[i++], q[i++], KeyCode.byOrdinal(q[i++]));
                     break;
                 case TOUCH_DRAGGED:
                     localProcessor.touchDragged(q[i++], q[i++], q[i++]);
@@ -151,17 +151,17 @@ public class InputEventQueue implements InputProcessor{
         queue.add((int) time);
     }
 
-    public synchronized boolean keyDown(int keycode){
+    public synchronized boolean keyDown(KeyCode keycode){
         queue.add(KEY_DOWN);
         queueTime();
-        queue.add(keycode);
+        queue.add(keycode.ordinal());
         return false;
     }
 
-    public synchronized boolean keyUp(int keycode){
+    public synchronized boolean keyUp(KeyCode keycode){
         queue.add(KEY_UP);
         queueTime();
-        queue.add(keycode);
+        queue.add(keycode.ordinal());
         return false;
     }
 
@@ -172,23 +172,23 @@ public class InputEventQueue implements InputProcessor{
         return false;
     }
 
-    public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button){
+    public synchronized boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
         queue.add(TOUCH_DOWN);
         queueTime();
         queue.add(screenX);
         queue.add(screenY);
         queue.add(pointer);
-        queue.add(button);
+        queue.add(button.ordinal());
         return false;
     }
 
-    public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button){
+    public synchronized boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
         queue.add(TOUCH_UP);
         queueTime();
         queue.add(screenX);
         queue.add(screenY);
         queue.add(pointer);
-        queue.add(button);
+        queue.add(button.ordinal());
         return false;
     }
 

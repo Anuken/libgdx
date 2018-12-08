@@ -1,6 +1,6 @@
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cubemap.CubemapSide;
@@ -177,8 +177,8 @@ public class FacedCubemapData implements CubemapData{
                     pixmap = tmp;
                     disposePixmap = true;
                 }
-                Gdx.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
-                Gdx.gl.glTexImage2D(GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(),
+                Core.gl.glPixelStorei(GL20.GL_UNPACK_ALIGNMENT, 1);
+                Core.gl.glTexImage2D(GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(),
                 pixmap.getHeight(), 0, pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
                 if(disposePixmap) pixmap.dispose();
             }

@@ -17,7 +17,7 @@
 package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.collection.Array;
 
@@ -116,7 +116,7 @@ public class Timer{
                         // Set cancelled before run so it may be rescheduled in run.
                         task.repeatCount = CANCELLED;
                     }
-                    Gdx.app.postRunnable(task);
+                    Core.app.post(task);
                 }
                 if(task.repeatCount == CANCELLED){
                     tasks.removeIndex(i);
@@ -225,13 +225,13 @@ public class Timer{
         private long pauseMillis;
 
         public TimerThread(){
-            Gdx.app.addLifecycleListener(this);
+            Core.app.addLifecycleListener(this);
             resume();
         }
 
         public void run(){
             synchronized(instances){
-                if(app != Gdx.app) return;
+                if(app != Core.app) return;
 
                 long timeMillis = TimeUtils.nanoTime() / 1000000;
                 long waitMillis = 5000;
@@ -243,7 +243,7 @@ public class Timer{
                     }
                 }
 
-                if(app != Gdx.app) return;
+                if(app != Core.app) return;
 
                 schedule((int) Math.max(0, waitMillis));
             }
@@ -255,7 +255,7 @@ public class Timer{
                 for(int i = 0, n = instances.size; i < n; i++)
                     instances.get(i).delay(delayMillis);
             }
-            app = Gdx.app;
+            app = Core.app;
             run();
         }
 
@@ -269,7 +269,7 @@ public class Timer{
 
         public void dispose(){
             pause();
-            Gdx.app.removeLifecycleListener(this);
+            Core.app.removeLifecycleListener(this);
             thread = null;
             instances.clear();
             instance = null;

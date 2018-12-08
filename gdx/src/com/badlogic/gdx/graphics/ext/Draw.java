@@ -1,23 +1,24 @@
 package com.badlogic.gdx.graphics.ext;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmaps;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Mathf;
+import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.NumberUtils;
 import io.anuke.ucore.core.Core;
-import io.anuke.ucore.scene.style.Drawable;
-import io.anuke.ucore.util.Log;
-import io.anuke.ucore.util.Mathf;
-import io.anuke.ucore.util.Pooling;
 import io.anuke.ucore.util.Tmp;
 
 import static io.anuke.ucore.core.Core.batch;
 
 public class Draw{
+    private static Color color = new Color();
     private static Color[] carr = new Color[3];
     private static TextureRegion blankRegion;
     private static float scl = 1f;
@@ -60,6 +61,7 @@ public class Draw{
     }
 
     public static void tint(Color a, Color b, float s){
+        color.set(a).lerp(b, s);
         Hue.mix(a, b, s, Tmp.c1);
         color(Tmp.c1.r, Tmp.c1.g, Tmp.c1.b, batch.getColor().a);
     }

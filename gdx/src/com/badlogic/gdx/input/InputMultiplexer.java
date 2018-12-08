@@ -26,7 +26,7 @@ import com.badlogic.gdx.collection.SnapshotArray;
  * @author Nathan Sweet
  */
 public class InputMultiplexer implements InputProcessor{
-    private SnapshotArray<InputProcessor> processors = new SnapshotArray(4);
+    private SnapshotArray<InputProcessor> processors = new SnapshotArray<>(4);
 
     public InputMultiplexer(){
     }
@@ -76,7 +76,8 @@ public class InputMultiplexer implements InputProcessor{
         return processors;
     }
 
-    public boolean keyDown(int keycode){
+    @Override
+    public boolean keyDown(KeyCode keycode){
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
@@ -87,7 +88,8 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
-    public boolean keyUp(int keycode){
+    @Override
+    public boolean keyUp(KeyCode keycode){
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
@@ -98,6 +100,7 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
+    @Override
     public boolean keyTyped(char character){
         Object[] items = processors.begin();
         try{
@@ -109,7 +112,8 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
-    public boolean touchDown(int screenX, int screenY, int pointer, int button){
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
@@ -120,7 +124,8 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
-    public boolean touchUp(int screenX, int screenY, int pointer, int button){
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
@@ -131,6 +136,7 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
+    @Override
     public boolean touchDragged(int screenX, int screenY, int pointer){
         Object[] items = processors.begin();
         try{
@@ -142,6 +148,7 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
+    @Override
     public boolean mouseMoved(int screenX, int screenY){
         Object[] items = processors.begin();
         try{
@@ -153,6 +160,7 @@ public class InputMultiplexer implements InputProcessor{
         return false;
     }
 
+    @Override
     public boolean scrolled(float amountX, float amountY){
         Object[] items = processors.begin();
         try{

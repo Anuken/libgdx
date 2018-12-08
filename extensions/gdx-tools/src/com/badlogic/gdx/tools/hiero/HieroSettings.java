@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.tools.hiero;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.tools.hiero.unicodefont.UnicodeFont;
 import com.badlogic.gdx.tools.hiero.unicodefont.UnicodeFont.RenderType;
 import com.badlogic.gdx.tools.hiero.unicodefont.effects.ConfigurableEffect;
@@ -54,7 +54,7 @@ public class HieroSettings{
     /** @param hieroFileRef The file system or classpath location of the Hiero settings file. */
     public HieroSettings(String hieroFileRef){
         try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Gdx.files.absolute(hieroFileRef).read(), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Core.files.absolute(hieroFileRef).read(), "UTF-8"));
             while(true){
                 String line = reader.readLine();
                 if(line == null) break;

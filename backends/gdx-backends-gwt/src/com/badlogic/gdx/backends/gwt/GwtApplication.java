@@ -24,6 +24,7 @@ import com.badlogic.gdx.backends.gwt.soundmanager2.SoundManager;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Log.LogLevel;
 import com.badlogic.gdx.utils.io.Preferences;
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
@@ -52,8 +53,6 @@ public abstract class GwtApplication implements EntryPoint, Application{
     private GwtNet net;
     private Panel root = null;
     protected TextArea log = null;
-    private int logLevel = LOG_ERROR;
-    private ApplicationLogger applicationLogger;
     private Array<Runnable> runnables = new Array<Runnable>();
     private Array<Runnable> runnablesHelper = new Array<Runnable>();
     private Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
@@ -85,8 +84,8 @@ public abstract class GwtApplication implements EntryPoint, Application{
         GwtApplication.agentInfo = computeAgentInfo();
         this.listener = createApplicationListener();
         this.config = getConfig();
-        setApplicationLogger(new GwtApplicationLogger(this.config.log));
-
+        Log.setLogger(new GwtApplicationLogger(this.config.log));
+        Log.setLogLevel(LogLevel.none);
 
         if(config.rootPanel != null){
             this.root = config.rootPanel;
@@ -127,7 +126,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
 
                 @Override
                 public void ontimeout(String status, String errorType){
-                    error("SoundManager", status + " " + errorType);
+                    Log.err("[SoundManager] " + status + " " + errorType);
                 }
 
             });
@@ -179,21 +178,21 @@ public abstract class GwtApplication implements EntryPoint, Application{
         }
         lastWidth = graphics.getWidth();
         lastHeight = graphics.getHeight();
-        Gdx.app = this;
+        Core.app = this;
 
         if(config.disableAudio){
-            Gdx.audio = null;
+            Core.audio = null;
         }else{
-            Gdx.audio = new GwtAudio();
+            Core.audio = new GwtAudio();
         }
-        Gdx.graphics = graphics;
-        Gdx.gl20 = graphics.getGL20();
-        Gdx.gl = Gdx.gl20;
-        Gdx.files = new GwtFiles(preloader);
+        Core.graphics = graphics;
+        Core.gl20 = graphics.getGL20();
+        Core.gl = Core.gl20;
+        Core.files = new GwtFiles(preloader);
         this.input = new GwtInput(graphics.canvas);
-        Gdx.input = this.input;
+        Core.input = this.input;
         this.net = new GwtNet(config);
-        Gdx.net = this.net;
+        Core.net = this.net;
         this.clipboard = new GwtClipboard();
         updateLogLabelSize();
 
@@ -202,7 +201,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
             listener.create();
             listener.resize(graphics.getWidth(), graphics.getHeight());
         }catch(Throwable t){
-            error("GwtApplication", "exception: " + t.getMessage(), t);
+            Log.err("[GwtApplication] exception: " + t.getMessage(), t);
             t.printStackTrace();
             throw new RuntimeException(t);
         }
@@ -213,7 +212,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
                 try{
                     mainLoop();
                 }catch(Throwable t){
-                    error("GwtApplication", "exception: " + t.getMessage(), t);
+                    Log.err("[GwtApplication] exception: " + t.getMessage(), t);
                     throw new RuntimeException(t);
                 }
                 AnimationScheduler.get().requestAnimationFrame(this, graphics.canvas);
@@ -223,10 +222,10 @@ public abstract class GwtApplication implements EntryPoint, Application{
 
     void mainLoop(){
         graphics.update();
-        if(Gdx.graphics.getWidth() != lastWidth || Gdx.graphics.getHeight() != lastHeight){
+        if(Core.graphics.getWidth() != lastWidth || Core.graphics.getHeight() != lastHeight){
             lastWidth = graphics.getWidth();
             lastHeight = graphics.getHeight();
-            Gdx.gl.glViewport(0, 0, lastWidth, lastHeight);
+            Core.gl.glViewport(0, 0, lastWidth, lastHeight);
             GwtApplication.this.listener.resize(lastWidth, lastHeight);
         }
         runnablesHelper.addAll(runnables);
@@ -287,22 +286,22 @@ public abstract class GwtApplication implements EntryPoint, Application{
 
     @Override
     public Audio getAudio(){
-        return Gdx.audio;
+        return Core.audio;
     }
 
     @Override
     public Input getInput(){
-        return Gdx.input;
+        return Core.input;
     }
 
     @Override
     public Files getFiles(){
-        return Gdx.files;
+        return Core.files;
     }
 
     @Override
     public Net getNet(){
-        return Gdx.net;
+        return Core.net;
     }
 
     private void updateLogLabelSize(){
@@ -313,56 +312,6 @@ public abstract class GwtApplication implements EntryPoint, Application{
                 log.setSize("400px", "200px"); // Should not happen at this point, use dummy value
             }
         }
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
     }
 
     @Override
@@ -401,7 +350,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         runnables.add(runnable);
     }
 

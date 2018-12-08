@@ -87,12 +87,12 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase{
         // Unlike activity, fragment and daydream applications there's no need for a specialized audio listener.
         // See description in onPause method.
 
-        Gdx.app = this;
-        Gdx.input = input;
-        Gdx.audio = audio;
-        Gdx.files = files;
-        Gdx.graphics = graphics;
-        Gdx.net = net;
+        Core.app = this;
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
     }
 
     public void onPause(){
@@ -129,12 +129,12 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase{
     }
 
     public void onResume(){
-        Gdx.app = this;
-        Gdx.input = input;
-        Gdx.audio = audio;
-        Gdx.files = files;
-        Gdx.graphics = graphics;
-        Gdx.net = net;
+        Core.app = this;
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
         input.onResume();
 
@@ -188,7 +188,7 @@ public class AndroidLiveWallpaper implements AndroidApplicationBase{
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
         }

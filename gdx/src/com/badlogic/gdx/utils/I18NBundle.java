@@ -66,24 +66,16 @@ import java.util.MissingResourceException;
  * @see PropertiesUtils
  */
 public class I18NBundle{
-
     private static final String DEFAULT_ENCODING = "UTF-8";
-
     // Locale.ROOT does not exist in Android API level 8
     private static final Locale ROOT_LOCALE = new Locale("", "", "");
-
     private static boolean simpleFormatter = false;
-    private static boolean exceptionOnMissingKey = true;
-
     /** The parent of this {@code I18NBundle} that is used if this bundle doesn't include the requested resource. */
     private I18NBundle parent;
-
     /** The locale for this bundle. */
     private Locale locale;
-
     /** The properties for this bundle. */
     private ObjectMap<String, String> properties;
-
     /** The formatter used for argument replacement. */
     private TextFormatter formatter;
 
@@ -101,24 +93,6 @@ public class I18NBundle{
      */
     public static void setSimpleFormatter(boolean enabled){
         simpleFormatter = enabled;
-    }
-
-    /**
-     * Returns the flag indicating whether to throw a {@link MissingResourceException} from the {@link #get(String) get(key)}
-     * method if no string for the given key can be found. If this flag is {@code false} the missing key surrounded by {@code ???}
-     * is returned.
-     */
-    public static boolean getExceptionOnMissingKey(){
-        return exceptionOnMissingKey;
-    }
-
-    /**
-     * Sets the flag indicating whether to throw a {@link MissingResourceException} from the {@link #get(String) get(key)} method
-     * if no string for the given key can be found. If this flag is {@code false} the missing key surrounded by {@code ???} is
-     * returned.
-     */
-    public static void setExceptionOnMissingKey(boolean enabled){
-        exceptionOnMissingKey = enabled;
     }
 
     /**
@@ -452,24 +426,35 @@ public class I18NBundle{
      * Gets a string for the given key from this bundle or one of its parents.
      *
      * @param key the key for the desired string
-     * @return the string for the given key or the key surrounded by {@code ???} if it cannot be found and
-     * {@link #getExceptionOnMissingKey()} returns {@code false}
+     * @return the string for the given key or the key surrounded by {@code ???} if it cannot be found
      * @throws NullPointerException if <code>key</code> is <code>null</code>
-     * @throws MissingResourceException if no string for the given key can be found and {@link #getExceptionOnMissingKey()}
-     * returns {@code true}
      */
     public final String get(String key){
         String result = properties.get(key);
         if(result == null){
             if(parent != null) result = parent.get(key);
             if(result == null){
-                if(exceptionOnMissingKey)
-                    throw new MissingResourceException("Can't find bundle key " + key, this.getClass().getName(), key);
-                else
-                    return "???" + key + "???";
+                return "???" + key + "???";
             }
         }
         return result;
+    }
+
+    /**Returns the string for this given key, or def.*/
+    public String get(String key, String def){
+        return has(key) ? get(key) : def;
+    }
+
+    public String getOrNull(String key){
+        return has(key) ? get(key) : null;
+    }
+
+    public String getNotNull(String key){
+        String s = getOrNull(key);
+        if(s == null){
+            throw new MissingResourceException("No key with name \"" + key + "\" found!", this.getClass().getName(), key);
+        }
+        return s;
     }
 
     /**Checks whether a specified key is present in this bundle.*/

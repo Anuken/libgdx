@@ -1,10 +1,10 @@
 package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.utils.OrderedSet;
+import com.badlogic.gdx.collection.OrderedSet;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.util.Iterator;
 
@@ -15,8 +15,8 @@ import java.util.Iterator;
  * @author Nathan Sweet
  */
 public class Selection<T> implements Disableable, Iterable<T>{
-    final OrderedSet<T> selected = new OrderedSet();
-    private final OrderedSet<T> old = new OrderedSet();
+    final OrderedSet<T> selected = new OrderedSet<>();
+    private final OrderedSet<T> old = new OrderedSet<>();
     boolean isDisabled;
     boolean multiple;
     boolean required;

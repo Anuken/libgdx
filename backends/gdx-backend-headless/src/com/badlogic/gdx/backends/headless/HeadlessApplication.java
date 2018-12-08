@@ -43,7 +43,6 @@ public class HeadlessApplication implements Application{
     protected final Array<Runnable> executedRunnables = new Array<Runnable>();
     protected final Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
     protected int logLevel = LOG_INFO;
-    protected ApplicationLogger applicationLogger;
     private String preferencesdir;
     private final long renderInterval;
 
@@ -56,7 +55,6 @@ public class HeadlessApplication implements Application{
             config = new HeadlessApplicationConfiguration();
 
         HeadlessNativesLoader.load();
-        setApplicationLogger(new HeadlessApplicationLogger());
         this.listener = listener;
         this.files = new HeadlessFiles();
         this.net = new HeadlessNet();
@@ -68,12 +66,12 @@ public class HeadlessApplication implements Application{
 
         this.preferencesdir = config.preferencesDirectory;
 
-        Gdx.app = this;
-        Gdx.files = files;
-        Gdx.net = net;
-        Gdx.audio = audio;
-        Gdx.graphics = graphics;
-        Gdx.input = input;
+        Core.app = this;
+        Core.files = files;
+        Core.net = net;
+        Core.audio = audio;
+        Core.graphics = graphics;
+        Core.input = input;
 
         renderInterval = config.renderInterval > 0 ? (long) (config.renderInterval * 1000000000f) : (config.renderInterval < 0 ? -1 : 0);
 
@@ -219,65 +217,15 @@ public class HeadlessApplication implements Application{
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
         }
     }
 
     @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
-    }
-
-    @Override
     public void exit(){
-        postRunnable(new Runnable(){
+        post(new Runnable(){
             @Override
             public void run(){
                 running = false;

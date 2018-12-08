@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.scene.ui.layout;
 
-import io.anuke.ucore.function.Supplier;
 import com.badlogic.gdx.scene.Element;
 
 /**
@@ -27,7 +26,7 @@ import com.badlogic.gdx.scene.Element;
  */
 public interface Value{
     /** A value that is always zero. */
-    Fixed zero = new Fixed(0);
+    Value zero = e -> 0;
     /** Value that is the minWidth of the actor in the cell. */
     Value minWidth = context -> context == null ? 0 : context.getMinWidth();
     /** Value that is the minHeight of the actor in the cell. */
@@ -40,10 +39,6 @@ public interface Value{
     Value maxWidth = context -> context == null ? 0 : context.getMaxWidth();
     /** Value that is the maxHeight of the actor in the cell. */
     Value maxHeight = context -> context == null ? 0 : context.getMaxHeight();
-
-    static Value create(Supplier<Float> prov){
-        return context -> prov.get();
-    }
 
     /** Returns a value that is a percentage of the actor's width. */
     static Value percentWidth(final float percent){
@@ -69,21 +64,4 @@ public interface Value{
 
     /** @param context May be null. */
     float get(Element context);
-
-    /**
-     * A fixed value that is not computed each time it is used.
-     *
-     * @author Nathan Sweet
-     */
-    class Fixed implements Value{
-        private final float value;
-
-        public Fixed(float value){
-            this.value = value;
-        }
-
-        public float get(Element context){
-            return Unit.dp.scl(value);
-        }
-    }
 }

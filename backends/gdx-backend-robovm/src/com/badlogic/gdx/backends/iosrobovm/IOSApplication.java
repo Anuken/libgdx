@@ -21,6 +21,7 @@ import com.badlogic.gdx.backends.iosrobovm.objectal.OALAudioSession;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.io.Preferences;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSMutableDictionary;
@@ -78,7 +79,6 @@ public class IOSApplication implements Application{
     IOSInput input;
     IOSNet net;
     int logLevel = Application.LOG_DEBUG;
-    ApplicationLogger applicationLogger;
 
     /** The display scale factor (1.0f for normal; 2.0f to use retina coordinates/dimensions). */
     float displayScaleFactor;
@@ -95,22 +95,22 @@ public class IOSApplication implements Application{
     }
 
     final boolean didFinishLaunching(UIApplication uiApp, UIApplicationLaunchOptions options){
-        setApplicationLogger(new IOSApplicationLogger());
-        Gdx.app = this;
+        Log.setLogger(new IOSApplicationLogger());
+        Core.app = this;
         this.uiApp = uiApp;
 
         // enable or disable screen dimming
         UIApplication.getSharedApplication().setIdleTimerDisabled(config.preventScreenDimming);
 
-        Gdx.app.debug("IOSApplication", "iOS version: " + UIDevice.getCurrentDevice().getSystemVersion());
+        Log.info("[IOSApplication] iOS version: " + UIDevice.getCurrentDevice().getSystemVersion());
         // fix the scale factor if we have a retina device (NOTE: iOS screen sizes are in "points" not pixels by default!)
 
-        Gdx.app.debug("IOSApplication", "Running in " + (Bro.IS_64BIT ? "64-bit" : "32-bit") + " mode");
+        Log.info("[IOSApplication] Running in " + (Bro.IS_64BIT ? "64-bit" : "32-bit") + " mode");
 
         float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen()
         .getScale());
         if(scale >= 2.0f){
-            Gdx.app.debug("IOSApplication", "scale: " + scale);
+            Log.info("[IOSApplication] scale: " + scale);
             if(UIDevice.getCurrentDevice().getUserInterfaceIdiom() == UIUserInterfaceIdiom.Pad){
                 // it's an iPad!
                 displayScaleFactor = config.displayScaleLargeScreenIfRetina * scale;
@@ -132,24 +132,24 @@ public class IOSApplication implements Application{
         // setup libgdx
         this.input = createInput();
         this.graphics = createGraphics(scale);
-        Gdx.gl = Gdx.gl20 = graphics.gl20;
-        Gdx.gl30 = graphics.gl30;
+        Core.gl = Core.gl20 = graphics.gl20;
+        Core.gl30 = graphics.gl30;
         this.files = new IOSFiles();
         this.audio = new IOSAudio(config);
         this.net = new IOSNet(this);
 
-        Gdx.files = this.files;
-        Gdx.graphics = this.graphics;
-        Gdx.audio = this.audio;
-        Gdx.input = this.input;
-        Gdx.net = this.net;
+        Core.files = this.files;
+        Core.graphics = this.graphics;
+        Core.audio = this.audio;
+        Core.input = this.input;
+        Core.net = this.net;
 
         this.input.setupPeripherals();
 
         this.uiWindow = new UIWindow(UIScreen.getMainScreen().getBounds());
         this.uiWindow.setRootViewController(this.graphics.viewController);
         this.uiWindow.makeKeyAndVisible();
-        Gdx.app.debug("IOSApplication", "created");
+        Log.info("[IOSApplication] created");
         return true;
     }
 
@@ -206,7 +206,7 @@ public class IOSApplication implements Application{
             case LandscapeLeft:
             case LandscapeRight:
                 if(screenHeight > screenWidth){
-                    debug("IOSApplication", "Switching reported width and height (w=" + screenWidth + " h=" + screenHeight + ")");
+                    Log.info("[IOSApplication] Switching reported width and height (w=" + screenWidth + " h=" + screenHeight + ")");
                     double tmp = screenHeight;
                     // noinspection SuspiciousNameCombination
                     screenHeight = screenWidth;
@@ -219,14 +219,14 @@ public class IOSApplication implements Application{
         screenHeight *= displayScaleFactor;
 
         if(statusBarHeight != 0.0){
-            debug("IOSApplication", "Status bar is visible (height = " + statusBarHeight + ")");
+            Log.info("[IOSApplication] Status bar is visible (height = " + statusBarHeight + ")");
             statusBarHeight *= displayScaleFactor;
             screenHeight -= statusBarHeight;
         }else{
-            debug("IOSApplication", "Status bar is not visible");
+            Log.info("[IOSApplication] Status bar is not visible");
         }
 
-        debug("IOSApplication", "Total computed bounds are w=" + screenWidth + " h=" + screenHeight);
+        Log.info("[IOSApplication] Total computed bounds are w=" + screenWidth + " h=" + screenHeight);
 
         return lastScreenBounds = new CGRect(0.0, statusBarHeight, screenWidth, screenHeight);
     }
@@ -239,7 +239,7 @@ public class IOSApplication implements Application{
     }
 
     final void didBecomeActive(UIApplication uiApp){
-        Gdx.app.debug("IOSApplication", "resumed");
+        Log.info("[IOSApplication] resumed");
         // workaround for ObjectAL crash problem
         // see: https://groups.google.com/forum/?fromgroups=#!topic/objectal-for-iphone/ubRWltp_i1Q
         OALAudioSession audioSession = OALAudioSession.sharedInstance();
@@ -266,14 +266,14 @@ public class IOSApplication implements Application{
     }
 
     final void willResignActive(UIApplication uiApp){
-        Gdx.app.debug("IOSApplication", "paused");
+        Log.info("[IOSApplication] paused");
         graphics.makeCurrent();
         graphics.pause();
-        Gdx.gl.glFinish();
+        Core.gl.glFinish();
     }
 
     final void willTerminate(UIApplication uiApp){
-        Gdx.app.debug("IOSApplication", "disposed");
+        Log.info("[IOSApplication] disposed");
         graphics.makeCurrent();
         Array<LifecycleListener> listeners = lifecycleListeners;
         synchronized(listeners){
@@ -282,7 +282,7 @@ public class IOSApplication implements Application{
             }
         }
         listener.dispose();
-        Gdx.gl.glFinish();
+        Core.gl.glFinish();
     }
 
     @Override
@@ -313,56 +313,6 @@ public class IOSApplication implements Application{
     @Override
     public Net getNet(){
         return net;
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
     }
 
     @Override
@@ -403,10 +353,10 @@ public class IOSApplication implements Application{
     }
 
     @Override
-    public void postRunnable(Runnable runnable){
+    public void post(Runnable runnable){
         synchronized(runnables){
             runnables.add(runnable);
-            Gdx.graphics.requestRendering();
+            Core.graphics.requestRendering();
         }
     }
 

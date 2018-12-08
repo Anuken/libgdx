@@ -19,7 +19,7 @@ package com.badlogic.gdx.controllers.android;
 import android.content.Context;
 import android.hardware.input.InputManager;
 import android.hardware.input.InputManager.InputDeviceListener;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
@@ -35,33 +35,33 @@ public class ControllerLifeCycleListener implements LifecycleListener, InputDevi
 
     public ControllerLifeCycleListener(AndroidControllers controllers){
         this.controllers = controllers;
-        this.inputManager = (InputManager) ((Context) Gdx.app).getSystemService(Context.INPUT_SERVICE);
-        Gdx.app.addLifecycleListener(this);
-        inputManager.registerInputDeviceListener(this, ((AndroidApplication) Gdx.app).handler);
+        this.inputManager = (InputManager) ((Context) Core.app).getSystemService(Context.INPUT_SERVICE);
+        Core.app.addLifecycleListener(this);
+        inputManager.registerInputDeviceListener(this, ((AndroidApplication) Core.app).handler);
     }
 
     @Override
     public void resume(){
-        inputManager.registerInputDeviceListener(this, ((AndroidApplication) Gdx.app).handler);
-        Gdx.app.log(TAG, "controller life cycle listener resumed");
+        inputManager.registerInputDeviceListener(this, ((AndroidApplication) Core.app).handler);
+        Core.app.log(TAG, "controller life cycle listener resumed");
     }
 
     @Override
     public void pause(){
         inputManager.unregisterInputDeviceListener(this);
-        Gdx.app.log(TAG, "controller life cycle listener paused");
+        Core.app.log(TAG, "controller life cycle listener paused");
     }
 
     @Override
     public void onInputDeviceAdded(int deviceId){
         controllers.addController(deviceId, true);
-        Gdx.app.log(TAG, "device " + deviceId + " added");
+        Core.app.log(TAG, "device " + deviceId + " added");
     }
 
     @Override
     public void onInputDeviceRemoved(int deviceId){
         controllers.removeController(deviceId);
-        Gdx.app.log(TAG, "device " + deviceId + " removed");
+        Core.app.log(TAG, "device " + deviceId + " removed");
     }
 
     @Override

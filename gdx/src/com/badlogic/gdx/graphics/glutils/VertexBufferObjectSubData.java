@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -82,10 +82,10 @@ public class VertexBufferObjectSubData implements VertexData{
     }
 
     private int createBufferObject(){
-        int result = Gdx.gl20.glGenBuffer();
-        Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, result);
-        Gdx.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, byteBuffer.capacity(), null, usage);
-        Gdx.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
+        int result = Core.gl20.glGenBuffer();
+        Core.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, result);
+        Core.gl20.glBufferData(GL20.GL_ARRAY_BUFFER, byteBuffer.capacity(), null, usage);
+        Core.gl20.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
         return result;
     }
 
@@ -112,7 +112,7 @@ public class VertexBufferObjectSubData implements VertexData{
 
     private void bufferChanged(){
         if(isBound){
-            Gdx.gl20.glBufferSubData(GL20.GL_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
+            Core.gl20.glBufferSubData(GL20.GL_ARRAY_BUFFER, 0, byteBuffer.limit(), byteBuffer);
             isDirty = false;
         }
     }
@@ -161,7 +161,7 @@ public class VertexBufferObjectSubData implements VertexData{
 
     @Override
     public void bind(final ShaderProgram shader, final int[] locations){
-        final GL20 gl = Gdx.gl20;
+        final GL20 gl = Core.gl20;
 
         gl.glBindBuffer(GL20.GL_ARRAY_BUFFER, bufferHandle);
         if(isDirty){
@@ -207,7 +207,7 @@ public class VertexBufferObjectSubData implements VertexData{
 
     @Override
     public void unbind(final ShaderProgram shader, final int[] locations){
-        final GL20 gl = Gdx.gl20;
+        final GL20 gl = Core.gl20;
         final int numAttributes = attributes.size();
         if(locations == null){
             for(int i = 0; i < numAttributes; i++){
@@ -232,7 +232,7 @@ public class VertexBufferObjectSubData implements VertexData{
     /** Disposes of all resources this VertexBufferObject uses. */
     @Override
     public void dispose(){
-        GL20 gl = Gdx.gl20;
+        GL20 gl = Core.gl20;
         gl.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
         gl.glDeleteBuffer(bufferHandle);
         bufferHandle = 0;

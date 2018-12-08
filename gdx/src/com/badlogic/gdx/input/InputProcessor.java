@@ -18,7 +18,6 @@ package com.badlogic.gdx.input;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
 
 /**
  * An InputProcessor is used to receive input events from the keyboard and the touch screen (mouse on the desktop). For this it
@@ -31,19 +30,15 @@ import com.badlogic.gdx.Input.Buttons;
 public interface InputProcessor{
     /**
      * Called when a key was pressed
-     *
-     * @param keycode one of the constants in {@link Input.Keys}
      * @return whether the input was processed
      */
-    default boolean keyDown(int keycode){ return false; }
+    default boolean keyDown(KeyCode keycode){ return false; }
 
     /**
      * Called when a key was released
-     *
-     * @param keycode one of the constants in {@link Input.Keys}
      * @return whether the input was processed
      */
-    default boolean keyUp(int keycode){ return false; }
+    default boolean keyUp(KeyCode keycode){ return false; }
 
     /**
      * Called when a key was typed
@@ -54,24 +49,20 @@ public interface InputProcessor{
     default boolean keyTyped(char character){ return false; }
 
     /**
-     * Called when the screen was touched or a mouse button was pressed. The button parameter will be {@link Buttons#LEFT} on iOS.
-     *
      * @param screenX The x coordinate, origin is in the upper left corner
      * @param screenY The y coordinate, origin is in the upper left corner
      * @param pointer the pointer for the event.
      * @param button the button
      * @return whether the input was processed
      */
-    default boolean touchDown(int screenX, int screenY, int pointer, int button){ return false; }
+    default boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){ return false; }
 
     /**
-     * Called when a finger was lifted or a mouse button was released. The button parameter will be {@link Buttons#LEFT} on iOS.
-     *
      * @param pointer the pointer for the event.
      * @param button the button
      * @return whether the input was processed
      */
-    default boolean touchUp(int screenX, int screenY, int pointer, int button){ return false; }
+    default boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){ return false; }
 
     /**
      * Called when a finger or the mouse was dragged.
@@ -82,8 +73,6 @@ public interface InputProcessor{
     default boolean touchDragged(int screenX, int screenY, int pointer){ return false; }
 
     /**
-     * Called when the mouse was moved without any buttons being pressed. Will not be called on iOS.
-     *
      * @return whether the input was processed
      */
     default boolean mouseMoved(int screenX, int screenY){ return false; }
