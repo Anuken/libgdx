@@ -1,7 +1,9 @@
 package com.badlogic.gdx.input;
 
+import com.badlogic.gdx.KeyBinds.KeybindValue;
+
 /** Enum for storing input codes of mouse, keyboard and controllers.*/
-public enum KeyCode{
+public enum KeyCode implements KeybindValue{
     //controller general
     CONTROLLER_A(KeyType.controller, "A"),
     CONTROLLER_B(KeyType.controller, "B"),

@@ -1,10 +1,8 @@
 package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scene.Element;
-import io.anuke.ucore.util.OS;
+import com.badlogic.gdx.utils.OS;
 
 public class UIUtils{
 

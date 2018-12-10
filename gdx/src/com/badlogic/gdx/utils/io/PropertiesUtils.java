@@ -48,7 +48,7 @@ public final class PropertiesUtils{
      *
      * @param properties the map to be filled.
      * @param reader the input character stream reader.
-     * @throws IOException if an error occurred when reading from the input stream.
+     * @throws IOException  if an error occurred when reading from the input stream.
      * @throws IllegalArgumentException if a malformed Unicode escape appears in the input.
      */
     @SuppressWarnings("deprecation")

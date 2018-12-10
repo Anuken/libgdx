@@ -168,7 +168,7 @@ public class Polygon implements Shape2D{
     /** Returns the area contained within the polygon. */
     public float area(){
         float[] vertices = getTransformedVertices();
-        return GeometryUtils.polygonArea(vertices, 0, vertices.length);
+        return Geometry.polygonArea(vertices, 0, vertices.length);
     }
 
     /**

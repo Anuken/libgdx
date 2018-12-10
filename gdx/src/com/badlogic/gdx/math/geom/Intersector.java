@@ -40,6 +40,59 @@ public final class Intersector{
     private final static FloatArray floatArray = new FloatArray();
     private final static FloatArray floatArray2 = new FloatArray();
 
+    public static boolean intersectPolygons(float[] p1, float[] p2){
+        // reusable points to trace edges around polygon
+        floatArray2.clear();
+        floatArray.clear();
+        floatArray2.addAll(p1);
+        if(p1.length == 0 || p2.length == 0){
+            return false;
+        }
+        for(int i = 0; i < p2.length; i += 2){
+            ep1.set(p2[i], p2[i + 1]);
+            // wrap around to beginning of array if index points to end;
+            if(i < p2.length - 2){
+                ep2.set(p2[i + 2], p2[i + 3]);
+            }else{
+                ep2.set(p2[0], p2[1]);
+            }
+            if(floatArray2.size == 0){
+                return false;
+            }
+            s.set(floatArray2.get(floatArray2.size - 2), floatArray2.get(floatArray2.size - 1));
+            for(int j = 0; j < floatArray2.size; j += 2){
+                e.set(floatArray2.get(j), floatArray2.get(j + 1));
+                // determine if point is inside clip edge
+                if(Intersector.pointLineSide(ep2, ep1, e) > 0){
+                    if(!(Intersector.pointLineSide(ep2, ep1, s) > 0)){
+                        Intersector.intersectLines(s, e, ep1, ep2, ip);
+                        if(floatArray.size < 2 || floatArray.get(floatArray.size - 2) != ip.x
+                        || floatArray.get(floatArray.size - 1) != ip.y){
+                            floatArray.add(ip.x);
+                            floatArray.add(ip.y);
+                        }
+                    }
+                    floatArray.add(e.x);
+                    floatArray.add(e.y);
+                }else if(Intersector.pointLineSide(ep2, ep1, s) > 0){
+                    Intersector.intersectLines(s, e, ep1, ep2, ip);
+                    floatArray.add(ip.x);
+                    floatArray.add(ip.y);
+                }
+                s.set(e.x, e.y);
+            }
+            floatArray2.clear();
+            floatArray2.addAll(floatArray);
+            floatArray.clear();
+        }
+
+        if(!(floatArray2.size == 0)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /**
      * Returns whether the given point is inside the triangle. This assumes that the point is on the plane of the triangle. No
      * check is performed that this is the case.

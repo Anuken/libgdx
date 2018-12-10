@@ -35,7 +35,6 @@ import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.Preferences;
 
 import java.lang.reflect.Method;
 
@@ -162,11 +161,11 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         });
 
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
         if(!isForView){
             try{
@@ -288,11 +287,11 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     @Override
     protected void onResume(){
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
         input.onResume();
 

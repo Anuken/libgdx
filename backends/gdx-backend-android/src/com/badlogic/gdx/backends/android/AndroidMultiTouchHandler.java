@@ -139,7 +139,7 @@ public class AndroidMultiTouchHandler implements AndroidTouchHandler{
             actionStr = "MOVE";
         else
             actionStr = "UNKNOWN (" + action + ")";
-        Core.app.log("AndroidMultiTouchHandler", "action " + actionStr + ", Android pointer id: " + pointer);
+        Log.infoTag("AndroidMultiTouchHandler", "action " + actionStr + ", Android pointer id: " + pointer);
     }
 
     private int toGdxButton(int button){

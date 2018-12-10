@@ -75,7 +75,7 @@ public class AndroidMouseHandler{
             actionStr = "SCROLL";
         else
             actionStr = "UNKNOWN (" + action + ")";
-        Core.app.log("AndroidMouseHandler", "action " + actionStr);
+        Log.infoTag("AndroidMouseHandler", "action " + actionStr);
     }
 
     private void postTouchEvent(AndroidInput input, int type, int x, int y, int scrollAmountX, int scrollAmountY, long timeStamp){

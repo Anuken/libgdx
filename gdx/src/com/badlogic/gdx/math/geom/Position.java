@@ -16,8 +16,12 @@ public interface Position{
     }
 
     default float dst(Position other){
-        final float xd = getX() - other.getX();
-        final float yd = getX() - other.getY();
+        return dst(other.getX(), other.getY());
+    }
+
+    default float dst(float x, float y){
+        final float xd = getX() - x;
+        final float yd = getX() - y;
         return (float) Math.sqrt(xd * xd + yd * yd);
     }
 }

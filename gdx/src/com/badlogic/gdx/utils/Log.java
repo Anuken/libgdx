@@ -17,6 +17,11 @@ public class Log{
         useColors = colors;
     }
 
+    public static void infoTag(String tag, String text){
+        if(level.ordinal() > LogLevel.info.ordinal()) return;
+        logger.info("[" + tag + "] " + text);
+    }
+
     public static void info(String text, Object... args){
         if(level.ordinal() > LogLevel.info.ordinal()) return;
         logger.info(text, args);
@@ -29,6 +34,11 @@ public class Log{
     public static void warn(String text, Object... args){
         if(level.ordinal() > LogLevel.warn.ordinal()) return;
         logger.warn(text, args);
+    }
+
+    public static void errTag(String tag, String text){
+        if(level.ordinal() > LogLevel.err.ordinal()) return;
+        logger.err("[" + tag + "] " + text);
     }
 
     public static void err(String text, Object... args){

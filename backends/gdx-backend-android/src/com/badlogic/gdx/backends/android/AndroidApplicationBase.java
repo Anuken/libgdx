@@ -47,14 +47,12 @@ public interface AndroidApplicationBase extends Application{
     /**
      * A set of usable runnables
      *
-     * @return the {@link Runnable} array
      */
     Array<Runnable> getRunnables();
 
     /**
      * The currently executed runnables
      *
-     * @return the {@link Runnable} array
      */
     Array<Runnable> getExecutedRunnables();
 
@@ -71,14 +69,6 @@ public interface AndroidApplicationBase extends Application{
      * @param intent The {@link Intent} for starting an activity
      */
     void startActivity(Intent intent);
-
-    /**
-     * Returns the {@link AndroidInput} object associated with this {@link AndroidApplicationBase}
-     *
-     * @return the {@link AndroidInput} object
-     */
-    @Override
-    AndroidInput getInput();
 
     /**
      * Returns the {@link LifecycleListener} array associated with this {@link AndroidApplicationBase}

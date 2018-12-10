@@ -136,7 +136,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics{
                     requestRendering();
                     synch.wait();
                 }catch(InterruptedException ignored){
-                    Core.app.log("AndroidGraphics", "waiting for resume synchronization failed!");
+                    Log.infoTag("AndroidGraphics", "waiting for resume synchronization failed!");
                 }
             }
         }
@@ -185,7 +185,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics{
         if(lresume){
             // ((AndroidAudio)app.getAudio()).resume(); // jw: moved to AndroidLiveWallpaper.onResume
             app.getApplicationListener().resume();
-            Core.app.log("AndroidGraphics", "resumed");
+            Log.infoTag("AndroidGraphics", "resumed");
         }
 
         // HACK: added null check to handle set wallpaper from preview null
@@ -213,7 +213,7 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics{
              * app.runnables.clear(); }
              */
 
-            app.getInput().processEvents();
+            ((AndroidInput)Core.input).processEvents();
             frameId++;
             app.getApplicationListener().render();
         }
@@ -222,14 +222,14 @@ public final class AndroidGraphicsLiveWallpaper extends AndroidGraphics{
         if(lpause){
             app.getApplicationListener().pause();
             // ((AndroidAudio)app.getAudio()).pause(); jw: moved to AndroidLiveWallpaper.onPause
-            Core.app.log("AndroidGraphics", "paused");
+            Log.infoTag("AndroidGraphics", "paused");
         }
 
         // jw: never called on lwp, why? see description in AndroidLiveWallpaper.onPause
         if(ldestroy){
             app.getApplicationListener().dispose();
             // ((AndroidAudio)app.getAudio()).dispose(); jw: moved to AndroidLiveWallpaper.onDestroy
-            Core.app.log("AndroidGraphics", "destroyed");
+            Log.infoTag("AndroidGraphics", "destroyed");
         }
 
         if(time - frameStart > 1000000000){

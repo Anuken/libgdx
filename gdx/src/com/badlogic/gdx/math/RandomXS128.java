@@ -30,16 +30,12 @@ import java.util.Random;
  * @author davebaol
  */
 public class RandomXS128 extends Random{
-
     /** Normalization constant for double. */
     private static final double NORM_DOUBLE = 1.0 / (1L << 53);
-
     /** Normalization constant for float. */
     private static final double NORM_FLOAT = 1.0 / (1L << 24);
-
     /** The first half of the internal state of this pseudo-random number generator. */
     private long seed0;
-
     /** The second half of the internal state of this pseudo-random number generator. */
     private long seed1;
 

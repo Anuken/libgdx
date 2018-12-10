@@ -655,7 +655,7 @@ public class IOSInput implements Input{
         for(int i = 0; i < touchDown.length; i++){
             sb.append(i + ":" + touchDown[i] + " ");
         }
-        Core.app.error("IOSInput", "Pointer ID lookup failed: " + ptr + ", " + sb.toString());
+        Log.errTag("IOSInput", "Pointer ID lookup failed: " + ptr + ", " + sb.toString());
         return POINTER_NOT_FOUND;
     }
 

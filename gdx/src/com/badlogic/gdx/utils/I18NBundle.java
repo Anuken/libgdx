@@ -95,6 +95,14 @@ public class I18NBundle{
         simpleFormatter = enabled;
     }
 
+    /**Returns an empty bundle with no keys.*/
+    public static I18NBundle createEmptyBundle(){
+        I18NBundle bundle = new I18NBundle();
+        bundle.locale = ROOT_LOCALE;
+        bundle.properties = new ObjectMap<>();
+        return bundle;
+    }
+
     /**
      * Creates a new bundle using the specified <code>baseFileHandle</code>, the default locale and the default encoding "UTF-8".
      *

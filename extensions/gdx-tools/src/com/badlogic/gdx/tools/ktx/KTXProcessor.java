@@ -337,7 +337,7 @@ public class KTXProcessor{
                 out.close();
                 System.out.println("Finished");
             }catch(Exception e){
-                Core.app.error("KTXProcessor", "Error writing to file: " + output.getName(), e);
+                Log.errTag("KTXProcessor", "Error writing to file: " + output.getName(), e);
             }
 
             Core.app.exit();

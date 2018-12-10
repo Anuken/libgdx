@@ -16,8 +16,6 @@
 
 package com.badlogic.gdx.scene.event;
 
-import com.badlogic.gdx.Input.Buttons;
-
 /**
  * Detects mouse or finger touch drags on an actor. A touch must go down over the actor and a drag won't start until it is moved
  * outside the {@link #setTapSquareSize(float) tap square}. Any touch (not just the first) will trigger this listener. While
@@ -38,8 +36,8 @@ public class DragListener extends InputListener{
         pressedPointer = pointer;
         touchDownX = x;
         touchDownY = y;
-        stageTouchDownX = event.getStageX();
-        stageTouchDownY = event.getStageY();
+        stageTouchDownX = event.stageX;
+        stageTouchDownY = event.stageY;
         return true;
     }
 

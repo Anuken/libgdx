@@ -16,11 +16,204 @@
 
 package com.badlogic.gdx.math.geom;
 
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.IntArray;
+import com.badlogic.gdx.function.PositionConsumer;
+import com.badlogic.gdx.function.SegmentConsumer;
 import com.badlogic.gdx.math.Mathf;
 
-/** @author Nathan Sweet */
-public final class GeometryUtils{
+public final class Geometry{
+    /** Points repesenting cardinal directions, starting at the left and going counter-clockwise. */
+    public final static GridPoint2[] d4 = {
+        new GridPoint2(1, 0),
+        new GridPoint2(0, 1),
+        new GridPoint2(-1, 0),
+        new GridPoint2(0, -1)
+    };
+    public final static GridPoint2[] d8 = {
+        new GridPoint2(1, 0),
+        new GridPoint2(1, 1),
+        new GridPoint2(0, 1),
+        new GridPoint2(-1, 1),
+        new GridPoint2(-1, 0),
+        new GridPoint2(-1, -1),
+        new GridPoint2(0, -1),
+        new GridPoint2(1, -1),
+    };
+    public final static GridPoint2[] d8edge = {
+        new GridPoint2(1, 1),
+        new GridPoint2(-1, 1),
+        new GridPoint2(-1, -1),
+        new GridPoint2(1, -1)
+    };
     static private final Vector2 tmp1 = new Vector2(), tmp2 = new Vector2(), tmp3 = new Vector2();
+
+
+    public static GridPoint2 d4(int i){
+        return d4[Mathf.mod(i, 4)];
+    }
+
+    public static GridPoint2 d8(int i){
+        return d8[Mathf.mod(i, 8)];
+    }
+
+    public static GridPoint2 d8edge(int i){
+        return d8edge[Mathf.mod(i, 4)];
+    }
+
+    public static <T extends Position> T findClosest(float x, float y, T[] list){
+        T closest = null;
+        float cdist = 0f;
+        for(T t : list){
+            float dst = t.dst(x, y);
+            if(closest == null || dst < cdist){
+                closest = t;
+                cdist = dst;
+            }
+        }
+        return closest;
+    }
+
+    public static <T extends Position> T findClosest(float x, float y, Iterable<T> list){
+        T closest = null;
+        float cdist = 0f;
+        for(T t : list){
+            float dst = t.dst(x, y);
+            if(closest == null || dst < cdist){
+                closest = t;
+                cdist = dst;
+            }
+        }
+        return closest;
+    }
+
+    public static <T extends Position> T findFurthest(float x, float y, Iterable<T> list){
+        T closest = null;
+        float cdist = 0f;
+        for(T t : list){
+            float dst = t.dst(x, y);
+            if(closest == null || dst > cdist){
+                closest = t;
+                cdist = dst;
+            }
+        }
+        return closest;
+    }
+
+    public static Vector2[] pixelCircle(float tindex){
+        return pixelCircle(tindex, (index, x, y) -> Vector2.dst(x, y, index, index) < index - 0.5f);
+    }
+
+    public static Vector2[] pixelCircle(float index, SolidChecker checker){
+        int size = (int) (index * 2);
+        IntArray ints = new IntArray();
+
+        //add edges (bottom left corner)
+        for(int x = -1; x < size + 1; x++){
+            for(int y = -1; y < size + 1; y++){
+                if((checker.solid(index, x, y) || checker.solid(index, x - 1, y) || checker.solid(index, x, y - 1) || checker.solid(index, x - 1, y - 1)) &&
+                !(checker.solid(index, x, y) && checker.solid(index, x - 1, y) && checker.solid(index, x, y - 1) && checker.solid(index, x - 1, y - 1))){
+                    ints.add(x + y * (size + 1));
+                }
+            }
+        }
+
+        Array<Vector2> path = new Array<>();
+
+        int cindex = 0;
+        while(ints.size > 0){
+            int x = ints.get(cindex) % (size + 1);
+            int y = ints.get(cindex) / (size + 1);
+            path.add(new Vector2(x - size / 2, y - size / 2));
+            ints.removeIndex(cindex);
+
+            //find nearby edge
+            for(int i = 0; i < ints.size; i++){
+
+                int x2 = ints.get(i) % (size + 1);
+                int y2 = ints.get(i) / (size + 1);
+                if(Math.abs(x2 - x) <= 1 && Math.abs(y2 - y) <= 1 &&
+                !(Math.abs(x2 - x) == 1 && Math.abs(y2 - y) == 1)){
+                    cindex = i;
+                    break;
+                }
+            }
+        }
+
+        return path.toArray(Vector2.class);
+    }
+
+    /** returns a regular polygon with {amount} sides */
+    public static float[] regPoly(int amount, float size){
+        float[] v = new float[amount * 2];
+        Vector2 vec = new Vector2(1, 1);
+        vec.setLength(size);
+        for(int i = 0; i < amount; i++){
+            vec.setAngle((360f / amount) * i + 90);
+            v[i * 2] = vec.x;
+            v[i * 2 + 1] = vec.y;
+        }
+        return v;
+    }
+
+    public static float iterateLine(float start, float x1, float y1, float x2, float y2, float segment, PositionConsumer pos){
+        float len = Vector2.dst(x1, y1, x2, y2);
+        int steps = (int) (len / segment);
+        float step = 1f / steps;
+
+        float offset = len;
+        tmp2.set(x2, y2);
+        for(int i = 0; i < steps; i++){
+            float s = step * i;
+            tmp1.set(x1, y1);
+            tmp1.lerp(tmp2, s);
+            pos.accept(tmp1.x, tmp1.y);
+            offset -= step;
+        }
+
+        return offset;
+    }
+
+    public static void iteratePolySegments(float[] vertices, SegmentConsumer it){
+        for(int i = 0; i < vertices.length; i += 2){
+            float x = vertices[i];
+            float y = vertices[i + 1];
+            float x2, y2;
+            if(i == vertices.length - 2){
+                x2 = vertices[0];
+                y2 = vertices[1];
+            }else{
+                x2 = vertices[i + 2];
+                y2 = vertices[i + 3];
+            }
+
+            it.accept(x, y, x2, y2);
+        }
+    }
+
+    public static void iteratePolygon(PositionConsumer path, float[] vertices){
+        for(int i = 0; i < vertices.length; i += 2){
+            float x = vertices[i];
+            float y = vertices[i + 1];
+            path.accept(x, y);
+        }
+    }
+
+    public static GridPoint2[] getD4Points(){
+        return d4;
+    }
+
+    public static GridPoint2[] getD8Points(){
+        return d8;
+    }
+
+    public static GridPoint2[] getD8EdgePoints(){
+        return d8edge;
+    }
+
+    public interface SolidChecker{
+        boolean solid(float index, int x, int y);
+    }
 
     /**
      * Computes the barycentric coordinates v,w for the specified point in the triangle.
@@ -30,7 +223,7 @@ public final class GeometryUtils{
      * If vertices a,b,c have values aa,bb,cc then to get an interpolated value at point p:
      *
      * <pre>
-     * GeometryUtils.barycentric(p, a, b, c, barycentric);
+     * Geometry.barycentric(p, a, b, c, barycentric);
      * float u = 1.f - barycentric.x - barycentric.y;
      * float x = u * aa.x + barycentric.x * bb.x + barycentric.y * cc.x;
      * float y = u * aa.y + barycentric.x * bb.y + barycentric.y * cc.y;

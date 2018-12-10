@@ -75,7 +75,8 @@ public class Slider extends ProgressBar{
 
         addListener(new HandCursorListener());
         addListener(new InputListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                 if(disabled) return false;
                 if(draggingPointer != -1) return false;
                 draggingPointer = pointer;
@@ -83,7 +84,8 @@ public class Slider extends ProgressBar{
                 return true;
             }
 
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
                 if(pointer != draggingPointer) return;
                 draggingPointer = -1;
                 if(!calculatePositionAndValue(x, y)){
@@ -94,6 +96,7 @@ public class Slider extends ProgressBar{
                 }
             }
 
+            @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer){
                 calculatePositionAndValue(x, y);
             }

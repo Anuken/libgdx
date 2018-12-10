@@ -20,33 +20,32 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALAudio;
 import com.badlogic.gdx.backends.lwjgl3.audio.mock.MockAudio;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.Preferences;
+import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.Callback;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.nio.IntBuffer;
 
 public class Lwjgl3Application implements Application{
     private final Lwjgl3ApplicationConfiguration config;
-    private final Array<Lwjgl3Window> windows = new Array<Lwjgl3Window>();
+    private final Array<Lwjgl3Window> windows = new Array<>();
     private volatile Lwjgl3Window currentWindow;
     private Audio audio;
     private final Files files;
     private final Net net;
-    private final ObjectMap<String, Preferences> preferences = new ObjectMap<String, Preferences>();
     private final Lwjgl3Clipboard clipboard;
     private volatile boolean running = true;
-    private final Array<Runnable> runnables = new Array<Runnable>();
-    private final Array<Runnable> executedRunnables = new Array<Runnable>();
-    private final Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
+    private final Array<Runnable> runnables = new Array<>();
+    private final Array<Runnable> executedRunnables = new Array<>();
+    private final Array<LifecycleListener> lifecycleListeners = new Array<>();
     private static GLFWErrorCallback errorCallback;
     private static GLVersion glVersion;
     private static Callback glDebugCallback;
@@ -201,32 +200,6 @@ public class Lwjgl3Application implements Application{
     }
 
     @Override
-    public Graphics getGraphics(){
-        return currentWindow.getGraphics();
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Input getInput(){
-        return currentWindow.getInput();
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
-    }
-
-
-    @Override
     public ApplicationType getType(){
         return ApplicationType.Desktop;
     }
@@ -244,18 +217,6 @@ public class Lwjgl3Application implements Application{
     @Override
     public long getNativeHeap(){
         return getJavaHeap();
-    }
-
-    @Override
-    public Preferences getPreferences(String name){
-        if(preferences.containsKey(name)){
-            return preferences.get(name);
-        }else{
-            Preferences prefs = new Lwjgl3Preferences(
-            new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
-            preferences.put(name, prefs);
-            return prefs;
-        }
     }
 
     @Override

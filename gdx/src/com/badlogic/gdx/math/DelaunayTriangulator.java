@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.math;
 
-import com.badlogic.gdx.math.geom.GeometryUtils;
+import com.badlogic.gdx.math.geom.Geometry;
 import com.badlogic.gdx.math.geom.Intersector;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.collection.BooleanArray;
@@ -356,7 +356,7 @@ public class DelaunayTriangulator{
             int p1 = trianglesArray[i - 2] * 2;
             int p2 = trianglesArray[i - 1] * 2;
             int p3 = trianglesArray[i] * 2;
-            GeometryUtils.triangleCentroid(points[p1], points[p1 + 1], points[p2], points[p2 + 1], points[p3], points[p3 + 1],
+            Geometry.triangleCentroid(points[p1], points[p1 + 1], points[p2], points[p2 + 1], points[p3], points[p3 + 1],
             centroid);
             if(!Intersector.isPointInPolygon(hull, offset, count, centroid.x, centroid.y)){
                 triangles.removeIndex(i);

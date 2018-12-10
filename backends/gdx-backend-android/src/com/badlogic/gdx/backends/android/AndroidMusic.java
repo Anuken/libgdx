@@ -43,7 +43,7 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
         try{
             player.release();
         }catch(Throwable t){
-            Core.app.log("AndroidMusic", "error while disposing AndroidMusic instance, non-fatal");
+            Log.infoTag("AndroidMusic", "error while disposing AndroidMusic instance, non-fatal");
         }finally{
             player = null;
             onCompletionListener = null;

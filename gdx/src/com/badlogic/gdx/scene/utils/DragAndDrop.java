@@ -16,11 +16,10 @@
 
 package com.badlogic.gdx.scene.utils;
 
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ObjectMap.Entry;
+import com.badlogic.gdx.collection.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap.Entry;
+import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.DragListener;
@@ -40,8 +39,8 @@ public class DragAndDrop{
     Element dragActor;
     Target target;
     boolean isValidTarget;
-    Array<Target> targets = new Array();
-    ObjectMap<Source, com.badlogic.gdx.scene.event.DragListener> sourceListeners = new ObjectMap();
+    Array<Target> targets = new Array<>();
+    ObjectMap<Source, DragListener> sourceListeners = new ObjectMap<>();
     float dragActorX = 0, dragActorY = 0;
     float touchOffsetX, touchOffsetY;
     long dragStartTime;
@@ -85,7 +84,7 @@ public class DragAndDrop{
                 // Find target.
                 Target newTarget = null;
                 isValidTarget = false;
-                float stageX = event.getStageX() + touchOffsetX, stageY = event.getStageY() + touchOffsetY;
+                float stageX = event.stageX + touchOffsetX, stageY = event.stageY + touchOffsetY;
                 Element hit = event.getStage().hit(stageX, stageY, true); // Prefer touchable actors.
                 if(hit == null) hit = event.getStage().hit(stageX, stageY, false);
                 if(hit != null){
@@ -118,8 +117,8 @@ public class DragAndDrop{
                     dragActor = actor;
                     stage.add(actor);
                 }
-                float actorX = event.getStageX() - actor.getWidth() + dragActorX;
-                float actorY = event.getStageY() + dragActorY;
+                float actorX = event.stageX - actor.getWidth() + dragActorX;
+                float actorY = event.stageY + dragActorY;
                 if(keepWithinStage){
                     if(actorX < 0) actorX = 0;
                     if(actorY < 0) actorY = 0;
@@ -137,7 +136,7 @@ public class DragAndDrop{
                 if(System.currentTimeMillis() - dragStartTime < dragTime) isValidTarget = false;
                 if(dragActor != null) dragActor.remove();
                 if(isValidTarget){
-                    float stageX = event.getStageX() + touchOffsetX, stageY = event.getStageY() + touchOffsetY;
+                    float stageX = event.stageX + touchOffsetX, stageY = event.stageY + touchOffsetY;
                     target.actor.stageToLocalCoordinates(tmpVector.set(stageX, stageY));
                     target.drop(source, payload, tmpVector.x, tmpVector.y, pointer);
                 }
@@ -181,7 +180,7 @@ public class DragAndDrop{
         tapSquareSize = halfTapSquareSize;
     }
 
-    /** Sets the button to listen for, all other buttons are ignored. Default is {@link Buttons#LEFT}. Use -1 for any button. */
+    /** Sets the button to listen for, all other buttons are ignored. */
     public void setButton(int button){
         this.button = button;
     }

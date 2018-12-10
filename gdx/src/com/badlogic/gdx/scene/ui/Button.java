@@ -120,6 +120,7 @@ public class Button extends Table implements Disableable{
     private void initialize(){
         setTouchable(Touchable.enabled);
         addListener(clickListener = new ClickListener(){
+            @Override
             public void clicked(InputEvent event, float x, float y){
                 if(isDisabled()) return;
                 setChecked(!isChecked, true);

@@ -43,25 +43,25 @@ public class ControllerLifeCycleListener implements LifecycleListener, InputDevi
     @Override
     public void resume(){
         inputManager.registerInputDeviceListener(this, ((AndroidApplication) Core.app).handler);
-        Core.app.log(TAG, "controller life cycle listener resumed");
+        Log.infoTag(TAG, "controller life cycle listener resumed");
     }
 
     @Override
     public void pause(){
         inputManager.unregisterInputDeviceListener(this);
-        Core.app.log(TAG, "controller life cycle listener paused");
+        Log.infoTag(TAG, "controller life cycle listener paused");
     }
 
     @Override
     public void onInputDeviceAdded(int deviceId){
         controllers.addController(deviceId, true);
-        Core.app.log(TAG, "device " + deviceId + " added");
+        Log.infoTag(TAG, "device " + deviceId + " added");
     }
 
     @Override
     public void onInputDeviceRemoved(int deviceId){
         controllers.removeController(deviceId);
-        Core.app.log(TAG, "device " + deviceId + " removed");
+        Log.infoTag(TAG, "device " + deviceId + " removed");
     }
 
     @Override

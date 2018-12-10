@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.scene.actions;
 
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Mathf;
 
 /**
  * Sets the actor's rotation from its current value to a specific value.
@@ -28,7 +28,6 @@ import com.badlogic.gdx.math.MathUtils;
  * the angle starts and stops. For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
  *
  * @author Nathan Sweet
- * @see com.badlogic.gdx.math.MathUtils#lerpAngleDeg(float, float, float)
  */
 public class RotateToAction extends TemporalAction{
     private float start, end;
@@ -51,7 +50,7 @@ public class RotateToAction extends TemporalAction{
     @Override
     protected void update(float percent){
         if(useShortestDirection)
-            target.setRotation(MathUtils.lerpAngleDeg(this.start, this.end, percent));
+            target.setRotation(Mathf.lerpAngleDeg(this.start, this.end, percent));
         else
             target.setRotation(start + (end - start) * percent);
     }

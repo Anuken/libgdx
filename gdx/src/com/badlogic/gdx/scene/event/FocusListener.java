@@ -27,12 +27,12 @@ abstract public class FocusListener implements EventListener{
     public boolean handle(Event event){
         if(!(event instanceof FocusEvent)) return false;
         FocusEvent focusEvent = (FocusEvent) event;
-        switch(focusEvent.getType()){
+        switch(focusEvent.type){
             case keyboard:
-                keyboardFocusChanged(focusEvent, event.getTarget(), focusEvent.isFocused());
+                keyboardFocusChanged(focusEvent, event.getTarget(), focusEvent.focused);
                 break;
             case scroll:
-                scrollFocusChanged(focusEvent, event.getTarget(), focusEvent.isFocused());
+                scrollFocusChanged(focusEvent, event.getTarget(), focusEvent.focused);
                 break;
         }
         return false;
@@ -52,42 +52,13 @@ abstract public class FocusListener implements EventListener{
      * @author Nathan Sweet
      */
     static public class FocusEvent extends Event{
-        private boolean focused;
-        private Type type;
-        private Element relatedActor;
+        public boolean focused;
+        public Type type;
+        public Element relatedActor;
 
         public void reset(){
             super.reset();
             relatedActor = null;
-        }
-
-        public boolean isFocused(){
-            return focused;
-        }
-
-        public void setFocused(boolean focused){
-            this.focused = focused;
-        }
-
-        public Type getType(){
-            return type;
-        }
-
-        public void setType(Type focusType){
-            this.type = focusType;
-        }
-
-        /**
-         * The actor related to the event. When focus is lost, this is the new actor being focused, or null. When focus is gained,
-         * this is the previous actor that was focused, or null.
-         */
-        public Element getRelatedActor(){
-            return relatedActor;
-        }
-
-        /** @param relatedActor May be null. */
-        public void setRelatedActor(Element relatedActor){
-            this.relatedActor = relatedActor;
         }
 
         /** @author Nathan Sweet */

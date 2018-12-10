@@ -18,7 +18,6 @@ package com.badlogic.gdx;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.input.controllers.Controllers;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -36,11 +35,12 @@ public class Core{
     public static Graphics graphics;
     public static Audio audio;
     public static Input input;
-    public static Controllers controllers;
     public static Files files;
+    public static Settings settings;
+    public static KeyBinds keybinds;
     public static Net net;
 
-    public static I18NBundle bundle;
+    public static I18NBundle bundle = I18NBundle.createEmptyBundle();
     public static Scene scene;
 
     public static GL20 gl;

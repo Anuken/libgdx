@@ -34,7 +34,6 @@ import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.Preferences;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -153,11 +152,11 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
         });
 
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
         if(!isForView){
             setFullscreen(true);
@@ -221,13 +220,13 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
     @Override
     public void onDreamingStarted(){
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
-        getInput().registerSensorListeners();
+        input.registerSensorListeners();
 
         if(graphics != null){
             graphics.onResumeGLSurfaceView();
@@ -248,31 +247,6 @@ public class AndroidDaydream extends DreamService implements AndroidApplicationB
     @Override
     public ApplicationListener getApplicationListener(){
         return listener;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public AndroidInput getInput(){
-        return input;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
     }
 
     @Override

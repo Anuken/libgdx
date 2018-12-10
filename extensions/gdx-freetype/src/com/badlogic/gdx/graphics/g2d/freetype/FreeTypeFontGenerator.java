@@ -541,7 +541,7 @@ public class FreeTypeFontGenerator implements Disposable{
             mainGlyph.toBitmap(parameter.mono ? FreeType.FT_RENDER_MODE_MONO : FreeType.FT_RENDER_MODE_NORMAL);
         }catch(GdxRuntimeException e){
             mainGlyph.dispose();
-            Core.app.log("FreeTypeFontGenerator", "Couldn't render char: " + c);
+            Log.infoTag("FreeTypeFontGenerator", "Couldn't render char: " + c);
             return null;
         }
         Bitmap mainBitmap = mainGlyph.getBitmap();

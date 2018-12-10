@@ -58,7 +58,7 @@ public interface GLErrorListener{
             }
 
             if(place != null){
-                Core.app.error("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);
+                Log.errTag("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);
             }else{
                 StringBuilder sb = new StringBuilder("Error ");
                 sb.append(resolveErrorNumber(error));
@@ -71,7 +71,7 @@ public interface GLErrorListener{
                 }catch(Exception ignored){
                     sb.append(" (Failed to print stack trace: ").append(ignored).append(")");
                 }
-                Core.app.error("GLProfiler", sb.toString());
+                Log.errTag("GLProfiler", sb.toString());
                 // GWT backend seems to have trouble printing stack traces reliably
             }
         }

@@ -312,7 +312,7 @@ public class OggInputStream extends InputStream{
 
                     if(result == -1){ // missing or corrupt data at this page position
                         // throw new GdxRuntimeException("Corrupt or missing data in bitstream.");
-                        Core.app.log("gdx-audio", "Error reading OGG: Corrupt or missing data in bitstream.");
+                        Log.infoTag("gdx-audio", "Error reading OGG: Corrupt or missing data in bitstream.");
                     }else{
                         streamState.pagein(page); // can safely ignore errors at
                         // this point

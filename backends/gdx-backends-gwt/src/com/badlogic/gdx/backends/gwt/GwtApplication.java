@@ -25,7 +25,6 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.Log.LogLevel;
-import com.badlogic.gdx.utils.io.Preferences;
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.core.client.EntryPoint;

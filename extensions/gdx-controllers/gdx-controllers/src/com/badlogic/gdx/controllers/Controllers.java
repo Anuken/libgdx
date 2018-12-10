@@ -101,7 +101,7 @@ public class Controllers{
             if(Core.app.getVersion() >= 12){
                 className = "com.badlogic.gdx.controllers.android.AndroidControllers";
             }else{
-                Core.app.log(TAG, "No controller manager is available for Android versions < API level 12");
+                Log.infoTag(TAG, "No controller manager is available for Android versions < API level 12");
                 manager = new ControllerManagerStub();
             }
         }else if(type == ApplicationType.Desktop){
@@ -113,7 +113,7 @@ public class Controllers{
         }else if(type == ApplicationType.WebGL){
             className = "com.badlogic.gdx.controllers.gwt.GwtControllers";
         }else{
-            Core.app.log(TAG, "No controller manager is available for: " + Core.app.getType());
+            Log.infoTag(TAG, "No controller manager is available for: " + Core.app.getType());
             manager = new ControllerManagerStub();
         }
 
@@ -140,10 +140,10 @@ public class Controllers{
             @Override
             public void dispose(){
                 managers.remove(app);
-                Core.app.log(TAG, "removed manager for application, " + managers.size + " managers active");
+                Log.infoTag(TAG, "removed manager for application, " + managers.size + " managers active");
 
             }
         });
-        Core.app.log(TAG, "added manager for application, " + managers.size + " managers active");
+        Log.infoTag(TAG, "added manager for application, " + managers.size + " managers active");
     }
 }

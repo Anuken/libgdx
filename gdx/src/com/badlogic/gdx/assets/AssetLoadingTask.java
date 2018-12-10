@@ -27,8 +27,6 @@ import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.async.AsyncResult;
 import com.badlogic.gdx.utils.async.AsyncTask;
 
-import java.util.logging.Logger;
-
 /**
  * Responsible for loading an asset through an {@link AssetLoader} based on an {@link AssetDescriptor}.
  *
@@ -56,7 +54,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
         this.assetDesc = assetDesc;
         this.loader = loader;
         this.executor = threadPool;
-        startTime = manager.log.getLevel() == Logger.DEBUG ? TimeUtils.nanoTime() : 0;
+        startTime = TimeUtils.nanoTime();
     }
 
     /** Loads parts of the asset asynchronously if the loader is an {@link AsynchronousAssetLoader}. */

@@ -181,7 +181,7 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
             if(context != null)
                 gl20 = gl30 = new IOSGLES30();
             else
-                Core.app.log("IOGraphics", "OpenGL ES 3.0 not supported, falling back on 2.0");
+                Log.infoTag("IOGraphics", "OpenGL ES 3.0 not supported, falling back on 2.0");
         }
         if(context == null){
             context = new EAGLContext(EAGLRenderingAPI.OpenGLES2);

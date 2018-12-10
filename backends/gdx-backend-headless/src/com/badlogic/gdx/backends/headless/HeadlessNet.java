@@ -68,10 +68,10 @@ public class HeadlessNet implements Net{
                     result = true;
                 }
             }else{
-                Core.app.error("HeadlessNet", "Opening URIs on this environment is not supported. Ignoring.");
+                Log.errTag("HeadlessNet", "Opening URIs on this environment is not supported. Ignoring.");
             }
         }catch(Throwable t){
-            Core.app.error("HeadlessNet", "Failed to open URI. ", t);
+            Log.errTag("HeadlessNet", "Failed to open URI. ", t);
         }
         return result;
     }

@@ -173,9 +173,9 @@ class BaseElement implements Layout{
                 event.handle();
                 if(event instanceof InputEvent){
                     InputEvent inputEvent = (InputEvent) event;
-                    if(inputEvent.getType() == Type.touchDown){
-                        event.getStage().addTouchFocus(listener, elem(), inputEvent.getTarget(), inputEvent.getPointer(),
-                                inputEvent.getButton());
+                    if(inputEvent.type == Type.touchDown){
+                        event.getStage().addTouchFocus(listener, elem(), inputEvent.getTarget(), inputEvent.pointer,
+                                inputEvent.keyCode);
                     }
                 }
             }
@@ -678,7 +678,6 @@ class BaseElement implements Layout{
 
     /**
      * @return May be null.
-     * @see #setName(String)
      */
     public String getName(){
         return name;
@@ -688,7 +687,6 @@ class BaseElement implements Layout{
      * Set the actor's name, which is used for identification convenience and by {@link #toString()}.
      *
      * @param name May be null.
-     * @see Group#find(String)
      */
     public void setName(String name){
         this.name = name;
@@ -782,7 +780,6 @@ class BaseElement implements Layout{
     /**
      * Transforms the specified point in the actor's coordinates to be in the stage's coordinates.
      *
-     * @see Scene#toScreenCoordinates(Vector2, com.badlogic.gdx.math.Matrix4)
      */
     public Vector2 localToStageCoordinates(Vector2 localCoords){
         return localToAscendantCoordinates(null, localCoords);
@@ -924,7 +921,7 @@ class BaseElement implements Layout{
         if(fillParent && parent != null){
             float parentWidth, parentHeight;
             Scene stage = getScene();
-            if(stage != null && parent == stage.getRoot()){
+            if(stage != null && parent == stage.root){
                 parentWidth = stage.getWidth();
                 parentHeight = stage.getHeight();
             }else{

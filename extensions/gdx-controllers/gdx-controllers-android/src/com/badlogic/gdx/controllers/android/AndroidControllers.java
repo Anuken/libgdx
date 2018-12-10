@@ -22,16 +22,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnKeyListener;
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Application.LifecycleListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.android.AndroidInput;
 import com.badlogic.gdx.backends.android.AndroidInputThreePlus;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.ControllerManager;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.IntMap;
 import com.badlogic.gdx.collection.IntMap.Entry;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.ControllerManager;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.pooling.Pool;
 
 public class AndroidControllers implements LifecycleListener, ControllerManager, OnKeyListener, OnGenericMotionListener{
@@ -60,7 +61,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
                 String className = "com.badlogic.gdx.controllers.android.ControllerLifeCycleListener";
                 Class.forName(className).getConstructor(AndroidControllers.class).newInstance(this);
             }catch(Exception e){
-                Core.app.log(TAG, "Couldn't register controller life-cycle listener");
+                Log.infoTag(TAG, "Couldn't register controller life-cycle listener");
             }
         }
     }
@@ -287,7 +288,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
         }else{
             controllers.add(controller);
         }
-        Core.app.log(TAG, "added controller '" + name + "'");
+        Log.infoTag(TAG, "added controller '" + name + "'");
     }
 
     protected void removeController(int deviceId){
@@ -299,7 +300,7 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
                 event.controller = controller;
                 eventQueue.add(event);
             }
-            Core.app.log(TAG, "removed controller '" + controller.getName() + "'");
+            Log.infoTag(TAG, "removed controller '" + controller.getName() + "'");
         }
     }
 
@@ -330,13 +331,13 @@ public class AndroidControllers implements LifecycleListener, ControllerManager,
 
     @Override
     public void pause(){
-        Core.app.log(TAG, "controllers paused");
+        Log.infoTag(TAG, "controllers paused");
     }
 
     @Override
     public void resume(){
         gatherControllers(true);
-        Core.app.log(TAG, "controllers resumed");
+        Log.infoTag(TAG, "controllers resumed");
     }
 
     @Override

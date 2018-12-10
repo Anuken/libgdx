@@ -19,8 +19,6 @@ package com.badlogic.gdx.backends.iosmoe;
 import apple.foundation.NSMutableDictionary;
 import apple.foundation.NSNumber;
 import apple.foundation.NSString;
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.utils.io.Preferences;
 import org.moe.natj.objc.ObjCRuntime;
 
 import java.io.File;
@@ -188,7 +186,7 @@ public class IOSPreferences implements Preferences{
             @Override
             public void run(){
                 if(!nsDictionary.writeToFileAtomically(file.getAbsolutePath(), false)){
-                    Core.app.debug("IOSPreferences", "Failed to write NSDictionary to file " + file);
+                    Log.infoTag("IOSPreferences", "Failed to write NSDictionary to file " + file);
                 }
             }
         });

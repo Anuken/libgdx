@@ -16,14 +16,14 @@
 
 package com.badlogic.gdx.scene.actions;
 
+import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
-import io.anuke.ucore.function.Supplier;
 import com.badlogic.gdx.scene.Action;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.EventListener;
 import com.badlogic.gdx.scene.event.Touchable;
-import io.anuke.ucore.util.Pooling;
+import com.badlogic.gdx.utils.pooling.Pools;
 
 /**
  * Static convenience methods for using pooled actions, intended for static import.

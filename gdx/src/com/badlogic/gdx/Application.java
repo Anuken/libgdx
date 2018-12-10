@@ -18,7 +18,6 @@ package com.badlogic.gdx;
 
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.io.Preferences;
 
 /**
  * <p>
@@ -103,21 +102,6 @@ public interface Application{
     /** @return the {@link ApplicationListener} instance */
     ApplicationListener getApplicationListener();
 
-    /** @return the {@link Graphics} instance */
-    Graphics getGraphics();
-
-    /** @return the {@link Audio} instance */
-    Audio getAudio();
-
-    /** @return the {@link Input} instance */
-    Input getInput();
-
-    /** @return the {@link Files} instance */
-    Files getFiles();
-
-    /** @return the {@link Net} instance */
-    Net getNet();
-
     /** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */
     ApplicationType getType();
 
@@ -130,18 +114,10 @@ public interface Application{
     /** @return the Native heap memory use in bytes */
     long getNativeHeap();
 
-    /**
-     * Returns the {@link Preferences} instance of this Application. It can be used to store application settings across runs.
-     *
-     * @param name the name of the preferences, must be useable as a file name.
-     * @return the preferences.
-     */
-    Preferences getPreferences(String name);
-
     Clipboard getClipboard();
 
     /**
-     * Posts a {@link Runnable} on the main loop thread.
+     * Posts a runnable on the main loop thread.
      * <p>
      * In a multi-window application, the {@linkplain Core#graphics} and {@linkplain Core#input} values may be
      * unpredictable at the time the Runnable is executed. If graphics or input are needed, they can be copied
@@ -154,7 +130,7 @@ public interface Application{
     /**
      * Schedule an exit from the application. On android, this will cause a call to pause() and dispose() some time in the future,
      * it will not immediately finish your application.
-     * On iOS this should be avoided in production as it breaks Apples guidelines
+     * On iOS this should be avoided in production as it breaks Apples guidelines.
      */
     void exit();
 

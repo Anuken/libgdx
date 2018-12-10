@@ -30,6 +30,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.InputProcessor;
+import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
@@ -135,7 +136,7 @@ public class Scene implements Disposable, InputProcessor{
         }
 
         if(debugUnderMouse || debugParentUnderMouse || debugTableUnderMouse != Debug.none){
-            screenToStageCoordinates(tempCoords.set(Core.input.getX(), Core.input.getY()));
+            screenToStageCoordinates(tempCoords.set(Core.input.mouseX(), Core.input.mouseY()));
             Element actor = hit(tempCoords.x, tempCoords.y, true);
             if(actor == null) return;
 
@@ -199,12 +200,12 @@ public class Scene implements Disposable, InputProcessor{
                     screenToStageCoordinates(tempCoords.set(pointerScreenX[pointer], pointerScreenY[pointer]));
                     // Exit over last.
                     InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-                    event.setType(InputEvent.Type.exit);
+                    event.type = (InputEvent.Type.exit);
                     event.setStage(this);
-                    event.setStageX(tempCoords.x);
-                    event.setStageY(tempCoords.y);
-                    event.setRelatedActor(overLast);
-                    event.setPointer(pointer);
+                    event.stageX = (tempCoords.x);
+                    event.stageY = (tempCoords.y);
+                    event.relatedActor = (overLast);
+                    event.pointer = (pointer);
                     overLast.fire(event);
                     Pools.free(event);
                 }
@@ -265,11 +266,11 @@ public class Scene implements Disposable, InputProcessor{
         if(overLast != null){
             InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
             event.setStage(this);
-            event.setStageX(tempCoords.x);
-            event.setStageY(tempCoords.y);
-            event.setPointer(pointer);
-            event.setType(InputEvent.Type.exit);
-            event.setRelatedActor(over);
+            event.stageX = (tempCoords.x);
+            event.stageY = (tempCoords.y);
+            event.pointer = (pointer);
+            event.type = (InputEvent.Type.exit);
+            event.relatedActor = (over);
             overLast.fire(event);
             Pools.free(event);
         }
@@ -277,11 +278,11 @@ public class Scene implements Disposable, InputProcessor{
         if(over != null){
             InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
             event.setStage(this);
-            event.setStageX(tempCoords.x);
-            event.setStageY(tempCoords.y);
-            event.setPointer(pointer);
-            event.setType(InputEvent.Type.enter);
-            event.setRelatedActor(overLast);
+            event.stageX = (tempCoords.x);
+            event.stageY = (tempCoords.y);
+            event.pointer = (pointer);
+            event.type = (InputEvent.Type.enter);
+            event.relatedActor = (overLast);
             over.fire(event);
             Pools.free(event);
         }
@@ -292,7 +293,8 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a touch down event to the stage and returns true if an actor in the scene {@link Event#handle() handled} the
      * event.
      */
-    public boolean touchDown(int screenX, int screenY, int pointer, int button){
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
         if(!isInsideViewport(screenX, screenY)) return false;
 
         pointerTouched[pointer] = true;
@@ -302,12 +304,12 @@ public class Scene implements Disposable, InputProcessor{
         screenToStageCoordinates(tempCoords.set(screenX, screenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setType(Type.touchDown);
+        event.type = (Type.touchDown);
         event.setStage(this);
-        event.setStageX(tempCoords.x);
-        event.setStageY(tempCoords.y);
-        event.setPointer(pointer);
-        event.setButton(button);
+        event.stageX = (tempCoords.x);
+        event.stageY = (tempCoords.y);
+        event.pointer = (pointer);
+        event.keyCode = (button);
 
         Element target = hit(tempCoords.x, tempCoords.y, true);
         if(target == null){
@@ -336,11 +338,11 @@ public class Scene implements Disposable, InputProcessor{
         screenToStageCoordinates(tempCoords.set(screenX, screenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setType(Type.touchDragged);
+        event.type = (Type.touchDragged);
         event.setStage(this);
-        event.setStageX(tempCoords.x);
-        event.setStageY(tempCoords.y);
-        event.setPointer(pointer);
+        event.stageX = (tempCoords.x);
+        event.stageY = (tempCoords.y);
+        event.pointer = (pointer);
 
         SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
         TouchFocus[] focuses = touchFocuses.begin();
@@ -363,7 +365,8 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a touch up event to the stage and returns true if an actor in the scene {@link Event#handle() handled} the event.
      * Only {@link InputListener listeners} that returned true for touchDown will receive this event.
      */
-    public boolean touchUp(int screenX, int screenY, int pointer, int button){
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
         pointerTouched[pointer] = false;
         pointerScreenX[pointer] = screenX;
         pointerScreenY[pointer] = screenY;
@@ -373,12 +376,12 @@ public class Scene implements Disposable, InputProcessor{
         screenToStageCoordinates(tempCoords.set(screenX, screenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setType(Type.touchUp);
+        event.type = (Type.touchUp);
         event.setStage(this);
-        event.setStageX(tempCoords.x);
-        event.setStageY(tempCoords.y);
-        event.setPointer(pointer);
-        event.setButton(button);
+        event.stageX = (tempCoords.x);
+        event.stageY = (tempCoords.y);
+        event.pointer = (pointer);
+        event.keyCode = (button);
 
         SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
         TouchFocus[] focuses = touchFocuses.begin();
@@ -402,6 +405,7 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a mouse moved event to the stage and returns true if an actor in the scene {@link Event#handle() handled} the
      * event. This event only occurs on the desktop.
      */
+    @Override
     public boolean mouseMoved(int screenX, int screenY){
         if(!isInsideViewport(screenX, screenY)) return false;
 
@@ -412,9 +416,9 @@ public class Scene implements Disposable, InputProcessor{
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(Type.mouseMoved);
-        event.setStageX(tempCoords.x);
-        event.setStageY(tempCoords.y);
+        event.type = (Type.mouseMoved);
+        event.stageX = (tempCoords.x);
+        event.stageY = (tempCoords.y);
 
         Element target = hit(tempCoords.x, tempCoords.y, true);
         if(target == null) target = root;
@@ -429,17 +433,19 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a mouse scroll event to the stage and returns true if an actor in the scene {@link Event#handle() handled} the
      * event. This event only occurs on the desktop.
      */
-    public boolean scrolled(int amount){
+    @Override
+    public boolean scrolled(float amountX, float amountY){
         Element target = scrollFocus == null ? root : scrollFocus;
 
         screenToStageCoordinates(tempCoords.set(mouseScreenX, mouseScreenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.scrolled);
-        event.setScrollAmount(amount);
-        event.setStageX(tempCoords.x);
-        event.setStageY(tempCoords.y);
+        event.type = (InputEvent.Type.scrolled);
+        event.scrollAmountX = amountX;
+        event.scrollAmountY = amountY;
+        event.stageX = (tempCoords.x);
+        event.stageY = (tempCoords.y);
         target.fire(event);
         boolean handled = event.isHandled();
         Pools.free(event);
@@ -450,12 +456,13 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a key down event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns
      * true if the event was {@link Event#handle() handled}.
      */
-    public boolean keyDown(int keyCode){
+    @Override
+    public boolean keyDown(KeyCode keyCode){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.keyDown);
-        event.setKeyCode(keyCode);
+        event.type = (InputEvent.Type.keyDown);
+        event.keyCode = keyCode;
         target.fire(event);
         boolean handled = event.isHandled();
         Pools.free(event);
@@ -466,12 +473,13 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a key up event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns true
      * if the event was {@link Event#handle() handled}.
      */
-    public boolean keyUp(int keyCode){
+    @Override
+    public boolean keyUp(KeyCode keyCode){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.keyUp);
-        event.setKeyCode(keyCode);
+        event.type = (InputEvent.Type.keyUp);
+        event.keyCode = keyCode;
         target.fire(event);
         boolean handled = event.isHandled();
         Pools.free(event);
@@ -482,12 +490,13 @@ public class Scene implements Disposable, InputProcessor{
      * Applies a key typed event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns
      * true if the event was {@link Event#handle() handled}.
      */
+    @Override
     public boolean keyTyped(char character){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.keyTyped);
-        event.setCharacter(character);
+        event.type = (InputEvent.Type.keyTyped);
+        event.character = character;
         target.fire(event);
         boolean handled = event.isHandled();
         Pools.free(event);
@@ -498,7 +507,7 @@ public class Scene implements Disposable, InputProcessor{
      * Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. The actor
      * will be used as the {@link Event#getListenerActor() listener actor} and {@link Event#getTarget() target}.
      */
-    public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, int button){
+    public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
         TouchFocus focus = Pools.obtain(TouchFocus.class, TouchFocus::new);
         focus.listenerActor = listenerActor;
         focus.target = target;
@@ -512,7 +521,7 @@ public class Scene implements Disposable, InputProcessor{
      * Removes the listener from being notified for all touchDragged and touchUp events for the specified pointer and button. Note
      * the listener may never receive a touchUp event if this method is used.
      */
-    public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, int button){
+    public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
         SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
         for(int i = touchFocuses.size - 1; i >= 0; i--){
             TouchFocus focus = touchFocuses.get(i);
@@ -532,9 +541,9 @@ public class Scene implements Disposable, InputProcessor{
     public void cancelTouchFocus(Element actor){
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.touchUp);
-        event.setStageX(Integer.MIN_VALUE);
-        event.setStageY(Integer.MIN_VALUE);
+        event.type = (InputEvent.Type.touchUp);
+        event.stageX = (Integer.MIN_VALUE);
+        event.stageY = (Integer.MIN_VALUE);
 
         // Cancel all current touch focuses for the specified listener, allowing for concurrent modification, and never cancel the
         // same focus twice.
@@ -546,8 +555,8 @@ public class Scene implements Disposable, InputProcessor{
             if(!touchFocuses.removeValue(focus, true)) continue; // Touch focus already gone.
             event.setTarget(focus.target);
             event.setListenerActor(focus.listenerActor);
-            event.setPointer(focus.pointer);
-            event.setButton(focus.button);
+            event.pointer = (focus.pointer);
+            event.keyCode = (focus.button);
             focus.listener.handle(event);
             // Cannot return TouchFocus to pool, as it may still be in use (eg if cancelTouchFocus is called from touchDragged).
         }
@@ -560,7 +569,7 @@ public class Scene implements Disposable, InputProcessor{
      * Sends a touchUp event to all listeners that are registered to receive touchDragged and touchUp events and removes their
      * touch focus. This method removes all touch focus listeners, but sends a touchUp event so that the state of the listeners
      * remains consistent (listeners typically expect to receive touchUp eventually). The location of the touchUp is
-     * {@link Integer#MIN_VALUE}. Listeners can use {@link InputEvent#isTouchFocusCancel()} to ignore this event if needed.
+     * Integer#MIN_VALUE. Listeners can use {@link InputEvent#isTouchFocusCancel()} to ignore this event if needed.
      */
     public void cancelTouchFocus(){
         cancelTouchFocusExcept(null, null);
@@ -574,9 +583,9 @@ public class Scene implements Disposable, InputProcessor{
     public void cancelTouchFocusExcept(EventListener exceptListener, Element exceptActor){
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.setStage(this);
-        event.setType(InputEvent.Type.touchUp);
-        event.setStageX(Integer.MIN_VALUE);
-        event.setStageY(Integer.MIN_VALUE);
+        event.type = (InputEvent.Type.touchUp);
+        event.stageX = (Integer.MIN_VALUE);
+        event.stageY = (Integer.MIN_VALUE);
 
         // Cancel all current touch focuses except for the specified listener, allowing for concurrent modification, and never
         // cancel the same focus twice.
@@ -588,8 +597,8 @@ public class Scene implements Disposable, InputProcessor{
             if(!touchFocuses.removeValue(focus, true)) continue; // Touch focus already gone.
             event.setTarget(focus.target);
             event.setListenerActor(focus.listenerActor);
-            event.setPointer(focus.pointer);
-            event.setButton(focus.button);
+            event.pointer = (focus.pointer);
+            event.keyCode = (focus.button);
             focus.listener.handle(event);
             // Cannot return TouchFocus to pool, as it may still be in use (eg if cancelTouchFocus is called from touchDragged).
         }
@@ -691,19 +700,19 @@ public class Scene implements Disposable, InputProcessor{
         if(keyboardFocus == actor) return true;
         FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
         event.setStage(this);
-        event.setType(FocusEvent.Type.keyboard);
+        event.type = (FocusEvent.Type.keyboard);
         Element oldKeyboardFocus = keyboardFocus;
         if(oldKeyboardFocus != null){
-            event.setFocused(false);
-            event.setRelatedActor(actor);
+            event.focused = false;
+            event.relatedActor = (actor);
             oldKeyboardFocus.fire(event);
         }
         boolean success = !event.isCancelled();
         if(success){
             keyboardFocus = actor;
             if(actor != null){
-                event.setFocused(true);
-                event.setRelatedActor(oldKeyboardFocus);
+                event.focused = true;
+                event.relatedActor = (oldKeyboardFocus);
                 actor.fire(event);
                 success = !event.isCancelled();
                 if(!success) setKeyboardFocus(oldKeyboardFocus);
@@ -732,19 +741,19 @@ public class Scene implements Disposable, InputProcessor{
         if(scrollFocus == actor) return true;
         FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
         event.setStage(this);
-        event.setType(FocusEvent.Type.scroll);
+        event.type = (FocusEvent.Type.scroll);
         Element oldScrollFocus = scrollFocus;
         if(oldScrollFocus != null){
-            event.setFocused(false);
-            event.setRelatedActor(actor);
+            event.focused = false;
+            event.relatedActor = (actor);
             oldScrollFocus.fire(event);
         }
         boolean success = !event.isCancelled();
         if(success){
             scrollFocus = actor;
             if(actor != null){
-                event.setFocused(true);
-                event.setRelatedActor(oldScrollFocus);
+                event.focused = true;
+                event.relatedActor = (oldScrollFocus);
                 actor.fire(event);
                 success = !event.isCancelled();
                 if(!success) setScrollFocus(oldScrollFocus);
@@ -957,7 +966,8 @@ public class Scene implements Disposable, InputProcessor{
     public static final class TouchFocus implements Poolable{
         EventListener listener;
         Element listenerActor, target;
-        int pointer, button;
+        int pointer;
+        KeyCode button;
 
         public void reset(){
             listenerActor = null;

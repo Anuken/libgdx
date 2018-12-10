@@ -37,43 +37,32 @@ import java.lang.StringBuilder;
  * @author Alexander Dorokhov
  */
 public class GlyphLayout implements Poolable{
-    public final Array<GlyphRun> runs = new Array();
+    public final Array<GlyphRun> runs = new Array<>();
     public float width, height;
 
-    private final Array<Color> colorStack = new Array(4);
+    private final Array<Color> colorStack = new Array<>(4);
 
     /** Creates an empty GlyphLayout. */
     public GlyphLayout(){
     }
 
-    /** @see #setText(BitmapFont, CharSequence) */
     public GlyphLayout(BitmapFont font, CharSequence str){
         setText(font, str);
     }
 
-    /** @see #setText(BitmapFont, CharSequence) */
     public GlyphLayout(BitmapFont font, CharSequence str, Color color, float targetWidth, int halign, boolean wrap){
         setText(font, str, color, targetWidth, halign, wrap);
     }
 
-    /** @see #setText(BitmapFont, CharSequence) */
     public GlyphLayout(BitmapFont font, CharSequence str, int start, int end, Color color, float targetWidth, int halign,
                        boolean wrap, String truncate){
         setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
     }
 
-    /**
-     * Calls {@link #setText(BitmapFont, CharSequence, int, int, Color, float, int, boolean, String) setText} with the whole
-     * string, the font's current color, and no alignment or wrapping.
-     */
     public void setText(BitmapFont font, CharSequence str){
         setText(font, str, 0, str.length(), font.getColor(), 0, Align.left, false, null);
     }
 
-    /**
-     * Calls {@link #setText(BitmapFont, CharSequence, int, int, Color, float, int, boolean, String) setText} with the whole
-     * string and no truncation.
-     */
     public void setText(BitmapFont font, CharSequence str, Color color, float targetWidth, int halign, boolean wrap){
         setText(font, str, 0, str.length(), color, targetWidth, halign, wrap, null);
     }

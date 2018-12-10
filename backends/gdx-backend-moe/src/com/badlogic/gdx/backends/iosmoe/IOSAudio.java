@@ -35,7 +35,7 @@ public class IOSAudio implements Audio{
             audio.setAllowIpod(config.allowIpod);
             audio.setHonorSilentSwitch(!config.overrideRingerSwitch);
         }else
-            Core.app.error("IOSAudio", "No OALSimpleAudio instance available, audio will not be availabe");
+            Log.errTag("IOSAudio", "No OALSimpleAudio instance available, audio will not be availabe");
     }
 
     @Override

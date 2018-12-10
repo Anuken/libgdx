@@ -33,7 +33,6 @@ import com.badlogic.gdx.backends.iosmoe.objectal.OALSimpleAudio;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Log;
-import com.badlogic.gdx.utils.io.Preferences;
 import org.moe.natj.general.Pointer;
 import org.moe.natj.objc.ann.Selector;
 

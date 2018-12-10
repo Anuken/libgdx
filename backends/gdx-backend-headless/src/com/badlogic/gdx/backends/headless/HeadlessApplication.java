@@ -23,7 +23,6 @@ import com.badlogic.gdx.backends.headless.mock.input.MockInput;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.Preferences;
 
 /**
  * a headless implementation of a GDX Application primarily intended to be used in servers

@@ -1,6 +1,6 @@
 package com.badlogic.gdx.scene.event;
 
-import io.anuke.ucore.function.BooleanProvider;
+import com.badlogic.gdx.function.BooleanProvider;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.utils.Cursors;
 import com.badlogic.gdx.scene.utils.UIUtils;

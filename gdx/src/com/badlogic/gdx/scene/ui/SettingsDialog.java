@@ -1,18 +1,17 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.collection.Array;
-import io.anuke.ucore.core.Musics;
-import io.anuke.ucore.core.Settings;
-import io.anuke.ucore.core.Sounds;
-import io.anuke.ucore.function.Consumer;
+import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.scene.ui.layout.Table;
-import io.anuke.ucore.util.Bundles;
+
+import static com.badlogic.gdx.Core.bundle;
+import static com.badlogic.gdx.Core.settings;
 
 public class SettingsDialog extends Dialog{
     public SettingsTable main;
 
     public SettingsDialog(){
-        super(Bundles.get("text.settings", "Settings"));
+        super(bundle.get("text.settings", "Settings"));
         addCloseButton();
 
         main = new SettingsTable();
@@ -43,23 +42,25 @@ public class SettingsDialog extends Dialog{
         }
 
         public void screenshakePref(){
-            sliderPref("screenshake", Bundles.get("setting.screenshake.name", "Screen Shake"), 4, 0, 8, i -> (i / 4f) + "x");
+            sliderPref("screenshake", bundle.get("setting.screenshake.name", "Screen Shake"), 4, 0, 8, i -> (i / 4f) + "x");
         }
 
+        //TODO implement volume preferences
+        /*
         public void volumePrefs(){
 
-            sliderPref("musicvol", Bundles.get("setting.musicvol.name", "Music Volume"), 10, 0, 10, 1, i -> {
+            sliderPref("musicvol", bundle.get("setting.musicvol.name", "Music Volume"), 10, 0, 10, 1, i -> {
                 Musics.updateVolume();
                 return i * 10 + "%";
             });
-            checkPref("mutemusic", Bundles.get("setting.mutemusic.name", "Mute Music"), false, Musics::setMuted);
+            checkPref("mutemusic", bundle.get("setting.mutemusic.name", "Mute Music"), false, Musics::setMuted);
 
-            sliderPref("sfxvol", Bundles.get("setting.sfxvol.name", "SFX Volume"), 10, 0, 10, 1, i -> i * 10 + "%");
-            checkPref("mutesound", Bundles.get("setting.mutesound.name", "Mute Sound"), false, Sounds::setMuted);
+            sliderPref("sfxvol", bundle.get("setting.sfxvol.name", "SFX Volume"), 10, 0, 10, 1, i -> i * 10 + "%");
+            checkPref("mutesound", bundle.get("setting.mutesound.name", "Mute Sound"), false, Sounds::setMuted);
 
-            Musics.setMuted(Settings.getBool("mutemusic"));
-            Sounds.setMuted(Settings.getBool("mutesound"));
-        }
+            Musics.setMuted(settings.getBool("mutemusic"));
+            Sounds.setMuted(settings.getBool("mutesound"));
+        }*/
 
         public void sliderPref(String name, String title, int def, int min, int max, StringProcessor s){
             sliderPref(name, title, def, min, max, 1, s);
@@ -67,7 +68,7 @@ public class SettingsDialog extends Dialog{
 
         public void sliderPref(String name, String title, int def, int min, int max, int step, StringProcessor s){
             list.add(new SliderSetting(name, title, def, min, max, step, s));
-            Settings.defaults(name, def);
+            settings.defaults(name, def);
             rebuild();
         }
 
@@ -76,34 +77,34 @@ public class SettingsDialog extends Dialog{
         }
 
         public void sliderPref(String name, int def, int min, int max, int step, StringProcessor s){
-            list.add(new SliderSetting(name, Bundles.get("setting." + name + ".name"), def, min, max, step, s));
-            Settings.defaults(name, def);
+            list.add(new SliderSetting(name, bundle.get("setting." + name + ".name"), def, min, max, step, s));
+            settings.defaults(name, def);
             rebuild();
         }
 
         public void checkPref(String name, String title, boolean def){
             list.add(new CheckSetting(name, title, def, null));
-            Settings.defaults(name, def);
+            settings.defaults(name, def);
             rebuild();
         }
 
         public void checkPref(String name, String title, boolean def, Consumer<Boolean> changed){
             list.add(new CheckSetting(name, title, def, changed));
-            Settings.defaults(name, def);
+            settings.defaults(name, def);
             rebuild();
         }
 
         /** Localized title. */
         public void checkPref(String name, boolean def){
-            list.add(new CheckSetting(name, Bundles.get("setting." + name + ".name"), def, null));
-            Settings.defaults(name, def);
+            list.add(new CheckSetting(name, bundle.get("setting." + name + ".name"), def, null));
+            settings.defaults(name, def);
             rebuild();
         }
 
         /** Localized title. */
         public void checkPref(String name, boolean def, Consumer<Boolean> changed){
-            list.add(new CheckSetting(name, Bundles.get("setting." + name + ".name"), def, changed));
-            Settings.defaults(name, def);
+            list.add(new CheckSetting(name, bundle.get("setting." + name + ".name"), def, changed));
+            settings.defaults(name, def);
             rebuild();
         }
 
@@ -114,11 +115,11 @@ public class SettingsDialog extends Dialog{
                 setting.add(this);
             }
 
-            addButton(Bundles.get("text.settings.reset", "Reset to Defaults"), () -> {
+            addButton(bundle.get("text.settings.reset", "Reset to Defaults"), () -> {
                 for(SettingsTable.Setting setting : list){
                     if(setting.name == null || setting.title == null) continue;
-                    Settings.put(setting.name, Settings.getDefault(setting.name));
-                    Settings.save();
+                    settings.put(setting.name, settings.getDefault(setting.name));
+                    settings.save();
                 }
                 rebuild();
             }).margin(14).width(240f).pad(6).left();
@@ -148,11 +149,11 @@ public class SettingsDialog extends Dialog{
             public void add(SettingsTable table){
                 CheckBox box = new CheckBox(title);
 
-                box.setChecked(Settings.getBool(name));
+                box.setChecked(settings.getBool(name));
 
                 box.changed(() -> {
-                    Settings.putBool(name, box.isChecked);
-                    Settings.save();
+                    settings.put(name, box.isChecked);
+                    settings.save();
                     if(changed != null){
                         changed.accept(box.isChecked);
                     }
@@ -186,12 +187,12 @@ public class SettingsDialog extends Dialog{
             public void add(SettingsTable table){
                 Slider slider = new Slider(min, max, step, false);
 
-                slider.setValue(Settings.getInt(name));
+                slider.setValue(settings.getInt(name));
 
                 Label label = new Label(title);
                 slider.changed(() -> {
-                    Settings.putInt(name, (int) slider.getValue());
-                    Settings.save();
+                    settings.put(name, (int) slider.getValue());
+                    settings.save();
                     label.setText(title + ": " + sp.get((int) slider.getValue()));
                 });
 

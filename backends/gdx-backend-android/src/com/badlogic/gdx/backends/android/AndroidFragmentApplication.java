@@ -9,18 +9,19 @@ import android.os.Build;
 import android.os.Debug;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
-import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.Preferences;
+import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.lang.reflect.Method;
 
@@ -54,12 +55,10 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
     protected ApplicationListener listener;
     public Handler handler;
     protected boolean firstResume = true;
-    protected final Array<Runnable> runnables = new Array<Runnable>();
-    protected final Array<Runnable> executedRunnables = new Array<Runnable>();
-    protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
-    private final Array<AndroidEventListener> androidEventListeners = new Array<AndroidEventListener>();
-    protected int logLevel = LOG_INFO;
-    protected ApplicationLogger applicationLogger;
+    protected final Array<Runnable> runnables = new Array<>();
+    protected final Array<Runnable> executedRunnables = new Array<>();
+    protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<>(LifecycleListener.class);
+    private final Array<AndroidEventListener> androidEventListeners = new Array<>();
 
     protected Callbacks callbacks;
 
@@ -111,7 +110,7 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             m.invoke(view, code);
         }catch(Exception e){
-            log("AndroidApplication", "Failed to setup immersive mode, a throwable has occurred.", e);
+            com.badlogic.gdx.utils.Log.err("[AndroidApplication] Failed to setup immersive mode, a throwable has occurred.", e);
         }
     }
 
@@ -149,7 +148,7 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
         if(this.getVersion() < MINIMUM_SDK){
             throw new GdxRuntimeException("LibGDX requires Android API Level " + MINIMUM_SDK + " or later.");
         }
-        setApplicationLogger(new AndroidApplicationLogger());
+        com.badlogic.gdx.utils.Log.setLogger(new AndroidApplicationLogger());
         graphics = new AndroidGraphics(this, config, config.resolutionStrategy == null ? new FillResolutionStrategy()
         : config.resolutionStrategy);
         input = AndroidInputFactory.newAndroidInput(this, getActivity(), graphics.view, config);
@@ -180,11 +179,11 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
         });
 
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
         createWakeLock(config.useWakelock);
         useImmersiveMode(config.useImmersiveMode);
         if(config.useImmersiveMode && getVersion() >= Build.VERSION_CODES.KITKAT){
@@ -194,7 +193,7 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
                 Method method = vlistener.getDeclaredMethod("createListener", AndroidApplicationBase.class);
                 method.invoke(o, this);
             }catch(Exception e){
-                log("AndroidApplication", "Failed to create AndroidVisibilityListener", e);
+                com.badlogic.gdx.utils.Log.err("[AndroidApplication] Failed to create AndroidVisibilityListener", e);
             }
         }
         return graphics.getView();
@@ -232,11 +231,11 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
     @Override
     public void onResume(){
         Core.app = this;
-        Core.input = this.getInput();
-        Core.audio = this.getAudio();
-        Core.files = this.getFiles();
-        Core.graphics = this.getGraphics();
-        Core.net = this.getNet();
+        Core.input = input;
+        Core.audio = audio;
+        Core.files = files;
+        Core.graphics = graphics;
+        Core.net = net;
 
         input.onResume();
 
@@ -254,31 +253,6 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
     @Override
     public ApplicationListener getApplicationListener(){
         return listener;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public AndroidInput getInput(){
-        return input;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
     }
 
     @Override
@@ -335,60 +309,6 @@ public class AndroidFragmentApplication extends Fragment implements AndroidAppli
                 callbacks.exit();
             }
         });
-    }
-
-    @Override
-    public void debug(String tag, String message){
-        if(logLevel >= LOG_DEBUG){
-            Log.d(tag, message);
-        }
-    }
-
-    @Override
-    public void debug(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_DEBUG){
-            Log.d(tag, message, exception);
-        }
-    }
-
-    @Override
-    public void log(String tag, String message){
-        if(logLevel >= LOG_INFO) Log.i(tag, message);
-    }
-
-    @Override
-    public void log(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_INFO) Log.i(tag, message, exception);
-    }
-
-    @Override
-    public void error(String tag, String message){
-        if(logLevel >= LOG_ERROR) Log.e(tag, message);
-    }
-
-    @Override
-    public void error(String tag, String message, Throwable exception){
-        if(logLevel >= LOG_ERROR) Log.e(tag, message, exception);
-    }
-
-    @Override
-    public void setLogLevel(int logLevel){
-        this.logLevel = logLevel;
-    }
-
-    @Override
-    public int getLogLevel(){
-        return logLevel;
-    }
-
-    @Override
-    public void setApplicationLogger(ApplicationLogger applicationLogger){
-        this.applicationLogger = applicationLogger;
-    }
-
-    @Override
-    public ApplicationLogger getApplicationLogger(){
-        return applicationLogger;
     }
 
     @Override
