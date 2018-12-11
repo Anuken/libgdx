@@ -19,6 +19,7 @@ package com.badlogic.gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.*;
 
 /**
@@ -39,6 +40,9 @@ import com.badlogic.gdx.graphics.glutils.*;
  * @author mzechner
  */
 public abstract class Graphics{
+    /**One global spritebatch for drawing things.*/
+    private SpriteBatch batch;
+
     /**
      * Returns whether OpenGL ES 3.0 is available. If it is you can get an instance of {@link GL30} via {@link #getGL30()} to
      * access OpenGL ES 3.0 functionality. Note that this functionality will only be available if you instructed the
