@@ -19,11 +19,9 @@ package com.badlogic.gdx.scene.ui;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
@@ -69,7 +67,7 @@ public class Window extends Table{
 
     public Window(String title, WindowStyle style){
         if(title == null) throw new IllegalArgumentException("title cannot be null.");
-        setTouchable(Touchable.enabled);
+        touchable(Touchable.enabled);
         setClip(true);
 
         titleLabel = new Label(title, new LabelStyle(style.titleFont, style.titleFontColor));

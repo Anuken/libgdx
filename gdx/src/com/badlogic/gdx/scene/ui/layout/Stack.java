@@ -29,7 +29,6 @@ package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.utils.Layout;
 
@@ -49,7 +48,7 @@ public class Stack extends WidgetGroup{
         setTransform(false);
         setWidth(150);
         setHeight(150);
-        setTouchable(Touchable.childrenOnly);
+        touchable(Touchable.childrenOnly);
     }
 
     public Stack(Element... actors){

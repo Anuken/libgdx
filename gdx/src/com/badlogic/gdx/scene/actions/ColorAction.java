@@ -17,7 +17,6 @@
 package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scene.Element;
 
 /**
  * Sets the actor's color (or a specified color), from the current to the new color. Note this action transitions from the color

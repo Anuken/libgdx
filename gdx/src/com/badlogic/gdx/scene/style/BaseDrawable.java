@@ -16,8 +16,6 @@
 
 package com.badlogic.gdx.scene.style;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 /**
  * Drawable that stores the size information but doesn't draw anything.
  *

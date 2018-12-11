@@ -17,8 +17,6 @@
 package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.collection.SnapshotArray;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.utils.Layout;

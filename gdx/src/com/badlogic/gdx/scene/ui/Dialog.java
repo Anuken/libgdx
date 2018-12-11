@@ -20,7 +20,6 @@ import com.badlogic.gdx.Core;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.actions.Actions;
 import com.badlogic.gdx.scene.event.*;

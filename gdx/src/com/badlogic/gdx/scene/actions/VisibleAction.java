@@ -17,10 +17,9 @@
 package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 
 /**
- * Sets the actor's {@link Element#setVisible(boolean) visibility}.
+ * Sets the actor's {@link Element#visible(boolean) visibility}.
  *
  * @author Nathan Sweet
  */
@@ -28,7 +27,7 @@ public class VisibleAction extends Action{
     private boolean visible;
 
     public boolean act(float delta){
-        target.setVisible(visible);
+        target.visible(visible);
         return true;
     }
 

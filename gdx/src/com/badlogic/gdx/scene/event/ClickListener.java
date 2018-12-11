@@ -18,13 +18,13 @@ package com.badlogic.gdx.scene.event;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.input.KeyCode;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.scene.Element;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
- * Detects mouse over, mouse or finger touch presses, and clicks on an actor. A touch must go down over the actor and is
- * considered pressed as long as it is over the actor or within the {@link #setTapSquareSize(float) tap square}. This behavior
- * makes it easier to press buttons on a touch interface when the initial touch happens near the edge of the actor. Double clicks
+ * Detects mouse over, mouse or finger touch presses, and clicks on an element. A touch must go down over the element and is
+ * considered pressed as long as it is over the element or within the {@link #setTapSquareSize(float) tap square}. This behavior
+ * makes it easier to press buttons on a touch interface when the initial touch happens near the edge of the element. Double clicks
  * can be detected using {@link #getTapCount()}. Any touch (not just the first) will trigger this listener. While pressed, other
  * touch downs are ignored.
  *
@@ -69,7 +69,7 @@ public class ClickListener extends InputListener{
     @Override
     public void touchDragged(InputEvent event, float x, float y, int pointer){
         if(pointer != pressedPointer || cancelled) return;
-        pressed = isOver(event.getListenerActor(), x, y);
+        pressed = isOver(event.listenerActor, x, y);
         if(pressed && pointer == 0 && button != null && !Core.input.isKeyPressed(button)) pressed = false;
         if(!pressed){
             // Once outside the tap square, don't use the tap square anymore.
@@ -81,7 +81,7 @@ public class ClickListener extends InputListener{
     public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
         if(pointer == pressedPointer){
             if(!cancelled){
-                boolean touchUpOver = isOver(event.getListenerActor(), x, y);
+                boolean touchUpOver = isOver(event.listenerActor, x, y);
                 // Ignore touch up if the wrong mouse button.
                 if(touchUpOver && pointer == 0 && this.button != null && button != this.button) touchUpOver = false;
                 if(touchUpOver){
@@ -122,10 +122,10 @@ public class ClickListener extends InputListener{
     public void clicked(InputEvent event, float x, float y){
     }
 
-    /** Returns true if the specified position is over the specified actor or within the tap square. */
-    public boolean isOver(Element actor, float x, float y){
-        Element hit = actor.hit(x, y, true);
-        return hit != null && hit.isDescendantOf(actor) || inTapSquare(x, y);
+    /** Returns true if the specified position is over the specified element or within the tap square. */
+    public boolean isOver(Element element, float x, float y){
+        Element hit = element.hit(x, y, true);
+        return hit != null && hit.isDescendantOf(element) || inTapSquare(x, y);
     }
 
     public boolean inTapSquare(float x, float y){
@@ -143,13 +143,13 @@ public class ClickListener extends InputListener{
         touchDownY = -1;
     }
 
-    /** Returns true if a touch is over the actor or within the tap square. */
+    /** Returns true if a touch is over the element or within the tap square. */
     public boolean isPressed(){
         return pressed;
     }
 
     /**
-     * Returns true if a touch is over the actor or within the tap square or has been very recently. This allows the UI to show a
+     * Returns true if a touch is over the element or within the tap square or has been very recently. This allows the UI to show a
      * press and release that was so fast it occurred within a single frame.
      */
     public boolean isVisualPressed(){
@@ -160,7 +160,7 @@ public class ClickListener extends InputListener{
         return false;
     }
 
-    /** Returns true if the mouse or touch is over the actor or pressed and within the tap square. */
+    /** Returns true if the mouse or touch is over the element or pressed and within the tap square. */
     public boolean isOver(){
         return over || pressed;
     }

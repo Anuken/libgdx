@@ -18,12 +18,10 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;

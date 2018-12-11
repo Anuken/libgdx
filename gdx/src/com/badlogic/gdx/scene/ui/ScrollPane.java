@@ -18,13 +18,11 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.ActorGestureListener;
 import com.badlogic.gdx.scene.event.Event;

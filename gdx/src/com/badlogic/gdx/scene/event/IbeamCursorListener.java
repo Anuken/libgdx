@@ -7,7 +7,7 @@ public class IbeamCursorListener extends ClickListener{
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
         super.enter(event, x, y, pointer, fromActor);
-        if(pointer == -1 && event.getTarget().isVisible()){
+        if(pointer == -1 && event.targetActor.isVisible()){
             Cursors.setIbeam();
         }
     }

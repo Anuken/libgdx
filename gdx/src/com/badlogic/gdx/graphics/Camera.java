@@ -19,7 +19,6 @@ package com.badlogic.gdx.graphics;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.geom.Frustum;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;

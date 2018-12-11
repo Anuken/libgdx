@@ -20,7 +20,6 @@ import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.Label;
 import com.badlogic.gdx.scene.utils.Layout;
@@ -28,7 +27,7 @@ import com.badlogic.gdx.utils.Align;
 
 /**
  * A group that lays out its children side by side horizontally, with optional wrapping. This can be easier than using
- * {@link Table} when actors need to be inserted into or removed from the middle of the group.
+ * {@link Table} when elements need to be inserted into or removed from the middle of the group.
  * <p>
  * The preferred width is the sum of the children's preferred widths plus spacing. The preferred height is the largest preferred
  * height of any child. The preferred size is slightly different when {@link #wrap() wrap} is enabled. The min size is the
@@ -49,7 +48,7 @@ public class HorizontalGroup extends WidgetGroup{
     private float space, wrapSpace, fill, padTop, padLeft, padBottom, padRight;
 
     public HorizontalGroup(){
-        setTouchable(Touchable.childrenOnly);
+        touchable(Touchable.childrenOnly);
     }
 
     public void invalidate(){

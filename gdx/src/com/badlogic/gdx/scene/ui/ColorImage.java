@@ -1,7 +1,6 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class ColorImage extends Image{
     private Color set;

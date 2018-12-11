@@ -17,10 +17,8 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.TextureRegionDrawable;

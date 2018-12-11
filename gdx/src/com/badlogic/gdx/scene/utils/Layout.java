@@ -16,9 +16,6 @@
 
 package com.badlogic.gdx.scene.utils;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scene.Element;
-
 /**
  * Provides methods for an actor to participate in layout and to provide a minimum, preferred, and maximum size.
  *

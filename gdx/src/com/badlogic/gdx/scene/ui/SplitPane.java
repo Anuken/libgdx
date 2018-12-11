@@ -17,11 +17,9 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
@@ -357,41 +355,41 @@ public class SplitPane extends WidgetGroup{
         invalidate();
     }
 
-    public void addChild(Element actor){
+    public void addChild(Element element){
         throw new UnsupportedOperationException("Use SplitPane#setWidget.");
     }
 
-    public void addChildAt(int index, Element actor){
+    public void addChildAt(int index, Element element){
         throw new UnsupportedOperationException("Use SplitPane#setWidget.");
     }
 
-    public void addChildBefore(Element actorBefore, Element actor){
+    public void addChildBefore(Element elementBefore, Element element){
         throw new UnsupportedOperationException("Use SplitPane#setWidget.");
     }
 
-    public boolean removeChild(Element actor){
-        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
-        if(actor == firstWidget){
+    public boolean removeChild(Element element){
+        if(element == null) throw new IllegalArgumentException("element cannot be null.");
+        if(element == firstWidget){
             setFirstWidget(null);
             return true;
         }
-        if(actor == secondWidget){
+        if(element == secondWidget){
             setSecondWidget(null);
             return true;
         }
         return true;
     }
 
-    public boolean removeChild(Element actor, boolean unfocus){
-        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
-        if(actor == firstWidget){
-            super.removeChild(actor, unfocus);
+    public boolean removeChild(Element element, boolean unfocus){
+        if(element == null) throw new IllegalArgumentException("element cannot be null.");
+        if(element == firstWidget){
+            super.removeChild(element, unfocus);
             firstWidget = null;
             invalidate();
             return true;
         }
-        if(actor == secondWidget){
-            super.removeChild(actor, unfocus);
+        if(element == secondWidget){
+            super.removeChild(element, unfocus);
             secondWidget = null;
             invalidate();
             return true;

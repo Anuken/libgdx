@@ -26,7 +26,7 @@ import com.badlogic.gdx.scene.Element;
 abstract public class ChangeListener implements EventListener{
     public boolean handle(Event event){
         if(!(event instanceof ChangeEvent)) return false;
-        changed((ChangeEvent) event, event.getTarget());
+        changed((ChangeEvent) event, event.targetActor);
         return false;
     }
 

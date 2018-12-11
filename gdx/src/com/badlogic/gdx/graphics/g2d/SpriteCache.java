@@ -71,13 +71,13 @@ public class SpriteCache implements Disposable{
     private boolean drawing;
     private final Matrix4 transformMatrix = new Matrix4();
     private final Matrix4 projectionMatrix = new Matrix4();
-    private Array<Cache> caches = new Array();
+    private Array<Cache> caches = new Array<>();
 
     private final Matrix4 combinedMatrix = new Matrix4();
     private final ShaderProgram shader;
 
     private Cache currentCache;
-    private final Array<Texture> textures = new Array(8);
+    private final Array<Texture> textures = new Array<>(8);
     private final IntArray counts = new IntArray(8);
 
     private final Color color = new Color(1, 1, 1, 1);
@@ -840,21 +840,6 @@ public class SpriteCache implements Disposable{
             tempVertices[29] = v;
             add(region.texture, tempVertices, 0, 30);
         }
-    }
-
-    /** Adds the specified sprite to the cache. */
-    public void add(Sprite sprite){
-        if(mesh.getNumIndices() > 0){
-            add(sprite.getTexture(), sprite.getVertices(), 0, SPRITE_SIZE);
-            return;
-        }
-
-        float[] spriteVertices = sprite.getVertices();
-        System.arraycopy(spriteVertices, 0, tempVertices, 0, 3 * VERTEX_SIZE); // temp0,1,2=sprite0,1,2
-        System.arraycopy(spriteVertices, 2 * VERTEX_SIZE, tempVertices, 3 * VERTEX_SIZE, VERTEX_SIZE); // temp3=sprite2
-        System.arraycopy(spriteVertices, 3 * VERTEX_SIZE, tempVertices, 4 * VERTEX_SIZE, VERTEX_SIZE); // temp4=sprite3
-        System.arraycopy(spriteVertices, 0, tempVertices, 5 * VERTEX_SIZE, VERTEX_SIZE); // temp5=sprite0
-        add(sprite.getTexture(), tempVertices, 0, 30);
     }
 
     /** Prepares the OpenGL state for SpriteCache rendering. */

@@ -20,7 +20,6 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Predicate;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;

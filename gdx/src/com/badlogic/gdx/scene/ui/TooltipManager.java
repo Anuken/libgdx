@@ -37,7 +37,7 @@ public class TooltipManager{
     static private Files files;
     final Array<Tooltip> shown = new Array<>();
     /**
-     * Seconds from when an actor is hovered to when the tooltip is shown. Default is 2. Call {@link #hideAll()} after changing to
+     * Seconds from when an element is hovered to when the tooltip is shown. Default is 2. Call {@link #hideAll()} after changing to
      * reset internal state.
      */
     public float initialTime = 2;
@@ -51,10 +51,10 @@ public class TooltipManager{
     public boolean animations = false;
     /** The maximum width of a {@link TextTooltip}. The label will wrap if needed. Default is Integer.MAX_VALUE. */
     public float maxWidth = Integer.MAX_VALUE;
-    /** The distance from the mouse position to offset the tooltip actor. Default is 15,19. */
+    /** The distance from the mouse position to offset the tooltip element. Default is 15,19. */
     public float offsetX = 15, offsetY = 19;
     /**
-     * The distance from the tooltip actor position to the edge of the screen where the actor will be shown on the other side of
+     * The distance from the tooltip element position to the edge of the screen where the element will be shown on the other side of
      * the mouse cursor. Default is 7.
      */
     public float edgeDistance = 7;
@@ -136,8 +136,8 @@ public class TooltipManager{
     }
 
     /**
-     * Called when tooltip is hidden. Default implementation sets actions to animate hiding and to remove the actor from the stage
-     * when the actions are complete. A subclass must at least remove the actor.
+     * Called when tooltip is hidden. Default implementation sets actions to animate hiding and to remove the element from the stage
+     * when the actions are complete. A subclass must at least remove the element.
      */
     protected void hideAction(Tooltip tooltip){
         tooltip.container

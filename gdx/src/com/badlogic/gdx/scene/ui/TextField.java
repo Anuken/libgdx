@@ -22,7 +22,6 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -30,7 +29,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout.GlyphRun;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
@@ -547,24 +545,24 @@ public class TextField extends Element implements Disableable{
         }
     }
 
-    private TextField findNextTextField(Array<Element> actors, TextField best, Vector2 bestCoords, Vector2 currentCoords,
+    private TextField findNextTextField(Array<Element> elements, TextField best, Vector2 bestCoords, Vector2 currentCoords,
                                         boolean up){
-        for(int i = 0, n = actors.size; i < n; i++){
-            Element actor = actors.get(i);
-            if(actor == this) continue;
-            if(actor instanceof TextField){
-                TextField textField = (TextField) actor;
+        for(int i = 0, n = elements.size; i < n; i++){
+            Element element = elements.get(i);
+            if(element == this) continue;
+            if(element instanceof TextField){
+                TextField textField = (TextField) element;
                 if(textField.isDisabled() || !textField.focusTraversal) continue;
-                Vector2 actorCoords = actor.getParent().localToStageCoordinates(tmp3.set(actor.getX(), actor.getY()));
-                if((actorCoords.y < currentCoords.y || (actorCoords.y == currentCoords.y && actorCoords.x > currentCoords.x)) ^ up){
+                Vector2 elementCoords = element.getParent().localToStageCoordinates(tmp3.set(element.getX(), element.getY()));
+                if((elementCoords.y < currentCoords.y || (elementCoords.y == currentCoords.y && elementCoords.x > currentCoords.x)) ^ up){
                     if(best == null
-                            || (actorCoords.y > bestCoords.y || (actorCoords.y == bestCoords.y && actorCoords.x < bestCoords.x)) ^ up){
-                        best = (TextField) actor;
-                        bestCoords.set(actorCoords);
+                            || (elementCoords.y > bestCoords.y || (elementCoords.y == bestCoords.y && elementCoords.x < bestCoords.x)) ^ up){
+                        best = (TextField) element;
+                        bestCoords.set(elementCoords);
                     }
                 }
-            }else if(actor instanceof Group)
-                best = findNextTextField(((Group) actor).getChildren(), best, bestCoords, currentCoords, up);
+            }else if(element instanceof Group)
+                best = findNextTextField(((Group) element).getChildren(), best, bestCoords, currentCoords, up);
         }
         return best;
     }

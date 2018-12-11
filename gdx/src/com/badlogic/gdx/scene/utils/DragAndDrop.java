@@ -20,7 +20,6 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.collection.ObjectMap.Entry;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.DragListener;
 import com.badlogic.gdx.scene.event.InputEvent;
@@ -78,7 +77,7 @@ public class DragAndDrop{
                 Touchable dragActorTouchable = null;
                 if(dragActor != null){
                     dragActorTouchable = dragActor.getTouchable();
-                    dragActor.setTouchable(Touchable.disabled);
+                    dragActor.touchable(Touchable.disabled);
                 }
 
                 // Find target.
@@ -105,7 +104,7 @@ public class DragAndDrop{
                 if(newTarget != null)
                     isValidTarget = newTarget.drag(source, payload, tmpVector.x, tmpVector.y, pointer);
 
-                if(dragActor != null) dragActor.setTouchable(dragActorTouchable);
+                if(dragActor != null) dragActor.touchable(dragActorTouchable);
 
                 // Add/remove and position the drag actor.
                 Element actor = null;

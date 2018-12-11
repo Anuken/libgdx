@@ -40,7 +40,7 @@ public class InputListener implements EventListener{
                 return keyTyped(event, event.character);
         }
 
-        event.toCoordinates(event.getListenerActor(), tmpCoords);
+        event.toCoordinates(event.listenerActor, tmpCoords);
 
         switch(event.type){
             case touchDown:
@@ -66,8 +66,8 @@ public class InputListener implements EventListener{
     }
 
     /**
-     * Called when a mouse button or a finger touch goes down on the actor. If true is returned, this listener will receive all
-     * touchDragged and touchUp events, even those not over this actor, until touchUp is received. Also when true is returned, the
+     * Called when a mouse button or a finger touch goes down on the element. If true is returned, this listener will receive all
+     * touchDragged and touchUp events, even those not over this element, until touchUp is received. Also when true is returned, the
      * event is {@link Event#handle() handled}.
      *
      * @see InputEvent
@@ -105,7 +105,7 @@ public class InputListener implements EventListener{
     }
 
     /**
-     * Called any time the mouse cursor or a finger touch is moved over an actor. On the desktop, this event occurs even when no
+     * Called any time the mouse cursor or a finger touch is moved over an element. On the desktop, this event occurs even when no
      * mouse buttons are pressed (pointer will be -1).
      *
      * @param fromActor May be null.
@@ -115,7 +115,7 @@ public class InputListener implements EventListener{
     }
 
     /**
-     * Called any time the mouse cursor or a finger touch is moved out of an actor. On the desktop, this event occurs even when no
+     * Called any time the mouse cursor or a finger touch is moved out of an element. On the desktop, this event occurs even when no
      * mouse buttons are pressed (pointer will be -1).
      *
      * @param toActor May be null.

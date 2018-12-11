@@ -16,8 +16,6 @@
 
 package com.badlogic.gdx.scene.ui.layout;
 
-import com.badlogic.gdx.scene.Element;
-
 /**
  * Value placeholder, allowing the value to be computed on request. Values are provided an actor for context which reduces the
  * number of value instances that need to be created and reduces verbosity in code that specifies values.

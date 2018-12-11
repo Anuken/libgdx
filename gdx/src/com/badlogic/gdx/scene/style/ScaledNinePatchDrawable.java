@@ -1,6 +1,5 @@
 package com.badlogic.gdx.scene.style;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scene.ui.layout.Unit;
 

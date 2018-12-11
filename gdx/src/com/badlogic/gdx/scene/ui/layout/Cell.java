@@ -5,7 +5,6 @@ import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.Button;
 import com.badlogic.gdx.scene.ui.ButtonGroup;
@@ -33,9 +32,9 @@ public class Cell<T extends Element> implements Poolable{
     int colspan;
     boolean uniformX, uniformY;
 
-    Element actor;
-    float actorX, actorY;
-    float actorWidth, actorHeight;
+    Element element;
+    float elementX, elementY;
+    float elementWidth, elementHeight;
     boolean endRow;
     int column, row;
     int cellAboveIndex;
@@ -83,25 +82,25 @@ public class Cell<T extends Element> implements Poolable{
         this.table = table;
     }
 
-    /** Sets the actor in this cell and adds the actor to the cell's table. If null, removes any current actor. */
+    /** Sets the element in this cell and adds the element to the cell's table. If null, removes any current element. */
     public <A extends Element> Cell<A> setActor(A newActor){
-        if(actor != newActor){
-            if(actor != null) actor.remove();
-            actor = newActor;
+        if(element != newActor){
+            if(element != null) element.remove();
+            element = newActor;
             if(newActor != null) table.addChild(newActor);
         }
         return (Cell<A>) this;
     }
 
-    /** Removes the current actor for the cell, if any. */
+    /** Removes the current element for the cell, if any. */
     public Cell<T> clearActor(){
         setActor(null);
         return this;
     }
 
-    /** Returns the actor for this cell, or null. */
+    /** Returns the element for this cell, or null. */
     public T getElement(){
-        return (T) actor;
+        return (T) element;
     }
 
     /** getElement shortcut */
@@ -109,9 +108,9 @@ public class Cell<T extends Element> implements Poolable{
         return getElement();
     }
 
-    /** Returns true if the cell's actor is not null. */
+    /** Returns true if the cell's element is not null. */
     public boolean hasActor(){
-        return actor != null;
+        return element != null;
     }
 
     /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
@@ -160,12 +159,12 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public Cell<T> touchable(Touchable touchable){
-        getElement().setTouchable(touchable);
+        getElement().touchable(touchable);
         return this;
     }
 
     public Cell<T> touchable(Supplier<Touchable> touchable){
-        getElement().setTouchable(touchable);
+        getElement().touchable(touchable);
         return this;
     }
 
@@ -175,7 +174,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public Cell<T> visible(boolean visible){
-        getElement().setVisible(visible);
+        getElement().visible(visible);
         return this;
     }
 
@@ -630,7 +629,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     /**
-     * Sets the alignment of the actor within the cell. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom},
+     * Sets the alignment of the element within the cell. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom},
      * {@link Align#left}, {@link Align#right}, or any combination of those.
      */
     public Cell<T> align(int align){
@@ -638,31 +637,31 @@ public class Cell<T extends Element> implements Poolable{
         return this;
     }
 
-    /** Sets the alignment of the actor within the cell to {@link Align#center}. This clears any other alignment. */
+    /** Sets the alignment of the element within the cell to {@link Align#center}. This clears any other alignment. */
     public Cell<T> center(){
         align = Align.center;
         return this;
     }
 
-    /** Adds {@link Align#top} and clears {@link Align#bottom} for the alignment of the actor within the cell. */
+    /** Adds {@link Align#top} and clears {@link Align#bottom} for the alignment of the element within the cell. */
     public Cell<T> top(){
         align = (align | Align.top) & ~Align.bottom;
         return this;
     }
 
-    /** Adds {@link Align#left} and clears {@link Align#right} for the alignment of the actor within the cell. */
+    /** Adds {@link Align#left} and clears {@link Align#right} for the alignment of the element within the cell. */
     public Cell<T> left(){
         align = (align | Align.left) & ~Align.right;
         return this;
     }
 
-    /** Adds {@link Align#bottom} and clears {@link Align#top} for the alignment of the actor within the cell. */
+    /** Adds {@link Align#bottom} and clears {@link Align#top} for the alignment of the element within the cell. */
     public Cell<T> bottom(){
         align = (align | Align.bottom) & ~Align.top;
         return this;
     }
 
-    /** Adds {@link Align#right} and clears {@link Align#left} for the alignment of the actor within the cell. */
+    /** Adds {@link Align#right} and clears {@link Align#left} for the alignment of the element within the cell. */
     public Cell<T> right(){
         align = (align | Align.right) & ~Align.left;
         return this;
@@ -754,42 +753,42 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public void setActorBounds(float x, float y, float width, float height){
-        actorX = x;
-        actorY = y;
-        actorWidth = width;
-        actorHeight = height;
+        elementX = x;
+        elementY = y;
+        elementWidth = width;
+        elementHeight = height;
     }
 
     public float getActorX(){
-        return actorX;
+        return elementX;
     }
 
-    public void setActorX(float actorX){
-        this.actorX = actorX;
+    public void setActorX(float elementX){
+        this.elementX = elementX;
     }
 
     public float getActorY(){
-        return actorY;
+        return elementY;
     }
 
-    public void setActorY(float actorY){
-        this.actorY = actorY;
+    public void setActorY(float elementY){
+        this.elementY = elementY;
     }
 
     public float getActorWidth(){
-        return actorWidth;
+        return elementWidth;
     }
 
-    public void setActorWidth(float actorWidth){
-        this.actorWidth = actorWidth;
+    public void setActorWidth(float elementWidth){
+        this.elementWidth = elementWidth;
     }
 
     public float getActorHeight(){
-        return actorHeight;
+        return elementHeight;
     }
 
-    public void setActorHeight(float actorHeight){
-        this.actorHeight = actorHeight;
+    public void setActorHeight(float elementHeight){
+        this.elementHeight = elementHeight;
     }
 
     public int getColumn(){
@@ -806,7 +805,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getMinWidth(){
-        return minWidth.get(actor);
+        return minWidth.get(element);
     }
 
     /** @return May be null if this cell is row defaults. */
@@ -815,7 +814,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getMinHeight(){
-        return minHeight.get(actor);
+        return minHeight.get(element);
     }
 
     /** @return May be null if this cell is row defaults. */
@@ -824,7 +823,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getMaxWidth(){
-        return maxWidth.get(actor);
+        return maxWidth.get(element);
     }
 
     /** @return May be null if this cell is row defaults. */
@@ -833,7 +832,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getMaxHeight(){
-        return maxHeight.get(actor);
+        return maxHeight.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -842,7 +841,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getSpaceTop(){
-        return spaceTop.get(actor);
+        return spaceTop.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -851,7 +850,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getSpaceLeft(){
-        return spaceLeft.get(actor);
+        return spaceLeft.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -860,7 +859,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getSpaceBottom(){
-        return spaceBottom.get(actor);
+        return spaceBottom.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -869,7 +868,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getSpaceRight(){
-        return spaceRight.get(actor);
+        return spaceRight.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -878,7 +877,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getPadTop(){
-        return padTop.get(actor);
+        return padTop.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -887,7 +886,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getPadLeft(){
-        return padLeft.get(actor);
+        return padLeft.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -896,7 +895,7 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getPadBottom(){
-        return padBottom.get(actor);
+        return padBottom.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -905,17 +904,17 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public float getPadRight(){
-        return padRight.get(actor);
+        return padRight.get(element);
     }
 
     /** Returns {@link #getPadLeft()} plus {@link #getPadRight()}. */
     public float getPadX(){
-        return padLeft.get(actor) + padRight.get(actor);
+        return padLeft.get(element) + padRight.get(element);
     }
 
     /** Returns {@link #getPadTop()} plus {@link #getPadBottom()}. */
     public float getPadY(){
-        return padTop.get(actor) + padBottom.get(actor);
+        return padTop.get(element) + padBottom.get(element);
     }
 
     /** @return May be null if this value is not set. */
@@ -1017,7 +1016,7 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Reset state so the cell can be reused, setting all constraints to their {@link #defaults() default} values. */
     public void reset(){
-        actor = null;
+        element = null;
         table = null;
         endRow = false;
         cellAboveIndex = -1;
@@ -1076,6 +1075,6 @@ public class Cell<T extends Element> implements Poolable{
     }
 
     public String toString(){
-        return actor != null ? actor.toString() : super.toString();
+        return element != null ? element.toString() : super.toString();
     }
 }

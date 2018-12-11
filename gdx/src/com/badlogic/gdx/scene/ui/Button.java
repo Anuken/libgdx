@@ -20,9 +20,7 @@ import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.function.BooleanProvider;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
@@ -118,7 +116,7 @@ public class Button extends Table implements Disableable{
     }
 
     private void initialize(){
-        setTouchable(Touchable.enabled);
+        touchable(Touchable.enabled);
         addListener(clickListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

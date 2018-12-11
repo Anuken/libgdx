@@ -2,14 +2,13 @@ package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.OrderedSet;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.util.Iterator;
 
 /**
- * Manages selected objects. Optionally fires a {@link ChangeEvent} on an actor. Selection changes can be vetoed via
+ * Manages selected objects. Optionally fires a {@link ChangeEvent} on an element. Selection changes can be vetoed via
  * {@link ChangeEvent#cancel()}.
  *
  * @author Nathan Sweet
@@ -21,13 +20,13 @@ public class Selection<T> implements Disableable, Iterable<T>{
     boolean multiple;
     boolean required;
     T lastSelected;
-    private Element actor;
+    private Element element;
     private boolean toggle;
     private boolean programmaticChangeEvents = true;
 
-    /** @param actor An actor to fire {@link ChangeEvent} on when the selection changes, or null. */
-    public void setActor(Element actor){
-        this.actor = actor;
+    /** @param element An element to fire {@link ChangeEvent} on when the selection changes, or null. */
+    public void setActor(Element element){
+        this.element = element;
     }
 
     /**
@@ -213,16 +212,16 @@ public class Selection<T> implements Disableable, Iterable<T>{
     }
 
     /**
-     * Fires a change event on the selection's actor, if any. Called internally when the selection changes, depending on
+     * Fires a change event on the selection's element, if any. Called internally when the selection changes, depending on
      * {@link #setProgrammaticChangeEvents(boolean)}.
      *
      * @return true if the change should be undone.
      */
     public boolean fireChangeEvent(){
-        if(actor == null) return false;
+        if(element == null) return false;
         ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class, ChangeEvent::new);
         try{
-            return actor.fire(changeEvent);
+            return element.fire(changeEvent);
         }finally{
             Pools.free(changeEvent);
         }

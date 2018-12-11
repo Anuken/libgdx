@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.utils.Layout;
 
 /**

@@ -18,12 +18,10 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.Style;

@@ -29,25 +29,25 @@ abstract public class FocusListener implements EventListener{
         FocusEvent focusEvent = (FocusEvent) event;
         switch(focusEvent.type){
             case keyboard:
-                keyboardFocusChanged(focusEvent, event.getTarget(), focusEvent.focused);
+                keyboardFocusChanged(focusEvent, event.targetActor, focusEvent.focused);
                 break;
             case scroll:
-                scrollFocusChanged(focusEvent, event.getTarget(), focusEvent.focused);
+                scrollFocusChanged(focusEvent, event.targetActor, focusEvent.focused);
                 break;
         }
         return false;
     }
 
-    /** @param actor The event target, which is the actor that emitted the focus event. */
-    public void keyboardFocusChanged(FocusEvent event, Element actor, boolean focused){
+    /** @param element The event target, which is the element that emitted the focus event. */
+    public void keyboardFocusChanged(FocusEvent event, Element element, boolean focused){
     }
 
-    /** @param actor The event target, which is the actor that emitted the focus event. */
-    public void scrollFocusChanged(FocusEvent event, Element actor, boolean focused){
+    /** @param element The event target, which is the element that emitted the focus event. */
+    public void scrollFocusChanged(FocusEvent event, Element element, boolean focused){
     }
 
     /**
-     * Fired when an actor gains or loses keyboard or scroll focus. Can be cancelled to prevent losing or gaining focus.
+     * Fired when an element gains or loses keyboard or scroll focus. Can be cancelled to prevent losing or gaining focus.
      *
      * @author Nathan Sweet
      */

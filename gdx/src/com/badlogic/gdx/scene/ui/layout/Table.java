@@ -22,12 +22,10 @@ import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.ext.Draw;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.geom.Rectangle;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.ui.*;
@@ -108,7 +106,7 @@ public class Table extends WidgetGroup{
         cellDefaults = obtainCell();
 
         setTransform(false);
-        setTouchable(Touchable.childrenOnly);
+        touchable(Touchable.childrenOnly);
     }
 
     public Table(String background){
@@ -217,7 +215,7 @@ public class Table extends WidgetGroup{
     }
 
     /**
-     * Causes the contents to be clipped if they exceed the table actor's bounds. Enabling clipping will set
+     * Causes the contents to be clipped if they exceed the table element's bounds. Enabling clipping will set
      * {@link #setTransform(boolean)} to true.
      */
     public void setClip(boolean enabled){
@@ -231,10 +229,10 @@ public class Table extends WidgetGroup{
         super.invalidate();
     }
 
-    /** Adds a new cell to the table with the specified actor. */
-    public <T extends Element> Cell<T> add(T actor){
+    /** Adds a new cell to the table with the specified element. */
+    public <T extends Element> Cell<T> add(T element){
         Cell<T> cell = obtainCell();
-        cell.actor = actor;
+        cell.element = element;
 
         // The row was ended for layout, not by the user, so revert it.
         if(implicitEndRow){
@@ -281,13 +279,13 @@ public class Table extends WidgetGroup{
         }
         cell.merge(rowDefaults);
 
-        if(actor != null) addChild(actor);
+        if(element != null) addChild(element);
 
         return cell;
     }
 
-    public void add(Element... actors){
-        for(Element actor : actors) add(actor);
+    public void add(Element... elements){
+        for(Element element : elements) add(element);
     }
 
     public Cell<Table> table(){
@@ -382,21 +380,21 @@ public class Table extends WidgetGroup{
         return add(new Label(text, new LabelStyle(scene.skin.getFont(fontName), scene.skin.getColor(colorName))));
     }
 
-    /** Adds a cell without an actor. */
+    /** Adds a cell without an element. */
     public Cell add(){
         return add((Element) null);
     }
 
     /**
-     * Adds a new cell to the table with the specified actors in a {@link Stack}.
+     * Adds a new cell to the table with the specified elements in a {@link Stack}.
      *
-     * @param actors May be null to add a stack without any actors.
+     * @param elements May be null to add a stack without any elements.
      */
-    public Cell<Stack> stack(Element... actors){
+    public Cell<Stack> stack(Element... elements){
         Stack stack = new Stack();
-        if(actors != null){
-            for(int i = 0, n = actors.length; i < n; i++)
-                stack.addChild(actors[i]);
+        if(elements != null){
+            for(int i = 0, n = elements.length; i < n; i++)
+                stack.addChild(elements[i]);
         }
         return add(stack);
     }
@@ -572,13 +570,13 @@ public class Table extends WidgetGroup{
         return add(slider);
     }
 
-    public boolean removeChild(Element actor){
-        return removeChild(actor, true);
+    public boolean removeChild(Element element){
+        return removeChild(element, true);
     }
 
-    public boolean removeChild(Element actor, boolean unfocus){
-        if(!super.removeChild(actor, unfocus)) return false;
-        Cell cell = getCell(actor);
+    public boolean removeChild(Element element, boolean unfocus){
+        if(!super.removeChild(element, unfocus)) return false;
+        Cell cell = getCell(element);
         if(cell != null) cell.actor = null;
         return true;
     }

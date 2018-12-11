@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 
 /**
  * Base class for an action that wraps another action.

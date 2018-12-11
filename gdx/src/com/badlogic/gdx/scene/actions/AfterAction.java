@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 
 /**
  * Executes an action only after all other actions on the actor at the time this action's target was set have finished.

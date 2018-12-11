@@ -26,7 +26,6 @@ import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.InputProcessor;
@@ -318,7 +317,7 @@ public class Scene implements Disposable, InputProcessor{
             target.fire(event);
         }
 
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -350,13 +349,13 @@ public class Scene implements Disposable, InputProcessor{
             TouchFocus focus = focuses[i];
             if(focus.pointer != pointer) continue;
             if(!touchFocuses.contains(focus, true)) continue; // Touch focus already gone.
-            event.setTarget(focus.target);
-            event.setListenerActor(focus.listenerActor);
+            event.targetActor = focus.target;
+            event.listenerActor = focus.listenerActor;
             if(focus.listener.handle(event)) event.handle();
         }
         touchFocuses.end();
 
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -389,14 +388,14 @@ public class Scene implements Disposable, InputProcessor{
             TouchFocus focus = focuses[i];
             if(focus.pointer != pointer || focus.button != button) continue;
             if(!touchFocuses.removeValue(focus, true)) continue; // Touch focus already gone.
-            event.setTarget(focus.target);
-            event.setListenerActor(focus.listenerActor);
+            event.targetActor = focus.target;
+            event.listenerActor = focus.listenerActor;
             if(focus.listener.handle(event)) event.handle();
             Pools.free(focus);
         }
         touchFocuses.end();
 
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -424,7 +423,7 @@ public class Scene implements Disposable, InputProcessor{
         if(target == null) target = root;
 
         target.fire(event);
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -447,7 +446,7 @@ public class Scene implements Disposable, InputProcessor{
         event.stageX = (tempCoords.x);
         event.stageY = (tempCoords.y);
         target.fire(event);
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -464,7 +463,7 @@ public class Scene implements Disposable, InputProcessor{
         event.type = (InputEvent.Type.keyDown);
         event.keyCode = keyCode;
         target.fire(event);
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -481,7 +480,7 @@ public class Scene implements Disposable, InputProcessor{
         event.type = (InputEvent.Type.keyUp);
         event.keyCode = keyCode;
         target.fire(event);
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -498,7 +497,7 @@ public class Scene implements Disposable, InputProcessor{
         event.type = (InputEvent.Type.keyTyped);
         event.character = character;
         target.fire(event);
-        boolean handled = event.isHandled();
+        boolean handled = event.handled;
         Pools.free(event);
         return handled;
     }
@@ -553,8 +552,8 @@ public class Scene implements Disposable, InputProcessor{
             TouchFocus focus = items[i];
             if(focus.listenerActor != actor) continue;
             if(!touchFocuses.removeValue(focus, true)) continue; // Touch focus already gone.
-            event.setTarget(focus.target);
-            event.setListenerActor(focus.listenerActor);
+            event.targetActor = focus.target;
+            event.listenerActor = focus.listenerActor;
             event.pointer = (focus.pointer);
             event.keyCode = (focus.button);
             focus.listener.handle(event);
@@ -595,8 +594,8 @@ public class Scene implements Disposable, InputProcessor{
             TouchFocus focus = items[i];
             if(focus.listener == exceptListener && focus.listenerActor == exceptActor) continue;
             if(!touchFocuses.removeValue(focus, true)) continue; // Touch focus already gone.
-            event.setTarget(focus.target);
-            event.setListenerActor(focus.listenerActor);
+            event.targetActor = focus.target;
+            event.listenerActor = focus.listenerActor;
             event.pointer = (focus.pointer);
             event.keyCode = (focus.button);
             focus.listener.handle(event);
@@ -707,14 +706,14 @@ public class Scene implements Disposable, InputProcessor{
             event.relatedActor = (actor);
             oldKeyboardFocus.fire(event);
         }
-        boolean success = !event.isCancelled();
+        boolean success = !event.cancelled;
         if(success){
             keyboardFocus = actor;
             if(actor != null){
                 event.focused = true;
                 event.relatedActor = (oldKeyboardFocus);
                 actor.fire(event);
-                success = !event.isCancelled();
+                success = !event.cancelled;
                 if(!success) setKeyboardFocus(oldKeyboardFocus);
             }
         }
@@ -748,14 +747,14 @@ public class Scene implements Disposable, InputProcessor{
             event.relatedActor = (actor);
             oldScrollFocus.fire(event);
         }
-        boolean success = !event.isCancelled();
+        boolean success = !event.cancelled;
         if(success){
             scrollFocus = actor;
             if(actor != null){
                 event.focused = true;
                 event.relatedActor = (oldScrollFocus);
                 actor.fire(event);
-                success = !event.isCancelled();
+                success = !event.cancelled;
                 if(!success) setScrollFocus(oldScrollFocus);
             }
         }
@@ -804,7 +803,7 @@ public class Scene implements Disposable, InputProcessor{
      * were inserted into the stage, last inserted actors being tested first. To get stage coordinates from screen coordinates, use
      * {@link #screenToStageCoordinates(Vector2)}.
      *
-     * @param touchable If true, the hit detection will respect the {@link Element#setTouchable(Touchable) touchability}.
+     * @param touchable If true, the hit detection will respect the {@link Element#touchable(Touchable) touchability}.
      * @return May be null if no actor was hit.
      */
     public Element hit(float stageX, float stageY, boolean touchable){

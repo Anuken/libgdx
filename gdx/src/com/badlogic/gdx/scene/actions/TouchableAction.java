@@ -17,11 +17,10 @@
 package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.scene.Action;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 
 /**
- * Sets the actor's {@link Element#setTouchable(Touchable) touchability}.
+ * Sets the actor's {@link Element#touchable(Touchable) touchability}.
  *
  * @author Nathan Sweet
  */
@@ -29,7 +28,7 @@ public class TouchableAction extends Action{
     private Touchable touchable;
 
     public boolean act(float delta){
-        target.setTouchable(touchable);
+        target.touchable(touchable);
         return true;
     }
 

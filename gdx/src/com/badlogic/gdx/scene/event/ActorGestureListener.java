@@ -107,8 +107,8 @@ public class ActorGestureListener implements EventListener{
 
         switch(event.type){
             case touchDown:
-                actor = event.getListenerActor();
-                touchDownTarget = event.getTarget();
+                actor = event.listenerActor;
+                touchDownTarget = event.targetActor;
                 detector.touchDown(event.stageX, event.stageY, event.pointer, event.keyCode);
                 actor.stageToLocalCoordinates(tmpCoords.set(event.stageX, event.stageY));
                 touchDown(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
@@ -116,14 +116,14 @@ public class ActorGestureListener implements EventListener{
             case touchUp:
                 if(event.isTouchFocusCancel()) return false;
                 this.event = event;
-                actor = event.getListenerActor();
+                actor = event.listenerActor;
                 detector.touchUp(event.stageX, event.stageY, event.pointer, event.keyCode);
                 actor.stageToLocalCoordinates(tmpCoords.set(event.stageX, event.stageY));
                 touchUp(event, tmpCoords.x, tmpCoords.y, event.pointer, event.keyCode);
                 return true;
             case touchDragged:
                 this.event = event;
-                actor = event.getListenerActor();
+                actor = event.listenerActor;
                 detector.touchDragged(event.stageX, event.stageY, event.pointer);
                 return true;
         }

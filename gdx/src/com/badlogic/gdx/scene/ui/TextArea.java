@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.IntArray;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.input.KeyCode;

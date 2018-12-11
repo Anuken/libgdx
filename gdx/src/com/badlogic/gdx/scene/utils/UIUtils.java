@@ -1,7 +1,6 @@
 package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.Core;
-import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.utils.OS;
 
 public class UIUtils{

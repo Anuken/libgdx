@@ -83,8 +83,7 @@ public final class WindowedMean{
                 dirty = false;
             }
             return this.mean;
-        }else
-            return 0;
+        }else return 0;
     }
 
     /** @return the oldest value in the window */

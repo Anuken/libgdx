@@ -26,7 +26,7 @@ import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.layout.Container;
 
 /**
- * A listener that shows a tooltip actor when another actor is hovered over with the mouse.
+ * A listener that shows a tooltip element when another element is hovered over with the mouse.
  *
  * @author Nathan Sweet
  */
@@ -59,7 +59,7 @@ public class Tooltip<T extends Element> extends InputListener{
                 if(targetActor != null && targetActor.getScene() == null) remove();
             }
         };
-        container.setTouchable(Touchable.disabled);
+        container.touchable(Touchable.disabled);
     }
 
     public TooltipManager getManager(){
@@ -99,19 +99,19 @@ public class Tooltip<T extends Element> extends InputListener{
 
     public boolean mouseMoved(InputEvent event, float x, float y){
         if(container.hasParent()) return false;
-        setContainerPosition(event.getListenerActor(), x, y);
+        setContainerPosition(event.listenerActor, x, y);
         return true;
     }
 
-    protected void setContainerPosition(Element actor, float x, float y){
-        this.targetActor = actor;
-        Scene stage = actor.getScene();
+    protected void setContainerPosition(Element element, float x, float y){
+        this.targetActor = element;
+        Scene stage = element.getScene();
         if(stage == null) return;
 
         container.pack();
         float offsetX = manager.offsetX, offsetY = manager.offsetY, dist = manager.edgeDistance;
-        Vector2 point = actor.localToStageCoordinates(tmp.set(x + offsetX, y - offsetY - container.getHeight()));
-        if(point.y < dist) point = actor.localToStageCoordinates(tmp.set(x + offsetX, y + offsetY));
+        Vector2 point = element.localToStageCoordinates(tmp.set(x + offsetX, y - offsetY - container.getHeight()));
+        if(point.y < dist) point = element.localToStageCoordinates(tmp.set(x + offsetX, y + offsetY));
         if(point.x < dist) point.x = dist;
         if(point.x + container.getWidth() > stage.getWidth() - dist)
             point.x = stage.getWidth() - dist - container.getWidth();
@@ -119,7 +119,7 @@ public class Tooltip<T extends Element> extends InputListener{
             point.y = stage.getHeight() - dist - container.getHeight();
         container.setPosition(point.x, point.y);
 
-        point = actor.localToStageCoordinates(tmp.set(actor.getWidth() / 2, actor.getHeight() / 2));
+        point = element.localToStageCoordinates(tmp.set(element.getWidth() / 2, element.getHeight() / 2));
         point.sub(container.getX(), container.getY());
         container.setOrigin(point.x, point.y);
     }
@@ -127,9 +127,9 @@ public class Tooltip<T extends Element> extends InputListener{
     public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
         if(pointer != -1) return;
         if(Core.input.isTouched()) return;
-        Element actor = event.getListenerActor();
-        if(fromActor != null && fromActor.isDescendantOf(actor)) return;
-        setContainerPosition(actor, x, y);
+        Element element = event.listenerActor;
+        if(fromActor != null && fromActor.isDescendantOf(element)) return;
+        setContainerPosition(element, x, y);
         manager.enter(this);
 
         if(show != null)
@@ -137,7 +137,7 @@ public class Tooltip<T extends Element> extends InputListener{
     }
 
     public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
-        if(toActor != null && toActor.isDescendantOf(event.getListenerActor())) return;
+        if(toActor != null && toActor.isDescendantOf(event.listenerActor)) return;
         hide();
     }
 
