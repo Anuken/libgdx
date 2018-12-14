@@ -31,7 +31,8 @@ package com.badlogic.gdx;
  * @author mzechner
  */
 public interface ApplicationListener{
-    /** Called when the {@link Application} is first created. */
+    /** Called when the {@link Application} is first created.
+     * Only gets called if the application is created before the listener is added.*/
     default void create(){}
 
     /**
@@ -43,8 +44,8 @@ public interface ApplicationListener{
      */
     default void resize(int width, int height){};
 
-    /** Called when the {@link Application} should render itself. */
-    default void render(){};
+    /** Called when the {@link Application} should update itself. */
+    default void update(){};
 
     /**
      * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also

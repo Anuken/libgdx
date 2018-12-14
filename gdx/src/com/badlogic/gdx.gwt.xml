@@ -77,7 +77,7 @@
         <include name="graphics/GLCommon.java"/>
         <include name="graphics/GLTexture.java"/>
         <include name="graphics/Mesh.java"/>
-        <include name="graphics/OrthographicCamera.java"/>
+        <include name="graphics/Camera.java"/>
         <include name="graphics/PerspectiveCamera.java"/>
         <include name="graphics/Pixmap.java"/> <!-- Emulated -->
         <exclude name="graphics/PixmapIO.java"/> <!-- Reason: No DeflaterOutputStream -->

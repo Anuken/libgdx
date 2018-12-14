@@ -17,7 +17,6 @@
 package com.badlogic.gdx.utils.viewport;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -32,9 +31,9 @@ public class ExtendViewport extends Viewport{
     private float minWorldWidth, minWorldHeight;
     private float maxWorldWidth, maxWorldHeight;
 
-    /** Creates a new viewport using a new {@link OrthographicCamera} with no maximum world size. */
+    /** Creates a new viewport using a new {@link Camera} with no maximum world size. */
     public ExtendViewport(float minWorldWidth, float minWorldHeight){
-        this(minWorldWidth, minWorldHeight, 0, 0, new OrthographicCamera());
+        this(minWorldWidth, minWorldHeight, 0, 0, new Camera());
     }
 
     /** Creates a new viewport with no maximum world size. */
@@ -43,12 +42,12 @@ public class ExtendViewport extends Viewport{
     }
 
     /**
-     * Creates a new viewport using a new {@link OrthographicCamera} and a maximum world size.
+     * Creates a new viewport using a new {@link Camera} and a maximum world size.
      *
      * @see ExtendViewport#ExtendViewport(float, float, float, float, Camera)
      */
     public ExtendViewport(float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight){
-        this(minWorldWidth, minWorldHeight, maxWorldWidth, maxWorldHeight, new OrthographicCamera());
+        this(minWorldWidth, minWorldHeight, maxWorldWidth, maxWorldHeight, new Camera());
     }
 
     /**

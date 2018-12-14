@@ -20,13 +20,13 @@ import com.badlogic.gdx.collection.ObjectMap;
 
 /**
  * A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the
- * {@code BitmapFontCache} class uses this class to retrieve colors and the user can define his own colors.
+ * {@code BitmapFontCache} class uses this class to retrieve colors. Custom colors can be defined here.
  *
  * @author davebaol
  */
 public final class Colors{
 
-    private static final ObjectMap<String, Color> map = new ObjectMap<String, Color>();
+    private static final ObjectMap<String, Color> map = new ObjectMap<>();
 
     static{
         reset();

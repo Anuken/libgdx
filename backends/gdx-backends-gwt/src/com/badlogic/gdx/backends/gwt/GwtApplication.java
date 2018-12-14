@@ -234,7 +234,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
         }
         runnablesHelper.clear();
         graphics.frameId++;
-        listener.render();
+        listener.update();
         input.reset();
     }
 

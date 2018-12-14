@@ -48,7 +48,7 @@ import static com.badlogic.gdx.graphics.g2d.Sprite.VERTEX_SIZE;
  * By default, SpriteCache draws using screen coordinates and uses an x-axis pointing to the right, an y-axis pointing upwards and
  * the origin is the bottom left corner of the screen. The default transformation and projection matrices can be changed. If the
  * screen is {@link ApplicationListener#resize(int, int) resized}, the SpriteCache's matrices must be updated. For example:<br>
- * <code>cache.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</code><br>
+ * <code>cache.getProjection().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</code><br>
  * <br>
  * Note that SpriteCache does not manage blending. You will need to enable blending (<i>Gdx.gl.glEnable(GL10.GL_BLEND);</i>) and
  * set the blend func as needed before or between calls to {@link #draw(int)}.<br>
@@ -192,7 +192,7 @@ public class SpriteCache implements Disposable{
         if(drawing) throw new IllegalStateException("end must be called before beginCache");
         if(currentCache != null) throw new IllegalStateException("endCache must be called before begin.");
         if(cacheID == caches.size - 1){
-            Cache oldCache = caches.removeIndex(cacheID);
+            Cache oldCache = caches.removeAt(cacheID);
             mesh.getVerticesBuffer().limit(oldCache.offset);
             beginCache();
             return;

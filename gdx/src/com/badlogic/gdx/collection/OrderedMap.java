@@ -67,7 +67,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
     }
 
     public V removeIndex(int index){
-        return super.remove(keys.removeIndex(index));
+        return super.remove(keys.removeAt(index));
     }
 
     public void clear(int maximumCapacity){

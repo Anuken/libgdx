@@ -88,7 +88,7 @@ public class Lwjgl3Cursor implements Cursor{
         for(int i = cursors.size - 1; i >= 0; i--){
             Lwjgl3Cursor cursor = cursors.get(i);
             if(cursor.window.equals(window)){
-                cursors.removeIndex(i).dispose();
+                cursors.removeAt(i).dispose();
             }
         }
     }

@@ -77,7 +77,7 @@ public class OrderedSet<T> extends ObjectSet<T>{
     }
 
     public T removeIndex(int index){
-        T key = items.removeIndex(index);
+        T key = items.removeAt(index);
         super.remove(key);
         return key;
     }

@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
@@ -41,9 +41,9 @@ public class SpriteBatch implements Disposable{
     private final Mesh mesh;
     private final float[] vertices;
 
-    private final Matrix4 transformMatrix = new Matrix4();
-    private final Matrix4 projectionMatrix = new Matrix4();
-    private final Matrix4 combinedMatrix = new Matrix4();
+    private final Matrix3 transformMatrix = new Matrix3();
+    private final Matrix3 projectionMatrix = new Matrix3();
+    private final Matrix3 combinedMatrix = new Matrix3();
 
     private final ShaderProgram shader;
     private ShaderProgram customShader = null;
@@ -93,7 +93,7 @@ public class SpriteBatch implements Disposable{
         new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
         new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
-        projectionMatrix.setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+        projectionMatrix.setOrtho(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
 
         vertices = new float[size * SPRITE_SIZE];
 
@@ -298,19 +298,19 @@ public class SpriteBatch implements Disposable{
             shader.end();
     }
 
-    public Matrix4 getProjectionMatrix(){
+    public Matrix3 getProjection(){
         return projectionMatrix;
     }
 
-    public Matrix4 getTransformMatrix(){
+    public Matrix3 getTransform(){
         return transformMatrix;
     }
 
-    public void setProjectionMatrix(Matrix4 projection){
+    public void setProjection(Matrix3 projection){
         projectionMatrix.set(projection);
     }
 
-    public void setTransformMatrix(Matrix4 transform){
+    public void setTransform(Matrix3 transform){
         transformMatrix.set(transform);
     }
 
@@ -351,10 +351,10 @@ public class SpriteBatch implements Disposable{
     public static ShaderProgram createDefaultShader(){
         String vertexShader =
         String.join("\n",
-        "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";",
+        "attribute vec3 " + ShaderProgram.POSITION_ATTRIBUTE + ";",
         "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";",
         "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;",
-        "uniform mat4 u_projTrans;",
+        "uniform mat3 u_projTrans;",
         "varying vec4 v_color;",
         "varying vec2 v_texCoords;",
         "",

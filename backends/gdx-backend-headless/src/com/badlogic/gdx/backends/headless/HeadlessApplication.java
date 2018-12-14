@@ -116,7 +116,7 @@ public class HeadlessApplication implements Application{
 
                 executeRunnables();
                 graphics.incrementFrameId();
-                listener.render();
+                listener.update();
                 graphics.updateTime();
 
                 // If one of the runnables set running to false, for example after an exit().
@@ -142,7 +142,7 @@ public class HeadlessApplication implements Application{
         }
         if(executedRunnables.size == 0) return false;
         for(int i = executedRunnables.size - 1; i >= 0; i--)
-            executedRunnables.removeIndex(i).run();
+            executedRunnables.removeAt(i).run();
         return true;
     }
 

@@ -26,7 +26,6 @@ import android.view.WindowManager.LayoutParams;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.android.surfaceview.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;

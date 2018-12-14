@@ -17,7 +17,6 @@
 package com.badlogic.gdx.utils.viewport;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -41,9 +40,9 @@ import com.badlogic.gdx.utils.Scaling;
 public class ScalingViewport extends Viewport{
     private Scaling scaling;
 
-    /** Creates a new viewport using a new {@link OrthographicCamera}. */
+    /** Creates a new viewport using a new {@link Camera}. */
     public ScalingViewport(Scaling scaling, float worldWidth, float worldHeight){
-        this(scaling, worldWidth, worldHeight, new OrthographicCamera());
+        this(scaling, worldWidth, worldHeight, new Camera());
     }
 
     public ScalingViewport(Scaling scaling, float worldWidth, float worldHeight, Camera camera){

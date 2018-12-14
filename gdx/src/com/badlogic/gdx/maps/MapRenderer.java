@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.maps;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 
 /** Models a common way of rendering {@link Map} objects */
@@ -26,9 +25,9 @@ public interface MapRenderer{
      * The viewbounds are taken from the camera's position and viewport size as well as the scale. This method will only work if
      * the camera's direction vector is (0,0,-1) and its up vector is (0, 1, 0), which are the defaults.
      *
-     * @param camera the {@link OrthographicCamera}
+     * @param camera the {@link Camera}
      */
-    void setView(OrthographicCamera camera);
+    void setView(Camera camera);
 
     /**
      * Sets the projection matrix for rendering, as well as the bounds of the map which should be rendered. Make sure that the

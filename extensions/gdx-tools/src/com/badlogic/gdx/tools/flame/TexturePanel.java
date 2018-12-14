@@ -86,7 +86,7 @@ public class TexturePanel extends ImagePanel{
     private void swap(TextureRegion region, Array<TextureRegion> src, Array<TextureRegion> dst){
         int index = src.indexOf(region, true);
         if(index > -1){
-            src.removeIndex(index);
+            src.removeAt(index);
             dst.add(region);
             repaint();
         }

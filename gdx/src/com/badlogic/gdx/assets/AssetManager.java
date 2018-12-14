@@ -210,7 +210,7 @@ public class AssetManager implements Disposable{
         }
         if(foundIndex != -1){
             toLoad--;
-            loadQueue.removeIndex(foundIndex);
+            loadQueue.removeAt(foundIndex);
             return;
         }
 
@@ -510,7 +510,7 @@ public class AssetManager implements Disposable{
      * a dependency of a previously loaded asset) its reference count will be increased.
      */
     private void nextTask(){
-        AssetDescriptor assetDesc = loadQueue.removeIndex(0);
+        AssetDescriptor assetDesc = loadQueue.removeAt(0);
 
         // if the asset not meant to be reloaded and is already loaded, increase its reference count
         if(isLoaded(assetDesc.fileName)){

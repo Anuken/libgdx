@@ -20,11 +20,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.ScissorStack;
 
 /**
@@ -38,7 +37,7 @@ public abstract class Viewport{
     private float worldWidth, worldHeight;
     private int screenX, screenY, screenWidth, screenHeight;
 
-    private final Vector3 tmp = new Vector3();
+    private final Vector2 tmp = new Vector2();
 
     /** Calls {@link #apply(boolean)} with false. */
     public void apply(){
@@ -52,9 +51,9 @@ public abstract class Viewport{
      */
     public void apply(boolean centerCamera){
         HdpiUtils.glViewport(screenX, screenY, screenWidth, screenHeight);
-        camera.viewportWidth = worldWidth;
-        camera.viewportHeight = worldHeight;
-        if(centerCamera) camera.position.set(worldWidth / 2, worldHeight / 2, 0);
+        camera.width = worldWidth;
+        camera.height = worldHeight;
+        if(centerCamera) camera.position.set(worldWidth / 2, worldHeight / 2);
         camera.update();
     }
 
@@ -77,10 +76,10 @@ public abstract class Viewport{
      * Transforms the specified screen coordinate to world coordinates.
      *
      * @return The vector that was passed in, transformed to world coordinates.
-     * @see Camera#unproject(Vector3)
+     * @see Camera#unproject(Vector2)
      */
     public Vector2 unproject(Vector2 screenCoords){
-        tmp.set(screenCoords.x, screenCoords.y, 1);
+        tmp.set(screenCoords.x, screenCoords.y);
         camera.unproject(tmp, screenX, screenY, screenWidth, screenHeight);
         screenCoords.set(tmp.x, tmp.y);
         return screenCoords;
@@ -90,40 +89,13 @@ public abstract class Viewport{
      * Transforms the specified world coordinate to screen coordinates.
      *
      * @return The vector that was passed in, transformed to screen coordinates.
-     * @see Camera#project(Vector3)
+     * @see Camera#project(Vector2)
      */
     public Vector2 project(Vector2 worldCoords){
-        tmp.set(worldCoords.x, worldCoords.y, 1);
+        tmp.set(worldCoords.x, worldCoords.y);
         camera.project(tmp, screenX, screenY, screenWidth, screenHeight);
         worldCoords.set(tmp.x, tmp.y);
         return worldCoords;
-    }
-
-    /**
-     * Transforms the specified screen coordinate to world coordinates.
-     *
-     * @return The vector that was passed in, transformed to world coordinates.
-     * @see Camera#unproject(Vector3)
-     */
-    public Vector3 unproject(Vector3 screenCoords){
-        camera.unproject(screenCoords, screenX, screenY, screenWidth, screenHeight);
-        return screenCoords;
-    }
-
-    /**
-     * Transforms the specified world coordinate to screen coordinates.
-     *
-     * @return The vector that was passed in, transformed to screen coordinates.
-     * @see Camera#project(Vector3)
-     */
-    public Vector3 project(Vector3 worldCoords){
-        camera.project(worldCoords, screenX, screenY, screenWidth, screenHeight);
-        return worldCoords;
-    }
-
-    /** @see Camera#getPickRay(float, float, float, float, float, float) */
-    public Ray getPickRay(float screenX, float screenY){
-        return camera.getPickRay(screenX, screenY, this.screenX, this.screenY, screenWidth, screenHeight);
     }
 
     /** @see ScissorStack#calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle) */
@@ -135,8 +107,8 @@ public abstract class Viewport{
      * Transforms a point to real screen coordinates (as opposed to OpenGL ES window coordinates), where the origin is in the top
      * left and the the y-axis is pointing downwards.
      */
-    public Vector2 toScreenCoordinates(Vector2 worldCoords, Matrix4 transformMatrix){
-        tmp.set(worldCoords.x, worldCoords.y, 0);
+    public Vector2 toScreenCoordinates(Vector2 worldCoords, Matrix3 transformMatrix){
+        tmp.set(worldCoords.x, worldCoords.y);
         tmp.mul(transformMatrix);
         camera.project(tmp);
         tmp.y = Core.graphics.getHeight() - tmp.y;

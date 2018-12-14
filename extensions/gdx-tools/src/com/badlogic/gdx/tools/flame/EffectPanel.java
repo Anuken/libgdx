@@ -374,7 +374,7 @@ class EffectPanel extends JPanel{
 		int insertIndex = editIndex + direction;
 		Object name = emitterTableModel.getValueAt(editIndex, 0);
 		boolean isEnabled = editor.isEnabled(editIndex);
-		ParticleController emitter = emitters.removeIndex(editIndex);
+		ParticleController emitter = emitters.removeAt(editIndex);
 		emitterTableModel.removeRow(editIndex);
 		emitterTableModel.insertRow(insertIndex, new Object[] {name, isEnabled});
 		emitters.insert(insertIndex, emitter);

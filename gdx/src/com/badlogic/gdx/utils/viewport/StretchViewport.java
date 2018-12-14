@@ -1,7 +1,6 @@
 package com.badlogic.gdx.utils.viewport;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Scaling;
 
 /**
@@ -12,7 +11,7 @@ import com.badlogic.gdx.utils.Scaling;
  * @author Nathan Sweet
  */
 public class StretchViewport extends ScalingViewport{
-    /** Creates a new viewport using a new {@link OrthographicCamera}. */
+    /** Creates a new viewport using a new {@link Camera}. */
     public StretchViewport(float worldWidth, float worldHeight){
         super(Scaling.stretch, worldWidth, worldHeight);
     }

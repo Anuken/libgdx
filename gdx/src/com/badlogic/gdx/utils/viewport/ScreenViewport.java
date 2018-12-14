@@ -17,7 +17,6 @@
 package com.badlogic.gdx.utils.viewport;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
  * A viewport where the world size is based on the size of the screen. By default 1 world unit == 1 screen pixel, but this ratio
@@ -29,9 +28,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class ScreenViewport extends Viewport{
     private float unitsPerPixel = 1;
 
-    /** Creates a new viewport using a new {@link OrthographicCamera}. */
+    /** Creates a new viewport using a new {@link Camera}. */
     public ScreenViewport(){
-        this(new OrthographicCamera());
+        this(new Camera());
     }
 
     public ScreenViewport(Camera camera){

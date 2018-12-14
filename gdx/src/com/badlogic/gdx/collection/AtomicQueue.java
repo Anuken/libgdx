@@ -37,7 +37,7 @@ public class AtomicQueue<T>{
     private final AtomicReferenceArray<T> queue;
 
     public AtomicQueue(int capacity){
-        queue = new AtomicReferenceArray(capacity);
+        queue = new AtomicReferenceArray<>(capacity);
     }
 
     private int next(int idx){

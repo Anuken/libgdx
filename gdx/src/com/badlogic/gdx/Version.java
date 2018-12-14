@@ -24,13 +24,10 @@ package com.badlogic.gdx;
 public class Version{
     /** the current major version of libgdx **/
     public static final int MAJOR = 1;
-
     /** the current minor version of libgdx **/
     public static final int MINOR = 9;
-
     /** the current revision version of libgdx **/
     public static final int REVISION = 10;
-
     /** the current version of libgdx as a String in the major.minor.revision format **/
     public static final String VERSION = MAJOR + "." + MINOR + "." + REVISION;
 

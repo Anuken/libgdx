@@ -191,12 +191,8 @@ public abstract class Input{
     /**
      * System dependent method to input a string of text. A dialog box will be created with the given title and the given text as a
      * message for the user. Once the dialog has been closed the consumer be called on the rendering thread.
-     *
-     * @param listener The TextInputListener.
-     * @param title The title of the text input dialog.
-     * @param text The message presented to the user.
      */
-    public abstract void getTextInput(Consumer<String> listener, String title, String text, String hint);
+    public abstract void getTextInput(TextInput input);
 
     /**
      * Sets the on-screen keyboard visible if available.
@@ -292,7 +288,7 @@ public abstract class Input{
 
     /**
      * Sets the {@link InputProcessor} that will receive all touch and key input events. It will be called before the
-     * {@link ApplicationListener#render()} method each frame.
+     * {@link ApplicationListener#update()} method each frame.
      *
      * @param processor the InputProcessor
      */
@@ -349,6 +345,15 @@ public abstract class Input{
      * @param y the y-position
      */
     public abstract void setCursorPosition(int x, int y);
+
+    /**Parameters for text input.*/
+    public class TextInput{
+        public boolean multiline = false;
+        public String title = "";
+        public String text = "";
+        public Consumer<String> accepted = s -> {};
+        public Runnable canceled = () -> {};
+    }
 
     enum Orientation{
         Landscape, Portrait

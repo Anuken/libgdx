@@ -19,7 +19,6 @@ package com.badlogic.gdx.maps.tiled.renderers;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -82,10 +81,10 @@ public class OrthoCachedTiledMapRenderer implements TiledMapRenderer, Disposable
     }
 
     @Override
-    public void setView(OrthographicCamera camera){
+    public void setView(Camera camera){
         spriteCache.setProjectionMatrix(camera.combined);
-        float width = camera.viewportWidth * camera.zoom + maxTileWidth * 2 * unitScale;
-        float height = camera.viewportHeight * camera.zoom + maxTileHeight * 2 * unitScale;
+        float width = camera.width * camera.zoom + maxTileWidth * 2 * unitScale;
+        float height = camera.height * camera.zoom + maxTileHeight * 2 * unitScale;
         viewBounds.set(camera.position.x - width / 2, camera.position.y - height / 2, width, height);
 
         if((canCacheMoreW && viewBounds.x < cacheBounds.x - tolerance) || //

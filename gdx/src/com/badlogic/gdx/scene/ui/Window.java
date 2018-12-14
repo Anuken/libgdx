@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector2;
@@ -222,26 +221,16 @@ public class Window extends Table{
         if(!keepWithinStage) return;
         Scene stage = getScene();
         Camera camera = stage.getCamera();
-        if(camera instanceof OrthographicCamera){
-            OrthographicCamera orthographicCamera = (OrthographicCamera) camera;
-            float parentWidth = stage.getWidth();
-            float parentHeight = stage.getHeight();
-            if(getX(Align.right) - camera.position.x > parentWidth / 2 / orthographicCamera.zoom)
-                setPosition(camera.position.x + parentWidth / 2 / orthographicCamera.zoom, getY(Align.right), Align.right);
-            if(getX(Align.left) - camera.position.x < -parentWidth / 2 / orthographicCamera.zoom)
-                setPosition(camera.position.x - parentWidth / 2 / orthographicCamera.zoom, getY(Align.left), Align.left);
-            if(getY(Align.top) - camera.position.y > parentHeight / 2 / orthographicCamera.zoom)
-                setPosition(getX(Align.top), camera.position.y + parentHeight / 2 / orthographicCamera.zoom, Align.top);
-            if(getY(Align.bottom) - camera.position.y < -parentHeight / 2 / orthographicCamera.zoom)
-                setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2 / orthographicCamera.zoom, Align.bottom);
-        }else if(getParent() == stage.root){
-            float parentWidth = stage.getWidth();
-            float parentHeight = stage.getHeight();
-            if(getX() < 0) setX(0);
-            if(getRight() > parentWidth) setX(parentWidth - getWidth());
-            if(getY() < 0) setY(0);
-            if(getTop() > parentHeight) setY(parentHeight - getHeight());
-        }
+        float parentWidth = stage.getWidth();
+        float parentHeight = stage.getHeight();
+        if(getX(Align.right) - camera.position.x > parentWidth / 2)
+            setPosition(camera.position.x + parentWidth / 2, getY(Align.right), Align.right);
+        if(getX(Align.left) - camera.position.x < -parentWidth / 2)
+            setPosition(camera.position.x - parentWidth / 2, getY(Align.left), Align.left);
+        if(getY(Align.top) - camera.position.y > parentHeight / 2)
+            setPosition(getX(Align.top), camera.position.y + parentHeight / 2, Align.top);
+        if(getY(Align.bottom) - camera.position.y < -parentHeight / 2)
+            setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2, Align.bottom);
     }
 
     public void draw(Batch batch, float parentAlpha){

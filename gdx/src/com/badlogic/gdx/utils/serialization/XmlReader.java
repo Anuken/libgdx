@@ -528,7 +528,7 @@ public class XmlReader{
         }
 
         public void removeChild(int index){
-            if(children != null) children.removeIndex(index);
+            if(children != null) children.removeAt(index);
         }
 
         public void removeChild(Element child){

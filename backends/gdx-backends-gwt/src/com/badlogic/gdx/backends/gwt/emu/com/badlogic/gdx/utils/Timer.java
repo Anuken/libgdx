@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.collection.Array;
 
 /**
@@ -119,7 +118,7 @@ public class Timer{
                     Core.app.post(task);
                 }
                 if(task.repeatCount == CANCELLED){
-                    tasks.removeIndex(i);
+                    tasks.removeAt(i);
                     i--;
                     n--;
                 }else{

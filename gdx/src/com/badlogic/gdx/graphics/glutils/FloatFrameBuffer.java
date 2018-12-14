@@ -64,7 +64,7 @@ public class FloatFrameBuffer extends FrameBuffer{
         attachmentSpec.isGpuOnly
         );
         Texture result = new Texture(data);
-        if(Core.app.getType() == ApplicationType.Desktop || Core.app.getType() == ApplicationType.Applet)
+        if(Core.app.getType() == ApplicationType.Desktop)
             result.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         else
             // no filtering for float textures in OpenGL ES

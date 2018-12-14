@@ -19,7 +19,6 @@ package com.badlogic.gdx.backends.iosrobovm;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.backends.iosrobovm.custom.HWMachine;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
@@ -337,7 +336,7 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
 
         input.processEvents();
         frameId++;
-        app.listener.render();
+        app.listener.update();
     }
 
     void makeCurrent(){

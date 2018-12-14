@@ -61,6 +61,26 @@ public class Matrix3 implements Serializable{
         this.set(values);
     }
 
+    /**Sets this matrix to an orthographic projection.*/
+    public Matrix3 setOrtho(float x, float y, float width, float height){
+        final float right = x + width, top = y + height;
+
+        float x_orth = 2 / (right - x);
+        float y_orth = 2 / (top - y);
+
+        float tx = -(right + x) / (right - x);
+        float ty = -(top + y) / (top - y);
+
+        idt();
+
+        val[M00] = x_orth;
+        val[M11] = y_orth;
+        val[M02] = tx;
+        val[M12] = ty;
+
+        return this;
+    }
+
     /**
      * Sets this matrix to the identity matrix
      *

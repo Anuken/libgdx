@@ -29,7 +29,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -366,7 +365,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
     }
 
     public void removeEmitter(int row){
-        controllersData.removeIndex(row).controller.dispose();
+        controllersData.removeAt(row).controller.dispose();
         rebuildActiveControllers();
     }
 
@@ -702,14 +701,14 @@ public class FlameMain extends JFrame implements AssetErrorListener{
             Core.input.setInputProcessor(new InputMultiplexer(ui, cameraInputController));
             Core.gl.glViewport(0, 0, width, height);
 
-            worldCamera.viewportWidth = width;
-            worldCamera.viewportHeight = height;
+            worldCamera.width = width;
+            worldCamera.height = height;
             worldCamera.update();
             ui.getViewport().setWorldSize(width, height);
             ui.getViewport().update(width, height, true);
         }
 
-        public void render(){
+        public void update(){
             float delta = Math.max(0, Core.graphics.getDeltaTime() * deltaMultiplier.getValue());
             update(delta);
             renderWorld();
@@ -899,7 +898,7 @@ public class FlameMain extends JFrame implements AssetErrorListener{
             }
 
             if(remove){
-                out.removeIndex(i);
+                out.removeAt(i);
                 continue;
             }
 

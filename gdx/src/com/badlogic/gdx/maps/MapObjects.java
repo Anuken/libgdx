@@ -75,7 +75,7 @@ public class MapObjects implements Iterable<MapObject>{
 
     /** @param index removes MapObject instance at index */
     public void remove(int index){
-        objects.removeIndex(index);
+        objects.removeAt(index);
     }
 
     /** @param object instance to be removed */

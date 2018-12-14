@@ -86,7 +86,7 @@ public class GridPacker implements Packer{
                 if(y > maxHeight - cellHeight) break;
                 x = 0;
             }
-            Rect rect = inputRects.removeIndex(i);
+            Rect rect = inputRects.removeAt(i);
             rect.x = x;
             rect.y = y;
             rect.width += settings.paddingX;

@@ -26,7 +26,6 @@ import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.input.KeyCode;
@@ -39,7 +38,6 @@ import com.badlogic.gdx.scene.event.InputEvent.Type;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.scene.ui.layout.Table.Debug;
 import com.badlogic.gdx.scene.utils.ScissorStack;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.utils.pooling.Pools;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -47,10 +45,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class Scene implements Disposable, InputProcessor{
+public class Scene implements InputProcessor{
     /** True if any actor has ever had debug enabled. */
     static boolean debug;
-    private final Batch batch;
     private final Vector2 tempCoords = new Vector2();
     private final Element[] pointerOverActors = new Element[20];
     private final boolean[] pointerTouched = new boolean[20];
@@ -59,7 +56,6 @@ public class Scene implements Disposable, InputProcessor{
     private final SnapshotArray<TouchFocus> touchFocuses = new SnapshotArray<>(true, 4, TouchFocus.class);
     private final Color debugColor = new Color(0, 1, 0, 0.85f);
     private Viewport viewport;
-    private boolean ownsBatch;
     private int mouseScreenX, mouseScreenY;
     private Element mouseOverActor;
     private Element keyboardFocus, scrollFocus;
@@ -76,7 +72,19 @@ public class Scene implements Disposable, InputProcessor{
      * which will be disposed when the stage is disposed.
      */
     public Scene(Skin skin){
-        this(skin, new SpriteBatch());
+        this.skin = skin;
+        this.viewport = new ScreenViewport(){
+            @Override
+            public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor){
+                ScissorStack.calculateScissors(
+                getCamera(), getScreenX(), getScreenY(), getScreenWidth(), getScreenHeight(), batchTransform, area, scissor);
+            }
+        };
+
+        root = new Group();
+        root.setScene(this);
+
+        viewport.update(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
         ownsBatch = true;
     }
 
@@ -85,33 +93,9 @@ public class Scene implements Disposable, InputProcessor{
      * is disposed.
      */
     public Scene(Skin skin, Viewport viewport){
-        this(skin, new SpriteBatch());
+        this(skin);
+        this.viewport = viewport;
         ownsBatch = true;
-    }
-
-    /**
-     * Creates a stage with the specified viewport and batch. This can be used to avoid creating a new batch (which can be
-     * somewhat slow) if multiple stages are used during an application's life time.
-     *
-     * @param batch Will not be disposed if {@link #dispose()} is called, handle disposal yourself.
-     */
-    public Scene(Skin skin, Batch batch){
-        if(batch == null) throw new IllegalArgumentException("batch cannot be null.");
-
-        this.batch = batch;
-        this.skin = skin;
-        this.viewport = new ScreenViewport(){
-            @Override
-            public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor){
-                ScissorStack.calculateScissors(
-                        getCamera(), getScreenX(), getScreenY(), getScreenWidth(), getScreenHeight(), batchTransform, area, scissor);
-            }
-        };
-
-        root = new Group();
-        root.setScene(this);
-
-        viewport.update(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
     }
 
     public void draw(){
@@ -215,7 +199,7 @@ public class Scene implements Disposable, InputProcessor{
         }
         // Update over actor for the mouse on the desktop.
         ApplicationType type = Core.app.getType();
-        if(type == ApplicationType.Desktop || type == ApplicationType.Applet || type == ApplicationType.WebGL)
+        if(type == ApplicationType.Desktop || type == ApplicationType.WebGL)
             mouseOverActor = fireEnterAndExit(mouseOverActor, mouseScreenX, mouseScreenY, -1);
 
         root.act(delta);
@@ -526,7 +510,7 @@ public class Scene implements Disposable, InputProcessor{
             TouchFocus focus = touchFocuses.get(i);
             if(focus.listener == listener && focus.listenerActor == listenerActor && focus.target == target
                     && focus.pointer == pointer && focus.button == button){
-                touchFocuses.removeIndex(i);
+                touchFocuses.removeAt(i);
                 Pools.free(focus);
             }
         }
@@ -935,11 +919,6 @@ public class Scene implements Disposable, InputProcessor{
      */
     public void setDebugTableUnderMouse(boolean debugTableUnderMouse){
         setDebugTableUnderMouse(debugTableUnderMouse ? Debug.all : Debug.none);
-    }
-
-    public void dispose(){
-        clear();
-        if(ownsBatch) batch.dispose();
     }
 
     /** Check if screen coordinates are inside the viewport's screen area. */

@@ -1,11 +1,15 @@
 package com.badlogic.gdx.scene.ui.layout;
 
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.utils.Layout;
+import com.badlogic.gdx.utils.Align;
+
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * A group with a single child that sizes and positions the child using constraints. This provides layout similar to a
@@ -14,26 +18,26 @@ import com.badlogic.gdx.scene.utils.Layout;
  * @author Nathan Sweet
  */
 public class Container<T extends Element> extends WidgetGroup{
-    private T element;
+    private T actor;
     private Value minWidth = Value.minWidth, minHeight = Value.minHeight;
     private Value prefWidth = Value.prefWidth, prefHeight = Value.prefHeight;
     private Value maxWidth = Value.zero, maxHeight = Value.zero;
-    private Value padTop = Value.zero, padLeft = Value.zero, padBottom = Value.zero, padRight = Value.zero;
+    private Value marginTop = Value.zero, marginLeft = Value.zero, marginBottom = Value.zero, marginRight = Value.zero;
     private float fillX, fillY;
     private int align;
     private Drawable background;
     private boolean clip;
     private boolean round = true;
 
-    /** Creates a container with no element. */
+    /** Creates a container with no actor. */
     public Container(){
         touchable(Touchable.childrenOnly);
         setTransform(false);
     }
 
-    public Container(T element){
+    public Container(T actor){
         this();
-        setActor(element);
+        setActor(actor);
     }
 
     public void draw(Batch batch, float parentAlpha){
@@ -43,9 +47,9 @@ public class Container<T extends Element> extends WidgetGroup{
             drawBackground(batch, parentAlpha, 0, 0);
             if(clip){
                 batch.flush();
-                float padLeft = this.padLeft.get(this), padBottom = this.padBottom.get(this);
-                if(clipBegin(padLeft, padBottom, getWidth() - padLeft - padRight.get(this),
-                        getHeight() - padBottom - padTop.get(this))){
+                float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
+                if(clipBegin(marginLeft, marginBottom, getWidth() - marginLeft - marginRight.get(this),
+                        getHeight() - marginBottom - marginTop.get(this))){
                     drawChildren(batch, parentAlpha);
                     batch.flush();
                     clipEnd();
@@ -71,20 +75,20 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     /**
-     * Sets the background drawable and, if adjustPadding is true, sets the container's padding to
+     * Sets the background drawable and, if adjustPadding is true, sets the container's marginding to
      * {@link Drawable#getBottomHeight()} , {@link Drawable#getTopHeight()}, {@link Drawable#getLeftWidth()}, and
      * {@link Drawable#getRightWidth()}.
      *
-     * @param background If null, the background will be cleared and padding removed.
+     * @param background If null, the background will be cleared and marginding removed.
      */
     public void setBackground(Drawable background, boolean adjustPadding){
         if(this.background == background) return;
         this.background = background;
         if(adjustPadding){
             if(background == null)
-                pad(Value.zero);
+                margin(Value.zero);
             else
-                pad(background.getTopHeight(), background.getLeftWidth(), background.getBottomHeight(), background.getRightWidth());
+                margin(background.getTopHeight(), background.getLeftWidth(), background.getBottomHeight(), background.getRightWidth());
             invalidate();
         }
     }
@@ -95,12 +99,17 @@ public class Container<T extends Element> extends WidgetGroup{
         return this;
     }
 
+    public Container<T> background(String background){
+        setBackground(scene.skin.getDrawable(background));
+        return this;
+    }
+
     public Drawable getBackground(){
         return background;
     }
 
     /**
-     * Sets the background drawable and adjusts the container's padding to match the background.
+     * Sets the background drawable and adjusts the container's marginding to match the background.
      *
      * @see #setBackground(Drawable, boolean)
      */
@@ -109,14 +118,14 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     public void layout(){
-        if(element == null) return;
+        if(actor == null) return;
 
-        float padLeft = this.padLeft.get(this), padBottom = this.padBottom.get(this);
-        float containerWidth = getWidth() - padLeft - padRight.get(this);
-        float containerHeight = getHeight() - padBottom - padTop.get(this);
-        float minWidth = this.minWidth.get(element), minHeight = this.minHeight.get(element);
-        float prefWidth = this.prefWidth.get(element), prefHeight = this.prefHeight.get(element);
-        float maxWidth = this.maxWidth.get(element), maxHeight = this.maxHeight.get(element);
+        float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
+        float containerWidth = getWidth() - marginLeft - marginRight.get(this);
+        float containerHeight = getHeight() - marginBottom - marginTop.get(this);
+        float minWidth = this.minWidth.get(actor), minHeight = this.minHeight.get(actor);
+        float prefWidth = this.prefWidth.get(actor), prefHeight = this.prefHeight.get(actor);
+        float maxWidth = this.maxWidth.get(actor), maxHeight = this.maxHeight.get(actor);
 
         float width;
         if(fillX > 0)
@@ -134,13 +143,13 @@ public class Container<T extends Element> extends WidgetGroup{
         if(height < minHeight) height = minHeight;
         if(maxHeight > 0 && height > maxHeight) height = maxHeight;
 
-        float x = padLeft;
+        float x = marginLeft;
         if((align & Align.right) != 0)
             x += containerWidth - width;
         else if((align & Align.left) == 0) // center
             x += (containerWidth - width) / 2;
 
-        float y = padBottom;
+        float y = marginBottom;
         if((align & Align.top) != 0)
             y += containerHeight - height;
         else if((align & Align.bottom) == 0) // center
@@ -153,36 +162,36 @@ public class Container<T extends Element> extends WidgetGroup{
             height = Math.round(height);
         }
 
-        element.setBounds(x, y, width, height);
-        if(element instanceof Layout) element.validate();
+        actor.setBounds(x, y, width, height);
+        if(actor instanceof Layout) actor.validate();
     }
 
     /** @return May be null. */
     public T getActor(){
-        return element;
+        return actor;
     }
 
-    /** @param element May be null. */
-    public void setActor(T element){
-        if(element == this) throw new IllegalArgumentException("element cannot be the Container.");
-        if(element == this.element) return;
-        if(this.element != null) super.removeChild(this.element);
-        this.element = element;
-        if(element != null) super.addChild(element);
+    /** @param actor May be null. */
+    public void setActor(T actor){
+        if(actor == this) throw new IllegalArgumentException("actor cannot be the Container.");
+        if(actor == this.actor) return;
+        if(this.actor != null) super.removeChild(this.actor);
+        this.actor = actor;
+        if(actor != null) super.addChild(actor);
     }
 
-    public boolean removeChild(Element element){
-        if(element == null) throw new IllegalArgumentException("element cannot be null.");
-        if(element != this.element) return false;
+    public boolean removeChild(Element actor){
+        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
+        if(actor != this.actor) return false;
         setActor(null);
         return true;
     }
 
-    public boolean removeChild(Element element, boolean unfocus){
-        if(element == null) throw new IllegalArgumentException("element cannot be null.");
-        if(element != this.element) return false;
-        this.element = null;
-        return super.removeChild(element, unfocus);
+    public boolean removeChild(Element actor, boolean unfocus){
+        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
+        if(actor != this.actor) return false;
+        this.actor = null;
+        return super.removeChild(actor, unfocus);
     }
 
     /** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
@@ -406,86 +415,86 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     /** Sets the marginTop, marginLeft, marginBottom, and marginRight to the specified value. */
-    public Container<T> pad(Value pad){
-        if(pad == null) throw new IllegalArgumentException("margin cannot be null.");
-        padTop = pad;
-        padLeft = pad;
-        padBottom = pad;
-        padRight = pad;
+    public Container<T> margin(Value margin){
+        if(margin == null) throw new IllegalArgumentException("margin cannot be null.");
+        marginTop = margin;
+        marginLeft = margin;
+        marginBottom = margin;
+        marginRight = margin;
         return this;
     }
 
-    public Container<T> pad(Value top, Value left, Value bottom, Value right){
+    public Container<T> margin(Value top, Value left, Value bottom, Value right){
         if(top == null) throw new IllegalArgumentException("top cannot be null.");
         if(left == null) throw new IllegalArgumentException("left cannot be null.");
         if(bottom == null) throw new IllegalArgumentException("bottom cannot be null.");
         if(right == null) throw new IllegalArgumentException("right cannot be null.");
-        padTop = top;
-        padLeft = left;
-        padBottom = bottom;
-        padRight = right;
+        marginTop = top;
+        marginLeft = left;
+        marginBottom = bottom;
+        marginRight = right;
         return this;
     }
 
-    public Container<T> padTop(Value padTop){
-        if(padTop == null) throw new IllegalArgumentException("marginTop cannot be null.");
-        this.padTop = padTop;
+    public Container<T> marginTop(Value marginTop){
+        if(marginTop == null) throw new IllegalArgumentException("marginTop cannot be null.");
+        this.marginTop = marginTop;
         return this;
     }
 
-    public Container<T> padLeft(Value padLeft){
-        if(padLeft == null) throw new IllegalArgumentException("marginLeft cannot be null.");
-        this.padLeft = padLeft;
+    public Container<T> marginLeft(Value marginLeft){
+        if(marginLeft == null) throw new IllegalArgumentException("marginLeft cannot be null.");
+        this.marginLeft = marginLeft;
         return this;
     }
 
-    public Container<T> padBottom(Value padBottom){
-        if(padBottom == null) throw new IllegalArgumentException("marginBottom cannot be null.");
-        this.padBottom = padBottom;
+    public Container<T> marginBottom(Value marginBottom){
+        if(marginBottom == null) throw new IllegalArgumentException("marginBottom cannot be null.");
+        this.marginBottom = marginBottom;
         return this;
     }
 
-    public Container<T> padRight(Value padRight){
-        if(padRight == null) throw new IllegalArgumentException("marginRight cannot be null.");
-        this.padRight = padRight;
+    public Container<T> marginRight(Value marginRight){
+        if(marginRight == null) throw new IllegalArgumentException("marginRight cannot be null.");
+        this.marginRight = marginRight;
         return this;
     }
 
     /** Sets the marginTop, marginLeft, marginBottom, and marginRight to the specified value. */
-    public Container<T> pad(float pad){
-        Value value = e -> (pad);
-        padTop = value;
-        padLeft = value;
-        padBottom = value;
-        padRight = value;
+    public Container<T> margin(float margin){
+        Value value = e -> (margin);
+        marginTop = value;
+        marginLeft = value;
+        marginBottom = value;
+        marginRight = value;
         return this;
     }
 
-    public Container<T> pad(float top, float left, float bottom, float right){
-        padTop = e -> (top);
-        padLeft = e -> (left);
-        padBottom = e -> (bottom);
-        padRight = e -> (right);
+    public Container<T> margin(float top, float left, float bottom, float right){
+        marginTop = e -> (top);
+        marginLeft = e -> (left);
+        marginBottom = e -> (bottom);
+        marginRight = e -> (right);
         return this;
     }
 
-    public Container<T> padTop(float padTop){
-        this.padTop = e -> (padTop);
+    public Container<T> marginTop(float marginTop){
+        this.marginTop = e -> (marginTop);
         return this;
     }
 
-    public Container<T> padLeft(float padLeft){
-        this.padLeft = e -> (padLeft);
+    public Container<T> marginLeft(float marginLeft){
+        this.marginLeft = e -> (marginLeft);
         return this;
     }
 
-    public Container<T> padBottom(float padBottom){
-        this.padBottom = e -> (padBottom);
+    public Container<T> marginBottom(float marginBottom){
+        this.marginBottom = e -> (marginBottom);
         return this;
     }
 
-    public Container<T> padRight(float padRight){
-        this.padRight = e -> (padRight);
+    public Container<T> marginRight(float marginRight){
+        this.marginRight = e -> (marginRight);
         return this;
     }
 
@@ -529,7 +538,7 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     /**
-     * Sets the alignment of the element within the container. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom},
+     * Sets the alignment of the actor within the container. Set to {@link Align#center}, {@link Align#top}, {@link Align#bottom},
      * {@link Align#left}, {@link Align#right}, or any combination of those.
      */
     public Container<T> align(int align){
@@ -537,34 +546,34 @@ public class Container<T extends Element> extends WidgetGroup{
         return this;
     }
 
-    /** Sets the alignment of the element within the container to {@link Align#center}. This clears any other alignment. */
+    /** Sets the alignment of the actor within the container to {@link Align#center}. This clears any other alignment. */
     public Container<T> center(){
         align = Align.center;
         return this;
     }
 
-    /** Sets {@link Align#top} and clears {@link Align#bottom} for the alignment of the element within the container. */
+    /** Sets {@link Align#top} and clears {@link Align#bottom} for the alignment of the actor within the container. */
     public Container<T> top(){
         align |= Align.top;
         align &= ~Align.bottom;
         return this;
     }
 
-    /** Sets {@link Align#left} and clears {@link Align#right} for the alignment of the element within the container. */
+    /** Sets {@link Align#left} and clears {@link Align#right} for the alignment of the actor within the container. */
     public Container<T> left(){
         align |= Align.left;
         align &= ~Align.right;
         return this;
     }
 
-    /** Sets {@link Align#bottom} and clears {@link Align#top} for the alignment of the element within the container. */
+    /** Sets {@link Align#bottom} and clears {@link Align#top} for the alignment of the actor within the container. */
     public Container<T> bottom(){
         align |= Align.bottom;
         align &= ~Align.top;
         return this;
     }
 
-    /** Sets {@link Align#right} and clears {@link Align#left} for the alignment of the element within the container. */
+    /** Sets {@link Align#right} and clears {@link Align#left} for the alignment of the actor within the container. */
     public Container<T> right(){
         align |= Align.right;
         align &= ~Align.left;
@@ -572,7 +581,7 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     public float getMinWidth(){
-        return minWidth.get(element) + padLeft.get(this) + padRight.get(this);
+        return minWidth.get(actor) + marginLeft.get(this) + marginRight.get(this);
     }
 
     public Value getMinHeightValue(){
@@ -580,7 +589,7 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     public float getMinHeight(){
-        return minHeight.get(element) + padTop.get(this) + padBottom.get(this);
+        return minHeight.get(actor) + marginTop.get(this) + marginBottom.get(this);
     }
 
     public Value getPrefWidthValue(){
@@ -588,9 +597,9 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     public float getPrefWidth(){
-        float v = prefWidth.get(element);
+        float v = prefWidth.get(actor);
         if(background != null) v = Math.max(v, background.getMinWidth());
-        return Math.max(getMinWidth(), v + padLeft.get(this) + padRight.get(this));
+        return Math.max(getMinWidth(), v + marginLeft.get(this) + marginRight.get(this));
     }
 
     public Value getPrefHeightValue(){
@@ -598,55 +607,55 @@ public class Container<T extends Element> extends WidgetGroup{
     }
 
     public float getPrefHeight(){
-        float v = prefHeight.get(element);
+        float v = prefHeight.get(actor);
         if(background != null) v = Math.max(v, background.getMinHeight());
-        return Math.max(getMinHeight(), v + padTop.get(this) + padBottom.get(this));
+        return Math.max(getMinHeight(), v + marginTop.get(this) + marginBottom.get(this));
     }
 
     /** @return May be null if this value is not set. */
     public Value getPadTopValue(){
-        return padTop;
+        return marginTop;
     }
 
     public float getPadTop(){
-        return padTop.get(this);
+        return marginTop.get(this);
     }
 
     /** @return May be null if this value is not set. */
     public Value getPadLeftValue(){
-        return padLeft;
+        return marginLeft;
     }
 
     public float getPadLeft(){
-        return padLeft.get(this);
+        return marginLeft.get(this);
     }
 
     /** @return May be null if this value is not set. */
     public Value getPadBottomValue(){
-        return padBottom;
+        return marginBottom;
     }
 
     public float getPadBottom(){
-        return padBottom.get(this);
+        return marginBottom.get(this);
     }
 
     /** @return May be null if this value is not set. */
     public Value getPadRightValue(){
-        return padRight;
+        return marginRight;
     }
 
     public float getPadRight(){
-        return padRight.get(this);
+        return marginRight.get(this);
     }
 
     /** Returns {@link #getPadLeft()} plus {@link #getPadRight()}. */
     public float getPadX(){
-        return padLeft.get(this) + padRight.get(this);
+        return marginLeft.get(this) + marginRight.get(this);
     }
 
     /** Returns {@link #getPadTop()} plus {@link #getPadBottom()}. */
     public float getPadY(){
-        return padTop.get(this) + padBottom.get(this);
+        return marginTop.get(this) + marginBottom.get(this);
     }
 
     public float getFillX(){
@@ -694,10 +703,10 @@ public class Container<T extends Element> extends WidgetGroup{
             applyTransform(shapes, computeTransform());
             if(clip){
                 shapes.flush();
-                float padLeft = this.padLeft.get(this), padBottom = this.padBottom.get(this);
+                float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
                 boolean draw = background == null ? clipBegin(0, 0, getWidth(), getHeight())
-                        : clipBegin(padLeft, padBottom, getWidth() - padLeft - padRight.get(this),
-                        getHeight() - padBottom - padTop.get(this));
+                        : clipBegin(marginLeft, marginBottom, getWidth() - marginLeft - marginRight.get(this),
+                        getHeight() - marginBottom - marginTop.get(this));
                 if(draw){
                     drawDebugChildren(shapes);
                     clipEnd();

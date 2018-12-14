@@ -68,7 +68,7 @@ public class Lwjgl3Graphics implements Graphics, Disposable{
             window.makeCurrent();
             gl20.glViewport(0, 0, width, height);
             window.getListener().resize(getWidth(), getHeight());
-            window.getListener().render();
+            window.getListener().update();
             GLFW.glfwSwapBuffers(windowHandle);
         }
     };

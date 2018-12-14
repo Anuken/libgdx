@@ -501,7 +501,7 @@ public class TiledMapPacker{
             }
 
             @Override
-            public void render(){
+            public void update(){
             }
 
             @Override

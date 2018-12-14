@@ -260,6 +260,11 @@ public class Array<T> implements Iterable<T>{
         return -1;
     }
 
+    /**Removes a value, without using identity.*/
+    public boolean remove(T value){
+        return removeValue(value, false);
+    }
+
     /**
      * Removes the first instance of the specified value in the array.
      *
@@ -272,14 +277,14 @@ public class Array<T> implements Iterable<T>{
         if(identity || value == null){
             for(int i = 0, n = size; i < n; i++){
                 if(items[i] == value){
-                    removeIndex(i);
+                    removeAt(i);
                     return true;
                 }
             }
         }else{
             for(int i = 0, n = size; i < n; i++){
                 if(value.equals(items[i])){
-                    removeIndex(i);
+                    removeAt(i);
                     return true;
                 }
             }
@@ -288,7 +293,7 @@ public class Array<T> implements Iterable<T>{
     }
 
     /** Removes and returns the item at the specified index. */
-    public T removeIndex(int index){
+    public T removeAt(int index){
         if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
         T[] items = this.items;
         T value = items[index];
@@ -332,7 +337,7 @@ public class Array<T> implements Iterable<T>{
                 T item = array.get(i);
                 for(int ii = 0; ii < size; ii++){
                     if(item == items[ii]){
-                        removeIndex(ii);
+                        removeAt(ii);
                         size--;
                         break;
                     }
@@ -343,7 +348,7 @@ public class Array<T> implements Iterable<T>{
                 T item = array.get(i);
                 for(int ii = 0; ii < size; ii++){
                     if(item.equals(items[ii])){
-                        removeIndex(ii);
+                        removeAt(ii);
                         size--;
                         break;
                     }
@@ -642,7 +647,7 @@ public class Array<T> implements Iterable<T>{
         public void remove(){
             if(!allowRemove) throw new GdxRuntimeException("Remove not allowed.");
             index--;
-            array.removeIndex(index);
+            array.removeAt(index);
         }
 
         public void reset(){

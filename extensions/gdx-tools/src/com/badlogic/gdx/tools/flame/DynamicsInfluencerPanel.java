@@ -264,7 +264,7 @@ public class DynamicsInfluencerPanel extends InfluencerPanel<DynamicsInfluencer>
         //Remove the velocity from the table
         ParticleController controller = editor.getEmitter();
         DynamicsInfluencer influencer = controller.findInfluencer(DynamicsInfluencer.class);
-        influencer.velocities.removeValue(velocities.removeIndex(row).velocityValue, true);
+        influencer.velocities.removeValue(velocities.removeAt(row).velocityValue, true);
         velocityTableModel.removeRow(row);
 
         //Restart the effect and reinit the controller

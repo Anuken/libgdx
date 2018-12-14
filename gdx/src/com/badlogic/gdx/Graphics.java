@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.*;
 
 /**
@@ -42,6 +43,13 @@ import com.badlogic.gdx.graphics.glutils.*;
 public abstract class Graphics{
     /**One global spritebatch for drawing things.*/
     private SpriteBatch batch;
+    /**One global texture atlas.*/
+    private TextureAtlas atlas;
+
+    /**Returns the global spritebatch instance.*/
+    public SpriteBatch batch(){
+        return batch;
+    }
 
     /**
      * Returns whether OpenGL ES 3.0 is available. If it is you can get an instance of {@link GL30} via {@link #getGL30()} to
@@ -64,6 +72,12 @@ public abstract class Graphics{
     /** Set the GL30 instance **/
     public abstract void setGL30(GL30 gl30);
 
+    /**Clears the color buffer using the specified color.*/
+    public void clear(Color color){
+        Core.gl.glClearColor(color.r, color.g, color.b, color.a);
+        Core.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
     /** @return the width of the client area in logical pixels. */
     public abstract int getWidth();
 
@@ -78,7 +92,7 @@ public abstract class Graphics{
 
     /**
      * Returns the id of the current frame. The general contract of this method is that the id is incremented only when the
-     * application is in the running state right before calling the {@link ApplicationListener#render()} method. Also, the id of
+     * application is in the running state right before calling the {@link ApplicationListener#update()} method. Also, the id of
      * the first frame is 0; the id of subsequent frames is guaranteed to take increasing values for 2<sup>63</sup>-1 rendering
      * cycles.
      *

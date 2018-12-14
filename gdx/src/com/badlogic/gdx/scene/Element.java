@@ -75,7 +75,7 @@ public class Element implements Layout{
                     Action current = actions.get(i);
                     int actionIndex = current == action ? i : actions.indexOf(action, true);
                     if(actionIndex != -1){
-                        actions.removeIndex(actionIndex);
+                        actions.removeAt(actionIndex);
                         action.setActor(null);
                         i--;
                     }
@@ -94,23 +94,7 @@ public class Element implements Layout{
             visible(visibility.get());
     }
 
-    /**
-     * Sets this actor as the event {@link Event#setTarget(Element) target} and propagates the event to this actor and ancestor
-     * actors as necessary. If this actor is not in the stage, the stage must be set before calling this method.
-     * <p>
-     * Events are fired in 2 phases:
-     * <ol>
-     * <li>The first phase (the "capture" phase) notifies listeners on each actor starting at the root and propagating downward to
-     * (and including) this actor.</li>
-     * <li>The second phase notifies listeners on each actor starting at this actor and, if {@link Event#getBubbles()} is true,
-     * propagating upward to the root.</li>
-     * </ol>
-     * If the event is {@link Event#stop() stopped} at any time, it will not propagate to the next actor.
-     *
-     * @return true if the event was {@link Event#cancel() cancelled}.
-     */
     public boolean fire(Event event){
-        if(event.getStage() == null) event.setStage(getScene());
         event.targetActor = this;
 
         // Collect ancestors so event propagation is unaffected by hierarchy changes.
@@ -152,14 +136,6 @@ public class Element implements Layout{
         }
     }
 
-    /**
-     * Notifies this actor's listeners of the event. The event is not propagated to any parents. Before notifying the listeners,
-     * this actor is set as the {@link Event#getListenerActor() listener actor}. The event {@link Event#setTarget(Element) target}
-     * must be set before calling this method. If this actor is not in the stage, the stage must be set before calling this method.
-     *
-     * @param capture If true, the capture listeners will be notified instead of the regular listeners.
-     * @return true of the event was {@link Event#cancel() cancelled}.
-     */
     public boolean notify(Event event, boolean capture){
         if(event.targetActor == null) throw new IllegalArgumentException("The event target cannot be null.");
 
@@ -168,7 +144,6 @@ public class Element implements Layout{
 
         event.listenerActor = this;
         event.capture = capture;
-        if(event.getStage() == null) event.setStage(stage);
 
         listeners.begin();
         for(int i = 0, n = listeners.size; i < n; i++){
@@ -178,7 +153,7 @@ public class Element implements Layout{
                 if(event instanceof InputEvent){
                     InputEvent inputEvent = (InputEvent) event;
                     if(inputEvent.type == Type.touchDown){
-                        event.getStage().addTouchFocus(listener, this, inputEvent.targetActor, inputEvent.pointer,
+                        getScene().addTouchFocus(listener, this, inputEvent.targetActor, inputEvent.pointer,
                                 inputEvent.keyCode);
                     }
                 }

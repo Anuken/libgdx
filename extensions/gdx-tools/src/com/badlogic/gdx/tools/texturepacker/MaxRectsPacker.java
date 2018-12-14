@@ -328,7 +328,7 @@ public class MaxRectsPacker implements Packer{
             int numRectanglesToProcess = freeRectangles.size;
             for(int i = 0; i < numRectanglesToProcess; ++i){
                 if(splitFreeNode(freeRectangles.get(i), newNode)){
-                    freeRectangles.removeIndex(i);
+                    freeRectangles.removeAt(i);
                     --i;
                     --numRectanglesToProcess;
                 }
@@ -378,7 +378,7 @@ public class MaxRectsPacker implements Packer{
                 if(bestRectIndex == -1) break;
 
                 placeRect(bestNode);
-                rects.removeIndex(bestRectIndex);
+                rects.removeAt(bestRectIndex);
             }
 
             Page result = getResult();
@@ -405,7 +405,7 @@ public class MaxRectsPacker implements Packer{
             int numRectanglesToProcess = freeRectangles.size;
             for(int i = 0; i < numRectanglesToProcess; i++){
                 if(splitFreeNode(freeRectangles.get(i), node)){
-                    freeRectangles.removeIndex(i);
+                    freeRectangles.removeAt(i);
                     --i;
                     --numRectanglesToProcess;
                 }
@@ -740,13 +740,13 @@ public class MaxRectsPacker implements Packer{
                     Rect rect1 = freeRectangles.get(i);
                     Rect rect2 = freeRectangles.get(j);
                     if(isContainedIn(rect1, rect2)){
-                        freeRectangles.removeIndex(i);
+                        freeRectangles.removeAt(i);
                         --i;
                         --n;
                         break;
                     }
                     if(isContainedIn(rect2, rect1)){
-                        freeRectangles.removeIndex(j);
+                        freeRectangles.removeAt(j);
                         --j;
                         --n;
                     }

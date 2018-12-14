@@ -43,7 +43,7 @@ public class AfterAction extends DelegateAction{
         for(int i = waitForActions.size - 1; i >= 0; i--){
             Action action = waitForActions.get(i);
             int index = currentActions.indexOf(action, true);
-            if(index == -1) waitForActions.removeIndex(i);
+            if(index == -1) waitForActions.removeAt(i);
         }
         return waitForActions.size <= 0 && action.act(delta);
     }

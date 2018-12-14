@@ -38,7 +38,7 @@ import com.badlogic.gdx.utils.Disposable;
  * <pre>
  * {@code
  * camera.update();
- * shapeRenderer.setProjectionMatrix(camera.combined);
+ * shapeRenderer.setProjection(camera.combined);
  *
  * shapeRenderer.begin(ShapeType.Line);
  * shapeRenderer.setColor(1, 1, 0, 1);
@@ -99,7 +99,7 @@ public class ShapeRenderer implements Disposable{
     }
 
     private final ImmediateModeRenderer renderer;
-    private boolean matrixDirty = false;
+    private boolean matrixDirty;
     private final Matrix4 projectionMatrix = new Matrix4();
     private final Matrix4 transformMatrix = new Matrix4();
     private final Matrix4 combinedMatrix = new Matrix4();
@@ -146,7 +146,7 @@ public class ShapeRenderer implements Disposable{
     }
 
     /**
-     * Sets the projection matrix to be used for rendering. Usually this will be set to {@link Camera#combined}.
+     * Sets the projection matrix to be used for rendering.
      *
      * @param matrix
      */

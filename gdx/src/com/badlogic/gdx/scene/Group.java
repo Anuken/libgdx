@@ -60,23 +60,14 @@ public class Group extends Element implements Cullable{
         children.end();
     }
 
-    /**
-     * Draws the group and its children. The default implementation calls {@link #applyTransform(Batch, Matrix4)} if needed, then
-     * {@link #drawChildren(Batch, float)}, then {@link #resetTransform(Batch)} if needed.
-     */
-    public void draw(Batch batch, float parentAlpha){
-        if(transform) applyTransform(batch, computeTransform());
-        drawChildren(batch, parentAlpha);
-        if(transform) resetTransform(batch);
+    @Override
+    public void draw(){
+        if(transform) applyTransform(computeTransform());
+        drawChildren();
+        if(transform) resetTransform();
     }
 
-    /**
-     * Draws all children. {@link #applyTransform(Batch, Matrix4)} should be called before and {@link #resetTransform(Batch)}
-     * after this method if {@link #setTransform(boolean) transform} is true. If {@link #setTransform(boolean) transform} is false
-     * these methods don't need to be called, children positions are temporarily offset by the group position when drawn. This
-     * method avoids drawing children completely outside the {@link #setCullingArea(Rectangle) culling area}, if set.
-     */
-    protected void drawChildren(Batch batch, float parentAlpha){
+    protected void drawChildren(){
         parentAlpha *= this.color.a;
         SnapshotArray<Element> children = this.children;
         Element[] actors = children.begin();
@@ -90,13 +81,13 @@ public class Group extends Element implements Cullable{
             if(transform){
                 for(int i = 0, n = children.size; i < n; i++){
                     Element child = actors[i];
-                    child.alpha = parentAlpha;
+                    child.parentAlpha = parentAlpha;
                     if(!child.isVisible()) continue;
                     float cx = child.x, cy = child.y;
                     child.x += child.translation.x;
                     child.y += child.translation.y;
                     if(cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft && cy + child.height >= cullBottom)
-                        child.draw(batch, parentAlpha);
+                        child.draw();
                     child.x -= child.translation.x;
                     child.y -= child.translation.y;
                 }
@@ -231,7 +222,7 @@ public class Group extends Element implements Cullable{
      * Set the batch's transformation matrix, often with the result of {@link #computeTransform()}. Note this causes the batch to
      * be flushed. {@link #resetTransform(Batch)} will restore the transform to what it was before this call.
      */
-    protected void applyTransform(Batch batch, Matrix4 transform){
+    protected void applyTransform(Matrix4 transform){
         oldTransform.set(batch.getTransformMatrix());
         batch.setTransformMatrix(transform);
     }
@@ -240,7 +231,7 @@ public class Group extends Element implements Cullable{
      * Restores the batch transform to what it was before {@link #applyTransform(Batch, Matrix4)}. Note this causes the batch to
      * be flushed.
      */
-    protected void resetTransform(Batch batch){
+    protected void resetTransform(){
         batch.setTransformMatrix(oldTransform);
     }
 

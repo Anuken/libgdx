@@ -17,7 +17,6 @@
 package com.badlogic.gdx.maps.tiled.renderers;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapGroupLayer;
@@ -96,10 +95,10 @@ public abstract class BatchTiledMapRenderer implements TiledMapRenderer, Disposa
     }
 
     @Override
-    public void setView(OrthographicCamera camera){
+    public void setView(Camera camera){
         batch.setProjectionMatrix(camera.combined);
-        float width = camera.viewportWidth * camera.zoom;
-        float height = camera.viewportHeight * camera.zoom;
+        float width = camera.width * camera.zoom;
+        float height = camera.height * camera.zoom;
         float w = width * Math.abs(camera.up.y) + height * Math.abs(camera.up.x);
         float h = height * Math.abs(camera.up.y) + width * Math.abs(camera.up.x);
         viewBounds.set(camera.position.x - w / 2, camera.position.y - h / 2, w, h);

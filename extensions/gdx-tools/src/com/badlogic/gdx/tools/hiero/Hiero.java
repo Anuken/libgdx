@@ -1355,10 +1355,10 @@ public class Hiero extends JFrame{
         public void resize(int width, int height){
             this.width = width;
             this.height = height;
-            batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+            batch.getProjection().setToOrtho2D(0, 0, width, height);
         }
 
-        public void render(){
+        public void update(){
             int viewWidth = Core.graphics.getWidth();
             int viewHeight = Core.graphics.getHeight();
 

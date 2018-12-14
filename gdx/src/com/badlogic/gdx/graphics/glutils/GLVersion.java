@@ -39,7 +39,6 @@ public class GLVersion{
         if(appType == Application.ApplicationType.Android) this.type = Type.GLES;
         else if(appType == Application.ApplicationType.iOS) this.type = Type.GLES;
         else if(appType == Application.ApplicationType.Desktop) this.type = Type.OpenGL;
-        else if(appType == Application.ApplicationType.Applet) this.type = Type.OpenGL;
         else if(appType == Application.ApplicationType.WebGL) this.type = Type.WebGL;
         else this.type = Type.NONE;
 

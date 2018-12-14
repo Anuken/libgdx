@@ -62,7 +62,7 @@ public class TiledMapTileSets implements Iterable<TiledMapTileSet>{
      * @param index index at which to remove a tileset.
      */
     public void removeTileSet(int index){
-        tilesets.removeIndex(index);
+        tilesets.removeAt(index);
     }
 
     /** @param tileset set to be removed */

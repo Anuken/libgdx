@@ -23,7 +23,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -54,7 +53,7 @@ public class TiledMapPackerTestRender extends ApplicationAdapter{
     private TiledMap map;
     private Viewport viewport;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private OrthographicCamera cam;
+    private Camera cam;
 
     @Override
     public void create(){
@@ -66,7 +65,7 @@ public class TiledMapPackerTestRender extends ApplicationAdapter{
         params.flipY = true;
 
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
-        cam = (OrthographicCamera) viewport.getCamera();
+        cam = (Camera) viewport.getCamera();
 
         map = atlasTmxMapLoader.load(TMX_LOC, params);
         mapRenderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);

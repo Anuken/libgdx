@@ -21,7 +21,7 @@ import java.util.Comparator;
 /**
  * Queues any removals done after {@link #begin()} is called to occur once {@link #end()} is called. This can allow code out of
  * your control to remove items without affecting iteration. Between begin and end, most mutator methods will throw
- * IllegalStateException. Only {@link #removeIndex(int)}, {@link #removeValue(Object, boolean)}, {@link #removeRange(int, int)},
+ * IllegalStateException. Only {@link #removeAt(int)}, {@link #removeValue(Object, boolean)}, {@link #removeRange(int, int)},
  * {@link #clear()}, and add methods are allowed.
  * <p>
  * Code using this class must not rely on items being removed immediately. Consider using {@link SnapshotArray} if this is a
@@ -80,10 +80,10 @@ public class DelayedRemovalArray<T> extends Array<T>{
             }else{
                 for(int i = 0, n = remove.size; i < n; i++){
                     int index = remove.pop();
-                    if(index >= clear) removeIndex(index);
+                    if(index >= clear) removeAt(index);
                 }
                 for(int i = clear - 1; i >= 0; i--)
-                    removeIndex(i);
+                    removeAt(i);
             }
             clear = 0;
         }
@@ -112,12 +112,12 @@ public class DelayedRemovalArray<T> extends Array<T>{
         return super.removeValue(value, identity);
     }
 
-    public T removeIndex(int index){
+    public T removeAt(int index){
         if(iterating > 0){
             remove(index);
             return get(index);
         }
-        return super.removeIndex(index);
+        return super.removeAt(index);
     }
 
     public void removeRange(int start, int end){

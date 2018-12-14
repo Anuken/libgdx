@@ -17,9 +17,9 @@
 package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Application.LifecycleListener;
 import com.badlogic.gdx.collection.Array;
 
 /**
@@ -57,7 +57,7 @@ public class Timer{
         }
     }
 
-    final Array<Task> tasks = new Array(false, 8);
+    final Array<Task> tasks = new Array<>(false, 8);
 
     public Timer(){
         start();
@@ -148,7 +148,7 @@ public class Timer{
                 }
                 if(task.repeatCount == 0){
                     task.timer = null;
-                    tasks.removeIndex(i);
+                    tasks.removeAt(i);
                     i--;
                     n--;
                 }else{
@@ -275,7 +275,7 @@ public class Timer{
      *
      * @author Nathan Sweet
      */
-    static class TimerThread implements Runnable, LifecycleListener{
+    static class TimerThread implements Runnable, ApplicationListener{
         final Files files;
         final Array<Timer> instances = new Array<>(1);
         Timer instance;
@@ -283,7 +283,7 @@ public class Timer{
 
         public TimerThread(){
             files = Core.files;
-            Core.app.addLifecycleListener(this);
+            Core.app.addListener(this);
             resume();
 
             Thread thread = new Thread(this, "Timer");
@@ -346,7 +346,7 @@ public class Timer{
                 instances.clear();
                 threadLock.notifyAll();
             }
-            Core.app.removeLifecycleListener(this);
+            Core.app.removeListener(this);
         }
     }
 }

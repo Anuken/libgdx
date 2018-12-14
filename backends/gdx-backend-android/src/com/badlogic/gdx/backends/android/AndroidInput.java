@@ -21,10 +21,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.graphics.drawable.GradientDrawable.Orientation;
+import android.hardware.*;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -40,7 +38,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.input.InputProcessor;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.pooling.Pool;
 
 import java.util.ArrayList;
@@ -217,48 +217,49 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener{
 
     @Override
     public void getTextInput(final TextInputListener listener, final String title, final String text, final String hint){
-        handle.post(new Runnable(){
-            public void run(){
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle(title);
-                final EditText input = new EditText(context);
-                input.setHint(hint);
-                input.setText(text);
-                input.setSingleLine();
-                alert.setView(input);
-                alert.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int whichButton){
-                        Core.app.post(new Runnable(){
-                            @Override
-                            public void run(){
-                                listener.input(input.getText().toString());
-                            }
-                        });
-                    }
-                });
-                alert.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int whichButton){
-                        Core.app.post(new Runnable(){
-                            @Override
-                            public void run(){
-                                listener.canceled();
-                            }
-                        });
-                    }
-                });
-                alert.setOnCancelListener(new OnCancelListener(){
-                    @Override
-                    public void onCancel(DialogInterface arg0){
-                        Core.app.post(new Runnable(){
-                            @Override
-                            public void run(){
-                                listener.canceled();
-                            }
-                        });
-                    }
-                });
-                alert.show();
-            }
+        handle.post(() -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(context);
+            alert.setTitle(title);
+            final EditText input = new EditText(context);
+            input.setHint(hint);
+            input.setText(text);
+            input.setSingleLine();
+            input.setSelection(text.length());
+            alert.setView(input);
+            alert.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int whichButton){
+                    Core.app.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            listener.input(input.getText().toString());
+                        }
+                    });
+                }
+            });
+            alert.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int whichButton){
+                    Core.app.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            listener.canceled();
+                        }
+                    });
+                }
+            });
+            alert.setOnCancelListener(new OnCancelListener(){
+                @Override
+                public void onCancel(DialogInterface arg0){
+                    Core.app.post(new Runnable(){
+                        @Override
+                        public void run(){
+                            listener.canceled();
+                        }
+                    });
+                }
+            });
+            AlertDialog dialog = alert.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         });
     }
 
