@@ -7,8 +7,6 @@ import com.badlogic.gdx.function.BooleanProvider;
 import com.badlogic.gdx.function.IntConsumer;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
@@ -836,23 +834,24 @@ public class Element implements Layout{
     }
 
     /** Draws this actor's debug lines if {@link #getDebug()} is true. */
-    public void drawDebug(ShapeRenderer shapes){
-        drawDebugBounds(shapes);
+    public void drawDebug(){
+        drawDebugBounds();
     }
 
     /** Draws a rectange for the bounds of this actor if {@link #getDebug()} is true. */
-    protected void drawDebugBounds(ShapeRenderer shapes){
+    protected void drawDebugBounds(){
         if(!debug) return;
+        //TODO draw bounds
+        /*
         shapes.set(ShapeType.Line);
         shapes.setColor(stage.getDebugColor());
-        shapes.rect(x, y, originX, originY, width, height, scaleX, scaleY, rotation);
+        shapes.rect(x, y, originX, originY, width, height, scaleX, scaleY, rotation);*/
     }
 
     public boolean getDebug(){
         return debug;
     }
 
-    /** If true, {@link #drawDebug(ShapeRenderer)} will be called for this actor. */
     public void setDebug(boolean enabled){
         debug = enabled;
         if(enabled) Scene.debug = true;

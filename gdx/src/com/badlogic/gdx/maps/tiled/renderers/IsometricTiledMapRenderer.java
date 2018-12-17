@@ -22,16 +22,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 
-import static com.badlogic.gdx.graphics.g2d.Batch.*;
-
 public class IsometricTiledMapRenderer extends BatchTiledMapRenderer{
 
-    private Matrix4 isoTransform;
-    private Matrix4 invIsotransform;
+    private Matrix3 isoTransform;
+    private Matrix3 invIsotransform;
     private Vector3 screenPos = new Vector3();
 
     private Vector2 topRight = new Vector2();
@@ -61,7 +59,7 @@ public class IsometricTiledMapRenderer extends BatchTiledMapRenderer{
 
     private void init(){
         // create the isometric transform
-        isoTransform = new Matrix4();
+        isoTransform = new Matrix3();
         isoTransform.idt();
 
         // isoTransform.translate(0, 32, 0);
@@ -69,7 +67,7 @@ public class IsometricTiledMapRenderer extends BatchTiledMapRenderer{
         isoTransform.rotate(0.0f, 0.0f, 1.0f, -45);
 
         // ... and the inverse matrix
-        invIsotransform = new Matrix4(isoTransform);
+        invIsotransform = new Matrix3(isoTransform);
         invIsotransform.inv();
     }
 
@@ -130,8 +128,8 @@ public class IsometricTiledMapRenderer extends BatchTiledMapRenderer{
 
                     float x1 = x + tile.getOffsetX() * unitScale + layerOffsetX;
                     float y1 = y + tile.getOffsetY() * unitScale + layerOffsetY;
-                    float x2 = x1 + region.getRegionWidth() * unitScale;
-                    float y2 = y1 + region.getRegionHeight() * unitScale;
+                    float x2 = x1 + region.getWidth() * unitScale;
+                    float y2 = y1 + region.getHeight() * unitScale;
 
                     float u1 = region.getU();
                     float v1 = region.getV2();

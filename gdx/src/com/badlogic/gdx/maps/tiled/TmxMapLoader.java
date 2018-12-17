@@ -396,8 +396,8 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
                 props.put("margin", margin);
                 props.put("spacing", spacing);
 
-                int stopWidth = texture.getRegionWidth() - tilewidth;
-                int stopHeight = texture.getRegionHeight() - tileheight;
+                int stopWidth = texture.getWidth() - tilewidth;
+                int stopHeight = texture.getHeight() - tileheight;
 
                 int id = firstgid;
 

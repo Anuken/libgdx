@@ -19,8 +19,8 @@ package com.badlogic.gdx.scene.ui;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.function.BooleanProvider;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
@@ -58,9 +58,8 @@ public class Button extends Table implements Disableable{
     BooleanProvider disabledProvider;
     private ButtonStyle style;
     private ClickListener clickListener;
-    private boolean programmaticChangeEvents = true;
+    private boolean programmaticChangeEvents;
     private float transitionTime;
-    private boolean drawOver = false;
 
     public Button(String styleName){
         initialize();
@@ -235,14 +234,14 @@ public class Button extends Table implements Disableable{
         return buttonGroup;
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         validate();
 
         boolean isDisabled = isDisabled();
         boolean isPressed = isPressed();
         boolean isChecked = isChecked();
         boolean isOver = isOver();
-        drawOver = false;
+        boolean drawOver = false;
 
         if(isOver){
             transitionTime += Core.graphics.getDeltaTime() * 60f;
@@ -269,9 +268,6 @@ public class Button extends Table implements Disableable{
         if(drawOver)
             background = style.up;
 
-        //if(this instanceof TextButton && ((TextButton)this).getText().toString().equalsIgnoreCase("play"))
-        //	UCore.log(background);
-
         setBackground(background);
 
         float offsetX, offsetY;
@@ -289,27 +285,13 @@ public class Button extends Table implements Disableable{
         Array<Element> children = getChildren();
         for(int i = 0; i < children.size; i++)
             children.get(i).moveBy(offsetX, offsetY);
-        super.draw(batch, parentAlpha);
+        super.draw();
         for(int i = 0; i < children.size; i++)
             children.get(i).moveBy(-offsetX, -offsetY);
 
         Scene stage = getScene();
         if(stage != null && stage.getActionsRequestRendering() && isPressed != clickListener.isPressed())
             Core.graphics.requestRendering();
-    }
-
-    @Override
-    protected void drawBackground(Batch batch, float parentAlpha, float x, float y){
-        super.drawBackground(batch, parentAlpha, x, y);
-
-        if(transitionTime > 0 && this.getBackground() != style.down && style.over != null){
-            if(transitionTime > style.transition)
-                transitionTime = style.transition;
-            batch.setColor(getColor().r, getColor().g, getColor().b, (parentAlpha * (transitionTime / style.transition)));
-            //buggy
-            //style.over.draw(batch, getX(), getY(), getWidth(), getHeight());
-            batch.setColor(Color.WHITE);
-        }
     }
 
     public float getPrefWidth(){

@@ -27,7 +27,6 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -251,8 +250,8 @@ public class OrthoCachedTiledMapRenderer implements TiledMapRenderer, Disposable
 
                 final float x1 = col * layerTileWidth + tile.getOffsetX() * unitScale + layerOffsetX;
                 final float y1 = row * layerTileHeight + tile.getOffsetY() * unitScale + layerOffsetY;
-                final float x2 = x1 + region.getRegionWidth() * unitScale;
-                final float y2 = y1 + region.getRegionHeight() * unitScale;
+                final float x2 = x1 + region.getWidth() * unitScale;
+                final float y2 = y1 + region.getHeight() * unitScale;
 
                 final float adjustX = 0.5f / texture.getWidth();
                 final float adjustY = 0.5f / texture.getHeight();
@@ -368,8 +367,8 @@ public class OrthoCachedTiledMapRenderer implements TiledMapRenderer, Disposable
         final float y = layer.getY();
         final float x1 = x * unitScale;
         final float y1 = y * unitScale;
-        final float x2 = x1 + region.getRegionWidth() * unitScale;
-        final float y2 = y1 + region.getRegionHeight() * unitScale;
+        final float x2 = x1 + region.getWidth() * unitScale;
+        final float y2 = y1 + region.getHeight() * unitScale;
 
         final float u1 = region.getU();
         final float v1 = region.getV2();

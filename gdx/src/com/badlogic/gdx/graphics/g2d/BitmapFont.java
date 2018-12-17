@@ -758,8 +758,8 @@ public class BitmapFont implements Disposable{
             float offsetX = 0, offsetY = 0;
             float u = region.u;
             float v = region.v;
-            float regionWidth = region.getRegionWidth();
-            float regionHeight = region.getRegionHeight();
+            float regionWidth = region.getWidth();
+            float regionHeight = region.getHeight();
             if(region instanceof AtlasRegion){
                 // Compensate for whitespace stripped from left and top edges.
                 AtlasRegion atlasRegion = (AtlasRegion) region;

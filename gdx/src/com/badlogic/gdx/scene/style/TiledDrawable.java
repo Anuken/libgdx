@@ -20,13 +20,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import static com.badlogic.gdx.Core.graphics;
+
 /**
  * Draws a {@link TextureRegion} repeatedly to fill the area, instead of stretching it.
  *
  * @author Nathan Sweet
  */
 public class TiledDrawable extends TextureRegionDrawable{
-    static private final Color temp = new Color();
     private final Color color = new Color(1, 1, 1, 1);
     private float tileWidth, tileHeight;
 
@@ -44,8 +45,8 @@ public class TiledDrawable extends TextureRegionDrawable{
 
     public void setRegion(TextureRegion region){
         super.setRegion(region);
-        this.tileWidth = region.getRegionWidth();
-        this.tileHeight = region.getRegionHeight();
+        this.tileWidth = region.getWidth();
+        this.tileHeight = region.getHeight();
     }
 
     public void setTileSize(float w, float h){
@@ -53,11 +54,8 @@ public class TiledDrawable extends TextureRegionDrawable{
         tileHeight = h;
     }
 
-    public void draw(Batch batch, float x, float y, float width, float height){
-        Color batchColor = batch.getColor();
-        temp.set(batchColor);
-        batch.setColor(batchColor.mul(color));
-
+    @Override
+    public void draw(float x, float y, float width, float height){
         TextureRegion region = getRegion();
         float regionWidth = tileWidth, regionHeight = tileHeight;
         int fullX = (int) (width / regionWidth), fullY = (int) (height / regionHeight);
@@ -66,7 +64,7 @@ public class TiledDrawable extends TextureRegionDrawable{
         for(int i = 0; i < fullX; i++){
             y = startY;
             for(int ii = 0; ii < fullY; ii++){
-                batch.draw(region, x, y, regionWidth, regionHeight);
+                graphics.batch().draw().tex(region).set(x, y, regionWidth, regionHeight).color(color);
                 y += regionHeight;
             }
             x += regionWidth;
@@ -80,13 +78,13 @@ public class TiledDrawable extends TextureRegionDrawable{
             float v = region.getV();
             y = startY;
             for(int ii = 0; ii < fullY; ii++){
-                batch.draw(texture, x, y, remainingX, regionHeight, u, v2, u2, v);
+                graphics.batch().draw().tex(texture).set(x, y, remainingX, remainingY).uv(u, v2, u2, v).color(color);
                 y += regionHeight;
             }
             // Upper right corner.
             if(remainingY > 0){
                 v = v2 - remainingY / texture.getHeight();
-                batch.draw(texture, x, y, remainingX, remainingY, u, v2, u2, v);
+                graphics.batch().draw().tex(texture).set(x, y, remainingX, remainingY).uv(u, v2, u2, v).color(color);
             }
         }
         if(remainingY > 0){
@@ -95,15 +93,14 @@ public class TiledDrawable extends TextureRegionDrawable{
             float v = v2 - remainingY / texture.getHeight();
             x = startX;
             for(int i = 0; i < fullX; i++){
-                batch.draw(texture, x, y, regionWidth, remainingY, u, v2, u2, v);
+                graphics.batch().draw().tex(texture).set(x, y, remainingX, remainingY).uv(u, v2, u2, v).color(color);
                 x += regionWidth;
             }
         }
-
-        batch.setColor(temp);
     }
 
-    public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+    @Override
+    public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX,
                      float scaleY, float rotation){
         throw new UnsupportedOperationException();
     }

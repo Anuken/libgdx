@@ -42,7 +42,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     public final static Vector3 Z = new Vector3(0, 0, 1);
     public final static Vector3 Zero = new Vector3(0, 0, 0);
 
-    private final static Matrix4 tmpMat = new Matrix4();
+    private final static Matrix3 tmpMat = new Matrix3();
 
     /** Constructs a vector at (0,0,0) */
     public Vector3(){
@@ -400,32 +400,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     }
 
     /**
-     * Left-multiplies the vector by the given matrix, assuming the fourth (w) component of the vector is 1.
-     *
-     * @param matrix The matrix
-     * @return This vector for chaining
-     */
-    public Vector3 mul(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03], x
-        * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13], x * l_mat[Matrix4.M20] + y
-        * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]);
-    }
-
-    /**
-     * Multiplies the vector by the transpose of the given matrix, assuming the fourth (w) component of the vector is 1.
-     *
-     * @param matrix The matrix
-     * @return This vector for chaining
-     */
-    public Vector3 traMul(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20] + l_mat[Matrix4.M30], x
-        * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21] + l_mat[Matrix4.M31], x * l_mat[Matrix4.M02] + y
-        * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M32]);
-    }
-
-    /**
      * Left-multiplies the vector by the given matrix.
      *
      * @param matrix The matrix
@@ -459,89 +433,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     }
 
     /**
-     * Multiplies this vector by the given matrix dividing by w, assuming the fourth (w) component of the vector is 1. This is
-     * mostly used to project/unproject vectors via a perspective projection matrix.
-     *
-     * @param matrix The matrix.
-     * @return This vector for chaining
-     */
-    public Vector3 prj(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        final float l_w = 1f / (x * l_mat[Matrix4.M30] + y * l_mat[Matrix4.M31] + z * l_mat[Matrix4.M32] + l_mat[Matrix4.M33]);
-        return this.set((x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03]) * l_w, (x
-        * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13])
-        * l_w, (x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]) * l_w);
-    }
-
-    /**
-     * Multiplies this vector by the first three columns of the matrix, essentially only applying rotation and scaling.
-     *
-     * @param matrix The matrix
-     * @return This vector for chaining
-     */
-    public Vector3 rot(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02], x * l_mat[Matrix4.M10] + y
-        * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12], x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22]);
-    }
-
-    /**
-     * Multiplies this vector by the transpose of the first three columns of the matrix. Note: only works for translation and
-     * rotation, does not work for scaling. For those, use {@link #rot(Matrix4)} with {@link Matrix4#inv()}.
-     *
-     * @param matrix The transformation matrix
-     * @return The vector for chaining
-     */
-    public Vector3 unrotate(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20], x * l_mat[Matrix4.M01] + y
-        * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21], x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
-    }
-
-    /**
-     * Translates this vector in the direction opposite to the translation of the matrix and the multiplies this vector by the
-     * transpose of the first three columns of the matrix. Note: only works for translation and rotation, does not work for
-     * scaling. For those, use {@link #mul(Matrix4)} with {@link Matrix4#inv()}.
-     *
-     * @param matrix The transformation matrix
-     * @return The vector for chaining
-     */
-    public Vector3 untransform(final Matrix4 matrix){
-        final float l_mat[] = matrix.val;
-        x -= l_mat[Matrix4.M03];
-        y -= l_mat[Matrix4.M03];
-        z -= l_mat[Matrix4.M03];
-        return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20], x * l_mat[Matrix4.M01] + y
-        * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21], x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
-    }
-
-    /**
-     * Rotates this vector by the given angle in degrees around the given axis.
-     *
-     * @param degrees the angle in degrees
-     * @param axisX the x-component of the axis
-     * @param axisY the y-component of the axis
-     * @param axisZ the z-component of the axis
-     * @return This vector for chaining
-     */
-    public Vector3 rotate(float degrees, float axisX, float axisY, float axisZ){
-        return this.mul(tmpMat.setToRotation(axisX, axisY, axisZ, degrees));
-    }
-
-    /**
-     * Rotates this vector by the given angle in radians around the given axis.
-     *
-     * @param radians the angle in radians
-     * @param axisX the x-component of the axis
-     * @param axisY the y-component of the axis
-     * @param axisZ the z-component of the axis
-     * @return This vector for chaining
-     */
-    public Vector3 rotateRad(float radians, float axisX, float axisY, float axisZ){
-        return this.mul(tmpMat.setToRotationRad(axisX, axisY, axisZ, radians));
-    }
-
-    /**
      * Rotates this vector by the given angle in degrees around the given axis.
      *
      * @param axis the axis
@@ -550,18 +441,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
      */
     public Vector3 rotate(final Vector3 axis, float degrees){
         tmpMat.setToRotation(axis, degrees);
-        return this.mul(tmpMat);
-    }
-
-    /**
-     * Rotates this vector by the given angle in radians around the given axis.
-     *
-     * @param axis the axis
-     * @param radians the angle in radians
-     * @return This vector for chaining
-     */
-    public Vector3 rotateRad(final Vector3 axis, float radians){
-        tmpMat.setToRotationRad(axis, radians);
         return this.mul(tmpMat);
     }
 

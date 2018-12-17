@@ -251,7 +251,7 @@ public class SpriteBatch implements Disposable{
             x4 += worldOriginX;
             y4 += worldOriginY;
 
-            float u1, v1, u2, v2, u3, v3, u4, v4;
+            final float u1, v1, u2, v2, u3, v3, u4, v4;
             u1 = rect.region.u2;
             v1 = rect.region.v2;
             u2 = rect.region.u;
@@ -384,7 +384,7 @@ public class SpriteBatch implements Disposable{
         return shader;
     }
 
-    public static class BatchRect implements Poolable, Comparable<BatchRect>{
+    public class BatchRect implements Poolable, Comparable<BatchRect>{
         final TextureRegion region = new TextureRegion();
         float x, y, z, originX, originY, scaleX = 1f, scaleY = 1f, rotation, width, height;
         float color = Color.WHITE_FLOAT_BITS;
@@ -398,6 +398,14 @@ public class SpriteBatch implements Disposable{
 
         public BatchRect color(Color color) {
             this.color = color.toFloatBits();
+            return this;
+        }
+
+        public BatchRect set(float x, float y, float w, float h) {
+            this.width = w;
+            this.height = h;
+            this.x = x;
+            this.y = y;
             return this;
         }
 
@@ -425,12 +433,17 @@ public class SpriteBatch implements Disposable{
         }
 
         public BatchRect tex(Texture tex) {
-            this.region.setRegion(tex);
+            this.region.set(tex);
             return this;
         }
 
         public BatchRect tex(TextureRegion region) {
-            this.region.setRegion(region);
+            this.region.set(region);
+            return this;
+        }
+
+        public BatchRect uv(float u, float v, float u2, float v2){
+            region.set(u, v, u2, v2);
             return this;
         }
 

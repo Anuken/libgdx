@@ -5,6 +5,7 @@ import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.Button;
 import com.badlogic.gdx.scene.ui.ButtonGroup;

@@ -18,20 +18,19 @@ package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.collection.IntArray;
 
 import java.nio.FloatBuffer;
 
-import static com.badlogic.gdx.graphics.g2d.Sprite.SPRITE_SIZE;
-import static com.badlogic.gdx.graphics.g2d.Sprite.VERTEX_SIZE;
+import static com.badlogic.gdx.graphics.g2d.SpriteBatch.VERTEX_SIZE;
 
 /**
  * Draws 2D images, optimized for geometry that does not change. Sprites and/or textures are cached and given an ID, which can
@@ -69,11 +68,11 @@ public class SpriteCache implements Disposable{
 
     private final Mesh mesh;
     private boolean drawing;
-    private final Matrix4 transformMatrix = new Matrix4();
-    private final Matrix4 projectionMatrix = new Matrix4();
+    private final Matrix3 transformMatrix = new Matrix3();
+    private final Matrix3 projectionMatrix = new Matrix3();
     private Array<Cache> caches = new Array<>();
 
-    private final Matrix4 combinedMatrix = new Matrix4();
+    private final Matrix3 combinedMatrix = new Matrix3();
     private final ShaderProgram shader;
 
     private Cache currentCache;
@@ -140,7 +139,7 @@ public class SpriteCache implements Disposable{
             mesh.setIndices(indices);
         }
 
-        projectionMatrix.setToOrtho2D(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+        projectionMatrix.setOrtho(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
     }
 
     /** Sets the color used to tint images when they are added to the SpriteCache. Default is {@link Color#WHITE}. */
@@ -653,7 +652,7 @@ public class SpriteCache implements Disposable{
 
     /** Adds the specified region to the cache. */
     public void add(TextureRegion region, float x, float y){
-        add(region, x, y, region.getRegionWidth(), region.getRegionHeight());
+        add(region, x, y, region.getWidth(), region.getHeight());
     }
 
     /** Adds the specified region to the cache. */
@@ -943,20 +942,20 @@ public class SpriteCache implements Disposable{
         if(shader != null) shader.dispose();
     }
 
-    public Matrix4 getProjectionMatrix(){
+    public Matrix3 getProjectionMatrix(){
         return projectionMatrix;
     }
 
-    public void setProjectionMatrix(Matrix4 projection){
+    public void setProjectionMatrix(Matrix3 projection){
         if(drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
         projectionMatrix.set(projection);
     }
 
-    public Matrix4 getTransformMatrix(){
+    public Matrix3 getTransformMatrix(){
         return transformMatrix;
     }
 
-    public void setTransformMatrix(Matrix4 transform){
+    public void setTransformMatrix(Matrix3 transform){
         if(drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
         transformMatrix.set(transform);
     }
@@ -979,7 +978,7 @@ public class SpriteCache implements Disposable{
         String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
         + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
         + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-        + "uniform mat4 u_projectionViewMatrix;\n" //
+        + "uniform mat3 u_projectionViewMatrix;\n" //
         + "varying vec4 v_color;\n" //
         + "varying vec2 v_texCoords;\n" //
         + "\n" //

@@ -184,8 +184,8 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
             tileset.getProperties().put("firstgid", firstgid);
             int gid = firstgid;
 
-            int stopWidth = texture.getRegionWidth() - tileSizeX;
-            int stopHeight = texture.getRegionHeight() - tileSizeY;
+            int stopWidth = texture.getWidth() - tileSizeX;
+            int stopHeight = texture.getHeight() - tileSizeY;
 
             for(int y = marginY; y <= stopHeight; y += tileSizeY + spacingY){
                 for(int x = marginX; x <= stopWidth; x += tileSizeX + spacingX){

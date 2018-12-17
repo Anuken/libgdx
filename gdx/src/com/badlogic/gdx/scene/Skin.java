@@ -23,7 +23,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasSprite;
 import com.badlogic.gdx.scene.style.*;
 import com.badlogic.gdx.scene.style.SkinReader.ValueReader;
 import com.badlogic.gdx.utils.Disposable;
@@ -42,6 +41,7 @@ import com.badlogic.gdx.utils.serialization.SerializationException;
  *
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class Skin implements Disposable{
     ObjectMap<Class, ObjectMap<String, Object>> resources = new ObjectMap<>();
     TextureAtlas atlas;
@@ -142,7 +142,7 @@ public class Skin implements Disposable{
         if(resource == null) throw new IllegalArgumentException("resource cannot be null.");
         ObjectMap<String, Object> typeResources = resources.get(type);
         if(typeResources == null){
-            typeResources = new ObjectMap<>(type == TextureRegion.class || type == Drawable.class || type == Sprite.class ? 256 : 64);
+            typeResources = new ObjectMap<>(type == TextureRegion.class || type == Drawable.class ? 256 : 64);
             resources.put(type, typeResources);
         }
         typeResources.put(name, resource);
@@ -175,7 +175,6 @@ public class Skin implements Disposable{
         if(type == Drawable.class) return (T) getDrawable(name);
         if(type == TextureRegion.class) return (T) getRegion(name);
         if(type == NinePatch.class) return (T) getPatch(name);
-        if(type == Sprite.class) return (T) getSprite(name);
 
         ObjectMap<String, Object> typeResources = resources.get(type);
         if(typeResources == null)
@@ -288,30 +287,6 @@ public class Skin implements Disposable{
     }
 
     /**
-     * Returns a registered sprite. If no sprite is found but a region exists with the name, a sprite is created from the region
-     * and stored in the skin. If the region is an {@link AtlasRegion} then an {@link AtlasSprite} is used if the region has been
-     * whitespace stripped or packed rotated 90 degrees.
-     */
-    public Sprite getSprite(String name){
-        Sprite sprite = optional(name, Sprite.class);
-        if(sprite != null) return sprite;
-
-        try{
-            TextureRegion textureRegion = getRegion(name);
-            if(textureRegion instanceof AtlasRegion){
-                AtlasRegion region = (AtlasRegion) textureRegion;
-                if(region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
-                    sprite = new AtlasSprite(region);
-            }
-            if(sprite == null) sprite = new Sprite(textureRegion);
-            add(name, sprite, Sprite.class);
-            return sprite;
-        }catch(GdxRuntimeException ex){
-            throw new GdxRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
-        }
-    }
-
-    /**
      * Returns a registered drawable. If no drawable is found but a region, ninepatch, or sprite exists with the name, then the
      * appropriate drawable is created and stored in the skin.
      */
@@ -324,10 +299,9 @@ public class Skin implements Disposable{
             TextureRegion textureRegion = getRegion(name);
             if(textureRegion instanceof AtlasRegion){
                 AtlasRegion region = (AtlasRegion) textureRegion;
-                if(region.splits != null)
+                if(region.splits != null){
                     drawable = (new ScaledNinePatchDrawable(getPatch(name)));
-                else if(region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
-                    drawable = new SpriteDrawable(getSprite(name));
+                }
             }
             if(drawable == null) drawable = new TextureRegionDrawable(textureRegion);
         }catch(GdxRuntimeException ignored){
@@ -336,19 +310,14 @@ public class Skin implements Disposable{
         // Check for explicit registration of ninepatch, sprite, or tiled drawable.
         if(drawable == null){
             NinePatch patch = optional(name, NinePatch.class);
-            if(patch != null)
+            if(patch != null){
                 drawable = new NinePatchDrawable(patch);
-            else{
-                Sprite sprite = optional(name, Sprite.class);
-                if(sprite != null)
-                    drawable = new SpriteDrawable(sprite);
-                else
-                    throw new GdxRuntimeException(
-                            "No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
+            }else{
+                throw new GdxRuntimeException("No Drawable, NinePatch, TextureRegion, or Texture registered with name: " + name);
             }
         }
 
-        if(drawable instanceof BaseDrawable) ((BaseDrawable) drawable).setName(name);
+        ((BaseDrawable) drawable).setName(name);
 
         add(name, drawable, Drawable.class);
         return drawable;
@@ -386,7 +355,6 @@ public class Skin implements Disposable{
         if(drawable instanceof TextureRegionDrawable)
             return new TextureRegionDrawable((TextureRegionDrawable) drawable);
         if(drawable instanceof NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable) drawable);
-        if(drawable instanceof SpriteDrawable) return new SpriteDrawable((SpriteDrawable) drawable);
         throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
     }
 
@@ -402,8 +370,6 @@ public class Skin implements Disposable{
             newDrawable = ((TextureRegionDrawable) drawable).tint(tint);
         else if(drawable instanceof NinePatchDrawable)
             newDrawable = ((NinePatchDrawable) drawable).tint(tint);
-        else if(drawable instanceof SpriteDrawable)
-            newDrawable = ((SpriteDrawable) drawable).tint(tint);
         else
             throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 

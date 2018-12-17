@@ -20,14 +20,15 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Predicate;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.scene.utils.Cullable;
+
+import static com.badlogic.gdx.Core.graphics;
 
 /**
  * 2D scene graph node that may contain other actors.
@@ -43,8 +44,8 @@ public class Group extends Element implements Cullable{
 
     final SnapshotArray<Element> children = new SnapshotArray<>(true, 4, Element.class);
     private final Affine2 worldTransform = new Affine2();
-    private final Matrix4 computedTransform = new Matrix4();
-    private final Matrix4 oldTransform = new Matrix4();
+    private final Matrix3 computedTransform = new Matrix3();
+    private final Matrix3 oldTransform = new Matrix3();
     boolean transform = true;
     private Rectangle cullingArea;
 
@@ -98,13 +99,13 @@ public class Group extends Element implements Cullable{
                 y = 0;
                 for(int i = 0, n = children.size; i < n; i++){
                     Element child = actors[i];
-                    child.alpha = parentAlpha;
+                    child.parentAlpha = parentAlpha;
                     if(!child.isVisible()) continue;
                     float cx = child.x, cy = child.y;
                     if(cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft && cy + child.height >= cullBottom){
                         child.x = cx + offsetX + child.getTranslation().x;
                         child.y = cy + offsetY + child.getTranslation().y;
-                        child.draw(batch, parentAlpha);
+                        child.draw();
                         child.x = cx;
                         child.y = cy;
                     }
@@ -117,11 +118,11 @@ public class Group extends Element implements Cullable{
             if(transform){
                 for(int i = 0, n = children.size; i < n; i++){
                     Element child = actors[i];
-                    child.alpha = parentAlpha;
+                    child.parentAlpha = parentAlpha;
                     if(!child.isVisible()) continue;
                     child.x += child.translation.x;
                     child.y += child.translation.y;
-                    child.draw(batch, parentAlpha);
+                    child.draw();
                     child.x -= child.translation.x;
                     child.y -= child.translation.y;
                 }
@@ -132,12 +133,12 @@ public class Group extends Element implements Cullable{
                 y = 0;
                 for(int i = 0, n = children.size; i < n; i++){
                     Element child = actors[i];
-                    child.alpha = parentAlpha;
+                    child.parentAlpha = parentAlpha;
                     if(!child.isVisible()) continue;
                     float cx = child.x, cy = child.y;
                     child.x = cx + offsetX + child.getTranslation().x;
                     child.y = cy + offsetY + child.getTranslation().y;
-                    child.draw(batch, parentAlpha);
+                    child.draw();
                     child.x = cx;
                     child.y = cy;
                 }
@@ -150,22 +151,22 @@ public class Group extends Element implements Cullable{
 
     /**
      * Draws this actor's debug lines if {@link #getDebug()} is true and, regardless of {@link #getDebug()}, calls
-     * {@link Element#drawDebug(ShapeRenderer)} on each child.
+     * {@link Element#drawDebug()} on each child.
      */
-    public void drawDebug(ShapeRenderer shapes){
-        drawDebugBounds(shapes);
-        if(transform) applyTransform(shapes, computeTransform());
-        drawDebugChildren(shapes);
-        if(transform) resetTransform(shapes);
+    public void drawDebug(){
+        drawDebugBounds();
+        if(transform) applyTransform(computeTransform());
+        drawDebugChildren();
+        if(transform) resetTransform();
     }
 
     /**
-     * Draws all children. {@link #applyTransform(Batch, Matrix4)} should be called before and {@link #resetTransform(Batch)}
+     * Draws all children. {@link #applyTransform(Matrix3)} should be called before and {@link #resetTransform()}
      * after this method if {@link #setTransform(boolean) transform} is true. If {@link #setTransform(boolean) transform} is false
      * these methods don't need to be called, children positions are temporarily offset by the group position when drawn. This
      * method avoids drawing children completely outside the {@link #setCullingArea(Rectangle) culling area}, if set.
      */
-    protected void drawDebugChildren(ShapeRenderer shapes){
+    protected void drawDebugChildren(){
         SnapshotArray<Element> children = this.children;
         Element[] actors = children.begin();
         // No culling, draw all children.
@@ -174,9 +175,8 @@ public class Group extends Element implements Cullable{
                 Element child = actors[i];
                 if(!child.isVisible()) continue;
                 if(!child.getDebug() && !(child instanceof Group)) continue;
-                child.drawDebug(shapes);
+                child.drawDebug();
             }
-            shapes.flush();
         }else{
             // No transform for this group, offset each child.
             float offsetX = x, offsetY = y;
@@ -189,7 +189,7 @@ public class Group extends Element implements Cullable{
                 float cx = child.x, cy = child.y;
                 child.x = cx + offsetX;
                 child.y = cy + offsetY;
-                child.drawDebug(shapes);
+                child.drawDebug();
                 child.x = cx;
                 child.y = cy;
             }
@@ -200,7 +200,7 @@ public class Group extends Element implements Cullable{
     }
 
     /** Returns the transform for this group's coordinate system. */
-    protected Matrix4 computeTransform(){
+    protected Matrix3 computeTransform(){
         Affine2 worldTransform = this.worldTransform;
         float originX = this.originX, originY = this.originY;
         worldTransform.setToTrnRotScl(x + originX, y + originY, rotation, scaleX, scaleY);
@@ -220,37 +220,19 @@ public class Group extends Element implements Cullable{
 
     /**
      * Set the batch's transformation matrix, often with the result of {@link #computeTransform()}. Note this causes the batch to
-     * be flushed. {@link #resetTransform(Batch)} will restore the transform to what it was before this call.
+     * be flushed. {@link #resetTransform()} will restore the transform to what it was before this call.
      */
-    protected void applyTransform(Matrix4 transform){
-        oldTransform.set(batch.getTransformMatrix());
-        batch.setTransformMatrix(transform);
+    protected void applyTransform(Matrix3 transform){
+        oldTransform.set(graphics.batch().getTransform());
+        graphics.batch().setTransform(transform);
     }
 
     /**
-     * Restores the batch transform to what it was before {@link #applyTransform(Batch, Matrix4)}. Note this causes the batch to
+     * Restores the batch transform to what it was before {@link #applyTransform(Matrix3)}. Note this causes the batch to
      * be flushed.
      */
     protected void resetTransform(){
-        batch.setTransformMatrix(oldTransform);
-    }
-
-    /**
-     * Set the shape renderer transformation matrix, often with the result of {@link #computeTransform()}. Note this causes the
-     * shape renderer to be flushed. {@link #resetTransform(ShapeRenderer)} will restore the transform to what it was before this
-     * call.
-     */
-    protected void applyTransform(ShapeRenderer shapes, Matrix4 transform){
-        oldTransform.set(shapes.getTransformMatrix());
-        shapes.setTransformMatrix(transform);
-    }
-
-    /**
-     * Restores the shape renderer transform to what it was before {@link #applyTransform(Batch, Matrix4)}. Note this causes the
-     * shape renderer to be flushed.
-     */
-    protected void resetTransform(ShapeRenderer shapes){
-        shapes.setTransformMatrix(oldTransform);
+        graphics.batch().setTransform(oldTransform);
     }
 
     /**
@@ -500,7 +482,7 @@ public class Group extends Element implements Cullable{
 
     /**
      * When true (the default), the Batch is transformed so children are drawn in their parent's coordinate system. This has a
-     * performance impact because {@link Batch#flush()} must be done before and after the transform. If the actors in a group are
+     * performance impact because {@link com.badlogic.gdx.graphics.g2d.SpriteBatch#flush()} must be done before and after the transform. If the actors in a group are
      * not rotated or scaled, then the transform for the group can be set to false. In this case, each child's position will be
      * offset by the group's position for drawing, causing the children to appear in the correct location even though the Batch has
      * not been transformed.
@@ -509,11 +491,7 @@ public class Group extends Element implements Cullable{
         this.transform = transform;
     }
 
-    /**
-     * Converts coordinates for this group to those of a descendant actor. The descendant does not need to be a direct child.
-     *
-     * @throws IllegalArgumentException if the specified actor is not a descendant of this group.
-     */
+    /**Converts coordinates for this group to those of a descendant actor. The descendant does not need to be a direct child.*/
     public Vector2 localToDescendantCoordinates(Element descendant, Vector2 localCoords){
         Group parent = descendant.parent;
         if(parent == null) throw new IllegalArgumentException("Child is not a descendant: " + descendant);
@@ -524,7 +502,6 @@ public class Group extends Element implements Cullable{
         return localCoords;
     }
 
-    /** If true, {@link #drawDebug(ShapeRenderer)} will be called for this group and, optionally, all children recursively. */
     public void setDebug(boolean enabled, boolean recursively){
         setDebug(enabled);
         if(recursively){

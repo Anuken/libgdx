@@ -17,10 +17,10 @@
 package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Matrix3;
 
 public interface ImmediateModeRenderer{
-    void begin(Matrix4 projModelView, int primitiveType);
+    void begin(Matrix3 projModelView, int primitiveType);
 
     void flush();
 

@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils.io;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.nio.*;

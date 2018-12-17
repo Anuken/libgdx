@@ -82,8 +82,8 @@ public class IsometricStaggeredTiledMapRenderer extends BatchTiledMapRenderer{
 
                     float x1 = x * layerTileWidth - offsetX + tile.getOffsetX() * unitScale + layerOffsetX;
                     float y1 = y * layerTileHeight50 + tile.getOffsetY() * unitScale + layerOffsetY;
-                    float x2 = x1 + region.getRegionWidth() * unitScale;
-                    float y2 = y1 + region.getRegionHeight() * unitScale;
+                    float x2 = x1 + region.getWidth() * unitScale;
+                    float y2 = y1 + region.getHeight() * unitScale;
 
                     float u1 = region.getU();
                     float v1 = region.getV2();

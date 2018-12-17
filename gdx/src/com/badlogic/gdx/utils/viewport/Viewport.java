@@ -21,7 +21,6 @@ import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.utils.ScissorStack;
@@ -98,8 +97,8 @@ public abstract class Viewport{
         return worldCoords;
     }
 
-    /** @see ScissorStack#calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle) */
-    public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor){
+    /** @see ScissorStack#calculateScissors(Camera, float, float, float, float, Matrix3, Rectangle, Rectangle) */
+    public void calculateScissors(Matrix3 batchTransform, Rectangle area, Rectangle scissor){
         ScissorStack.calculateScissors(camera, screenX, screenY, screenWidth, screenHeight, batchTransform, area, scissor);
     }
 

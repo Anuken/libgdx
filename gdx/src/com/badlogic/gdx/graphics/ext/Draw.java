@@ -134,7 +134,7 @@ public class Draw{
     //endregion textures
 
     public static void rect(TextureRegion region, float x, float y){
-        rect(region, x, y, region.getRegionWidth() * scl, region.getRegionHeight() * scl);
+        rect(region, x, y, region.getWidth() * scl, region.getHeight() * scl);
     }
 
     public static void rect(TextureRegion region, float x, float y, float width, float height){
@@ -154,7 +154,7 @@ public class Draw{
     }
 
     public static void rect(TextureRegion region, float x, float y, float rotation){
-        rect(region, x, y, region.getRegionWidth() * scl, region.getRegionHeight() * scl, rotation);
+        rect(region, x, y, region.getWidth() * scl, region.getHeight() * scl, rotation);
     }
 
     public static void rect(String name, float x, float y, float w, float h, float rotation){
@@ -172,7 +172,7 @@ public class Draw{
 
     /** Rectangle centered and rotated around its bottom middle point. */
     public static void grect(TextureRegion region, float x, float y, float rotation){
-        grect(region, x, y, region.getRegionWidth() * scl, region.getRegionHeight() * scl, rotation);
+        grect(region, x, y, region.getWidth() * scl, region.getHeight() * scl, rotation);
     }
 
     /** Rectangle centered and rotated around its bottom middle point. */
@@ -183,23 +183,23 @@ public class Draw{
     /** Grounded rect. */
     public static void grect(String name, float x, float y){
         TextureRegion region = region(name);
-        batch.draw(region, x - region.getRegionWidth() / 2, y);
+        batch.draw(region, x - region.getWidth() / 2, y);
     }
 
     /** Grounded rect with rotation and origin. */
     public static void grect(String name, float x, float y, float originx, float originy, float rotation, boolean flip){
         TextureRegion region = region(name);
-        batch.draw(region, x - region.getRegionWidth() / 2 * -Mathf.sign(flip), y, originx, originy,
-                region.getRegionWidth() * -Mathf.sign(flip), region.getRegionHeight(), 1f, 1f, rotation);
+        batch.draw(region, x - region.getWidth() / 2 * -Mathf.sign(flip), y, originx, originy,
+                region.getWidth() * -Mathf.sign(flip), region.getHeight(), 1f, 1f, rotation);
     }
 
     /** Grounded rect. */
     public static void grect(String name, float x, float y, boolean flipx){
         TextureRegion region = region(name);
         if(flipx){
-            batch.draw(region, x + region.getRegionWidth() / 2, y, -region.getRegionWidth(), region.getRegionHeight());
+            batch.draw(region, x + region.getWidth() / 2, y, -region.getWidth(), region.getHeight());
         }else{
-            batch.draw(region, x - region.getRegionWidth() / 2, y);
+            batch.draw(region, x - region.getWidth() / 2, y);
         }
     }
 
@@ -218,7 +218,7 @@ public class Draw{
     }
 
     public static void crect(TextureRegion texture, float x, float y){
-        crect(texture, x, y, texture.getRegionWidth(), texture.getRegionHeight());
+        crect(texture, x, y, texture.getWidth(), texture.getHeight());
     }
 
     public static void tscl(float scl){

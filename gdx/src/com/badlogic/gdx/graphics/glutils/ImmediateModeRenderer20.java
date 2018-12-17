@@ -16,12 +16,12 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.math.Matrix3;
 
 /**
  * Immediate mode rendering class for GLES 2.0. The renderer will allow you to specify vertices on the fly and provides a default
@@ -44,7 +44,7 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
     private final int normalOffset;
     private final int colorOffset;
     private final int texCoordOffset;
-    private final Matrix4 projModelView = new Matrix4();
+    private final Matrix3 projModelView = new Matrix3();
     private final float[] vertices;
     private final String[] shaderUniformNames;
 
@@ -100,7 +100,7 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
         ownsShader = false;
     }
 
-    public void begin(Matrix4 projModelView, int primitiveType){
+    public void begin(Matrix3 projModelView, int primitiveType){
         this.projModelView.set(projModelView);
         this.primitiveType = primitiveType;
     }

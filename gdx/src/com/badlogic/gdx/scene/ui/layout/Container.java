@@ -1,8 +1,6 @@
 package com.badlogic.gdx.scene.ui.layout;
 
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.style.Drawable;

@@ -23,13 +23,10 @@ package com.badlogic.gdx.scene.style;
  * @author Nathan Sweet
  */
 public interface Drawable{
-    /**
-     * Draws this drawable at the specified bounds. The drawable should be tinted with {@link Batch#getColor()}, possibly by mixing
-     * its own color.
-     */
-    void draw(Batch batch, float x, float y, float width, float height);
+    /**Draws this drawable at the specified bounds.*/
+    void draw(float x, float y, float width, float height);
 
-    void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+    void draw(float x, float y, float originX, float originY, float width, float height, float scaleX,
               float scaleY, float rotation);
 
     float getLeftWidth();

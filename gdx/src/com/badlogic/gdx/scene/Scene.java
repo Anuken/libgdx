@@ -26,10 +26,9 @@ import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.input.KeyCode;
-import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.scene.event.*;
@@ -40,9 +39,10 @@ import com.badlogic.gdx.scene.ui.layout.Table.Debug;
 import com.badlogic.gdx.scene.utils.ScissorStack;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.utils.pooling.Pools;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import static com.badlogic.gdx.Core.graphics;
 
 
 public class Scene implements InputProcessor{
@@ -60,22 +60,18 @@ public class Scene implements InputProcessor{
     private Element mouseOverActor;
     private Element keyboardFocus, scrollFocus;
     private boolean actionsRequestRendering = true;
-    private ShapeRenderer debugShapes;
     private boolean debugAll, debugUnderMouse, debugParentUnderMouse;
     private Debug debugTableUnderMouse = Debug.none;
 
     public final Skin skin;
     public final Group root;
 
-    /**
-     * Creates a stage with a {@link ScalingViewport} set The stage will use its own {@link Batch}
-     * which will be disposed when the stage is disposed.
-     */
+
     public Scene(Skin skin){
         this.skin = skin;
         this.viewport = new ScreenViewport(){
             @Override
-            public void calculateScissors(Matrix4 batchTransform, Rectangle area, Rectangle scissor){
+            public void calculateScissors(Matrix3 batchTransform, Rectangle area, Rectangle scissor){
                 ScissorStack.calculateScissors(
                 getCamera(), getScreenX(), getScreenY(), getScreenWidth(), getScreenHeight(), batchTransform, area, scissor);
             }
@@ -84,18 +80,12 @@ public class Scene implements InputProcessor{
         root = new Group();
         root.setScene(this);
 
-        viewport.update(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
-        ownsBatch = true;
+        viewport.update(graphics.getWidth(), graphics.getHeight(), true);
     }
 
-    /**
-     * Creates a stage with the specified viewport. The stage will use its own {@link Batch} which will be disposed when the stage
-     * is disposed.
-     */
     public Scene(Skin skin, Viewport viewport){
         this(skin);
         this.viewport = viewport;
-        ownsBatch = true;
     }
 
     public void draw(){
@@ -104,20 +94,15 @@ public class Scene implements InputProcessor{
 
         if(!root.isVisible()) return;
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        root.draw(batch, 1);
-        batch.end();
+        graphics.batch().setProjection(camera.projection());
+
+        root.draw();
+        graphics.batch().flush();
 
         if(debug) drawDebug();
     }
 
     private void drawDebug(){
-        if(debugShapes == null){
-            debugShapes = new ShapeRenderer();
-            debugShapes.setAutoShapeType(true);
-        }
-
         if(debugUnderMouse || debugParentUnderMouse || debugTableUnderMouse != Debug.none){
             screenToStageCoordinates(tempCoords.set(Core.input.mouseX(), Core.input.mouseY()));
             Element actor = hit(tempCoords.x, tempCoords.y, true);
@@ -144,10 +129,9 @@ public class Scene implements InputProcessor{
         }
 
         Core.gl.glEnable(GL20.GL_BLEND);
-        debugShapes.setProjectionMatrix(viewport.getCamera().combined);
-        debugShapes.begin();
-        root.drawDebug(debugShapes);
-        debugShapes.end();
+        graphics.batch().setProjection(viewport.getCamera().projection());
+        root.drawDebug();
+        graphics.batch().flush();
     }
 
     /** Disables debug on all actors recursively except the specified actor and any children. */
@@ -163,7 +147,7 @@ public class Scene implements InputProcessor{
 
     /** Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}, limited to a minimum of 30fps. */
     public void act(){
-        act(Math.min(Core.graphics.getDeltaTime(), 1 / 30f));
+        act(Math.min(graphics.getDeltaTime(), 1 / 30f));
     }
 
     /**
@@ -184,7 +168,6 @@ public class Scene implements InputProcessor{
                     // Exit over last.
                     InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
                     event.type = (InputEvent.Type.exit);
-                    event.setStage(this);
                     event.stageX = (tempCoords.x);
                     event.stageY = (tempCoords.y);
                     event.relatedActor = (overLast);
@@ -248,7 +231,6 @@ public class Scene implements InputProcessor{
         // Exit overLast.
         if(overLast != null){
             InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-            event.setStage(this);
             event.stageX = (tempCoords.x);
             event.stageY = (tempCoords.y);
             event.pointer = (pointer);
@@ -260,7 +242,6 @@ public class Scene implements InputProcessor{
         // Enter over.
         if(over != null){
             InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-            event.setStage(this);
             event.stageX = (tempCoords.x);
             event.stageY = (tempCoords.y);
             event.pointer = (pointer);
@@ -288,7 +269,6 @@ public class Scene implements InputProcessor{
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.type = (Type.touchDown);
-        event.setStage(this);
         event.stageX = (tempCoords.x);
         event.stageY = (tempCoords.y);
         event.pointer = (pointer);
@@ -322,7 +302,6 @@ public class Scene implements InputProcessor{
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.type = (Type.touchDragged);
-        event.setStage(this);
         event.stageX = (tempCoords.x);
         event.stageY = (tempCoords.y);
         event.pointer = (pointer);
@@ -360,7 +339,6 @@ public class Scene implements InputProcessor{
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
         event.type = (Type.touchUp);
-        event.setStage(this);
         event.stageX = (tempCoords.x);
         event.stageY = (tempCoords.y);
         event.pointer = (pointer);
@@ -398,7 +376,6 @@ public class Scene implements InputProcessor{
         screenToStageCoordinates(tempCoords.set(screenX, screenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (Type.mouseMoved);
         event.stageX = (tempCoords.x);
         event.stageY = (tempCoords.y);
@@ -423,7 +400,6 @@ public class Scene implements InputProcessor{
         screenToStageCoordinates(tempCoords.set(mouseScreenX, mouseScreenY));
 
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.scrolled);
         event.scrollAmountX = amountX;
         event.scrollAmountY = amountY;
@@ -443,7 +419,6 @@ public class Scene implements InputProcessor{
     public boolean keyDown(KeyCode keyCode){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.keyDown);
         event.keyCode = keyCode;
         target.fire(event);
@@ -460,7 +435,6 @@ public class Scene implements InputProcessor{
     public boolean keyUp(KeyCode keyCode){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.keyUp);
         event.keyCode = keyCode;
         target.fire(event);
@@ -477,7 +451,6 @@ public class Scene implements InputProcessor{
     public boolean keyTyped(char character){
         Element target = keyboardFocus == null ? root : keyboardFocus;
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.keyTyped);
         event.character = character;
         target.fire(event);
@@ -486,10 +459,7 @@ public class Scene implements InputProcessor{
         return handled;
     }
 
-    /**
-     * Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. The actor
-     * will be used as the {@link Event#getListenerActor() listener actor} and {@link Event#getTarget() target}.
-     */
+    /**Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button.*/
     public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
         TouchFocus focus = Pools.obtain(TouchFocus.class, TouchFocus::new);
         focus.listenerActor = listenerActor;
@@ -523,7 +493,6 @@ public class Scene implements InputProcessor{
      */
     public void cancelTouchFocus(Element actor){
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.touchUp);
         event.stageX = (Integer.MIN_VALUE);
         event.stageY = (Integer.MIN_VALUE);
@@ -565,7 +534,6 @@ public class Scene implements InputProcessor{
      */
     public void cancelTouchFocusExcept(EventListener exceptListener, Element exceptActor){
         InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
-        event.setStage(this);
         event.type = (InputEvent.Type.touchUp);
         event.stageX = (Integer.MIN_VALUE);
         event.stageY = (Integer.MIN_VALUE);
@@ -682,7 +650,6 @@ public class Scene implements InputProcessor{
     public boolean setKeyboardFocus(Element actor){
         if(keyboardFocus == actor) return true;
         FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
-        event.setStage(this);
         event.type = (FocusEvent.Type.keyboard);
         Element oldKeyboardFocus = keyboardFocus;
         if(oldKeyboardFocus != null){
@@ -723,7 +690,6 @@ public class Scene implements InputProcessor{
     public boolean setScrollFocus(Element actor){
         if(scrollFocus == actor) return true;
         FocusEvent event = Pools.obtain(FocusEvent.class, FocusEvent::new);
-        event.setStage(this);
         event.type = (FocusEvent.Type.scroll);
         Element oldScrollFocus = scrollFocus;
         if(oldScrollFocus != null){
@@ -753,10 +719,6 @@ public class Scene implements InputProcessor{
      */
     public Element getScrollFocus(){
         return scrollFocus;
-    }
-
-    public Batch getBatch(){
-        return batch;
     }
 
     public Viewport getViewport(){
@@ -818,27 +780,18 @@ public class Scene implements InputProcessor{
 
     /**
      * Transforms the coordinates to screen coordinates. The coordinates can be anywhere in the stage since the transform matrix
-     * describes how to convert them. The transform matrix is typically obtained from {@link Batch#getTransformMatrix()} during
-     * {@link Element#draw(Batch, float)}.
+     * describes how to convert them.
      *
      * @see Element#localToStageCoordinates(Vector2)
      */
-    public Vector2 toScreenCoordinates(Vector2 coords, Matrix4 transformMatrix){
+    public Vector2 toScreenCoordinates(Vector2 coords, Matrix3 transformMatrix){
         return viewport.toScreenCoordinates(coords, transformMatrix);
     }
 
-    /**
-     * Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.
-     *
-     * @see ScissorStack#calculateScissors(Camera, float, float, float, float, Matrix4, Rectangle, Rectangle)
-     */
+    /**Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.*/
     public void calculateScissors(Rectangle localRect, Rectangle scissorRect){
-        viewport.calculateScissors(batch.getTransformMatrix(), localRect, scissorRect);
-        Matrix4 transformMatrix;
-        if(debugShapes != null && debugShapes.isDrawing())
-            transformMatrix = debugShapes.getTransformMatrix();
-        else
-            transformMatrix = batch.getTransformMatrix();
+        viewport.calculateScissors(graphics.batch().getTransform(), localRect, scissorRect);
+        Matrix3 transformMatrix = graphics.batch().getTransform();
         viewport.calculateScissors(transformMatrix, localRect, scissorRect);
     }
 
@@ -927,7 +880,7 @@ public class Scene implements InputProcessor{
         int x1 = x0 + viewport.getScreenWidth();
         int y0 = viewport.getScreenY();
         int y1 = y0 + viewport.getScreenHeight();
-        screenY = Core.graphics.getHeight() - screenY;
+        screenY = graphics.getHeight() - screenY;
         return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
     }
 

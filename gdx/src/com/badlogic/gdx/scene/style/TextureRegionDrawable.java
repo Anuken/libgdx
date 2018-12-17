@@ -17,10 +17,10 @@
 package com.badlogic.gdx.scene.style;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasSprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scene.ui.layout.Unit;
+
+import static com.badlogic.gdx.Core.graphics;
 
 /**
  * Drawable for a {@link TextureRegion}.
@@ -29,6 +29,7 @@ import com.badlogic.gdx.scene.ui.layout.Unit;
  */
 public class TextureRegionDrawable extends BaseDrawable implements TransformDrawable{
     private TextureRegion region;
+    private Color tint = new Color(1f, 1f, 1f);
 
     /** Creates an uninitialized TextureRegionDrawable. The texture region must be set before use. */
     public TextureRegionDrawable(){
@@ -43,13 +44,15 @@ public class TextureRegionDrawable extends BaseDrawable implements TransformDraw
         setRegion(drawable.region);
     }
 
-    public void draw(Batch batch, float x, float y, float width, float height){
-        batch.draw(region, x, y, width, height);
+    @Override
+    public void draw(float x, float y, float width, float height){
+        graphics.batch().draw().tex(region).pos(x, y).size(width, height).color(tint);
     }
 
-    public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
-                     float scaleY, float rotation){
-        batch.draw(region, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
+    @Override
+    public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation){
+        graphics.batch().draw().tex(region).pos(x, y).size(width, height)
+            .origin(originX, originY).scl(scaleX, scaleY).rot(rotation).color(tint);
     }
 
     public TextureRegion getRegion(){
@@ -58,24 +61,14 @@ public class TextureRegionDrawable extends BaseDrawable implements TransformDraw
 
     public void setRegion(TextureRegion region){
         this.region = region;
-        setMinWidth(Unit.dp.scl(region.getRegionWidth()));
-        setMinHeight(Unit.dp.scl(region.getRegionHeight()));
+        setMinWidth(Unit.dp.scl(region.getWidth()));
+        setMinHeight(Unit.dp.scl(region.getHeight()));
     }
 
     /** Creates a new drawable that renders the same as this drawable tinted the specified color. */
     public Drawable tint(Color tint){
-        Sprite sprite;
-        if(region instanceof AtlasRegion)
-            sprite = new AtlasSprite((AtlasRegion) region);
-        else
-            sprite = new Sprite(region);
-        sprite.setColor(tint);
-        sprite.setSize(getMinWidth(), getMinHeight());
-        SpriteDrawable drawable = new SpriteDrawable(sprite);
-        drawable.setLeftWidth(getLeftWidth());
-        drawable.setRightWidth(getRightWidth());
-        drawable.setTopHeight(getTopHeight());
-        drawable.setBottomHeight(getBottomHeight());
+        TextureRegionDrawable drawable = new TextureRegionDrawable(region);
+        drawable.tint.set(tint);
         return drawable;
     }
 }

@@ -28,7 +28,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -181,8 +180,8 @@ public abstract class BatchTiledMapRenderer implements TiledMapRenderer, Disposa
         final float y = layer.getY();
         final float x1 = x * unitScale;
         final float y1 = y * unitScale;
-        final float x2 = x1 + region.getRegionWidth() * unitScale;
-        final float y2 = y1 + region.getRegionHeight() * unitScale;
+        final float x2 = x1 + region.getWidth() * unitScale;
+        final float y2 = y1 + region.getHeight() * unitScale;
 
         imageBounds.set(x1, y1, x2 - x1, y2 - y1);
 

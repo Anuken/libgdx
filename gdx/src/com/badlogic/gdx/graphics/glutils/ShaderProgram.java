@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.*;
@@ -535,37 +534,6 @@ public class ShaderProgram implements Disposable{
         GL20 gl = Core.gl20;
         checkManaged();
         gl.glUniform4fv(location, length / 4, values, offset);
-    }
-
-    /**
-     * Sets the uniform matrix with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
-     * @param name the name of the uniform
-     * @param matrix the matrix
-     */
-    public void setUniformMatrix(String name, Matrix4 matrix){
-        setUniformMatrix(name, matrix, false);
-    }
-
-    /**
-     * Sets the uniform matrix with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
-     * @param name the name of the uniform
-     * @param matrix the matrix
-     * @param transpose whether the matrix should be transposed
-     */
-    public void setUniformMatrix(String name, Matrix4 matrix, boolean transpose){
-        setUniformMatrix(fetchUniformLocation(name), matrix, transpose);
-    }
-
-    public void setUniformMatrix(int location, Matrix4 matrix){
-        setUniformMatrix(location, matrix, false);
-    }
-
-    public void setUniformMatrix(int location, Matrix4 matrix, boolean transpose){
-        GL20 gl = Core.gl20;
-        checkManaged();
-        gl.glUniformMatrix4fv(location, 1, transpose, matrix.val, 0);
     }
 
     /**

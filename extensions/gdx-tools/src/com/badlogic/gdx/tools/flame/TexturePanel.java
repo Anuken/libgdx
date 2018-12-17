@@ -44,9 +44,9 @@ public class TexturePanel extends ImagePanel{
     }
 
     protected boolean isInsideRegion(TextureRegion region, float x, float y){
-        float rx = region.getRegionX(), ry = region.getRegionY();
-        return rx <= x && x <= rx + region.getRegionWidth() &&
-        ry <= y && y <= ry + region.getRegionHeight();
+        float rx = region.getX(), ry = region.getY();
+        return rx <= x && x <= rx + region.getWidth() &&
+        ry <= y && y <= ry + region.getHeight();
     }
 
     public TexturePanel(Texture texture, Array<TextureRegion> regions){
@@ -117,8 +117,8 @@ public class TexturePanel extends ImagePanel{
     private void draw(Graphics g, Array<TextureRegion> regions, Color color, boolean drawIndex){
         int i = 0;
         for(TextureRegion region : regions){
-            int x = region.getRegionX(), y = region.getRegionY(),
-            h = region.getRegionHeight();
+            int x = region.getX(), y = region.getY(),
+            h = region.getHeight();
             if(drawIndex){
                 String indexString = "" + i;
                 Rectangle bounds = g.getFontMetrics().getStringBounds(indexString, g).getBounds();
@@ -129,7 +129,7 @@ public class TexturePanel extends ImagePanel{
                 ++i;
             }
             g.setColor(color);
-            g.drawRect(x, y, region.getRegionWidth(), h);
+            g.drawRect(x, y, region.getWidth(), h);
         }
     }
 }

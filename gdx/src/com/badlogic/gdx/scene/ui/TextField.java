@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout.GlyphRun;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
@@ -303,7 +304,7 @@ public class TextField extends Element implements Disableable{
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         Scene stage = getScene();
         boolean focused = stage != null && stage.getKeyboardFocus() == this;
         if(!focused) keyRepeatTask.cancel();

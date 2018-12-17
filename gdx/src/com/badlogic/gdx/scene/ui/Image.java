@@ -16,12 +16,12 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.ext.Draw;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.NinePatchDrawable;
@@ -134,11 +134,8 @@ public class Image extends Element{
             imageY = (int) (height / 2 - imageHeight / 2);
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         validate();
-
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         float x = getX();
         float y = getY();
@@ -148,12 +145,12 @@ public class Image extends Element{
         if(drawable instanceof TransformDrawable){
             float rotation = getRotation();
             if(scaleX != 1 || scaleY != 1 || rotation != 0){
-                drawable.draw(batch, x + imageX, y + imageY, getOriginX() - imageX, getOriginY() - imageY,
+                drawable.draw(x + imageX, y + imageY, getOriginX() - imageX, getOriginY() - imageY,
                         imageWidth, imageHeight, scaleX, scaleY, rotation);
                 return;
             }
         }
-        if(drawable != null) drawable.draw(batch, x + imageX, y + imageY, imageWidth * scaleX, imageHeight * scaleY);
+        if(drawable != null) drawable.draw(x + imageX, y + imageY, imageWidth * scaleX, imageHeight * scaleY);
     }
 
     public void setDrawable(TextureRegion region){

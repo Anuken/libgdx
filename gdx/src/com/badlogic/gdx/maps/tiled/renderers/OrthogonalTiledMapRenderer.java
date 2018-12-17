@@ -89,8 +89,8 @@ public class OrthogonalTiledMapRenderer extends BatchTiledMapRenderer{
 
                     float x1 = x + tile.getOffsetX() * unitScale;
                     float y1 = y + tile.getOffsetY() * unitScale;
-                    float x2 = x1 + region.getRegionWidth() * unitScale;
-                    float y2 = y1 + region.getRegionHeight() * unitScale;
+                    float x2 = x1 + region.getWidth() * unitScale;
+                    float y2 = y1 + region.getHeight() * unitScale;
 
                     float u1 = region.getU();
                     float v1 = region.getV2();
