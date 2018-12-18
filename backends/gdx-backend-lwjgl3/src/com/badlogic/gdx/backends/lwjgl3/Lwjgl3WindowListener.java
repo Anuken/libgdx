@@ -40,7 +40,7 @@ public interface Lwjgl3WindowListener{
      * @param window the window instance
      * @see Lwjgl3Application#newWindow(ApplicationListener, Lwjgl3WindowConfiguration)
      */
-    void created(Lwjgl3Window window);
+    default void created(Lwjgl3Window window){}
 
     /**
      * Called when the window is iconified (i.e. its minimize button
@@ -50,26 +50,26 @@ public interface Lwjgl3WindowListener{
      *
      * @param isIconified True if window is iconified, false if it leaves the iconified state
      */
-    void iconified(boolean isIconified);
+    default void iconified(boolean isIconified){}
 
     /**
      * Called when the window is maximized, or restored from the maximized state.
      *
      * @param isMaximized true if window is maximized, false if it leaves the maximized state
      */
-    void maximized(boolean isMaximized);
+    default void maximized(boolean isMaximized){}
 
     /**
      * Called when the window lost focus to another window. The
      * window's {@link ApplicationListener} will continue to be
      * called.
      */
-    void focusLost();
+    default void focusLost(){}
 
     /**
      * Called when the window gained focus.
      */
-    void focusGained();
+    default void focusGained(){}
 
     /**
      * Called when the user requested to close the window, e.g. clicking
@@ -77,7 +77,9 @@ public interface Lwjgl3WindowListener{
      *
      * @return whether the window should actually close
      **/
-    boolean closeRequested();
+    default boolean closeRequested(){
+        return false;
+    }
 
     /**
      * Called when external files are dropped into the window,
@@ -85,12 +87,12 @@ public interface Lwjgl3WindowListener{
      *
      * @param files array with absolute paths to the files
      */
-    void filesDropped(String[] files);
+    default void filesDropped(String[] files){}
 
     /**
      * Called when the window content is damaged and needs to be refreshed.
      * When this occurs, {@link Lwjgl3Graphics#requestRendering()} is automatically called.
      */
-    void refreshRequested();
+    default void refreshRequested(){}
 
 }

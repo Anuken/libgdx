@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class Application implements Disposable{
-    protected Array<ApplicationListener> listeners = new Array<>();
+    protected final Array<ApplicationListener> listeners = new Array<>();
 
     /**Returns a list of all the application listeners used.*/
     public Array<ApplicationListener> getListeners(){
@@ -30,12 +30,16 @@ public abstract class Application implements Disposable{
 
     /**Adds a new application listener.*/
     public void addListener(ApplicationListener listener){
-        listeners.add(listener);
+        synchronized(listeners){
+            listeners.add(listener);
+        }
     }
 
     /**Removes an application listener.*/
     public void removeListener(ApplicationListener listener){
-        listeners.remove(listener);
+        synchronized(listeners){
+            listeners.remove(listener);
+        }
     }
 
     /** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */

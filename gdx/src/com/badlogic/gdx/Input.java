@@ -21,6 +21,7 @@ import com.badlogic.gdx.KeyBinds.KeyBind;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.input.*;
+import com.badlogic.gdx.math.geom.Vector3;
 
 import static com.badlogic.gdx.Core.keybinds;
 
@@ -40,31 +41,13 @@ import static com.badlogic.gdx.Core.keybinds;
  */
 public abstract class Input{
     /**Controller stick deadzone.*/
-    private final static float deadzone = 0.3f;
+    protected final static float deadzone = 0.3f;
     /**The default input device (keyboard)*/
-    private KeyboardDevice keyboard = new KeyboardDevice();
+    protected KeyboardDevice keyboard = new KeyboardDevice();
     /**All available input devices, including controllers and keybowards.*/
-    private Array<InputDevice> devices = Array.with(keyboard);
+    protected Array<InputDevice> devices = Array.with(keyboard);
     /**An input multiplexer to handle events.*/
-    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
-
-    /** @return The acceleration force in m/s^2 applied to the device in the X axis, including the force of gravity */
-    public abstract float getAccelerometerX();
-
-    /** @return The acceleration force in m/s^2 applied to the device in the Y axis, including the force of gravity */
-    public abstract float getAccelerometerY();
-
-    /** @return The acceleration force in m/s^2 applied to the device in the Z axis, including the force of gravity */
-    public abstract float getAccelerometerZ();
-
-    /** @return The rate of rotation in rad/s around the X axis */
-    public abstract float getGyroscopeX();
-
-    /** @return The rate of rotation in rad/s around the Y axis */
-    public abstract float getGyroscopeY();
-
-    /** @return The rate of rotation in rad/s around the Z axis */
-    public abstract float getGyroscopeZ();
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer(keyboard);
 
     /**
      * @return The x coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first
@@ -130,7 +113,9 @@ public abstract class Input{
     public abstract boolean isTouched(int pointer);
 
     /** @return the pressure of the first pointer */
-    public abstract float getPressure();
+    public float getPressure(){
+        return getPressure(0);
+    }
 
     /**
      * Returns the pressure of the given pointer, where 0 is untouched. On Android it should be
@@ -141,7 +126,9 @@ public abstract class Input{
      * @param pointer the pointer id.
      * @return the pressure
      */
-    public abstract float getPressure(int pointer);
+    public float getPressure(int pointer){
+        return isTouched(pointer) ? 1f : 0f;
+    }
 
     /**Returns whether the key is pressed.*/
     public boolean isKeyPressed(KeyCode key){
@@ -192,14 +179,14 @@ public abstract class Input{
      * System dependent method to input a string of text. A dialog box will be created with the given title and the given text as a
      * message for the user. Once the dialog has been closed the consumer be called on the rendering thread.
      */
-    public abstract void getTextInput(TextInput input);
+    public void getTextInput(TextInput input){}
 
     /**
-     * Sets the on-screen keyboard visible if available.
+     * Sets the on-screen keyboard visible if available. Only applicable on mobile.
      *
      * @param visible visible or not
      */
-    public abstract void setOnscreenKeyboardVisible(boolean visible);
+    public void setOnscreenKeyboardVisible(boolean visible){}
 
     /**
      * Vibrates for the given amount of time. Note that you'll need the permission
@@ -207,7 +194,7 @@ public abstract class Input{
      *
      * @param milliseconds the number of milliseconds to vibrate.
      */
-    public abstract void vibrate(int milliseconds);
+    public  void vibrate(int milliseconds){}
 
     /**
      * Vibrate with a given pattern. Pass in an array of ints that are the times at which to turn on or off the vibrator. The first
@@ -217,40 +204,25 @@ public abstract class Input{
      * @param pattern an array of longs of times to turn the vibrator on or off.
      * @param repeat the index into pattern at which to repeat, or -1 if you don't want to repeat.
      */
-    public abstract void vibrate(long[] pattern, int repeat);
+    public void vibrate(long[] pattern, int repeat){}
 
     /** Stops the vibrator */
-    public abstract void cancelVibrate();
+    public void cancelVibrate(){}
 
-    /**
-     * The azimuth is the angle of the device's orientation around the z-axis. The positive z-axis points towards the earths
-     * center.
-     *
-     * @return the azimuth in degrees
-     * @see <a
-     * href="http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])">http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])</a>
-     */
-    public abstract float getAzimuth();
+    /** @return The acceleration force in m/s^2 applied to the device, including the force of gravity */
+    public Vector3 getAccelerometer(){
+        return Vector3.Zero;
+    }
 
-    /**
-     * The pitch is the angle of the device's orientation around the x-axis. The positive x-axis roughly points to the west and is
-     * orthogonal to the z- and y-axis.
-     *
-     * @return the pitch in degrees
-     * @see <a
-     * href="http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])">http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])</a>
-     */
-    public abstract float getPitch();
+    /** @return The rate of rotation in rad/s.*/
+    public Vector3 getGyroscope(){
+        return Vector3.Zero;
+    }
 
-    /**
-     * The roll is the angle of the device's orientation around the y-axis. The positive y-axis points to the magnetic north pole
-     * of the earth.
-     *
-     * @return the roll in degrees
-     * @see <a
-     * href="http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])">http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])</a>
-     */
-    public abstract float getRoll();
+    /** @return the device's orientation in degrees in the format (pitch, roll, azimuth) corresponding to x,y,z.*/
+    public Vector3 getOrientation(){
+        return Vector3.Zero;
+    }
 
     /**
      * Returns the rotation matrix describing the devices rotation as per <a href=
@@ -259,32 +231,23 @@ public abstract class Input{
      * does not have an accelerometer.
      *
      */
-    public abstract void getRotationMatrix(float[] matrix);
+    public void getRotationMatrix(float[] matrix){}
 
     /** @return the time of the event currently reported to the {@link InputProcessor}. */
     public abstract long getCurrentEventTime();
 
     /**
-     * Sets whether the BACK button on Android should be caught. This will prevent the app from being paused. Will have no effect
+     * Sets whether the specified button on Android should be caught. This will prevent the app from processing the key. Will have no effect
      * on the desktop.
      *
      * @param catchBack whether to catch the back button
      */
-    public abstract void setCatchBackKey(boolean catchBack);
+    public void setCatch(KeyCode code, boolean catchBack){}
 
     /** @return whether the back button is currently being caught */
-    public abstract boolean isCatchBackKey();
-
-    /**
-     * Sets whether the MENU button on Android should be caught. This will prevent the onscreen keyboard to show up. Will have no
-     * effect on the desktop.
-     *
-     * @param catchMenu whether to catch the menu button
-     */
-    public abstract void setCatchMenuKey(boolean catchMenu);
-
-    /** @return whether the menu button is currently being caught */
-    public abstract boolean isCatchMenuKey();
+    public boolean isCatch(KeyCode code){
+        return false;
+    }
 
     /**
      * Sets the {@link InputProcessor} that will receive all touch and key input events. It will be called before the
@@ -319,13 +282,19 @@ public abstract class Input{
      * @param peripheral the {@link Peripheral}
      * @return whether the peripheral is available or not.
      */
-    public abstract boolean isPeripheralAvailable(Peripheral peripheral);
+    public boolean isPeripheralAvailable(Peripheral peripheral){
+        return peripheral == Peripheral.HardwareKeyboard;
+    }
 
     /** @return the rotation of the device with respect to its native orientation. */
-    public abstract int getRotation();
+    public int getRotation(){
+        return 0;
+    }
 
     /** @return the native orientation of the device. */
-    public abstract Orientation getNativeOrientation();
+    public Orientation getNativeOrientation(){
+        return Orientation.Landscape;
+    }
 
     /**
      * Only viable on the desktop. Will confine the mouse cursor location to the window and hide the mouse cursor. X and y
@@ -333,10 +302,12 @@ public abstract class Input{
      *
      * @param catched whether to catch or not to catch the mouse cursor
      */
-    public abstract void setCursorCatched(boolean catched);
+    public void setCursorCatched(boolean catched){}
 
     /** @return whether the mouse cursor is catched. */
-    public abstract boolean isCursorCatched();
+    public boolean isCursorCatched(){
+        return false;
+    }
 
     /**
      * Only viable on the desktop. Will set the mouse cursor location to the given window coordinates (origin top-left corner).
@@ -344,7 +315,7 @@ public abstract class Input{
      * @param x the x-position
      * @param y the y-position
      */
-    public abstract void setCursorPosition(int x, int y);
+    public void setCursorPosition(int x, int y){}
 
     /**Parameters for text input.*/
     public class TextInput{
@@ -355,12 +326,12 @@ public abstract class Input{
         public Runnable canceled = () -> {};
     }
 
-    enum Orientation{
+    public enum Orientation{
         Landscape, Portrait
     }
 
     /**Enumeration of potentially available peripherals. Use with {@link Input#isPeripheralAvailable(Peripheral)}.*/
-    enum Peripheral{
+    public enum Peripheral{
         HardwareKeyboard, OnscreenKeyboard, MultitouchScreen, Accelerometer, Compass, Vibrator, Gyroscope, RotationVector, Pressure
     }
 }

@@ -37,5 +37,7 @@ public interface Clipboard{
     void setContents(String content);
 
     /**Sets the content of the clipboard as an image.*/
-    void setContents(Pixmap pixmap);
+    default void setContents(Pixmap pixmap){
+        //not yet implemented
+    }
 }

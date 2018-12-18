@@ -15,6 +15,9 @@ public class KeyboardDevice extends InputDevice implements InputProcessor{
 
     @Override
     public boolean isKeyPressed(KeyCode key){
+        if(key == KeyCode.ANY_KEY){
+            return pressed.size > 0;
+        }
         return pressed.contains(key.ordinal());
     }
 

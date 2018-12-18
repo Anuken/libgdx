@@ -34,18 +34,14 @@ import org.lwjgl.system.Callback;
 import java.io.PrintStream;
 import java.nio.IntBuffer;
 
-public class Lwjgl3Application implements Application{
+public class Lwjgl3Application extends Application{
     private final Lwjgl3ApplicationConfiguration config;
     private final Array<Lwjgl3Window> windows = new Array<>();
-    private volatile Lwjgl3Window currentWindow;
     private Audio audio;
-    private final Files files;
-    private final Net net;
     private final Lwjgl3Clipboard clipboard;
     private volatile boolean running = true;
     private final Array<Runnable> runnables = new Array<>();
     private final Array<Runnable> executedRunnables = new Array<>();
-    private final Array<LifecycleListener> lifecycleListeners = new Array<>();
     private static GLFWErrorCallback errorCallback;
     private static GLVersion glVersion;
     private static Callback glDebugCallback;
@@ -72,14 +68,16 @@ public class Lwjgl3Application implements Application{
                 this.audio = Core.audio = new OpenALAudio(config.audioDeviceSimultaneousSources,
                 config.audioDeviceBufferCount, config.audioDeviceBufferSize);
             }catch(Throwable t){
-                Log.info("[Lwjgl3Application] Couldn't initialize audio, disabling audio", t);
+                Log.err("[Lwjgl3Application] Couldn't initialize audio, disabling audio", t);
                 this.audio = Core.audio = new MockAudio();
             }
         }else{
             this.audio = Core.audio = new MockAudio();
         }
-        this.files = Core.files = new Lwjgl3Files();
-        this.net = Core.net = new Lwjgl3Net();
+
+        Core.files = new Lwjgl3Files();
+        Core.net = new Lwjgl3Net();
+        Core.settings = new Settings();
         this.clipboard = new Lwjgl3Clipboard();
 
         Lwjgl3Window window = createWindow(config, listener, 0);
@@ -109,13 +107,15 @@ public class Lwjgl3Application implements Application{
             closedWindows.clear();
             for(Lwjgl3Window window : windows){
                 window.makeCurrent();
-                currentWindow = window;
-                synchronized(lifecycleListeners){
+                synchronized(listeners){
                     haveWindowsRendered |= window.update();
                 }
                 if(window.shouldClose()){
                     closedWindows.add(window);
                 }
+            }
+            for(ApplicationListener listener : listeners){
+                listener.update();
             }
             GLFW.glfwPollEvents();
 
@@ -143,16 +143,16 @@ public class Lwjgl3Application implements Application{
                     // Lifecycle listener methods have to be called before ApplicationListener methods. The
                     // application will be disposed when _all_ windows have been disposed, which is the case,
                     // when there is only 1 window left, which is in the process of being disposed.
-                    for(int i = lifecycleListeners.size - 1; i >= 0; i--){
-                        LifecycleListener l = lifecycleListeners.get(i);
+                    for(int i = listeners.size - 1; i >= 0; i--){
+                        ApplicationListener l = listeners.get(i);
                         l.pause();
                         l.dispose();
                     }
-                    lifecycleListeners.clear();
+                    listeners.clear();
                 }
                 closedWindow.dispose();
 
-                windows.removeValue(closedWindow, false);
+                windows.remove(closedWindow);
             }
 
             if(!haveWindowsRendered){
@@ -168,8 +168,8 @@ public class Lwjgl3Application implements Application{
     }
 
     private void cleanupWindows(){
-        synchronized(lifecycleListeners){
-            for(LifecycleListener lifecycleListener : lifecycleListeners){
+        synchronized(listeners){
+            for(ApplicationListener lifecycleListener : listeners){
                 lifecycleListener.pause();
                 lifecycleListener.dispose();
             }
@@ -181,6 +181,7 @@ public class Lwjgl3Application implements Application{
     }
 
     private void cleanup(){
+        dispose();
         Lwjgl3Cursor.disposeSystemCursors();
         if(audio instanceof OpenALAudio){
             ((OpenALAudio) audio).dispose();
@@ -192,11 +193,6 @@ public class Lwjgl3Application implements Application{
             glDebugCallback = null;
         }
         GLFW.glfwTerminate();
-    }
-
-    @Override
-    public ApplicationListener getApplicationListener(){
-        return currentWindow.getListener();
     }
 
     @Override
@@ -236,20 +232,6 @@ public class Lwjgl3Application implements Application{
         running = false;
     }
 
-    @Override
-    public void addLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.removeValue(listener, true);
-        }
-    }
-
     /**
      * Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
      * <p>
@@ -270,11 +252,9 @@ public class Lwjgl3Application implements Application{
             createWindow(window, config, sharedContext);
         }else{
             // creation of additional windows is deferred to avoid GL context trouble
-            post(new Runnable(){
-                public void run(){
-                    createWindow(window, config, sharedContext);
-                    windows.add(window);
-                }
+            post(() -> {
+                createWindow(window, config, sharedContext);
+                windows.add(window);
             });
         }
         return window;

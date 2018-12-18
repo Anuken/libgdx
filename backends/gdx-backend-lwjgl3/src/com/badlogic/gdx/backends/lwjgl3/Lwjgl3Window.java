@@ -46,15 +46,12 @@ public class Lwjgl3Window implements Disposable{
     private final GLFWWindowFocusCallback focusCallback = new GLFWWindowFocusCallback(){
         @Override
         public void invoke(long windowHandle, final boolean focused){
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        if(focused){
-                            windowListener.focusGained();
-                        }else{
-                            windowListener.focusLost();
-                        }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    if(focused){
+                        windowListener.focusGained();
+                    }else{
+                        windowListener.focusLost();
                     }
                 }
             });
@@ -64,18 +61,15 @@ public class Lwjgl3Window implements Disposable{
     private final GLFWWindowIconifyCallback iconifyCallback = new GLFWWindowIconifyCallback(){
         @Override
         public void invoke(long windowHandle, final boolean iconified){
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        windowListener.iconified(iconified);
-                    }
-                    Lwjgl3Window.this.iconified = iconified;
-                    if(iconified){
-                        listener.pause();
-                    }else{
-                        listener.resume();
-                    }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    windowListener.iconified(iconified);
+                }
+                Lwjgl3Window.this.iconified = iconified;
+                if(iconified){
+                    listener.pause();
+                }else{
+                    listener.resume();
                 }
             });
         }
@@ -84,12 +78,9 @@ public class Lwjgl3Window implements Disposable{
     private final GLFWWindowMaximizeCallback maximizeCallback = new GLFWWindowMaximizeCallback(){
         @Override
         public void invoke(long windowHandle, final boolean maximized){
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        windowListener.maximized(maximized);
-                    }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    windowListener.maximized(maximized);
                 }
             });
         }
@@ -99,13 +90,10 @@ public class Lwjgl3Window implements Disposable{
     private final GLFWWindowCloseCallback closeCallback = new GLFWWindowCloseCallback(){
         @Override
         public void invoke(final long windowHandle){
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        if(!windowListener.closeRequested()){
-                            GLFW.glfwSetWindowShouldClose(windowHandle, false);
-                        }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    if(!windowListener.closeRequested()){
+                        GLFW.glfwSetWindowShouldClose(windowHandle, false);
                     }
                 }
             });
@@ -119,12 +107,9 @@ public class Lwjgl3Window implements Disposable{
             for(int i = 0; i < count; i++){
                 files[i] = getName(names, i);
             }
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        windowListener.filesDropped(files);
-                    }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    windowListener.filesDropped(files);
                 }
             });
         }
@@ -133,12 +118,9 @@ public class Lwjgl3Window implements Disposable{
     private final GLFWWindowRefreshCallback refreshCallback = new GLFWWindowRefreshCallback(){
         @Override
         public void invoke(long windowHandle){
-            postRunnable(new Runnable(){
-                @Override
-                public void run(){
-                    if(windowListener != null){
-                        windowListener.refreshRequested();
-                    }
+            postRunnable(() -> {
+                if(windowListener != null){
+                    windowListener.refreshRequested();
                 }
             });
         }
@@ -370,7 +352,7 @@ public class Lwjgl3Window implements Disposable{
 
     void windowHandleChanged(long windowHandle){
         this.windowHandle = windowHandle;
-        input.windowHandleChanged(windowHandle);
+        input.windowHandleChanged();
     }
 
     boolean update(){

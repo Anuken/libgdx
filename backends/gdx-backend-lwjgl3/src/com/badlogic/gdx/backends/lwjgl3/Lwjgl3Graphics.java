@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.IntBuffer;
 
-public class Lwjgl3Graphics implements Graphics, Disposable{
+public class Lwjgl3Graphics extends Graphics implements Disposable{
     private final Lwjgl3Window window;
     private GL20 gl20;
     private GL30 gl30;

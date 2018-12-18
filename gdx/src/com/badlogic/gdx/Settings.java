@@ -1,13 +1,22 @@
 package com.badlogic.gdx;
 
 import com.badlogic.gdx.collection.ObjectMap;
+import com.badlogic.gdx.collection.ObjectMap.Entry;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.OS;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 import static com.badlogic.gdx.Core.keybinds;
 
-public abstract class Settings{
-    private String appName;
-    private ObjectMap<String, Object> defaults = new ObjectMap<>();
-    private ObjectMap<String, Object> values = new ObjectMap<>();
+public class Settings{
+    protected final static byte TYPE_BOOL = 0, TYPE_INT = 1, TYPE_LONG = 2, TYPE_FLOAT = 3, TYPE_STRING = 4, TYPE_BINARY = 5;
+
+    protected String appName;
+    protected ObjectMap<String, Object> defaults = new ObjectMap<>();
+    protected ObjectMap<String, Object> values = new ObjectMap<>();
 
     public void setAppName(String name){
         appName = name;
@@ -30,10 +39,86 @@ public abstract class Settings{
     }
 
     /**Loads a settings file into {@link values} using the specified appName.*/
-    public abstract void loadValues();
+    public void loadValues(){
+        FileHandle file = getSettingsFile();
+
+        try(DataInputStream stream = new DataInputStream(file.read())){
+            int amount = stream.readInt();
+            for(int i = 0; i < amount; i++){
+                String key = stream.readUTF();
+                byte type = stream.readByte();
+
+                switch(type){
+                    case TYPE_BOOL:
+                        values.put(key, stream.readBoolean());
+                        break;
+                    case TYPE_INT:
+                        values.put(key, stream.readInt());
+                        break;
+                    case TYPE_LONG:
+                        values.put(key, stream.readLong());
+                        break;
+                    case TYPE_FLOAT:
+                        values.put(key, stream.readFloat());
+                        break;
+                    case TYPE_STRING:
+                        values.put(key, stream.readUTF());
+                        break;
+                    case TYPE_BINARY:
+                        int length = stream.readInt();
+                        byte[] bytes = new byte[length];
+                        stream.read(bytes);
+                        values.put(key, bytes);
+                        break;
+                }
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 
     /**Saves all entries from {@link values} into the correct location.*/
-    public abstract void saveValues();
+    public void saveValues(){
+        FileHandle file = getSettingsFile();
+
+        try(DataOutputStream stream = new DataOutputStream(file.write(false))){
+            stream.writeInt(values.size);
+
+            for(Entry<String, Object> entry : values.entries()){
+                stream.writeUTF(entry.key);
+
+                Object value = entry.value;
+
+                if(value instanceof Boolean){
+                    stream.writeByte(TYPE_BOOL);
+                    stream.writeBoolean((Boolean) value);
+                }else if(value instanceof Integer){
+                    stream.writeByte(TYPE_INT);
+                    stream.writeInt((Integer) value);
+                }else if(value instanceof Long){
+                    stream.writeByte(TYPE_LONG);
+                    stream.writeLong((Long) value);
+                }else if(value instanceof Float){
+                    stream.writeByte(TYPE_FLOAT);
+                    stream.writeFloat((Float) value);
+                }else if(value instanceof String){
+                    stream.writeByte(TYPE_STRING);
+                    stream.writeUTF((String) value);
+                }else if(value instanceof byte[]){
+                    stream.writeByte(TYPE_BINARY);
+                    stream.writeInt(((byte[]) value).length);
+                    stream.write((byte[]) value);
+                }
+            }
+        }catch(IOException e){
+            throw new RuntimeException("Error writing preferences: " + file, e);
+        }
+    }
+
+    /**Returns the file used for writing settings to. Not available on all platforms!*/
+    public FileHandle getSettingsFile(){
+        return Core.files.absolute(OS.getAppDataDirectoryString(appName)).child("settings.bin");
+    }
 
     /**Set up a list of defaults values.
      * Format: name1, default1, name2, default2, etc*/
