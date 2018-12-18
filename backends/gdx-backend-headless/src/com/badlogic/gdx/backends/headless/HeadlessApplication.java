@@ -22,7 +22,11 @@ import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.backends.headless.mock.input.MockInput;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.prefs.Preferences;
 
 /**
  * a headless implementation of a GDX Application primarily intended to be used in servers
@@ -53,7 +57,6 @@ public class HeadlessApplication implements Application{
         if(config == null)
             config = new HeadlessApplicationConfiguration();
 
-        HeadlessNativesLoader.load();
         this.listener = listener;
         this.files = new HeadlessFiles();
         this.net = new HeadlessNet();
