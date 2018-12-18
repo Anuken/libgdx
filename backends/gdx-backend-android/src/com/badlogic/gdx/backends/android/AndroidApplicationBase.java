@@ -24,7 +24,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.SnapshotArray;
 
 /**
  * Interface that abstracts the Android application class usages, so that libGDX can be used with a fragment (or with any other
@@ -34,7 +33,6 @@ import com.badlogic.gdx.collection.SnapshotArray;
  * @author davebaol
  */
 public interface AndroidApplicationBase extends Application{
-
     int MINIMUM_SDK = 9;
 
     /**
@@ -69,13 +67,6 @@ public interface AndroidApplicationBase extends Application{
      * @param intent The {@link Intent} for starting an activity
      */
     void startActivity(Intent intent);
-
-    /**
-     * Returns the {@link LifecycleListener} array associated with this {@link AndroidApplicationBase}
-     *
-     * @return the array of {@link LifecycleListener}'s
-     */
-    SnapshotArray<LifecycleListener> getLifecycleListeners();
 
     /**
      * Returns the Window associated with the application

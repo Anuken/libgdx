@@ -19,6 +19,7 @@ package com.badlogic.gdx;
 import com.badlogic.gdx.KeyBinds.Axis;
 import com.badlogic.gdx.KeyBinds.KeyBind;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.IntSet;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.input.*;
 import com.badlogic.gdx.math.geom.Vector3;
@@ -48,6 +49,8 @@ public abstract class Input{
     protected Array<InputDevice> devices = Array.with(keyboard);
     /**An input multiplexer to handle events.*/
     protected InputMultiplexer inputMultiplexer = new InputMultiplexer(keyboard);
+    /**List of caught keys for Android.*/
+    protected IntSet caughtKeys = new IntSet();
 
     /**
      * @return The x coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first
@@ -242,11 +245,17 @@ public abstract class Input{
      *
      * @param catchBack whether to catch the back button
      */
-    public void setCatch(KeyCode code, boolean catchBack){}
+    public void setCatch(KeyCode code, boolean c){
+        if(c){
+            caughtKeys.add(code.ordinal());
+        }else{
+            caughtKeys.remove(code.ordinal());
+        }
+    }
 
     /** @return whether the back button is currently being caught */
     public boolean isCatch(KeyCode code){
-        return false;
+        return caughtKeys.contains(code.ordinal());
     }
 
     /**

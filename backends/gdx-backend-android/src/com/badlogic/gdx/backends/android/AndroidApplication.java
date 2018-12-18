@@ -30,11 +30,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.SnapshotArray;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
 
 import java.lang.reflect.Method;
 
@@ -55,10 +59,10 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     protected ApplicationListener listener;
     public Handler handler;
     protected boolean firstResume = true;
-    protected final Array<Runnable> runnables = new Array<Runnable>();
-    protected final Array<Runnable> executedRunnables = new Array<Runnable>();
-    protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
-    private final Array<AndroidEventListener> androidEventListeners = new Array<AndroidEventListener>();
+    protected final Array<ApplicationListener> listeners = new Array<>();
+    protected final Array<Runnable> runnables = new Array<>();
+    protected final Array<Runnable> executedRunnables = new Array<>();
+    private final Array<AndroidEventListener> androidEventListeners = new Array<>();
     protected boolean useImmersiveMode = false;
     protected boolean hideStatusBar = false;
     private int wasFocusChanged = -1;
@@ -142,13 +146,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         this.clipboard = new AndroidClipboard(this);
 
         // Add a specialized audio lifecycle listener
-        addLifecycleListener(new LifecycleListener(){
-
-            @Override
-            public void resume(){
-                // No need to resume audio here
-            }
-
+        addListener(new ApplicationListener(){
             @Override
             public void pause(){
                 audio.pause();
@@ -193,8 +191,9 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         }
 
         // detect an already connected bluetooth keyboardAvailable
-        if(getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS)
-            this.getInput().keyboardAvailable = true;
+        if(getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS){
+            input.keyboardAvailable = true;
+        }
     }
 
     protected FrameLayout.LayoutParams createLayoutParams(){
@@ -318,36 +317,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     }
 
     @Override
-    public ApplicationListener getApplicationListener(){
-        return listener;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public AndroidInput getInput(){
-        return input;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
-    }
-
-    @Override
     public ApplicationType getType(){
         return ApplicationType.Android;
     }
@@ -366,12 +335,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     public long getNativeHeap(){
         return Debug.getNativeHeapAllocatedSize();
     }
-
-    @Override
-    public Preferences getPreferences(String name){
-        return new AndroidPreferences(getSharedPreferences(name, Context.MODE_PRIVATE));
-    }
-
 
     @Override
     public Clipboard getClipboard(){
@@ -396,26 +359,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
     @Override
     public void exit(){
-        handler.post(new Runnable(){
-            @Override
-            public void run(){
-                AndroidApplication.this.finish();
-            }
-        });
-    }
-
-    @Override
-    public void addLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.removeValue(listener, true);
-        }
+        handler.post(AndroidApplication.this::finish);
     }
 
     @Override
@@ -445,6 +389,11 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     }
 
     @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
+    }
+
+    @Override
     public Context getContext(){
         return this;
     }
@@ -457,11 +406,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     @Override
     public Array<Runnable> getExecutedRunnables(){
         return executedRunnables;
-    }
-
-    @Override
-    public SnapshotArray<LifecycleListener> getLifecycleListeners(){
-        return lifecycleListeners;
     }
 
     @Override

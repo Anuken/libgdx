@@ -24,9 +24,11 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.android.surfaceview.*;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -34,7 +36,7 @@ import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.WindowedMean;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.collection.SnapshotArray;
+import com.badlogic.gdx.utils.Log;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -47,7 +49,7 @@ import javax.microedition.khronos.opengles.GL10;
  *
  * @author mzechner
  */
-public class AndroidGraphics implements Graphics, Renderer{
+public class AndroidGraphics extends Graphics implements Renderer{
 
     private static final String LOG_TAG = "AndroidGraphics";
 
@@ -101,7 +103,6 @@ public class AndroidGraphics implements Graphics, Renderer{
 
     public AndroidGraphics(AndroidApplicationBase application, AndroidApplicationConfiguration config,
                            ResolutionStrategy resolutionStrategy, boolean focusableView){
-        AndroidGL20.init();
         this.config = config;
         this.app = application;
         view = createGLSurfaceView(application, resolutionStrategy);
@@ -296,14 +297,19 @@ public class AndroidGraphics implements Graphics, Renderer{
         this.height = height;
         updatePpi();
         gl.glViewport(0, 0, this.width, this.height);
-        if(created == false){
-            app.getApplicationListener().create();
+        if(!created){
+            for(ApplicationListener list : app.getListeners()){
+                list.create();
+            }
             created = true;
             synchronized(this){
                 running = true;
             }
         }
-        app.getApplicationListener().resize(width, height);
+
+        for(ApplicationListener list : app.getListeners()){
+            list.resize(width, height);
+        }
     }
 
     @Override
@@ -426,10 +432,10 @@ public class AndroidGraphics implements Graphics, Renderer{
             deltaTime = 0;
         }
 
-        boolean lrunning = false;
-        boolean lpause = false;
-        boolean ldestroy = false;
-        boolean lresume = false;
+        boolean lrunning;
+        boolean lpause;
+        boolean ldestroy;
+        boolean lresume;
 
         synchronized(synch){
             lrunning = running;
@@ -453,15 +459,12 @@ public class AndroidGraphics implements Graphics, Renderer{
         }
 
         if(lresume){
-            SnapshotArray<LifecycleListener> lifecycleListeners = app.getLifecycleListeners();
-            synchronized(lifecycleListeners){
-                LifecycleListener[] listeners = lifecycleListeners.begin();
-                for(int i = 0, n = lifecycleListeners.size; i < n; ++i){
-                    listeners[i].resume();
+            Array<ApplicationListener> listeners = app.getListeners();
+            synchronized(listeners){
+                for(int i = 0, n = listeners.size; i < n; ++i){
+                    listeners.get(i).resume();
                 }
-                lifecycleListeners.end();
             }
-            app.getApplicationListener().resume();
             Log.infoTag(LOG_TAG, "resumed");
         }
 
@@ -479,32 +482,33 @@ public class AndroidGraphics implements Graphics, Renderer{
                     t.printStackTrace();
                 }
             }
-            app.getInput().processEvents();
+            ((AndroidInput)Core.input).processEvents();
             frameId++;
-            app.getApplicationListener().render();
+            Array<ApplicationListener> listeners = app.getListeners();
+            synchronized(listeners){
+                for(int i = 0, n = listeners.size; i < n; ++i){
+                    listeners.get(i).update();
+                }
+            }
         }
 
         if(lpause){
-            SnapshotArray<LifecycleListener> lifecycleListeners = app.getLifecycleListeners();
-            synchronized(lifecycleListeners){
-                LifecycleListener[] listeners = lifecycleListeners.begin();
-                for(int i = 0, n = lifecycleListeners.size; i < n; ++i){
-                    listeners[i].pause();
+            Array<ApplicationListener> listeners = app.getListeners();
+            synchronized(listeners){
+                for(int i = 0, n = listeners.size; i < n; ++i){
+                    listeners.get(i).pause();
                 }
             }
-            app.getApplicationListener().pause();
             Log.infoTag(LOG_TAG, "paused");
         }
 
         if(ldestroy){
-            SnapshotArray<LifecycleListener> lifecycleListeners = app.getLifecycleListeners();
-            synchronized(lifecycleListeners){
-                LifecycleListener[] listeners = lifecycleListeners.begin();
-                for(int i = 0, n = lifecycleListeners.size; i < n; ++i){
-                    listeners[i].dispose();
+            Array<ApplicationListener> listeners = app.getListeners();
+            synchronized(listeners){
+                for(int i = 0, n = listeners.size; i < n; ++i){
+                    listeners.get(i).dispose();
                 }
             }
-            app.getApplicationListener().dispose();
             Log.infoTag(LOG_TAG, "destroyed");
         }
 

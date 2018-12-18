@@ -20,41 +20,38 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Disposable;
 
-public abstract class Application implements Disposable{
-    protected final Array<ApplicationListener> listeners = new Array<>();
+public interface Application extends Disposable{
 
     /**Returns a list of all the application listeners used.*/
-    public Array<ApplicationListener> getListeners(){
-        return listeners;
-    }
+    Array<ApplicationListener> getListeners();
 
     /**Adds a new application listener.*/
-    public void addListener(ApplicationListener listener){
-        synchronized(listeners){
-            listeners.add(listener);
+    default void addListener(ApplicationListener listener){
+        synchronized(getListeners()){
+            getListeners().add(listener);
         }
     }
 
     /**Removes an application listener.*/
-    public void removeListener(ApplicationListener listener){
-        synchronized(listeners){
-            listeners.remove(listener);
+    default void removeListener(ApplicationListener listener){
+        synchronized(getListeners()){
+            getListeners().remove(listener);
         }
     }
 
     /** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */
-    public abstract ApplicationType getType();
+    ApplicationType getType();
 
     /** @return the Android API level on Android, the major OS version on iOS (5, 6, 7, ..), or 0 on the desktop. */
-    public abstract int getVersion();
+    int getVersion();
 
     /** @return the Java heap memory use in bytes */
-    public abstract long getJavaHeap();
+    long getJavaHeap();
 
     /** @return the Native heap memory use in bytes */
-    public abstract long getNativeHeap();
+    long getNativeHeap();
 
-    public abstract Clipboard getClipboard();
+    Clipboard getClipboard();
 
     /**
      * Posts a runnable on the main loop thread.
@@ -66,23 +63,23 @@ public abstract class Application implements Disposable{
      * final Graphics graphics = Gdx.graphics;
      */
     //TODO move to timer task since posting things isn't really app specific and could run in an update()... somewhere
-    public abstract void post(Runnable runnable);
+    void post(Runnable runnable);
 
     /**
      * Schedule an exit from the application. On android, this will cause a call to pause() and dispose() some time in the future,
      * it will not immediately finish your application.
      * On iOS this should be avoided in production as it breaks Apples guidelines.
      */
-    public abstract void exit();
+    void exit();
 
     /**Enumeration of possible {@link Application} types*/
-    public enum ApplicationType{
+    enum ApplicationType{
         Android, Desktop, HeadlessDesktop, WebGL, iOS
     }
 
     /**Disposes of core resources.*/
     @Override
-    public void dispose(){
+    default void dispose(){
         if(Core.assets != null){
             Core.assets.dispose();
             Core.assets = null;
