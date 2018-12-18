@@ -66,7 +66,8 @@ public class CheckBox extends TextButton{
         this.style = (CheckBoxStyle) style;
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    @Override
+    public void draw(){
         Drawable checkbox = null;
         if(isDisabled()){
             if(isChecked && style.checkboxOnDisabled != null)
@@ -85,7 +86,7 @@ public class CheckBox extends TextButton{
                 checkbox = style.checkboxOff;
         }
         image.setDrawable(checkbox);
-        super.draw(batch, parentAlpha);
+        super.draw();
     }
 
     public Image getImage(){

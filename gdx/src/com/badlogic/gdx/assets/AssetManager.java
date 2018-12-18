@@ -88,8 +88,6 @@ public class AssetManager implements Disposable{
             setLoader(Sound.class, new SoundLoader(resolver));
             setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
             setLoader(Texture.class, new TextureLoader(resolver));
-            setLoader(ParticleEffect.class, new ParticleEffectLoader(resolver));
-            setLoader(PolygonRegion.class, new PolygonRegionLoader(resolver));
             setLoader(I18NBundle.class, new I18NBundleLoader(resolver));
             setLoader(ShaderProgram.class, new ShaderProgramLoader(resolver));
             setLoader(Cubemap.class, new CubemapLoader(resolver));

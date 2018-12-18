@@ -17,7 +17,6 @@
 package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.ext.Draw;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.geom.Vector2;
@@ -50,7 +49,7 @@ public class Image extends Element{
     }
 
     public Image(String name){
-        this(Draw.getPatch(name));
+        this(scene.skin.getDrawable(name));
     }
 
     /**

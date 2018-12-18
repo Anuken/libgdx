@@ -20,6 +20,7 @@ import com.badlogic.gdx.Core;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scene.Action;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.actions.Actions;
 import com.badlogic.gdx.scene.event.*;
@@ -101,7 +102,7 @@ public class Dialog extends Window{
                 Scene stage = getScene();
                 if(isModal && stage != null && stage.root.getChildren().size > 0
                         && stage.root.getChildren().peek() == Dialog.this){ // Dialog is top most actor.
-                    Element newFocusedActor = event.getRelatedActor();
+                    Element newFocusedActor = event.relatedActor;
                     if(newFocusedActor != null && !newFocusedActor.isDescendantOf(Dialog.this) &&
                             !(newFocusedActor.equals(previousKeyboardFocus) || newFocusedActor.equals(previousScrollFocus)))
                         event.cancel();

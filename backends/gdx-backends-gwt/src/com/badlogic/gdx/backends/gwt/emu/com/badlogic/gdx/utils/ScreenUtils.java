@@ -23,7 +23,6 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.utils.io.BufferUtils;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.typedarrays.shared.ArrayBufferView;
 
@@ -129,7 +128,7 @@ public final class ScreenUtils{
      */
     public static byte[] getFrameBufferPixels(int x, int y, int w, int h, boolean flipY){
         Core.gl.glPixelStorei(GL20.GL_PACK_ALIGNMENT, 1);
-        final ByteBuffer pixels = com.badlogic.gdx.utils.io.BufferUtils.newByteBuffer(w * h * 4);
+        final ByteBuffer pixels = BufferUtils.newByteBuffer(w * h * 4);
         Core.gl.glReadPixels(x, y, w, h, GL20.GL_RGBA, GL20.GL_UNSIGNED_BYTE, pixels);
         final int numBytes = w * h * 4;
         byte[] lines = new byte[numBytes];

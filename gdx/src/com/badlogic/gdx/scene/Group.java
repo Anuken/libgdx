@@ -49,6 +49,7 @@ public class Group extends Element implements Cullable{
     boolean transform = true;
     private Rectangle cullingArea;
 
+    @Override
     public void act(float delta){
         super.act(delta);
         Element[] actors = children.begin();
@@ -149,56 +150,6 @@ public class Group extends Element implements Cullable{
         children.end();
     }
 
-    /**
-     * Draws this actor's debug lines if {@link #getDebug()} is true and, regardless of {@link #getDebug()}, calls
-     * {@link Element#drawDebug()} on each child.
-     */
-    public void drawDebug(){
-        drawDebugBounds();
-        if(transform) applyTransform(computeTransform());
-        drawDebugChildren();
-        if(transform) resetTransform();
-    }
-
-    /**
-     * Draws all children. {@link #applyTransform(Matrix3)} should be called before and {@link #resetTransform()}
-     * after this method if {@link #setTransform(boolean) transform} is true. If {@link #setTransform(boolean) transform} is false
-     * these methods don't need to be called, children positions are temporarily offset by the group position when drawn. This
-     * method avoids drawing children completely outside the {@link #setCullingArea(Rectangle) culling area}, if set.
-     */
-    protected void drawDebugChildren(){
-        SnapshotArray<Element> children = this.children;
-        Element[] actors = children.begin();
-        // No culling, draw all children.
-        if(transform){
-            for(int i = 0, n = children.size; i < n; i++){
-                Element child = actors[i];
-                if(!child.isVisible()) continue;
-                if(!child.getDebug() && !(child instanceof Group)) continue;
-                child.drawDebug();
-            }
-        }else{
-            // No transform for this group, offset each child.
-            float offsetX = x, offsetY = y;
-            x = 0;
-            y = 0;
-            for(int i = 0, n = children.size; i < n; i++){
-                Element child = actors[i];
-                if(!child.isVisible()) continue;
-                if(!child.getDebug() && !(child instanceof Group)) continue;
-                float cx = child.x, cy = child.y;
-                child.x = cx + offsetX;
-                child.y = cy + offsetY;
-                child.drawDebug();
-                child.x = cx;
-                child.y = cy;
-            }
-            x = offsetX;
-            y = offsetY;
-        }
-        children.end();
-    }
-
     /** Returns the transform for this group's coordinate system. */
     protected Matrix3 computeTransform(){
         Affine2 worldTransform = this.worldTransform;
@@ -249,10 +200,12 @@ public class Group extends Element implements Cullable{
      *
      * @param cullingArea May be null.
      */
+    @Override
     public void setCullingArea(Rectangle cullingArea){
         this.cullingArea = cullingArea;
     }
 
+    @Override
     public Element hit(float x, float y, boolean touchable){
         if(touchable && getTouchable() == Touchable.disabled) return null;
         Vector2 point = tmp;
@@ -502,26 +455,8 @@ public class Group extends Element implements Cullable{
         return localCoords;
     }
 
-    public void setDebug(boolean enabled, boolean recursively){
-        setDebug(enabled);
-        if(recursively){
-            for(Element child : children){
-                if(child instanceof Group){
-                    ((Group) child).setDebug(enabled, recursively);
-                }else{
-                    child.setDebug(enabled);
-                }
-            }
-        }
-    }
-
-    /** Calls {@link #setDebug(boolean, boolean)} with {@code true, true}. */
-    public Group debugAll(){
-        setDebug(true, true);
-        return this;
-    }
-
     /** Returns a description of the actor hierarchy, recursively. */
+    @Override
     public String toString(){
         StringBuilder buffer = new StringBuilder(128);
         toString(buffer, 1);

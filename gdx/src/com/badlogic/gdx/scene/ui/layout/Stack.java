@@ -29,6 +29,7 @@ package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.SnapshotArray;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.utils.Layout;
 
@@ -129,16 +130,5 @@ public class Stack extends WidgetGroup{
         if(sizeInvalid) computeSize();
         return minHeight;
     }
-	
-	/*
-	public float getMaxWidth () {
-		if (sizeInvalid) computeSize();
-		return maxWidth;
-	}
 
-	public float getMaxHeight () {
-		if (sizeInvalid) computeSize();
-		return maxHeight;
-	}
-	*/
 }

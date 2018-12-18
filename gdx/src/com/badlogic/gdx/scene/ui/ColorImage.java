@@ -11,8 +11,8 @@ public class ColorImage extends Image{
     }
 
     @Override
-    public void draw(Batch batch, float alpha){
+    public void draw(){
         setColor(set);
-        super.draw(batch, alpha);
+        super.draw();
     }
 }

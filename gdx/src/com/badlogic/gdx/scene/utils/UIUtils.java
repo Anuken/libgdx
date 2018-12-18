@@ -1,6 +1,8 @@
 package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.utils.OS;
 
 public class UIUtils{
@@ -14,56 +16,56 @@ public class UIUtils{
     }
 
     static public boolean left(){
-        return Core.input.isButtonPressed(Buttons.LEFT);
+        return Core.input.isKeyPressed(KeyCode.MOUSE_LEFT);
     }
 
-    static public boolean left(int button){
-        return button == Buttons.LEFT;
+    static public boolean left(KeyCode button){
+        return button == KeyCode.MOUSE_LEFT;
     }
 
     static public boolean right(){
-        return Core.input.isButtonPressed(Buttons.RIGHT);
+        return Core.input.isKeyPressed(KeyCode.MOUSE_RIGHT);
     }
 
-    static public boolean right(int button){
-        return button == Buttons.RIGHT;
+    static public boolean right(KeyCode button){
+        return button == KeyCode.MOUSE_RIGHT;
     }
 
     static public boolean middle(){
-        return Core.input.isButtonPressed(Buttons.MIDDLE);
+        return Core.input.isKeyPressed(KeyCode.MOUSE_MIDDLE);
     }
 
-    static public boolean middle(int button){
-        return button == Buttons.MIDDLE;
+    static public boolean middle(KeyCode button){
+        return button == KeyCode.MOUSE_MIDDLE;
     }
 
     static public boolean shift(){
-        return Core.input.isKeyPressed(Keys.SHIFT_LEFT) || Core.input.isKeyPressed(Keys.SHIFT_RIGHT);
+        return Core.input.isKeyPressed(KeyCode.SHIFT_LEFT) || Core.input.isKeyPressed(KeyCode.SHIFT_RIGHT);
     }
 
-    static public boolean shift(int keycode){
-        return keycode == Keys.SHIFT_LEFT || keycode == Keys.SHIFT_RIGHT;
+    static public boolean shift(KeyCode keycode){
+        return keycode == KeyCode.SHIFT_LEFT || keycode == KeyCode.SHIFT_RIGHT;
     }
 
     static public boolean ctrl(){
         if(OS.isMac)
-            return Core.input.isKeyPressed(Keys.SYM);
+            return Core.input.isKeyPressed(KeyCode.SYM);
         else
-            return Core.input.isKeyPressed(Keys.CONTROL_LEFT) || Core.input.isKeyPressed(Keys.CONTROL_RIGHT);
+            return Core.input.isKeyPressed(KeyCode.CONTROL_LEFT) || Core.input.isKeyPressed(KeyCode.CONTROL_RIGHT);
     }
 
-    static public boolean ctrl(int keycode){
+    static public boolean ctrl(KeyCode keycode){
         if(OS.isMac)
-            return keycode == Keys.SYM;
+            return keycode == KeyCode.SYM;
         else
-            return keycode == Keys.CONTROL_LEFT || keycode == Keys.CONTROL_RIGHT;
+            return keycode == KeyCode.CONTROL_LEFT || keycode == KeyCode.CONTROL_RIGHT;
     }
 
     static public boolean alt(){
-        return Core.input.isKeyPressed(Keys.ALT_LEFT) || Core.input.isKeyPressed(Keys.ALT_RIGHT);
+        return Core.input.isKeyPressed(KeyCode.ALT_LEFT) || Core.input.isKeyPressed(KeyCode.ALT_RIGHT);
     }
 
-    static public boolean alt(int keycode){
-        return keycode == Keys.ALT_LEFT || keycode == Keys.ALT_RIGHT;
+    static public boolean alt(KeyCode keycode){
+        return keycode == KeyCode.ALT_LEFT || keycode == KeyCode.ALT_RIGHT;
     }
 }

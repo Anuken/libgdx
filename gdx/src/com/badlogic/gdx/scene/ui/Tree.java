@@ -18,6 +18,7 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Group;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scene.event.ClickListener;
@@ -28,6 +29,7 @@ import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.scene.utils.Selection;
 import com.badlogic.gdx.scene.utils.UIUtils;
 
+import static com.badlogic.gdx.Core.graphics;
 import static com.badlogic.gdx.Core.scene;
 
 /**
@@ -257,25 +259,26 @@ public class Tree extends WidgetGroup{
         return y;
     }
 
-    public void draw(Batch batch, float parentAlpha){
-        drawBackground(batch, parentAlpha);
+    @Override
+    public void draw(){
+        drawBackground();
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        draw(batch, rootNodes, leftColumnWidth);
-        super.draw(batch, parentAlpha); // Draw elements.
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        draw(rootNodes, leftColumnWidth);
+        super.draw(); // Draw elements.
     }
 
     /** Called to draw the background. Default implementation draws the style background drawable. */
-    protected void drawBackground(Batch batch, float parentAlpha){
+    protected void drawBackground(){
         if(style.background != null){
             Color color = getColor();
-            batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-            style.background.draw(batch, getX(), getY(), getWidth(), getHeight());
+            graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
+            style.background.draw(getX(), getY(), getWidth(), getHeight());
         }
     }
 
     /** Draws selection, icons, and expand icons. */
-    private void draw(Batch batch, Array<Node> nodes, float indent){
+    private void draw(Array<Node> nodes, float indent){
         Drawable plus = style.plus, minus = style.minus;
         float x = getX(), y = getY();
         for(int i = 0, n = nodes.size; i < n; i++){
@@ -283,25 +286,25 @@ public class Tree extends WidgetGroup{
             Element element = node.element;
 
             if(selection.contains(node) && style.selection != null){
-                style.selection.draw(batch, x, y + element.getY() - ySpacing / 2, getWidth(), node.height + ySpacing);
+                style.selection.draw(x, y + element.getY() - ySpacing / 2, getWidth(), node.height + ySpacing);
             }else if(node == overNode && style.over != null){
-                style.over.draw(batch, x, y + element.getY() - ySpacing / 2, getWidth(), node.height + ySpacing);
+                style.over.draw(x, y + element.getY() - ySpacing / 2, getWidth(), node.height + ySpacing);
             }
 
             if(node.icon != null){
                 float iconY = element.getY() + Math.round((node.height - node.icon.getMinHeight()) / 2);
-                batch.setColor(element.getColor());
-                node.icon.draw(batch, x + node.element.getX() - iconSpacingRight - node.icon.getMinWidth(), y + iconY,
+                graphics.batch().setColor(element.getColor());
+                node.icon.draw(x + node.element.getX() - iconSpacingRight - node.icon.getMinWidth(), y + iconY,
                         node.icon.getMinWidth(), node.icon.getMinHeight());
-                batch.setColor(Color.WHITE);
+                graphics.batch().setColor(Color.WHITE);
             }
 
             if(node.children.size == 0) continue;
 
             Drawable expandIcon = node.expanded ? minus : plus;
             float iconY = element.getY() + Math.round((node.height - expandIcon.getMinHeight()) / 2);
-            expandIcon.draw(batch, x + indent - iconSpacingLeft, y + iconY, expandIcon.getMinWidth(), expandIcon.getMinHeight());
-            if(node.expanded) draw(batch, node.children, indent + indentSpacing);
+            expandIcon.draw(x + indent - iconSpacingLeft, y + iconY, expandIcon.getMinWidth(), expandIcon.getMinHeight());
+            if(node.expanded) draw(node.children, indent + indentSpacing);
         }
     }
 
@@ -443,7 +446,7 @@ public class Tree extends WidgetGroup{
 
     static public class Node{
         final Element element;
-        final Array<Node> children = new Array(0);
+        final Array<Node> children = new Array<>(0);
         Node parent;
         boolean selectable = true;
         boolean expanded;

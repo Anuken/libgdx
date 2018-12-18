@@ -16,6 +16,8 @@
 
 package com.badlogic.gdx.utils.io;
 
+import com.badlogic.gdx.utils.BufferUtils;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 

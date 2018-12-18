@@ -20,12 +20,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Circle;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.utils.pooling.Pools;
+
+import static com.badlogic.gdx.Core.graphics;
 
 /**
  * An on-screen joystick. The movement area of the joystick is circular, centered on the touchpad, and its size determined by the
@@ -157,11 +160,11 @@ public class Touchpad extends Element{
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         validate();
 
         Color c = getColor();
-        batch.setColor(c.r, c.g, c.b, c.a * parentAlpha);
+        graphics.batch().setColor(c.r, c.g, c.b, c.a * parentAlpha);
 
         float x = getX();
         float y = getY();
@@ -169,13 +172,13 @@ public class Touchpad extends Element{
         float h = getHeight();
 
         final Drawable bg = style.background;
-        if(bg != null) bg.draw(batch, x, y, w, h);
+        if(bg != null) bg.draw(x, y, w, h);
 
         final Drawable knob = style.knob;
         if(knob != null){
             x += knobPosition.x - knob.getMinWidth() / 2f;
             y += knobPosition.y - knob.getMinHeight() / 2f;
-            knob.draw(batch, x, y, knob.getMinWidth(), knob.getMinHeight());
+            knob.draw(x, y, knob.getMinWidth(), knob.getMinHeight());
         }
     }
 

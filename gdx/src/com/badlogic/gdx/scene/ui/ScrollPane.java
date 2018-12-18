@@ -16,8 +16,6 @@
 
 package com.badlogic.gdx.scene.ui;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Mathf;
@@ -615,7 +613,7 @@ public class ScrollPane extends WidgetGroup{
         }
 
         // Render scrollbars and knobs on top.
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha * Interpolation.fade.apply(fadeAlpha / fadeAlphaSeconds));
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha * Interpolation.fade.apply(fadeAlpha / fadeAlphaSeconds));
         if(scrollX && scrollY){
             if(style.corner != null){
                 style.corner.draw(hScrollBounds.x + hScrollBounds.width, hScrollBounds.y, vScrollBounds.width,
@@ -1071,11 +1069,6 @@ public class ScrollPane extends WidgetGroup{
      */
     public void setCancelTouchFocus(boolean cancelTouchFocus){
         this.cancelTouchFocus = cancelTouchFocus;
-    }
-
-    @Override
-    public void drawDebug(){
-        //TODO implement
     }
 
     /**

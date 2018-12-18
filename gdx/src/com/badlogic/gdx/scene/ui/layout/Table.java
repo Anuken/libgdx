@@ -21,9 +21,7 @@ import com.badlogic.gdx.function.BooleanConsumer;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Supplier;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.ext.Draw;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.style.Drawable;
@@ -33,7 +31,6 @@ import com.badlogic.gdx.scene.ui.TextField.TextFieldFilter;
 import com.badlogic.gdx.scene.utils.Elements;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.pooling.Pool;
-import com.badlogic.gdx.utils.pooling.Pools;
 
 import static com.badlogic.gdx.Core.graphics;
 import static com.badlogic.gdx.Core.scene;
@@ -158,7 +155,7 @@ public class Table extends WidgetGroup{
     protected void drawBackground(float x, float y){
         if(background == null) return;
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
         background.draw(x, y, getWidth(), getHeight());
     }
 
@@ -398,11 +395,11 @@ public class Table extends WidgetGroup{
     }
 
     public Cell<Image> addImage(String name){
-        return add(new Image(Draw.getPatch(name)));
+        return add(new Image(scene.skin.getPatch(name)));
     }
 
     public Cell<Image> addImage(String name, Color color){
-        Image image = new Image(Draw.getPatch(name));
+        Image image = new Image(scene.skin.getPatch(name));
         image.setColor(color);
         return add(image);
     }

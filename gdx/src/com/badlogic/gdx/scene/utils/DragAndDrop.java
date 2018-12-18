@@ -20,11 +20,14 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.collection.ObjectMap.Entry;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.DragListener;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.ScrollPane;
+
+import static com.badlogic.gdx.Core.scene;
 
 /**
  * Manages drag and drop operations through registered drag sources and drop targets.
@@ -72,8 +75,6 @@ public class DragAndDrop{
                 if(payload == null) return;
                 if(pointer != activePointer) return;
 
-                Scene stage = event.getStage();
-
                 Touchable dragActorTouchable = null;
                 if(dragActor != null){
                     dragActorTouchable = dragActor.getTouchable();
@@ -84,8 +85,8 @@ public class DragAndDrop{
                 Target newTarget = null;
                 isValidTarget = false;
                 float stageX = event.stageX + touchOffsetX, stageY = event.stageY + touchOffsetY;
-                Element hit = event.getStage().hit(stageX, stageY, true); // Prefer touchable actors.
-                if(hit == null) hit = event.getStage().hit(stageX, stageY, false);
+                Element hit = scene.hit(stageX, stageY, true); // Prefer touchable actors.
+                if(hit == null) hit = scene.hit(stageX, stageY, false);
                 if(hit != null){
                     for(int i = 0, n = targets.size; i < n; i++){
                         Target target = targets.get(i);
@@ -114,15 +115,15 @@ public class DragAndDrop{
                 if(dragActor != actor){
                     if(dragActor != null) dragActor.remove();
                     dragActor = actor;
-                    stage.add(actor);
+                    scene.add(actor);
                 }
                 float actorX = event.stageX - actor.getWidth() + dragActorX;
                 float actorY = event.stageY + dragActorY;
                 if(keepWithinStage){
                     if(actorX < 0) actorX = 0;
                     if(actorY < 0) actorY = 0;
-                    if(actorX + actor.getWidth() > stage.getWidth()) actorX = stage.getWidth() - actor.getWidth();
-                    if(actorY + actor.getHeight() > stage.getHeight()) actorY = stage.getHeight() - actor.getHeight();
+                    if(actorX + actor.getWidth() > scene.getWidth()) actorX = scene.getWidth() - actor.getWidth();
+                    if(actorY + actor.getHeight() > scene.getHeight()) actorY = scene.getHeight() - actor.getHeight();
                 }
                 actor.setPosition(actorX, actorY);
             }
@@ -274,7 +275,7 @@ public class DragAndDrop{
             if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
             this.actor = actor;
             Scene stage = actor.getScene();
-            if(stage != null && actor == stage.getRoot())
+            if(stage != null && actor == stage.root)
                 throw new IllegalArgumentException("The stage root cannot be a drag and drop target.");
         }
 

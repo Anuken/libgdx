@@ -330,7 +330,7 @@ public class Lwjgl3Application implements Application{
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
         }
 
-        long windowHandle = 0;
+        long windowHandle;
 
         if(config.fullscreenMode != null){
             // glfwWindowHint(GLFW.GLFW_REFRESH_RATE, config.fullscreenMode.refreshRate);

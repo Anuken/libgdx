@@ -22,6 +22,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import static com.badlogic.gdx.Core.graphics;
+
 /**
  * A 3x3 grid of texture regions. Any of the regions may be omitted. Padding may be set as a hint on how to inset content on top
  * of the ninepatch (by default the eight "edge" textures of the nine-patch define the padding). When drawn the eight "edge"
@@ -360,12 +362,12 @@ public class NinePatch{
         vertices[idx + 17] = color;
     }
 
-    private void prepareVertices(Batch batch, float x, float y, float width, float height){
+    private void prepareVertices(float x, float y, float width, float height){
         final float centerColumnX = x + leftWidth;
         final float rightColumnX = x + width - rightWidth;
         final float middleRowY = y + bottomHeight;
         final float topRowY = y + height - topHeight;
-        final float c = tmpDrawColor.set(color).mul(batch.getColor()).toFloatBits();
+        final float c = tmpDrawColor.set(color).mul(graphics.batch().getColor()).toFloatBits();
 
         if(bottomLeft != -1) set(bottomLeft, x, y, centerColumnX - x, middleRowY - y, c);
         if(bottomCenter != -1) set(bottomCenter, centerColumnX, y, rightColumnX - centerColumnX, middleRowY - y, c);
@@ -381,14 +383,14 @@ public class NinePatch{
         if(topRight != -1) set(topRight, rightColumnX, topRowY, x + width - rightColumnX, y + height - topRowY, c);
     }
 
-    public void draw(Batch batch, float x, float y, float width, float height){
-        prepareVertices(batch, x, y, width, height);
-        batch.draw(texture, vertices, 0, idx);
+    public void draw(float x, float y, float width, float height){
+        prepareVertices(x, y, width, height);
+        graphics.batch().draw().vert(texture, vertices, 0, idx);
     }
 
-    public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+    public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX,
                      float scaleY, float rotation){
-        prepareVertices(batch, x, y, width, height);
+        prepareVertices(x, y, width, height);
         float worldOriginX = x + originX, worldOriginY = y + originY;
         int n = this.idx;
         float[] vertices = this.vertices;
@@ -405,7 +407,7 @@ public class NinePatch{
                 vertices[i + 1] = (vertices[i + 1] - worldOriginY) * scaleY + worldOriginY;
             }
         }
-        batch.draw(texture, vertices, 0, n);
+        graphics.batch().draw().vert(texture, vertices, 0, n);
     }
 
     /**

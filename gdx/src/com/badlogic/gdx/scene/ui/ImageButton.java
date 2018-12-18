@@ -18,6 +18,7 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
@@ -146,9 +147,10 @@ public class ImageButton extends Button{
         image.setColor(color);
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    @Override
+    public void draw(){
         updateImage();
-        super.draw(batch, parentAlpha);
+        super.draw();
     }
 
     public Image getImage(){

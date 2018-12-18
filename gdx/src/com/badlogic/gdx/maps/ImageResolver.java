@@ -69,7 +69,7 @@ public interface ImageResolver{
 
         @Override
         public TextureRegion getImage(String name){
-            return atlas.findRegion(name);
+            return atlas.find(name);
         }
     }
 }

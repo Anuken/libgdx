@@ -26,6 +26,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout.GlyphRun;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.pooling.Pools;
 
+import static com.badlogic.gdx.Core.graphics;
+
 /**
  * Caches glyph geometry for a BitmapFont, providing a fast way to render static text. This saves needing to compute the glyph
  * geometry each frame.
@@ -245,19 +247,19 @@ public class BitmapFontCache{
         color.set(r, g, b, a);
     }
 
-    public void draw(Batch spriteBatch){
+    public void draw(){
         Array<TextureRegion> regions = font.getRegions();
         for(int j = 0, n = pageVertices.length; j < n; j++){
             if(idx[j] > 0){ // ignore if this texture has no glyphs
                 float[] vertices = pageVertices[j];
-                spriteBatch.draw(regions.get(j).getTexture(), vertices, 0, idx[j]);
+                graphics.batch().draw().vert(regions.get(j).getTexture(), vertices, 0, idx[j]);
             }
         }
     }
 
-    public void draw(Batch spriteBatch, int start, int end){
+    public void draw(int start, int end){
         if(pageVertices.length == 1){ // 1 page.
-            spriteBatch.draw(font.getRegion().getTexture(), pageVertices[0], start * 20, (end - start) * 20);
+            graphics.batch().draw().vert(font.getRegion().getTexture(), pageVertices[0], start * 20, (end - start) * 20);
             return;
         }
 
@@ -286,20 +288,20 @@ public class BitmapFontCache{
             if(offset == -1 || count == 0) continue;
 
             // Render the page vertex data with the offset and count.
-            spriteBatch.draw(regions.get(i).getTexture(), pageVertices[i], offset * 20, count * 20);
+            graphics.batch().draw().vert(regions.get(i).getTexture(), pageVertices[i], offset * 20, count * 20);
         }
     }
 
-    public void draw(Batch spriteBatch, float alphaModulation){
+    public void draw(float alphaModulation){
         if(alphaModulation == 1){
-            draw(spriteBatch);
+            draw();
             return;
         }
         Color color = getColor();
         float oldAlpha = color.a;
         color.a *= alphaModulation;
         setColors(color);
-        draw(spriteBatch);
+        draw();
         color.a = oldAlpha;
         setColors(color);
     }

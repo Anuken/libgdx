@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.scene.actions;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.scene.Action;
 import com.badlogic.gdx.scene.utils.Layout;
 
@@ -28,12 +27,6 @@ import com.badlogic.gdx.scene.utils.Layout;
  */
 public class LayoutAction extends Action{
     private boolean enabled;
-
-    public void setTarget(Element actor){
-        if(actor != null && !(actor instanceof Layout))
-            throw new GdxRuntimeException("Actor must implement layout: " + actor);
-        super.setTarget(actor);
-    }
 
     public boolean act(float delta){
         target.setLayoutEnabled(enabled);

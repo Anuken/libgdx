@@ -19,9 +19,10 @@ package com.badlogic.gdx.assets.loaders;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.utils.Log;
 
 /**
  * {@link AssetLoader} for {@link ShaderProgram} instances loaded from text files. If the file suffix is ".vert", it is assumed
@@ -84,7 +85,7 @@ public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, 
 
         ShaderProgram shaderProgram = new ShaderProgram(vertexCode, fragmentCode);
         if((parameter == null || parameter.logOnCompileFailure) && !shaderProgram.isCompiled()){
-            manager.getLogger().error("ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.getLog());
+            Log.err("ShaderProgram " + fileName + " failed to compile:\n" + shaderProgram.getLog());
         }
 
         return shaderProgram;

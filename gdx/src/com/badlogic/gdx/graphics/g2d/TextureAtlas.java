@@ -278,7 +278,7 @@ public class TextureAtlas implements Disposable{
             regionmap.put(atlasRegion.name, atlasRegion);
         }
 
-        error = findRegion("error");
+        error = find("error");
     }
 
     /** Adds a region to the atlas. The specified texture will be disposed when the atlas is disposed. */
@@ -310,7 +310,7 @@ public class TextureAtlas implements Disposable{
      *
      * @return The region, or the error region (if it is defined), or null.
      */
-    public AtlasRegion findRegion(String name){
+    public AtlasRegion find(String name){
         AtlasRegion r = regionmap.get(name);
         if(r == null && error == null && !(name.equals("error")))
             throw new IllegalArgumentException("The region \"" + name + "\" does not exist!");
@@ -318,7 +318,7 @@ public class TextureAtlas implements Disposable{
         return r;
     }
 
-    public TextureRegion findRegion(String name, TextureRegion def){
+    public TextureRegion find(String name, TextureRegion def){
         TextureRegion region = regionmap.get(name);
         return region == null || region == error ? def : region;
     }
@@ -329,7 +329,7 @@ public class TextureAtlas implements Disposable{
      *
      * @return The region, or null.
      */
-    public AtlasRegion findRegion(String name, int index){
+    public AtlasRegion find(String name, int index){
         for(int i = 0, n = regions.size; i < n; i++){
             AtlasRegion region = regions.get(i);
             if(!region.name.equals(name)) continue;
@@ -339,7 +339,7 @@ public class TextureAtlas implements Disposable{
         return null;
     }
 
-    public boolean hasRegion(String s){
+    public boolean has(String s){
         return regionmap.containsKey(s);
     }
 

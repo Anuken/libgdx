@@ -7,6 +7,7 @@ import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.utils.Align;
 
+import static com.badlogic.gdx.Core.graphics;
 import static com.badlogic.gdx.Core.scene;
 
 /**
@@ -38,26 +39,26 @@ public class Container<T extends Element> extends WidgetGroup{
         setActor(actor);
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         validate();
         if(isTransform()){
-            applyTransform(batch, computeTransform());
-            drawBackground(batch, parentAlpha, 0, 0);
+            applyTransform(computeTransform());
+            drawBackground(0, 0);
             if(clip){
-                batch.flush();
+                graphics.batch().flush();
                 float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
                 if(clipBegin(marginLeft, marginBottom, getWidth() - marginLeft - marginRight.get(this),
                         getHeight() - marginBottom - marginTop.get(this))){
-                    drawChildren(batch, parentAlpha);
-                    batch.flush();
+                    drawChildren();
+                    graphics.batch().flush();
                     clipEnd();
                 }
             }else
-                drawChildren(batch, parentAlpha);
-            resetTransform(batch);
+                drawChildren();
+            resetTransform();
         }else{
-            drawBackground(batch, parentAlpha, getX(), getY());
-            super.draw(batch, parentAlpha);
+            drawBackground(getX(), getY());
+            super.draw();
         }
     }
 
@@ -65,11 +66,11 @@ public class Container<T extends Element> extends WidgetGroup{
      * Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
      * drawable.
      */
-    protected void drawBackground(Batch batch, float parentAlpha, float x, float y){
+    protected void drawBackground(float x, float y){
         if(background == null) return;
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        background.draw(batch, x, y, getWidth(), getHeight());
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        background.draw(x, y, getWidth(), getHeight());
     }
 
     /**
@@ -693,26 +694,5 @@ public class Container<T extends Element> extends WidgetGroup{
             if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
         }
         return super.hit(x, y, touchable);
-    }
-
-    public void drawDebug(ShapeRenderer shapes){
-        validate();
-        if(isTransform()){
-            applyTransform(shapes, computeTransform());
-            if(clip){
-                shapes.flush();
-                float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
-                boolean draw = background == null ? clipBegin(0, 0, getWidth(), getHeight())
-                        : clipBegin(marginLeft, marginBottom, getWidth() - marginLeft - marginRight.get(this),
-                        getHeight() - marginBottom - marginTop.get(this));
-                if(draw){
-                    drawDebugChildren(shapes);
-                    clipEnd();
-                }
-            }else
-                drawDebugChildren(shapes);
-            resetTransform(shapes);
-        }else
-            super.drawDebug(shapes);
     }
 }

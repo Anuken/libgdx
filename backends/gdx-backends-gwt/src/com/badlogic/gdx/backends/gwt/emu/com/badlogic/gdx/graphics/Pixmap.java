@@ -18,7 +18,7 @@ package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.backends.gwt.GwtFileHandle;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gwt.canvas.client.Canvas;

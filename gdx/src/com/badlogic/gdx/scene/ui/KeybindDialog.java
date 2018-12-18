@@ -2,10 +2,8 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.KeyBinds.Axis;
 import com.badlogic.gdx.KeyBinds.KeyBind;
-import com.badlogic.gdx.KeyBinds.KeybindValue;
 import com.badlogic.gdx.KeyBinds.Section;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectIntMap;
@@ -21,8 +19,6 @@ import com.badlogic.gdx.scene.ui.layout.Stack;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Strings;
-
-import java.util.Locale.Category;
 
 import static com.badlogic.gdx.Core.*;
 
@@ -227,6 +223,8 @@ public class KeybindDialog extends Dialog{
     }
 
     private void rebind(Section section, KeyBind bind){
+        //TODO implement
+        /*
         rebindDialog.hide();
 
         if(rebindAxis){
@@ -259,6 +257,7 @@ public class KeybindDialog extends Dialog{
             rebindAxis = false;
             setup();
         }
+        */
     }
 
     private void openDialog(Section section, KeyBind name){
@@ -272,6 +271,7 @@ public class KeybindDialog extends Dialog{
         //rebindDialog.addButton("Cancel", rebindDialog::hide).pad(4);
 
         if(section.device.type() == DeviceType.keyboard){
+            //TODO implement
             rebindDialog.keyDown(i -> {
                 setup();
             });
@@ -280,7 +280,7 @@ public class KeybindDialog extends Dialog{
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                     if(Core.app.getType() == ApplicationType.Android) return false;
-                    rebind(Input.findByType(Type.mouse, button, false));
+                   // rebind(Input.findByType(Type.mouse, button, false));
                     return false;
                 }
 
@@ -288,7 +288,7 @@ public class KeybindDialog extends Dialog{
                 public boolean keyDown(InputEvent event, KeyCode keycode){
                     rebindDialog.hide();
                     if(keycode == KeyCode.ESCAPE) return false;
-                    rebind(Input.findByType(Type.key, keycode, false));
+                    //rebind(Input.findByType(Type.key, keycode, false));
                     return false;
                 }
 
@@ -296,16 +296,16 @@ public class KeybindDialog extends Dialog{
                 public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY){
                     if(!rebindAxis) return false;
                     rebindDialog.hide();
-                    rebind(Input.SCROLL);
+                    //rebind(Input.SCROLL);
                     return false;
                 }
             });
         }
 
         rebindDialog.show();
-        Timers.runTask(1f, () -> {
-            getScene().setScrollFocus(rebindDialog);
-        });
+        //Timers.runTask(1f, () -> {
+        //    getScene().setScrollFocus(rebindDialog);
+        //});
     }
 
     static public class KeybindDialogStyle extends Style{

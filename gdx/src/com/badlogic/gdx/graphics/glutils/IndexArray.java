@@ -16,7 +16,7 @@
 
 package com.badlogic.gdx.graphics.glutils;
 
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;

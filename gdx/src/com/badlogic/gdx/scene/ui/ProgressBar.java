@@ -32,6 +32,8 @@ import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.scene.utils.Disableable;
 import com.badlogic.gdx.utils.pooling.Pools;
 
+import static com.badlogic.gdx.Core.graphics;
+
 /**
  * A progress bar is a widget that visually displays the progress of some activity or a value within given range. The progress
  * bar has a range (min, max) and a stepping between each value it represents. The percentage of completeness typically starts out
@@ -116,7 +118,7 @@ public class ProgressBar extends Element implements Disableable{
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         ProgressBarStyle style = this.style;
         boolean disabled = this.disabled;
         final Drawable knob = getKnobDrawable();
@@ -133,7 +135,7 @@ public class ProgressBar extends Element implements Disableable{
         float knobWidth = knob == null ? 0 : knob.getMinWidth();
         float percent = getVisualPercent();
 
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         if(vertical){
             float positionHeight = height;
@@ -141,9 +143,9 @@ public class ProgressBar extends Element implements Disableable{
             float bgTopHeight = 0;
             if(bg != null){
                 if(round)
-                    bg.draw(batch, Math.round(x + (width - bg.getMinWidth()) * 0.5f), y, Math.round(bg.getMinWidth()), height);
+                    bg.draw(Math.round(x + (width - bg.getMinWidth()) * 0.5f), y, Math.round(bg.getMinWidth()), height);
                 else
-                    bg.draw(batch, x + width - bg.getMinWidth() * 0.5f, y, bg.getMinWidth(), height);
+                    bg.draw(x + width - bg.getMinWidth() * 0.5f, y, bg.getMinWidth(), height);
                 bgTopHeight = bg.getTopHeight();
                 positionHeight -= bgTopHeight + bg.getBottomHeight();
             }
@@ -166,25 +168,25 @@ public class ProgressBar extends Element implements Disableable{
                 float offset = 0;
                 if(bg != null) offset = bgTopHeight;
                 if(round)
-                    knobBefore.draw(batch, Math.round(x + (width - knobBefore.getMinWidth()) * 0.5f), Math.round(y + offset), Math.round(knobBefore.getMinWidth()),
+                    knobBefore.draw(Math.round(x + (width - knobBefore.getMinWidth()) * 0.5f), Math.round(y + offset), Math.round(knobBefore.getMinWidth()),
                             Math.round(position + knobHeightHalf));
                 else
-                    knobBefore.draw(batch, x + (width - knobBefore.getMinWidth()) * 0.5f, y + offset, knobBefore.getMinWidth(),
+                    knobBefore.draw(x + (width - knobBefore.getMinWidth()) * 0.5f, y + offset, knobBefore.getMinWidth(),
                             position + knobHeightHalf);
             }
             if(knobAfter != null){
                 if(round)
-                    knobAfter.draw(batch, Math.round(x + (width - knobAfter.getMinWidth()) * 0.5f), Math.round(y + position + knobHeightHalf),
+                    knobAfter.draw(Math.round(x + (width - knobAfter.getMinWidth()) * 0.5f), Math.round(y + position + knobHeightHalf),
                             Math.round(knobAfter.getMinWidth()), Math.round(height - position - knobHeightHalf));
                 else
-                    knobAfter.draw(batch, x + (width - knobAfter.getMinWidth()) * 0.5f, y + position + knobHeightHalf,
+                    knobAfter.draw(x + (width - knobAfter.getMinWidth()) * 0.5f, y + position + knobHeightHalf,
                             knobAfter.getMinWidth(), height - position - knobHeightHalf);
             }
             if(knob != null){
                 if(round)
-                    knob.draw(batch, Math.round(x + (width - knobWidth) * 0.5f), Math.round(y + position), Math.round(knobWidth), Math.round(knobHeight));
+                    knob.draw(Math.round(x + (width - knobWidth) * 0.5f), Math.round(y + position), Math.round(knobWidth), Math.round(knobHeight));
                 else
-                    knob.draw(batch, x + (width - knobWidth) * 0.5f, y + position, knobWidth, knobHeight);
+                    knob.draw(x + (width - knobWidth) * 0.5f, y + position, knobWidth, knobHeight);
             }
         }else{
             float positionWidth = width;
@@ -192,9 +194,9 @@ public class ProgressBar extends Element implements Disableable{
             float bgLeftWidth = 0;
             if(bg != null){
                 if(round)
-                    bg.draw(batch, x, Math.round(y + (height - bg.getMinHeight()) * 0.5f), width, Math.round(bg.getMinHeight()));
+                    bg.draw(x, Math.round(y + (height - bg.getMinHeight()) * 0.5f), width, Math.round(bg.getMinHeight()));
                 else
-                    bg.draw(batch, x, y + (height - bg.getMinHeight()) * 0.5f, width, bg.getMinHeight());
+                    bg.draw(x, y + (height - bg.getMinHeight()) * 0.5f, width, bg.getMinHeight());
                 bgLeftWidth = bg.getLeftWidth();
                 positionWidth -= bgLeftWidth + bg.getRightWidth();
             }
@@ -217,25 +219,25 @@ public class ProgressBar extends Element implements Disableable{
                 float offset = 0;
                 if(bg != null) offset = bgLeftWidth;
                 if(round)
-                    knobBefore.draw(batch, Math.round(x + offset), Math.round(y + (height - knobBefore.getMinHeight()) * 0.5f),
+                    knobBefore.draw(Math.round(x + offset), Math.round(y + (height - knobBefore.getMinHeight()) * 0.5f),
                             Math.round(position + knobWidthHalf), Math.round(knobBefore.getMinHeight()));
                 else
-                    knobBefore.draw(batch, x + offset, y + (height - knobBefore.getMinHeight()) * 0.5f,
+                    knobBefore.draw(x + offset, y + (height - knobBefore.getMinHeight()) * 0.5f,
                             position + knobWidthHalf, knobBefore.getMinHeight());
             }
             if(knobAfter != null){
                 if(round)
-                    knobAfter.draw(batch, Math.round(x + position + knobWidthHalf), Math.round(y + (height - knobAfter.getMinHeight()) * 0.5f),
+                    knobAfter.draw(Math.round(x + position + knobWidthHalf), Math.round(y + (height - knobAfter.getMinHeight()) * 0.5f),
                             Math.round(width - position - knobWidthHalf), Math.round(knobAfter.getMinHeight()));
                 else
-                    knobAfter.draw(batch, x + position + knobWidthHalf, y + (height - knobAfter.getMinHeight()) * 0.5f,
+                    knobAfter.draw(x + position + knobWidthHalf, y + (height - knobAfter.getMinHeight()) * 0.5f,
                             width - position - knobWidthHalf, knobAfter.getMinHeight());
             }
             if(knob != null){
                 if(round)
-                    knob.draw(batch, Math.round(x + position), Math.round(y + (height - knobHeight) * 0.5f), Math.round(knobWidth), Math.round(knobHeight));
+                    knob.draw(Math.round(x + position), Math.round(y + (height - knobHeight) * 0.5f), Math.round(knobWidth), Math.round(knobHeight));
                 else
-                    knob.draw(batch, x + position, y + (height - knobHeight) * 0.5f, knobWidth, knobHeight);
+                    knob.draw(x + position, y + (height - knobHeight) * 0.5f, knobWidth, knobHeight);
             }
         }
     }

@@ -11,8 +11,8 @@ public class ScaledNinePatchDrawable extends NinePatchDrawable{
     }
 
     @Override
-    public void draw(Batch batch, float x, float y, float width, float height){
-        getPatch().draw(batch, x, y, 0, 0, width / scale, height / scale, scale, scale, 0);
+    public void draw(float x, float y, float width, float height){
+        getPatch().draw(x, y, 0, 0, width / scale, height / scale, scale, scale, 0);
     }
 
     @Override

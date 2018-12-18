@@ -16,6 +16,9 @@
 
 package com.badlogic.gdx.maps;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Matrix3;
+
 /** Models a common way of rendering {@link Map} objects */
 public interface MapRenderer{
     /**
@@ -37,7 +40,7 @@ public interface MapRenderer{
      * @param viewboundsWidth
      * @param viewboundsHeight
      */
-    void setView(Matrix4 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth,
+    void setView(Matrix3 projectionMatrix, float viewboundsX, float viewboundsY, float viewboundsWidth,
                  float viewboundsHeight);
 
     /** Renders all the layers of a map. */

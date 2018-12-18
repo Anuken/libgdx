@@ -192,8 +192,8 @@ public class Quaternion implements Serializable{
      */
     public float getRollRad(){
         final int pole = getGimbalPole();
-        return pole == 0 ? Mathf.atan2(2f * (w * z + y * x), 1f - 2f * (x * x + z * z)) : (float) pole * 2f
-        * Mathf.atan2(y, w);
+        return pole == 0 ? Mathf.atan2(1f - 2f * (x * x + z * z), 2f * (w * z + y * x)) : (float) pole * 2f
+        * Mathf.atan2(w, y);
     }
 
     /**
@@ -230,7 +230,7 @@ public class Quaternion implements Serializable{
      * @return the rotation around the y axis in radians (between -PI and +PI)
      */
     public float getYawRad(){
-        return getGimbalPole() == 0 ? Mathf.atan2(2f * (y * w + x * z), 1f - 2f * (y * y + x * x)) : 0f;
+        return getGimbalPole() == 0 ? Mathf.atan2(1f - 2f * (y * y + x * x), 2f * (y * w + x * z)) : 0f;
     }
 
     /**

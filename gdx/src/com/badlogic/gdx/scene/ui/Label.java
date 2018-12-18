@@ -29,8 +29,7 @@ import com.badlogic.gdx.scene.style.Style;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 
-import static com.badlogic.gdx.Core.bundle;
-import static com.badlogic.gdx.Core.scene;
+import static com.badlogic.gdx.Core.*;
 
 /**
  * A text label, with optional word wrapping.
@@ -243,13 +242,13 @@ public class Label extends Element{
         Color color = tempColor.set(getColor());
         color.a *= parentAlpha;
         if(style.background != null){
-            batch.setColor(color.r, color.g, color.b, color.a);
-            style.background.draw(batch, getX(), getY(), getWidth(), getHeight());
+            graphics.batch().setColor(color.r, color.g, color.b, color.a);
+            style.background.draw(x, y, width, height);
         }
         if(style.fontColor != null) color.mul(style.fontColor);
         cache.tint(color);
         cache.setPosition(getX(), getY());
-        cache.draw(batch);
+        cache.draw();
     }
 
     public float getPrefWidth(){

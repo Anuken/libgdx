@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.collection.Array;
 
+import static com.badlogic.gdx.Core.graphics;
+
 /**
  * Renders bitmap fonts using distance field textures, see the <a
  * href="https://github.com/libgdx/libgdx/wiki/Distance-field-fonts">Distance Field Fonts wiki article</a> for usage. Initialize
@@ -164,23 +166,23 @@ public class DistanceFieldFont extends BitmapFont{
             return font.getDistanceFieldSmoothing() * font.getScaleX();
         }
 
-        private void setSmoothingUniform(Batch spriteBatch, float smoothing){
-            spriteBatch.flush();
-            spriteBatch.getShader().setUniformf("u_smoothing", smoothing);
+        private void setSmoothingUniform(float smoothing){
+            graphics.batch().flush();
+            graphics.batch().getShader().setUniformf("u_smoothing", smoothing);
         }
 
         @Override
-        public void draw(Batch spriteBatch){
-            setSmoothingUniform(spriteBatch, getSmoothingFactor());
-            super.draw(spriteBatch);
-            setSmoothingUniform(spriteBatch, 0);
+        public void draw(){
+            setSmoothingUniform(getSmoothingFactor());
+            super.draw();
+            setSmoothingUniform(0);
         }
 
         @Override
-        public void draw(Batch spriteBatch, int start, int end){
-            setSmoothingUniform(spriteBatch, getSmoothingFactor());
-            super.draw(spriteBatch, start, end);
-            setSmoothingUniform(spriteBatch, 0);
+        public void draw(int start, int end){
+            setSmoothingUniform(getSmoothingFactor());
+            super.draw(start, end);
+            setSmoothingUniform(0);
         }
     }
 }

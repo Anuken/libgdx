@@ -18,7 +18,7 @@ package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.nio.ShortBuffer;

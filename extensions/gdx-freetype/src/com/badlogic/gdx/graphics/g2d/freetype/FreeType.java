@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

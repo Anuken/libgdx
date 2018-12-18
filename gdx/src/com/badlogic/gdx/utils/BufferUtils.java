@@ -14,11 +14,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.io;
+package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.math.Matrix3;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.nio.*;
 
@@ -28,7 +27,7 @@ import java.nio.*;
  * @author mzechner, xoppa
  */
 public final class BufferUtils{
-    static Array<ByteBuffer> unsafeBuffers = new Array<ByteBuffer>();
+    static final Array<ByteBuffer> unsafeBuffers = new Array<>();
     static int allocatedUnsafe = 0;
 
     /**
@@ -249,88 +248,6 @@ public final class BufferUtils{
         int numBytes = elementsToBytes(src, numElements);
         dst.limit(dst.position() + bytesToElements(dst, numBytes));
         copyJni(src, positionInBytes(src), dst, positionInBytes(dst), numBytes);
-    }
-
-    /**
-     * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
-     * offset.
-     *
-     * @param data The buffer to transform.
-     * @param dimensions The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-     * @param strideInBytes The offset between the first and the second vector to transform
-     * @param count The number of vectors to transform
-     * @param matrix The matrix to multiply the vector with
-     */
-    public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix){
-        transform(data, dimensions, strideInBytes, count, matrix, 0);
-    }
-
-    /**
-     * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
-     * offset.
-     *
-     * @param data The buffer to transform.
-     * @param dimensions The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-     * @param strideInBytes The offset between the first and the second vector to transform
-     * @param count The number of vectors to transform
-     * @param matrix The matrix to multiply the vector with
-     */
-    public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix){
-        transform(data, dimensions, strideInBytes, count, matrix, 0);
-    }
-
-    /**
-     * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-     * {@link Buffer#position()} and used as the offset.
-     *
-     * @param data The buffer to transform.
-     * @param dimensions The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-     * @param strideInBytes The offset between the first and the second vector to transform
-     * @param count The number of vectors to transform
-     * @param matrix The matrix to multiply the vector with
-     * @param offset The offset within the buffer (in bytes relative to the current position) to the vector
-     */
-    public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset){
-        switch(dimensions){
-            case 4:
-                transformV4M4Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
-                break;
-            case 3:
-                transformV3M4Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
-                break;
-            case 2:
-                transformV2M4Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    /**
-     * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
-     * {@link Buffer#position()} and used as the offset.
-     *
-     * @param data The buffer to transform.
-     * @param dimensions The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-     * @param strideInBytes The offset between the first and the second vector to transform
-     * @param count The number of vectors to transform
-     * @param matrix The matrix to multiply the vector with
-     * @param offset The offset within the buffer (in bytes relative to the current position) to the vector
-     */
-    public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset){
-        switch(dimensions){
-            case 4:
-                transformV4M4Jni(data, strideInBytes, count, matrix.val, offset);
-                break;
-            case 3:
-                transformV3M4Jni(data, strideInBytes, count, matrix.val, offset);
-                break;
-            case 2:
-                transformV2M4Jni(data, strideInBytes, count, matrix.val, offset);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
     }
 
     /**

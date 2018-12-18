@@ -17,6 +17,7 @@
 package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.scene.Action;
 

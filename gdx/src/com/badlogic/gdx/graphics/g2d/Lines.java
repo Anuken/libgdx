@@ -1,13 +1,9 @@
-package com.badlogic.gdx.graphics.ext;
+package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.collection.FloatArray;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
-import io.anuke.ucore.util.Angles;
-
-import static io.anuke.ucore.core.Core.batch;
 
 public class Lines{
     private static float stroke = 1f;
@@ -60,15 +56,14 @@ public class Lines{
 
     public static void line(TextureRegion blankregion, float x, float y, float x2, float y2, CapStyle cap, float padding){
         float length = Vector2.dst(x, y, x2, y2) + (cap == CapStyle.none ? padding * 2f : stroke / 2 + (cap == CapStyle.round ? 0 : padding * 2));
-        float angle = Mathf.fastAtan2(y2 - y, x2 - x) * Mathf.radDeg;
+        float angle = Mathf.atan2(x2 - x, y2 - y) * Mathf.radDeg;
 
         if(cap == CapStyle.square){
-            batch.draw(blankregion, x - stroke / 2 - padding, y - stroke / 2, stroke / 2 + padding, stroke / 2, length, stroke, 1f, 1f, angle);
+            Fill.rect().pos(x - stroke / 2 - padding, y - stroke / 2).origin(stroke / 2 + padding, stroke / 2).size(length, stroke).rot(angle);
         }else if(cap == CapStyle.none){
-            batch.draw(blankregion, x - padding, y - stroke / 2, padding, stroke / 2, length, stroke, 1f, 1f, angle);
+            Fill.rect().pos(x - padding, y - stroke / 2).origin(padding, stroke / 2).size(length, stroke).rot(angle);
         }else if(cap == CapStyle.round){
-            //Padding does not apply here.
-            batch.draw(blankregion, x, y - stroke / 2, 0, stroke / 2, length - stroke / 2, stroke, 1f, 1f, angle);
+            Fill.rect().pos(x, y - stroke / 2f).origin(0, stroke / 2).size(length - stroke / 2, stroke).rot(angle);
             Fill.circle(x, y, stroke / 2f);
             Fill.circle(x2, y2, stroke / 2f);
         }
@@ -110,9 +105,9 @@ public class Lines{
             float y3 = points[3];
 
             if(wrap){
-                lasta = Mathf.slerp(Angles.angle(x1, y1, x2, y2), Angles.angle(x2, y2, x3, y3), 0.5f);
+                lasta = Mathf.slerp(Mathf.angle(x1, y1, x2, y2), Mathf.angle(x2, y2, x3, y3), 0.5f);
             }else{
-                lasta = Angles.angle(x1, y1, x2, y2) + 180f;
+                lasta = Mathf.angle(x1, y1, x2, y2) + 180f;
             }
         }
 
@@ -123,12 +118,12 @@ public class Lines{
             float y2 = points[(i+3)%length];
 
             float avg;
-            float ang1 = Angles.angle(x1, y1, x2, y2);
+            float ang1 = Mathf.angle(x1, y1, x2, y2);
 
             if(wrap){
                 float x3 = points[(i+4)%length];
                 float y3 = points[(i+5)%length];
-                float ang2 = Angles.angle(x2, y2, x3, y3);
+                float ang2 = Mathf.angle(x2, y2, x3, y3);
 
                 avg = Mathf.slerp(ang1, ang2, 0.5f);
             }else{
@@ -137,10 +132,10 @@ public class Lines{
 
             float s = stroke/2f;
 
-            float cos1 = MathUtils.cosDeg(lasta - 90) * s;
-            float sin1 = MathUtils.sinDeg(lasta - 90) * s;
-            float cos2 = MathUtils.cosDeg(avg - 90) * s;
-            float sin2 = MathUtils.sinDeg(avg - 90) * s;
+            float cos1 = Mathf.cosDeg(lasta - 90) * s;
+            float sin1 = Mathf.sinDeg(lasta - 90) * s;
+            float cos2 = Mathf.cosDeg(avg - 90) * s;
+            float sin2 = Mathf.sinDeg(avg - 90) * s;
 
             float qx1 = x1 + cos1;
             float qy1 = y1 + sin1;
@@ -308,8 +303,8 @@ public class Lines{
     public static void poly(float x, float y, int sides, float radius){
         floats.clear();
         for(int i = 0; i < sides; i++){
-            float rad = (float)i /sides * MathUtils.PI2;
-            floats.add(MathUtils.cos(rad) * radius + x, MathUtils.sin(rad) * radius + y);
+            float rad = (float)i /sides * Mathf.PI2;
+            floats.add(Mathf.cos(rad) * radius + x, Mathf.sin(rad) * radius + y);
         }
 
         polyline(floats, true);
@@ -333,11 +328,11 @@ public class Lines{
         width += xspace * 2;
         height += yspace * 2;
 
-        batch.draw(Draw.getBlankRegion(), x, y, width, stroke);
-        batch.draw(Draw.getBlankRegion(), x, y + height, width, -stroke);
+        Fill.rect().set(x, y, width, stroke);
+        Fill.rect().set(x, y + height, width, -stroke);
 
-        batch.draw(Draw.getBlankRegion(), x + width, y, -stroke, height);
-        batch.draw(Draw.getBlankRegion(), x, y, stroke, height);
+        Fill.rect().set(x + width, y, -stroke, height);
+        Fill.rect().set(x, y, stroke, height);
     }
 
     public static void rect(float x, float y, float width, float height){

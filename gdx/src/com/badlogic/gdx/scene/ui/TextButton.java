@@ -71,7 +71,8 @@ public class TextButton extends Button{
         }
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    @Override
+    public void draw(){
         Color fontColor;
         if(isDisabled() && style.disabledFontColor != null)
             fontColor = style.disabledFontColor;
@@ -84,7 +85,7 @@ public class TextButton extends Button{
         else
             fontColor = style.fontColor;
         if(fontColor != null) label.getStyle().fontColor = fontColor;
-        super.draw(batch, parentAlpha);
+        super.draw();
     }
 
     public Label getLabel(){

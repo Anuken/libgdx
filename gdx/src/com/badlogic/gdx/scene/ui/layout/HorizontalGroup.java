@@ -18,6 +18,7 @@ package com.badlogic.gdx.scene.ui.layout;
 
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.collection.SnapshotArray;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.Touchable;
 import com.badlogic.gdx.scene.ui.Label;
 import com.badlogic.gdx.scene.utils.Layout;
@@ -523,14 +524,5 @@ public class HorizontalGroup extends WidgetGroup{
         rowAlign |= Align.bottom;
         rowAlign &= ~Align.top;
         return this;
-    }
-
-    protected void drawDebugBounds(ShapeRenderer shapes){
-        super.drawDebugBounds(shapes);
-        if(!getDebug()) return;
-        shapes.set(ShapeType.Line);
-        shapes.setColor(getScene().getDebugColor());
-        shapes.rect(getX() + padLeft, getY() + padBottom, getOriginX(), getOriginY(), getWidth() - padLeft - padRight,
-                getHeight() - padBottom - padTop, getScaleX(), getScaleY(), getRotation());
     }
 }

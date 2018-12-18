@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Skin;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
@@ -29,6 +30,8 @@ import com.badlogic.gdx.scene.ui.layout.WidgetGroup;
 import com.badlogic.gdx.scene.utils.Layout;
 import com.badlogic.gdx.scene.utils.ScissorStack;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
+import static com.badlogic.gdx.Core.graphics;
 
 /**
  * A container that contains two widgets and is divided either horizontally or vertically. The user may resize the widgets. The
@@ -250,34 +253,34 @@ public class SplitPane extends WidgetGroup{
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha){
+    public void draw(){
         validate();
 
         Color color = getColor();
         float alpha = color.a * parentAlpha;
 
-        applyTransform(batch, computeTransform());
+        applyTransform(computeTransform());
         if(firstWidget != null && firstWidget.isVisible()){
-            batch.flush();
+            graphics.batch().flush();
             getScene().calculateScissors(firstWidgetBounds, tempScissors);
             if(ScissorStack.pushScissors(tempScissors)){
-                firstWidget.draw(batch, alpha);
-                batch.flush();
+                firstWidget.draw();
+                graphics.batch().flush();
                 ScissorStack.popScissors();
             }
         }
         if(secondWidget != null && secondWidget.isVisible()){
-            batch.flush();
+            graphics.batch().flush();
             getScene().calculateScissors(secondWidgetBounds, tempScissors);
             if(ScissorStack.pushScissors(tempScissors)){
-                secondWidget.draw(batch, alpha);
-                batch.flush();
+                secondWidget.draw();
+                graphics.batch().flush();
                 ScissorStack.popScissors();
             }
         }
-        batch.setColor(color.r, color.g, color.b, alpha);
-        style.handle.draw(batch, handleBounds.x, handleBounds.y, handleBounds.width, handleBounds.height);
-        resetTransform(batch);
+        graphics.batch().setColor(color.r, color.g, color.b, alpha);
+        style.handle.draw(handleBounds.x, handleBounds.y, handleBounds.width, handleBounds.height);
+        resetTransform();
     }
 
     public float getSplitAmount(){

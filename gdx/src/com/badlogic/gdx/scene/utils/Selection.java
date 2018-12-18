@@ -2,6 +2,7 @@ package com.badlogic.gdx.scene.utils;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.OrderedSet;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.event.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.pooling.Pools;
 

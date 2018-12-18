@@ -381,7 +381,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                         // Is a tilemap with individual images.
                         String regionName = imageElement.getAttribute("source");
                         regionName = regionName.substring(0, regionName.lastIndexOf('.'));
-                        AtlasRegion region = atlas.findRegion(regionName);
+                        AtlasRegion region = atlas.find(regionName);
                         if(region == null) throw new GdxRuntimeException("Tileset region not found: " + regionName);
                         tile = new StaticTiledMapTile(region);
                         tile.setId(tileid);

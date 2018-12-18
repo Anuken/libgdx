@@ -2,7 +2,6 @@ package com.badlogic.gdx.scene.event;
 
 import com.badlogic.gdx.function.BooleanProvider;
 import com.badlogic.gdx.scene.Element;
-import com.badlogic.gdx.scene.utils.Cursors;
 import com.badlogic.gdx.scene.utils.UIUtils;
 
 public class HandCursorListener extends ClickListener{
@@ -21,7 +20,8 @@ public class HandCursorListener extends ClickListener{
             return;
         }
 
-        Cursors.setHand();
+        //TODO implement
+        //Cursors.setHand();
         set = true;
     }
 
@@ -32,7 +32,8 @@ public class HandCursorListener extends ClickListener{
         if(!enabled.get() || !set) return;
 
         if(pointer == -1){
-            Cursors.restoreCursor();
+            //TODO Implement
+            //Cursors.restoreCursor();
         }
         set = false;
     }

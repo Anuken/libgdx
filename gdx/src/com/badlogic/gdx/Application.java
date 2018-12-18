@@ -18,8 +18,9 @@ package com.badlogic.gdx;
 
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.Disposable;
 
-public abstract class Application{
+public abstract class Application implements Disposable{
     protected Array<ApplicationListener> listeners = new Array<>();
 
     /**Returns a list of all the application listeners used.*/
@@ -34,7 +35,7 @@ public abstract class Application{
 
     /**Removes an application listener.*/
     public void removeListener(ApplicationListener listener){
-        listeners.removeValue(listener);
+        listeners.remove(listener);
     }
 
     /** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */
@@ -73,5 +74,24 @@ public abstract class Application{
     /**Enumeration of possible {@link Application} types*/
     public enum ApplicationType{
         Android, Desktop, HeadlessDesktop, WebGL, iOS
+    }
+
+    /**Disposes of core resources.*/
+    @Override
+    public void dispose(){
+        if(Core.assets != null){
+            Core.assets.dispose();
+            Core.assets = null;
+        }
+
+        if(Core.scene != null){
+            Core.scene.dispose();
+            Core.scene = null;
+        }
+
+        if(Core.atlas != null){
+            Core.atlas.dispose();
+            Core.atlas = null;
+        }
     }
 }

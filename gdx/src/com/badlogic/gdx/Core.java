@@ -19,6 +19,7 @@ package com.badlogic.gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -44,6 +45,7 @@ public class Core{
     public static I18NBundle bundle = I18NBundle.createEmptyBundle();
     public static Scene scene;
     public static AssetManager assets;
+    public static TextureAtlas atlas;
 
     public static GL20 gl;
     public static GL20 gl20;

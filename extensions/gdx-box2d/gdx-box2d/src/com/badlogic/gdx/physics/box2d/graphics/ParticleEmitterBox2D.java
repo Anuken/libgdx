@@ -50,7 +50,7 @@ public class ParticleEmitterBox2D extends ParticleEmitter{
     final RayCastCallback rayCallBack = new RayCastCallback(){
         public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction){
             ParticleEmitterBox2D.this.particleCollided = true;
-            ParticleEmitterBox2D.this.normalAngle = Mathf.atan2(normal.y, normal.x) * Mathf.radiansToDegrees;
+            ParticleEmitterBox2D.this.normalAngle = Mathf.atan2(normal.x, normal.y) * Mathf.radiansToDegrees;
             return fraction;
         }
     };

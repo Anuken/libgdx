@@ -366,7 +366,7 @@ public class Vector2 implements Serializable, Vector<Vector2>, Position{
      * (typically counter-clockwise) and between 0 and 360.
      */
     public float angle(){
-        float angle = Mathf.atan2(y, x) * Mathf.radiansToDegrees;
+        float angle = Mathf.atan2(x, y) * Mathf.radiansToDegrees;
         if(angle < 0) angle += 360;
         return angle;
     }

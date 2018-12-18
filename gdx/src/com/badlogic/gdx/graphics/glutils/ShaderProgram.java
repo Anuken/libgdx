@@ -29,7 +29,7 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 
 import java.lang.StringBuilder;
 import java.nio.*;

@@ -22,24 +22,28 @@ import com.badlogic.gdx.utils.pooling.Pools;
 import static com.badlogic.gdx.utils.Align.*;
 
 public class Element implements Layout{
-    final Color color = new Color(1, 1, 1, 1);
+    public final Color color = new Color(1, 1, 1, 1);
+
     private final DelayedRemovalArray<EventListener> listeners = new DelayedRemovalArray<>(0);
     private final DelayedRemovalArray<EventListener> captureListeners = new DelayedRemovalArray<>(0);
     private final Array<Action> actions = new Array<>(0);
+    
     /** DO NOT modify without calling positionChanged. */
     protected float x, y;
     /** DO NOT modify without calling sizeChanged. */
     protected float width, height;
     /**Alpha value of the parent. Should be multiplied with the actor's alpha, allowing a parent's alpha to affect all children.*/
     protected float parentAlpha = 1f;
+
     Group parent;
     float originX, originY;
     float scaleX = 1, scaleY = 1;
     float rotation;
+
     private Scene stage;
     private String name;
     private Touchable touchable = Touchable.enabled;
-    private boolean visible = true, debug;
+    private boolean visible = true;
     private Object userObject;
 
     private boolean needsLayout = true;
@@ -831,36 +835,6 @@ public class Element implements Layout{
             parentCoords.y = (tox * -sin + toy * cos) / scaleY + originY;
         }
         return parentCoords;
-    }
-
-    /** Draws this actor's debug lines if {@link #getDebug()} is true. */
-    public void drawDebug(){
-        drawDebugBounds();
-    }
-
-    /** Draws a rectange for the bounds of this actor if {@link #getDebug()} is true. */
-    protected void drawDebugBounds(){
-        if(!debug) return;
-        //TODO draw bounds
-        /*
-        shapes.set(ShapeType.Line);
-        shapes.setColor(stage.getDebugColor());
-        shapes.rect(x, y, originX, originY, width, height, scaleX, scaleY, rotation);*/
-    }
-
-    public boolean getDebug(){
-        return debug;
-    }
-
-    public void setDebug(boolean enabled){
-        debug = enabled;
-        if(enabled) Scene.debug = true;
-    }
-
-    /** Calls {@link #setDebug(boolean)} with {@code true}. */
-    public Element debug(){
-        setDebug(true);
-        return this;
     }
 
     public float getMinWidth(){

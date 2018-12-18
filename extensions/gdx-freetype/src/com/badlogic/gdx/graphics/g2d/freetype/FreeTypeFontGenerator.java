@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.graphics.g2d.freetype;
 
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -36,7 +35,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeType.*;
 import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.math.geom.Rectangle;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.IOException;

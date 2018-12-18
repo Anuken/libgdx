@@ -19,7 +19,7 @@ package com.badlogic.gdx.graphics.glutils;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.utils.io.BufferUtils;
+import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;

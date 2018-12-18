@@ -47,8 +47,7 @@ import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.lang.StringBuilder;
 
-import static com.badlogic.gdx.Core.bundle;
-import static com.badlogic.gdx.Core.scene;
+import static com.badlogic.gdx.Core.*;
 
 /**
  * A single-line text input field.
@@ -322,10 +321,10 @@ public class TextField extends Element implements Disableable{
         float width = getWidth();
         float height = getHeight();
 
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
         float bgLeftWidth = 0, bgRightWidth = 0;
         if(background != null){
-            background.draw(batch, x, y, width, height);
+            background.draw(x, y, width, height);
             bgLeftWidth = background.getLeftWidth();
             bgRightWidth = background.getRightWidth();
         }
@@ -334,7 +333,7 @@ public class TextField extends Element implements Disableable{
         calculateOffsets();
 
         if(focused && hasSelection && selection != null){
-            drawSelection(selection, batch, font, x + bgLeftWidth, y + textY);
+            drawSelection(selection, font, x + bgLeftWidth, y + textY);
         }
 
         float yOffset = font.isFlipped() ? -textHeight : 0;
@@ -349,17 +348,17 @@ public class TextField extends Element implements Disableable{
                     messageFont.setColor(0.7f, 0.7f, 0.7f, color.a * parentAlpha);
                 }
 
-                messageFont.draw(batch, messageText, x + bgLeftWidth, y + textY + yOffset, 0, messageText.length(),
+                messageFont.draw(messageText, x + bgLeftWidth, y + textY + yOffset, 0, messageText.length(),
                         width - bgLeftWidth - bgRightWidth, textHAlign, false, "...");
             }
         }else{
             font.setColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a * color.a * parentAlpha);
-            drawText(batch, font, x + bgLeftWidth, y + textY + yOffset);
+            drawText(font, x + bgLeftWidth, y + textY + yOffset);
         }
         if(focused && !disabled){
             blink();
             if(cursorOn && cursorPatch != null){
-                drawCursor(cursorPatch, batch, font, x + bgLeftWidth, y + textY);
+                drawCursor(cursorPatch, font, x + bgLeftWidth, y + textY);
             }
         }
     }
@@ -378,17 +377,17 @@ public class TextField extends Element implements Disableable{
     }
 
     /** Draws selection rectangle **/
-    protected void drawSelection(Drawable selection, Batch batch, BitmapFont font, float x, float y){
-        selection.draw(batch, x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth,
+    protected void drawSelection(Drawable selection, BitmapFont font, float x, float y){
+        selection.draw(x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth,
                 textHeight);
     }
 
-    protected void drawText(Batch batch, BitmapFont font, float x, float y){
-        font.draw(batch, displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, 0, Align.left, false);
+    protected void drawText(BitmapFont font, float x, float y){
+        font.draw(displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, 0, Align.left, false);
     }
 
-    protected void drawCursor(Drawable cursorPatch, Batch batch, BitmapFont font, float x, float y){
-        cursorPatch.draw(batch,
+    protected void drawCursor(Drawable cursorPatch, BitmapFont font, float x, float y){
+        cursorPatch.draw(
                 x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset + font.getData().cursorX,
                 y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);
     }

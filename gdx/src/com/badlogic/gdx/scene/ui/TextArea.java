@@ -204,7 +204,7 @@ public class TextArea extends TextField{
     }
 
     @Override
-    protected void drawSelection(Drawable selection, Batch batch, BitmapFont font, float x, float y){
+    protected void drawSelection(Drawable selection, BitmapFont font, float x, float y){
         int i = firstLineShowing * 2;
         float offsetY = 0;
         int minIndex = Math.min(cursor, selectionStart);
@@ -223,7 +223,7 @@ public class TextArea extends TextField{
                 float selectionX = glyphPositions.get(start) - glyphPositions.get(linesBreak.get(i));
                 float selectionWidth = glyphPositions.get(end) - glyphPositions.get(start);
 
-                selection.draw(batch, x + selectionX + fontOffset, y - textHeight - font.getDescent() - offsetY, selectionWidth,
+                selection.draw(x + selectionX + fontOffset, y - textHeight - font.getDescent() - offsetY, selectionWidth,
                         font.getLineHeight());
             }
 
@@ -233,19 +233,19 @@ public class TextArea extends TextField{
     }
 
     @Override
-    protected void drawText(Batch batch, BitmapFont font, float x, float y){
+    protected void drawText(BitmapFont font, float x, float y){
         float offsetY = 0;
         for(int i = firstLineShowing * 2; i < (firstLineShowing + linesShowing) * 2 && i < linesBreak.size; i += 2){
-            font.draw(batch, displayText, x, y + offsetY, linesBreak.items[i], linesBreak.items[i + 1], 0, Align.left, false);
+            font.draw(displayText, x, y + offsetY, linesBreak.items[i], linesBreak.items[i + 1], 0, Align.left, false);
             offsetY -= font.getLineHeight();
         }
     }
 
     @Override
-    protected void drawCursor(Drawable cursorPatch, Batch batch, BitmapFont font, float x, float y){
+    protected void drawCursor(Drawable cursorPatch, BitmapFont font, float x, float y){
         float textOffset = cursor >= glyphPositions.size || cursorLine * 2 >= linesBreak.size ? 0
                 : glyphPositions.get(cursor) - glyphPositions.get(linesBreak.items[cursorLine * 2]);
-        cursorPatch.draw(batch, x + textOffset + fontOffset + font.getData().cursorX,
+        cursorPatch.draw(x + textOffset + fontOffset + font.getData().cursorX,
                 y - font.getDescent() / 2 - (cursorLine - firstLineShowing + 1) * font.getLineHeight(), cursorPatch.getMinWidth(),
                 font.getLineHeight());
     }

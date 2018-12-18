@@ -16,8 +16,10 @@
 
 package com.badlogic.gdx.utils;
 
+import com.badlogic.gdx.graphics.Pixmap;
+
 /**
- * A very simple clipboard interface for text content.
+ * A very simple clipboard interface for text and image content.
  *
  * @author mzechner
  */
@@ -29,10 +31,11 @@ public interface Clipboard{
      */
     String getContents();
 
-    /**
-     * Sets the content of the system clipboard.
+    /**Sets the content of the system clipboard.
      *
-     * @param content the content
-     */
+     * @param content the content as text*/
     void setContents(String content);
+
+    /**Sets the content of the clipboard as an image.*/
+    void setContents(Pixmap pixmap);
 }

@@ -52,6 +52,7 @@ public class SpriteBatch implements Disposable{
     private Array<BatchRect> rects;
     private int rectAmount;
     private boolean sort;
+    private Color color = new Color(1f, 1f, 1f);
 
     /**
      * Constructs a new SpriteBatch with a size of 1000, one buffer, and the default shader.
@@ -161,141 +162,182 @@ public class SpriteBatch implements Disposable{
             BatchRect rect = rects.get(i);
 
             if(((rect.region.texture != lastTexture) || idx >= vertices.length || blending != rect.blending) && lastTexture != null){
-                int spritesInBatch = idx / 20;
-                int count = spritesInBatch * 6;
-
-                Core.gl.glBlendFunc(blending.src, blending.dst);
-
-                lastTexture.bind();
-                Mesh mesh = this.mesh;
-                mesh.setVertices(vertices, 0, idx);
-                mesh.getIndicesBuffer().position(0);
-                mesh.getIndicesBuffer().limit(count);
-                mesh.render(customShader != null ? customShader : shader, GL20.GL_TRIANGLES, 0, count);
-
+                render(idx, blending, lastTexture);
                 idx = 0;
             }
 
-            //begin
-            //bottom left and top right corner points relative to origin
-            final float worldOriginX = rect.x + rect.originX;
-            final float worldOriginY = rect.y + rect.originY;
-            float fx = -rect.originX;
-            float fy = -rect.originY;
-            float fx2 = rect.width - rect.originX;
-            float fy2 = rect.height -rect. originY;
+            if(rect.vertices == null){
+                //bottom left and top right corner points relative to origin
+                final float worldOriginX = rect.x + rect.originX;
+                final float worldOriginY = rect.y + rect.originY;
+                float fx = -rect.originX;
+                float fy = -rect.originY;
+                float fx2 = rect.width - rect.originX;
+                float fy2 = rect.height - rect.originY;
 
-            // scale
-            if(rect.scaleX != 1 || rect.scaleY != 1){
-                fx *= rect.scaleX;
-                fy *= rect.scaleY;
-                fx2 *= rect.scaleX;
-                fy2 *= rect.scaleY;
-            }
+                // scale
+                if(rect.scaleX != 1 || rect.scaleY != 1){
+                    fx *= rect.scaleX;
+                    fy *= rect.scaleY;
+                    fx2 *= rect.scaleX;
+                    fy2 *= rect.scaleY;
+                }
 
-            // construct corner points, start from top left and go counter clockwise
-            final float p1x = fx;
-            final float p1y = fy;
-            final float p2x = fx;
-            final float p2y = fy2;
-            final float p3x = fx2;
-            final float p3y = fy2;
-            final float p4x = fx2;
-            final float p4y = fy;
+                // construct corner points, start from top left and go counter clockwise
+                final float p1x = fx;
+                final float p1y = fy;
+                final float p2x = fx;
+                final float p2y = fy2;
+                final float p3x = fx2;
+                final float p3y = fy2;
+                final float p4x = fx2;
+                final float p4y = fy;
 
-            float x1;
-            float y1;
-            float x2;
-            float y2;
-            float x3;
-            float y3;
-            float x4;
-            float y4;
+                float x1;
+                float y1;
+                float x2;
+                float y2;
+                float x3;
+                float y3;
+                float x4;
+                float y4;
 
-            // rotate
-            if(rect.rotation != 0){
-                final float cos = Mathf.cosDeg(rect.rotation);
-                final float sin = Mathf.sinDeg(rect.rotation);
+                // rotate
+                if(rect.rotation != 0){
+                    final float cos = Mathf.cosDeg(rect.rotation);
+                    final float sin = Mathf.sinDeg(rect.rotation);
 
-                x1 = cos * p1x - sin * p1y;
-                y1 = sin * p1x + cos * p1y;
+                    x1 = cos * p1x - sin * p1y;
+                    y1 = sin * p1x + cos * p1y;
 
-                x2 = cos * p2x - sin * p2y;
-                y2 = sin * p2x + cos * p2y;
+                    x2 = cos * p2x - sin * p2y;
+                    y2 = sin * p2x + cos * p2y;
 
-                x3 = cos * p3x - sin * p3y;
-                y3 = sin * p3x + cos * p3y;
+                    x3 = cos * p3x - sin * p3y;
+                    y3 = sin * p3x + cos * p3y;
 
-                x4 = x1 + (x3 - x2);
-                y4 = y3 - (y2 - y1);
+                    x4 = x1 + (x3 - x2);
+                    y4 = y3 - (y2 - y1);
+                }else{
+                    x1 = p1x;
+                    y1 = p1y;
+
+                    x2 = p2x;
+                    y2 = p2y;
+
+                    x3 = p3x;
+                    y3 = p3y;
+
+                    x4 = p4x;
+                    y4 = p4y;
+                }
+
+                x1 += worldOriginX;
+                y1 += worldOriginY;
+                x2 += worldOriginX;
+                y2 += worldOriginY;
+                x3 += worldOriginX;
+                y3 += worldOriginY;
+                x4 += worldOriginX;
+                y4 += worldOriginY;
+
+                final float u1, v1, u2, v2, u3, v3, u4, v4;
+                u1 = rect.region.u2;
+                v1 = rect.region.v2;
+                u2 = rect.region.u;
+                v2 = rect.region.v2;
+                u3 = rect.region.u;
+                v3 = rect.region.v;
+                u4 = rect.region.u2;
+                v4 = rect.region.v;
+
+                float color = rect.color;
+                vertices[idx] = x1;
+                vertices[idx + 1] = y1;
+                vertices[idx + 2] = color;
+                vertices[idx + 3] = u1;
+                vertices[idx + 4] = v1;
+
+                vertices[idx + 5] = x2;
+                vertices[idx + 6] = y2;
+                vertices[idx + 7] = color;
+                vertices[idx + 8] = u2;
+                vertices[idx + 9] = v2;
+
+                vertices[idx + 10] = x3;
+                vertices[idx + 11] = y3;
+                vertices[idx + 12] = color;
+                vertices[idx + 13] = u3;
+                vertices[idx + 14] = v3;
+
+                vertices[idx + 15] = x4;
+                vertices[idx + 16] = y4;
+                vertices[idx + 17] = color;
+                vertices[idx + 18] = u4;
+                vertices[idx + 19] = v4;
+                idx += 20;
+                //end
+
+                lastTexture = rect.region.texture;
+                blending = rect.blending;
             }else{
-                x1 = p1x;
-                y1 = p1y;
+                int offset = rect.voffset, count = rect.vcount;
 
-                x2 = p2x;
-                y2 = p2y;
+                int verticesLength = vertices.length;
+                int remainingVertices = verticesLength;
+                remainingVertices -= idx;
+                if (remainingVertices == 0) {
+                    render(idx, blending, rect.region.texture);
+                    idx = 0;
+                    remainingVertices = verticesLength;
+                }
+                int copyCount = Math.min(remainingVertices, count);
 
-                x3 = p3x;
-                y3 = p3y;
-
-                x4 = p4x;
-                y4 = p4y;
+                System.arraycopy(rect.vertices, offset, vertices, idx, copyCount);
+                idx += copyCount;
+                count -= copyCount;
+                while (count > 0) {
+                    offset += copyCount;
+                    render(idx, blending, rect.region.texture);
+                    idx = 0;
+                    copyCount = Math.min(verticesLength, count);
+                    System.arraycopy(rect.vertices, offset, vertices, 0, copyCount);
+                    idx += copyCount;
+                    count -= copyCount;
+                }
             }
-
-            x1 += worldOriginX;
-            y1 += worldOriginY;
-            x2 += worldOriginX;
-            y2 += worldOriginY;
-            x3 += worldOriginX;
-            y3 += worldOriginY;
-            x4 += worldOriginX;
-            y4 += worldOriginY;
-
-            final float u1, v1, u2, v2, u3, v3, u4, v4;
-            u1 = rect.region.u2;
-            v1 = rect.region.v2;
-            u2 = rect.region.u;
-            v2 = rect.region.v2;
-            u3 = rect.region.u;
-            v3 = rect.region.v;
-            u4 = rect.region.u2;
-            v4 = rect.region.v;
-
-            float color = rect.color;
-            vertices[idx] = x1;
-            vertices[idx + 1] = y1;
-            vertices[idx + 2] = color;
-            vertices[idx + 3] = u1;
-            vertices[idx + 4] = v1;
-
-            vertices[idx + 5] = x2;
-            vertices[idx + 6] = y2;
-            vertices[idx + 7] = color;
-            vertices[idx + 8] = u2;
-            vertices[idx + 9] = v2;
-
-            vertices[idx + 10] = x3;
-            vertices[idx + 11] = y3;
-            vertices[idx + 12] = color;
-            vertices[idx + 13] = u3;
-            vertices[idx + 14] = v3;
-
-            vertices[idx + 15] = x4;
-            vertices[idx + 16] = y4;
-            vertices[idx + 17] = color;
-            vertices[idx + 18] = u4;
-            vertices[idx + 19] = v4;
-            idx += 20;
-            //end
-
-            lastTexture = rect.region.texture;
-            blending = rect.blending;
         }
 
         if(customShader != null)
             customShader.end();
         else
             shader.end();
+    }
+
+    private void render(int idx, Blending blending, Texture texture){
+        int spritesInBatch = idx / 20;
+        int count = spritesInBatch * 6;
+
+        Core.gl.glBlendFunc(blending.src, blending.dst);
+
+        texture.bind();
+        Mesh mesh = this.mesh;
+        mesh.setVertices(vertices, 0, idx);
+        mesh.getIndicesBuffer().position(0);
+        mesh.getIndicesBuffer().limit(count);
+        mesh.render(customShader != null ? customShader : shader, GL20.GL_TRIANGLES, 0, count);
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    public void setColor(Color color){
+        this.color.set(color);
+    }
+
+    public void setColor(float r, float g, float b, float a){
+        this.color.set(r, g, b, a);
     }
 
     public Matrix3 getProjection(){
@@ -388,6 +430,8 @@ public class SpriteBatch implements Disposable{
         final TextureRegion region = new TextureRegion();
         float x, y, z, originX, originY, scaleX = 1f, scaleY = 1f, rotation, width, height;
         float color = Color.WHITE_FLOAT_BITS;
+        float[] vertices;
+        int voffset, vcount;
         Blending blending = Blending.normal;
 
         public BatchRect pos(float x, float y) {
@@ -397,7 +441,8 @@ public class SpriteBatch implements Disposable{
         }
 
         public BatchRect color(Color color) {
-            this.color = color.toFloatBits();
+            this.color = Color.toFloatBits(color.r * SpriteBatch.this.color.r, color.g * SpriteBatch.this.color.g,
+            color.b * SpriteBatch.this.color.b, color.a * SpriteBatch.this.color.a);
             return this;
         }
 
@@ -432,6 +477,11 @@ public class SpriteBatch implements Disposable{
             return this;
         }
 
+        public BatchRect tex(String name) {
+            this.region.set(Core.atlas.find(name));
+            return this;
+        }
+
         public BatchRect tex(Texture tex) {
             this.region.set(tex);
             return this;
@@ -457,6 +507,13 @@ public class SpriteBatch implements Disposable{
             return this;
         }
 
+        public BatchRect vert(Texture texture, float[] vertices, int offset, int count){
+            this.vertices = vertices;
+            this.voffset = offset;
+            this.vcount = count;
+            return tex(texture);
+        }
+
         @Override
         public int compareTo(BatchRect other){
             return Float.compare(z, other.z);
@@ -469,6 +526,7 @@ public class SpriteBatch implements Disposable{
             x = y = z = originX = originY = width = height = rotation = 0f;
             scaleX = scaleY = 1f;
             color = Color.WHITE_FLOAT_BITS;
+            vertices = null;
         }
     }
 }

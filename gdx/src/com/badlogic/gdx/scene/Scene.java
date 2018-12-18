@@ -24,8 +24,6 @@ import com.badlogic.gdx.collection.SnapshotArray;
 import com.badlogic.gdx.function.Consumer;
 import com.badlogic.gdx.function.Predicate;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Matrix3;
@@ -35,8 +33,8 @@ import com.badlogic.gdx.scene.event.*;
 import com.badlogic.gdx.scene.event.FocusListener.FocusEvent;
 import com.badlogic.gdx.scene.event.InputEvent.Type;
 import com.badlogic.gdx.scene.ui.layout.Table;
-import com.badlogic.gdx.scene.ui.layout.Table.Debug;
 import com.badlogic.gdx.scene.utils.ScissorStack;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.utils.pooling.Pools;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -45,27 +43,21 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import static com.badlogic.gdx.Core.graphics;
 
 
-public class Scene implements InputProcessor{
-    /** True if any actor has ever had debug enabled. */
-    static boolean debug;
+public class Scene implements InputProcessor, Disposable{
     private final Vector2 tempCoords = new Vector2();
     private final Element[] pointerOverActors = new Element[20];
     private final boolean[] pointerTouched = new boolean[20];
     private final int[] pointerScreenX = new int[20];
     private final int[] pointerScreenY = new int[20];
     private final SnapshotArray<TouchFocus> touchFocuses = new SnapshotArray<>(true, 4, TouchFocus.class);
-    private final Color debugColor = new Color(0, 1, 0, 0.85f);
     private Viewport viewport;
     private int mouseScreenX, mouseScreenY;
     private Element mouseOverActor;
     private Element keyboardFocus, scrollFocus;
     private boolean actionsRequestRendering = true;
-    private boolean debugAll, debugUnderMouse, debugParentUnderMouse;
-    private Debug debugTableUnderMouse = Debug.none;
 
     public final Skin skin;
     public final Group root;
-
 
     public Scene(Skin skin){
         this.skin = skin;
@@ -98,51 +90,6 @@ public class Scene implements InputProcessor{
 
         root.draw();
         graphics.batch().flush();
-
-        if(debug) drawDebug();
-    }
-
-    private void drawDebug(){
-        if(debugUnderMouse || debugParentUnderMouse || debugTableUnderMouse != Debug.none){
-            screenToStageCoordinates(tempCoords.set(Core.input.mouseX(), Core.input.mouseY()));
-            Element actor = hit(tempCoords.x, tempCoords.y, true);
-            if(actor == null) return;
-
-            if(debugParentUnderMouse && actor.parent != null) actor = actor.parent;
-
-            if(debugTableUnderMouse == Debug.none)
-                actor.setDebug(true);
-            else{
-                while(actor != null){
-                    if(actor instanceof Table) break;
-                    actor = actor.parent;
-                }
-                if(actor == null) return;
-                ((Table) actor).debug(debugTableUnderMouse);
-            }
-
-            if(debugAll && actor instanceof Group) ((Group) actor).debugAll();
-
-            disableDebug(root, actor);
-        }else{
-            if(debugAll) root.debugAll();
-        }
-
-        Core.gl.glEnable(GL20.GL_BLEND);
-        graphics.batch().setProjection(viewport.getCamera().projection());
-        root.drawDebug();
-        graphics.batch().flush();
-    }
-
-    /** Disables debug on all actors recursively except the specified actor and any children. */
-    private void disableDebug(Element actor, Element except){
-        if(actor == except) return;
-        actor.setDebug(false);
-        if(actor instanceof Group){
-            SnapshotArray<Element> children = ((Group) actor).children;
-            for(int i = 0, n = children.size; i < n; i++)
-                disableDebug(children.get(i), except);
-        }
     }
 
     /** Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}, limited to a minimum of 30fps. */
@@ -808,72 +755,6 @@ public class Scene implements InputProcessor{
         this.actionsRequestRendering = actionsRequestRendering;
     }
 
-    /** The default color that can be used by actors to draw debug lines. */
-    public Color getDebugColor(){
-        return debugColor;
-    }
-
-    public boolean isDebugAll(){
-        return debugAll;
-    }
-
-    /** If true, debug lines are shown for all actors. */
-    public void setDebugAll(boolean debugAll){
-        if(this.debugAll == debugAll) return;
-        this.debugAll = debugAll;
-        if(debugAll)
-            debug = true;
-        else
-            root.setDebug(false, true);
-    }
-
-    /** If true, debug is enabled only for the actor under the mouse. Can be combined with {@link #setDebugAll(boolean)}. */
-    public void setDebugUnderMouse(boolean debugUnderMouse){
-        if(this.debugUnderMouse == debugUnderMouse) return;
-        this.debugUnderMouse = debugUnderMouse;
-        if(debugUnderMouse)
-            debug = true;
-        else
-            root.setDebug(false, true);
-    }
-
-    /**
-     * If true, debug is enabled only for the parent of the actor under the mouse. Can be combined with
-     * {@link #setDebugAll(boolean)}.
-     */
-    public void setDebugParentUnderMouse(boolean debugParentUnderMouse){
-        if(this.debugParentUnderMouse == debugParentUnderMouse) return;
-        this.debugParentUnderMouse = debugParentUnderMouse;
-        if(debugParentUnderMouse)
-            debug = true;
-        else
-            root.setDebug(false, true);
-    }
-
-    /**
-     * If not {@link Debug#none}, debug is enabled only for the first ascendant of the actor under the mouse that is a table. Can
-     * be combined with {@link #setDebugAll(boolean)}.
-     *
-     * @param debugTableUnderMouse May be null for {@link Debug#none}.
-     */
-    public void setDebugTableUnderMouse(Debug debugTableUnderMouse){
-        if(debugTableUnderMouse == null) debugTableUnderMouse = Debug.none;
-        if(this.debugTableUnderMouse == debugTableUnderMouse) return;
-        this.debugTableUnderMouse = debugTableUnderMouse;
-        if(debugTableUnderMouse != Debug.none)
-            debug = true;
-        else
-            root.setDebug(false, true);
-    }
-
-    /**
-     * If true, debug is enabled only for the first ascendant of the actor under the mouse that is a table. Can be combined with
-     * {@link #setDebugAll(boolean)}.
-     */
-    public void setDebugTableUnderMouse(boolean debugTableUnderMouse){
-        setDebugTableUnderMouse(debugTableUnderMouse ? Debug.all : Debug.none);
-    }
-
     /** Check if screen coordinates are inside the viewport's screen area. */
     protected boolean isInsideViewport(int screenX, int screenY){
         int x0 = viewport.getScreenX();
@@ -887,6 +768,11 @@ public class Scene implements InputProcessor{
     /** Updates the viewport. */
     public void resize(int width, int height){
         viewport.update(width, height, true);
+    }
+
+    @Override
+    public void dispose(){
+        skin.dispose();
     }
 
     /**

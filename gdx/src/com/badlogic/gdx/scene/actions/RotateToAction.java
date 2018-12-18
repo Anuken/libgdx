@@ -50,7 +50,7 @@ public class RotateToAction extends TemporalAction{
     @Override
     protected void update(float percent){
         if(useShortestDirection)
-            target.setRotation(Mathf.lerpAngleDeg(this.start, this.end, percent));
+            target.setRotation(Mathf.slerp(this.start, this.end, percent));
         else
             target.setRotation(start + (end - start) * percent);
     }

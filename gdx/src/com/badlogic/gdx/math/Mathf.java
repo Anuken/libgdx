@@ -27,6 +27,7 @@ import java.util.Random;
  */
 public final class Mathf{
     static public final float nanoToSec = 1 / 1000000000f;
+    static public Random random = new RandomXS128();
 
     // ---
     static public final float FLOAT_ROUNDING_ERROR = 0.000001f; // 32 bits
@@ -88,7 +89,7 @@ public final class Mathf{
      * Returns atan2 in radians, faster but less accurate than Math.atan2. Average error of 0.00231 radians (0.1323 degrees),
      * largest error of 0.00488 radians (0.2796 degrees).
      */
-    static public float atan2(float y, float x){
+    static public float atan2(float x, float y){
         if(x == 0f){
             if(y > 0f) return PI / 2;
             if(y == 0f) return 0f;
@@ -106,7 +107,17 @@ public final class Mathf{
 
     // ---
 
-    static public Random random = new RandomXS128();
+    static public float trnsx(float angle, float len){
+        return len * cos(degreesToRadians * angle);
+    }
+
+    static public float trnsy(float angle, float len){
+        return len * sin(degreesToRadians * angle);
+    }
+
+    static public float angle(float x, float y, float x2, float y2){
+        return atan2(x2 - x, y2 - y);
+    }
 
     /** Returns a random number between 0 (inclusive) and the specified value (inclusive). */
     static public int random(int range){
@@ -279,7 +290,7 @@ public final class Mathf{
      * @param progress interpolation value in the range [0, 1]
      * @return the interpolated angle in the range [0, PI2[
      */
-    public static float lerpAngle(float fromRadians, float toRadians, float progress){
+    public static float slerpRad(float fromRadians, float toRadians, float progress){
         float delta = ((toRadians - fromRadians + PI2 + PI) % PI2) - PI;
         return (fromRadians + delta * progress + PI2) % PI2;
     }
@@ -293,7 +304,7 @@ public final class Mathf{
      * @param progress interpolation value in the range [0, 1]
      * @return the interpolated angle in the range [0, 360[
      */
-    public static float lerpAngleDeg(float fromDegrees, float toDegrees, float progress){
+    public static float slerp(float fromDegrees, float toDegrees, float progress){
         float delta = ((toDegrees - fromDegrees + 360 + 180) % 360) - 180;
         return (fromDegrees + delta * progress + 360) % 360;
     }

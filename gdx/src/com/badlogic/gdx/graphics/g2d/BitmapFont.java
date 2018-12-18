@@ -223,10 +223,10 @@ public class BitmapFont implements Disposable{
      *
      * @see BitmapFontCache#addText(CharSequence, float, float)
      */
-    public GlyphLayout draw(Batch batch, CharSequence str, float x, float y){
+    public GlyphLayout draw(CharSequence str, float x, float y){
         cache.clear();
         GlyphLayout layout = cache.addText(str, x, y);
-        cache.draw(batch);
+        cache.draw();
         return layout;
     }
 
@@ -235,10 +235,10 @@ public class BitmapFont implements Disposable{
      *
      * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
-    public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap){
+    public GlyphLayout draw(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap){
         cache.clear();
         GlyphLayout layout = cache.addText(str, x, y, targetWidth, halign, wrap);
-        cache.draw(batch);
+        cache.draw();
         return layout;
     }
 
@@ -247,11 +247,11 @@ public class BitmapFont implements Disposable{
      *
      * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
-    public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
+    public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
                             boolean wrap){
         cache.clear();
         GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap);
-        cache.draw(batch);
+        cache.draw();
         return layout;
     }
 
@@ -260,11 +260,11 @@ public class BitmapFont implements Disposable{
      *
      * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
-    public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
+    public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
                             boolean wrap, String truncate){
         cache.clear();
         GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap, truncate);
-        cache.draw(batch);
+        cache.draw();
         return layout;
     }
 
@@ -273,10 +273,10 @@ public class BitmapFont implements Disposable{
      *
      * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
-    public void draw(Batch batch, GlyphLayout layout, float x, float y){
+    public void draw(GlyphLayout layout, float x, float y){
         cache.clear();
         cache.addText(layout, x, y);
-        cache.draw(batch);
+        cache.draw();
     }
 
     /** Returns the color of text drawn with this font. */

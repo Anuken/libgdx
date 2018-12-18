@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector2;
+import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.scene.event.InputEvent;
 import com.badlogic.gdx.scene.event.InputListener;
@@ -32,6 +33,7 @@ import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 import com.badlogic.gdx.scene.ui.layout.Table;
 import com.badlogic.gdx.utils.Align;
 
+import static com.badlogic.gdx.Core.graphics;
 import static com.badlogic.gdx.Core.scene;
 
 /**
@@ -73,8 +75,9 @@ public class Window extends Table{
         titleLabel.setEllipsis(true);
 
         titleTable = new Table(){
-            public void draw(Batch batch, float parentAlpha){
-                if(drawTitleTable) super.draw(batch, parentAlpha);
+            @Override
+            public void draw(){
+                if(drawTitleTable) super.draw();
             }
         };
         titleTable.add(titleLabel).expandX().fillX().minWidth(0);
@@ -233,7 +236,8 @@ public class Window extends Table{
             setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2, Align.bottom);
     }
 
-    public void draw(Batch batch, float parentAlpha){
+    @Override
+    public void draw(){
         Scene stage = getScene();
         if(stage.getKeyboardFocus() == null) stage.setKeyboardFocus(this);
 
@@ -244,25 +248,25 @@ public class Window extends Table{
         if(style.stageBackground != null){
             stageToLocalCoordinates(tmpPosition.set(0, 0));
             stageToLocalCoordinates(tmpSize.set(stage.getWidth(), stage.getHeight()));
-            drawStageBackground(batch, parentAlpha, getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x,
+            drawStageBackground(getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x,
                     getY() + tmpSize.y);
         }
 
-        super.draw(batch, parentAlpha);
+        super.draw();
     }
 
-    protected void drawStageBackground(Batch batch, float parentAlpha, float x, float y, float width, float height){
+    protected void drawStageBackground(float x, float y, float width, float height){
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        style.stageBackground.draw(batch, x, y, width, height);
+        graphics.batch().setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        style.stageBackground.draw(x, y, width, height);
     }
 
-    protected void drawDefaultBackground(Batch batch, float parentAlpha, float x, float y){
-        super.drawBackground(batch, parentAlpha, x, y);
+    protected void drawDefaultBackground(float x, float y){
+        super.drawBackground(x, y);
     }
 
-    protected void drawBackground(Batch batch, float parentAlpha, float x, float y){
-        super.drawBackground(batch, parentAlpha, x, y);
+    protected void drawBackground(float x, float y){
+        super.drawBackground(x, y);
 
         // Manually draw the title table before clipping is done.
         titleTable.getColor().a = getColor().a;
@@ -270,7 +274,7 @@ public class Window extends Table{
         titleTable.setSize(getWidth() - padLeft - getMarginRight(), padTop);
         titleTable.setPosition(padLeft, getHeight() - padTop);
         drawTitleTable = true;
-        titleTable.draw(batch, parentAlpha);
+        titleTable.draw();
         drawTitleTable = false; // Avoid drawing the title table again in drawChildren.
     }
 
