@@ -29,7 +29,7 @@ import com.badlogic.gdx.graphics.glutils.GLVersion;
  * The headless backend does its best to mock elements. This is intended to make code-sharing between
  * server and client as simple as possible.
  */
-public class MockGraphics implements Graphics{
+public class MockGraphics extends Graphics{
     long frameId = -1;
     float deltaTime = 0;
     long frameStart = 0;

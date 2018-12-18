@@ -14,6 +14,7 @@ import static com.badlogic.gdx.Core.keybinds;
 public class Settings{
     protected final static byte TYPE_BOOL = 0, TYPE_INT = 1, TYPE_LONG = 2, TYPE_FLOAT = 3, TYPE_STRING = 4, TYPE_BINARY = 5;
 
+    protected FileHandle dataDirectory;
     protected String appName;
     protected ObjectMap<String, Object> defaults = new ObjectMap<>();
     protected ObjectMap<String, Object> values = new ObjectMap<>();
@@ -117,7 +118,17 @@ public class Settings{
 
     /**Returns the file used for writing settings to. Not available on all platforms!*/
     public FileHandle getSettingsFile(){
-        return Core.files.absolute(OS.getAppDataDirectoryString(appName)).child("settings.bin");
+        return getDataDirectory().child("settings.bin");
+    }
+
+    /**Sets the settings file where everything is written to.*/
+    public void setDataDirectory(FileHandle file){
+        this.dataDirectory = file;
+    }
+
+    /**Returns the directory where all settings and data is placed.*/
+    public FileHandle getDataDirectory(){
+        return dataDirectory == null ? Core.files.absolute(OS.getAppDataDirectoryString(appName)) : dataDirectory;
     }
 
     /**Set up a list of defaults values.

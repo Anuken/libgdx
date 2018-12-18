@@ -17,7 +17,6 @@
 package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Audio;
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.audio.Music;
@@ -26,6 +25,7 @@ import com.badlogic.gdx.backends.iosrobovm.objectal.OALAudioTrack;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
 
 public class IOSAudio implements Audio{
 
@@ -34,20 +34,19 @@ public class IOSAudio implements Audio{
         if(audio != null){
             audio.setAllowIpod(config.allowIpod);
             audio.setHonorSilentSwitch(!config.overrideRingerSwitch);
-        }else
+        }else{
             Log.errTag("IOSAudio", "No OALSimpleAudio instance available, audio will not be availabe");
+        }
     }
 
     @Override
     public AudioDevice newAudioDevice(int samplingRate, boolean isMono){
-        // TODO Auto-generated method stub
-        return null;
+        return null; //no support
     }
 
     @Override
     public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono){
-        // TODO Auto-generated method stub
-        return null;
+        return null; //no support
     }
 
     @Override

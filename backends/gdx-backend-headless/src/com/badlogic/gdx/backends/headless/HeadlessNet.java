@@ -16,12 +16,8 @@
 
 package com.badlogic.gdx.backends.headless;
 
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.*;
-
-import java.awt.*;
-import java.awt.Desktop.Action;
 
 /**
  * Headless implementation of the {@link com.badlogic.gdx.Net} API, based on LWJGL implementation
@@ -30,7 +26,6 @@ import java.awt.Desktop.Action;
  * @author Jon Renner
  */
 public class HeadlessNet implements Net{
-
     NetJavaImpl netJavaImpl = new NetJavaImpl();
 
     @Override
@@ -60,19 +55,6 @@ public class HeadlessNet implements Net{
 
     @Override
     public boolean openURI(String URI){
-        boolean result = false;
-        try{
-            if(!GraphicsEnvironment.isHeadless() && Desktop.isDesktopSupported()){
-                if(Desktop.getDesktop().isSupported(Action.BROWSE)){
-                    Desktop.getDesktop().browse(java.net.URI.create(URI));
-                    result = true;
-                }
-            }else{
-                Log.errTag("HeadlessNet", "Opening URIs on this environment is not supported. Ignoring.");
-            }
-        }catch(Throwable t){
-            Log.errTag("HeadlessNet", "Failed to open URI. ", t);
-        }
-        return result;
+        return false; //unsupported
     }
 }

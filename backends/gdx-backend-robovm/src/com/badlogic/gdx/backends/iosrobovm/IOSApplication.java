@@ -16,23 +16,20 @@
 
 package com.badlogic.gdx.backends.iosrobovm;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALAudioSession;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Log;
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.foundation.NSMutableDictionary;
-import org.robovm.apple.foundation.NSObject;
-import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.foundation.NSThread;
 import org.robovm.apple.uikit.*;
 import org.robovm.rt.bro.Bro;
 
-import java.io.File;
-
-public class IOSApplication implements Application{
+public class IOSApplication extends Application{
 
     public static abstract class Delegate extends UIApplicationDelegateAdapter{
         private IOSApplication app;
@@ -69,7 +66,6 @@ public class IOSApplication implements Application{
 
     UIApplication uiApp;
     UIWindow uiWindow;
-    ApplicationListener listener;
     IOSViewControllerListener viewControllerListener;
     IOSApplicationConfiguration config;
     IOSGraphics graphics;
@@ -77,24 +73,21 @@ public class IOSApplication implements Application{
     IOSFiles files;
     IOSInput input;
     IOSNet net;
-    int logLevel = Application.LOG_DEBUG;
 
     /** The display scale factor (1.0f for normal; 2.0f to use retina coordinates/dimensions). */
     float displayScaleFactor;
 
     private CGRect lastScreenBounds = null;
 
-    Array<Runnable> runnables = new Array<Runnable>();
-    Array<Runnable> executedRunnables = new Array<Runnable>();
-    Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
+    Array<Runnable> runnables = new Array<>();
+    Array<Runnable> executedRunnables = new Array<>();
 
     public IOSApplication(ApplicationListener listener, IOSApplicationConfiguration config){
-        this.listener = listener;
+        addListener(listener);
         this.config = config;
     }
 
     final boolean didFinishLaunching(UIApplication uiApp, UIApplicationLaunchOptions options){
-        Log.setLogger(new IOSApplicationLogger());
         Core.app = this;
         this.uiApp = uiApp;
 
@@ -274,44 +267,13 @@ public class IOSApplication implements Application{
     final void willTerminate(UIApplication uiApp){
         Log.info("[IOSApplication] disposed");
         graphics.makeCurrent();
-        Array<LifecycleListener> listeners = lifecycleListeners;
+        Array<ApplicationListener> listeners = this.listeners;
         synchronized(listeners){
-            for(LifecycleListener listener : listeners){
+            for(ApplicationListener listener : listeners){
                 listener.pause();
             }
         }
-        listener.dispose();
         Core.gl.glFinish();
-    }
-
-    @Override
-    public ApplicationListener getApplicationListener(){
-        return listener;
-    }
-
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Input getInput(){
-        return input;
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
     }
 
     @Override
@@ -332,23 +294,6 @@ public class IOSApplication implements Application{
     @Override
     public long getNativeHeap(){
         return getJavaHeap();
-    }
-
-    @Override
-    public Preferences getPreferences(String name){
-        File libraryPath = new File(System.getenv("HOME"), "Library");
-        File finalPath = new File(libraryPath, name + ".plist");
-
-        @SuppressWarnings("unchecked")
-        NSMutableDictionary<NSString, NSObject> nsDictionary = (NSMutableDictionary<NSString, NSObject>) NSMutableDictionary
-        .read(finalPath);
-
-        // if it fails to get an existing dictionary, create a new one.
-        if(nsDictionary == null){
-            nsDictionary = new NSMutableDictionary<NSString, NSObject>();
-            nsDictionary.write(finalPath, false);
-        }
-        return new IOSPreferences(nsDictionary, finalPath.getAbsolutePath());
     }
 
     @Override
@@ -392,20 +337,6 @@ public class IOSApplication implements Application{
                 return UIPasteboard.getGeneralPasteboard().getString();
             }
         };
-    }
-
-    @Override
-    public void addLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.removeValue(listener, true);
-        }
     }
 
     /**

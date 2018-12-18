@@ -16,25 +16,24 @@
 
 package com.badlogic.gdx.backends.headless;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
+import com.badlogic.gdx.Settings;
 import com.badlogic.gdx.backends.headless.mock.audio.MockAudio;
 import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.backends.headless.mock.input.MockInput;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.prefs.Preferences;
 
 /**
  * a headless implementation of a GDX Application primarily intended to be used in servers
  *
  * @author Jon Renner
  */
-public class HeadlessApplication implements Application{
-    protected final ApplicationListener listener;
+public class HeadlessApplication extends Application{
     protected Thread mainLoopThread;
     protected final HeadlessFiles files;
     protected final HeadlessNet net;
@@ -42,11 +41,8 @@ public class HeadlessApplication implements Application{
     protected final MockInput input;
     protected final MockGraphics graphics;
     protected boolean running = true;
-    protected final Array<Runnable> runnables = new Array<Runnable>();
-    protected final Array<Runnable> executedRunnables = new Array<Runnable>();
-    protected final Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
-    protected int logLevel = LOG_INFO;
-    private String preferencesdir;
+    protected final Array<Runnable> runnables = new Array<>();
+    protected final Array<Runnable> executedRunnables = new Array<>();
     private final long renderInterval;
 
     public HeadlessApplication(ApplicationListener listener){
@@ -57,7 +53,7 @@ public class HeadlessApplication implements Application{
         if(config == null)
             config = new HeadlessApplicationConfiguration();
 
-        this.listener = listener;
+        addListener(listener);
         this.files = new HeadlessFiles();
         this.net = new HeadlessNet();
         // the following elements are not applicable for headless applications
@@ -66,8 +62,7 @@ public class HeadlessApplication implements Application{
         this.audio = new MockAudio();
         this.input = new MockInput();
 
-        this.preferencesdir = config.preferencesDirectory;
-
+        Core.settings = new Settings();
         Core.app = this;
         Core.files = files;
         Core.net = net;
@@ -98,9 +93,11 @@ public class HeadlessApplication implements Application{
     }
 
     void mainLoop(){
-        Array<LifecycleListener> lifecycleListeners = this.lifecycleListeners;
-
-        listener.create();
+        synchronized(listeners){
+            for(ApplicationListener listener : listeners){
+                listener.create();
+            }
+        }
 
         // unlike LwjglApplication, a headless application will eat up CPU in this while loop
         // it is up to the implementation to call Thread.sleep as necessary
@@ -119,7 +116,11 @@ public class HeadlessApplication implements Application{
 
                 executeRunnables();
                 graphics.incrementFrameId();
-                listener.update();
+                synchronized(listeners){
+                    for(ApplicationListener listener : listeners){
+                        listener.update();
+                    }
+                }
                 graphics.updateTime();
 
                 // If one of the runnables set running to false, for example after an exit().
@@ -127,14 +128,12 @@ public class HeadlessApplication implements Application{
             }
         }
 
-        synchronized(lifecycleListeners){
-            for(LifecycleListener listener : lifecycleListeners){
+        synchronized(listeners){
+            for(ApplicationListener listener : listeners){
                 listener.pause();
                 listener.dispose();
             }
         }
-        listener.pause();
-        listener.dispose();
     }
 
     public boolean executeRunnables(){
@@ -147,36 +146,6 @@ public class HeadlessApplication implements Application{
         for(int i = executedRunnables.size - 1; i >= 0; i--)
             executedRunnables.removeAt(i).run();
         return true;
-    }
-
-    @Override
-    public ApplicationListener getApplicationListener(){
-        return listener;
-    }
-
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return audio;
-    }
-
-    @Override
-    public Input getInput(){
-        return input;
-    }
-
-    @Override
-    public Files getFiles(){
-        return files;
-    }
-
-    @Override
-    public Net getNet(){
-        return net;
     }
 
     @Override
@@ -199,19 +168,6 @@ public class HeadlessApplication implements Application{
         return getJavaHeap();
     }
 
-    ObjectMap<String, Preferences> preferences = new ObjectMap<String, Preferences>();
-
-    @Override
-    public Preferences getPreferences(String name){
-        if(preferences.containsKey(name)){
-            return preferences.get(name);
-        }else{
-            Preferences prefs = new HeadlessPreferences(name, this.preferencesdir);
-            preferences.put(name, prefs);
-            return prefs;
-        }
-    }
-
     @Override
     public Clipboard getClipboard(){
         // no clipboards for headless apps
@@ -227,25 +183,6 @@ public class HeadlessApplication implements Application{
 
     @Override
     public void exit(){
-        post(new Runnable(){
-            @Override
-            public void run(){
-                running = false;
-            }
-        });
-    }
-
-    @Override
-    public void addLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.removeValue(listener, true);
-        }
+        post(() -> running = false);
     }
 }

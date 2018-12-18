@@ -18,13 +18,14 @@ package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegate;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegateAdapter;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.pooling.Pool;
 import org.robovm.apple.audiotoolbox.AudioServices;
 import org.robovm.apple.coregraphics.CGPoint;
@@ -39,7 +40,7 @@ import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Pointer;
 
-public class IOSInput implements Input{
+public class IOSInput extends Input{
     static final int MAX_TOUCHES = 20;
     private static final int POINTER_NOT_FOUND = -1;
 
