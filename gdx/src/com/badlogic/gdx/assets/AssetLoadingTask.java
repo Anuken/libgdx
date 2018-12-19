@@ -29,16 +29,14 @@ import com.badlogic.gdx.utils.async.AsyncTask;
 
 /**
  * Responsible for loading an asset through an {@link AssetLoader} based on an {@link AssetDescriptor}.
- *
  * @author mzechner
  */
 class AssetLoadingTask implements AsyncTask<Void>{
-    AssetManager manager;
     final AssetDescriptor assetDesc;
     final AssetLoader loader;
     final AsyncExecutor executor;
     final long startTime;
-
+    AssetManager manager;
     volatile boolean asyncDone = false;
     volatile boolean dependenciesLoaded = false;
     volatile Array<AssetDescriptor> dependencies;
@@ -60,7 +58,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
     /** Loads parts of the asset asynchronously if the loader is an {@link AsynchronousAssetLoader}. */
     @Override
     public Void call(){
-        AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader) loader;
+        AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader)loader;
         if(!dependenciesLoaded){
             dependencies = asyncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.params);
             if(dependencies != null){
@@ -82,9 +80,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
      * {@link AsynchronousAssetLoader#loadAsync(AssetManager, String, FileHandle, AssetLoaderParameters)} method is first called on
      * a worker thread. Once this method returns, the rest of the asset is loaded on the rendering thread via
      * {@link AsynchronousAssetLoader#loadSync(AssetManager, String, FileHandle, AssetLoaderParameters)}.
-     *
      * @return true in case the asset was fully loaded, false otherwise
-     * @throws GdxRuntimeException
      */
     public boolean update(){
         ticks++;
@@ -97,7 +93,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
     }
 
     private void handleSyncLoader(){
-        SynchronousAssetLoader syncLoader = (SynchronousAssetLoader) loader;
+        SynchronousAssetLoader syncLoader = (SynchronousAssetLoader)loader;
         if(!dependenciesLoaded){
             dependenciesLoaded = true;
             dependencies = syncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.params);
@@ -113,7 +109,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
     }
 
     private void handleAsyncLoader(){
-        AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader) loader;
+        AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader)loader;
         if(!dependenciesLoaded){
             if(depsFuture == null){
                 depsFuture = executor.submit(this);

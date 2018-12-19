@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Queues events that are later passed to the wrapped {@link InputProcessor}.
- *
  * @author Nathan Sweet
  */
 public class InputEventQueue implements InputProcessor{
@@ -34,10 +33,9 @@ public class InputEventQueue implements InputProcessor{
     static private final int TOUCH_DRAGGED = 5;
     static private final int MOUSE_MOVED = 6;
     static private final int SCROLLED = 7;
-
-    private InputProcessor processor;
     private final IntArray queue = new IntArray();
     private final IntArray processingQueue = new IntArray();
+    private InputProcessor processor;
     private long currentEventTime;
 
     public InputEventQueue(){
@@ -47,12 +45,12 @@ public class InputEventQueue implements InputProcessor{
         this.processor = processor;
     }
 
-    public void setProcessor(InputProcessor processor){
-        this.processor = processor;
-    }
-
     public InputProcessor getProcessor(){
         return processor;
+    }
+
+    public void setProcessor(InputProcessor processor){
+        this.processor = processor;
     }
 
     public void drain(){
@@ -68,7 +66,7 @@ public class InputEventQueue implements InputProcessor{
         InputProcessor localProcessor = processor;
         for(int i = 0, n = processingQueue.size; i < n; ){
             int type = q[i++];
-            currentEventTime = (long) q[i++] << 32 | q[i++] & 0xFFFFFFFFL;
+            currentEventTime = (long)q[i++] << 32 | q[i++] & 0xFFFFFFFFL;
             switch(type){
                 case SKIP:
                     i += q[i];
@@ -80,7 +78,7 @@ public class InputEventQueue implements InputProcessor{
                     localProcessor.keyUp(KeyCode.byOrdinal(q[i++]));
                     break;
                 case KEY_TYPED:
-                    localProcessor.keyTyped((char) q[i++]);
+                    localProcessor.keyTyped((char)q[i++]);
                     break;
                 case TOUCH_DOWN:
                     localProcessor.touchDown(q[i++], q[i++], q[i++], KeyCode.byOrdinal(q[i++]));
@@ -147,8 +145,8 @@ public class InputEventQueue implements InputProcessor{
 
     private void queueTime(){
         long time = TimeUtils.nanoTime();
-        queue.add((int) (time >> 32));
-        queue.add((int) time);
+        queue.add((int)(time >> 32));
+        queue.add((int)time);
     }
 
     public synchronized boolean keyDown(KeyCode keycode){
@@ -224,8 +222,8 @@ public class InputEventQueue implements InputProcessor{
     public synchronized boolean scrolled(float amountX, float amountY){
         queue.add(SCROLLED);
         queueTime();
-        queue.add((int) (amountX * 256));
-        queue.add((int) (amountY * 256));
+        queue.add((int)(amountX * 256));
+        queue.add((int)(amountY * 256));
         return false;
     }
 

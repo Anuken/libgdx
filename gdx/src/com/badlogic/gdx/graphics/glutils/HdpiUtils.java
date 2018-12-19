@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.GL20;
  * OpenGL yourself. The logical coordinate system provided by the operating system may not have the same resolution as the actual
  * drawing surface to which OpenGL draws, also known as the backbuffer. This class will ensure, that you pass the correct values
  * to OpenGL for any function that expects backbuffer coordinates instead of logical coordinates.
- *
  * @author badlogic
  */
 public class HdpiUtils{
@@ -43,7 +42,6 @@ public class HdpiUtils{
      * fb.end();
      * HdpiUtils.setMode(HdpiMode.Logical);
      * </pre>
-     *
      * @param mode set to HdpiMode.Pixels to ignore HDPI conversion for glViewport and glScissor functions
      */
     public static void setMode(HdpiMode mode){
@@ -81,7 +79,7 @@ public class HdpiUtils{
      * logical screen coordinates.
      */
     public static int toLogicalX(int backBufferX){
-        return (int) (backBufferX * Core.graphics.getWidth() / (float) Core.graphics.getBackBufferWidth());
+        return (int)(backBufferX * Core.graphics.getWidth() / (float)Core.graphics.getBackBufferWidth());
     }
 
     /**
@@ -89,7 +87,7 @@ public class HdpiUtils{
      * logical screen coordinates
      */
     public static int toLogicalY(int backBufferY){
-        return (int) (backBufferY * Core.graphics.getHeight() / (float) Core.graphics.getBackBufferHeight());
+        return (int)(backBufferY * Core.graphics.getHeight() / (float)Core.graphics.getBackBufferHeight());
     }
 
     /**
@@ -97,7 +95,7 @@ public class HdpiUtils{
      * backbuffer coordinates.
      */
     public static int toBackBufferX(int logicalX){
-        return (int) (logicalX * Core.graphics.getBackBufferWidth() / (float) Core.graphics.getWidth());
+        return (int)(logicalX * Core.graphics.getBackBufferWidth() / (float)Core.graphics.getWidth());
     }
 
     /**
@@ -105,6 +103,6 @@ public class HdpiUtils{
      * logical screen coordinates
      */
     public static int toBackBufferY(int logicalY){
-        return (int) (logicalY * Core.graphics.getBackBufferHeight() / (float) Core.graphics.getHeight());
+        return (int)(logicalY * Core.graphics.getBackBufferHeight() / (float)Core.graphics.getHeight());
     }
 }

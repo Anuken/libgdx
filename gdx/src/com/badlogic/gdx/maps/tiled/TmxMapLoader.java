@@ -34,7 +34,7 @@ import com.badlogic.gdx.maps.ImageResolver.DirectImageResolver;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.serialization.SerializationException;
 import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
@@ -43,18 +43,12 @@ import java.io.IOException;
 /** @brief synchronous loader for TMX maps created with the Tiled tool */
 public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
 
-    public static class Parameters extends BaseTmxMapLoader.Parameters{
-
-    }
-
     public TmxMapLoader(){
         super(new InternalFileHandleResolver());
     }
 
     /**
      * Creates loader
-     *
-     * @param resolver
      */
     public TmxMapLoader(FileHandleResolver resolver){
         super(resolver);
@@ -64,7 +58,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
      * Loads the {@link TiledMap} from the given file. The file is resolved via the {@link FileHandleResolver} set in the
      * constructor of this class. By default it will resolve to an internal file. The map will be loaded for a y-up coordinate
      * system.
-     *
      * @param fileName the filename
      * @return the TiledMap
      */
@@ -75,7 +68,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
     /**
      * Loads the {@link TiledMap} from the given file. The file is resolved via the {@link FileHandleResolver} set in the
      * constructor of this class. By default it will resolve to an internal file.
-     *
      * @param fileName the filename
      * @param parameters specifies whether to use y-up, generate mip maps etc.
      * @return the TiledMap
@@ -130,8 +122,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
 
     /**
      * Retrieves TiledMap resource dependencies
-     *
-     * @param fileName
      * @param parameter not used for now
      * @return dependencies for the given .tmx file
      */
@@ -161,7 +151,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
 
     /**
      * Loads the map data, given the XML root element and an {@link ImageResolver} used to return the tileset Textures
-     *
      * @param root the XML root element
      * @param tmxFile the Filehandle of the tmx file
      * @param imageResolver the {@link ImageResolver}
@@ -230,10 +219,8 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
 
     /**
      * Loads the tilesets
-     *
      * @param root the root XML element
      * @return a list of filenames for images containing tiles
-     * @throws IOException
      */
     protected Array<FileHandle> loadTilesets(Element root, FileHandle tmxFile) throws IOException{
         Array<FileHandle> images = new Array<FileHandle>();
@@ -274,7 +261,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
 
     /**
      * Loads the images in image layers
-     *
      * @param root the root XML element
      * @return a list of filenames for images inside image layers
      */
@@ -319,7 +305,6 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
      * <p>
      * The values are extracted from the specified Tmx file, if a value can't be found then the default is used.
      * </p>
-     *
      * @param map the Map whose tilesets collection will be populated
      * @param element the XML element identifying the tileset to load
      * @param tmxFile the Filehandle of the tmx file
@@ -448,7 +433,7 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
                         Array<StaticTiledMapTile> staticTiles = new Array<StaticTiledMapTile>();
                         IntArray intervals = new IntArray();
                         for(Element frameElement : animationElement.getChildrenByName("frame")){
-                            staticTiles.add((StaticTiledMapTile) tileset.getTile(firstgid + frameElement.getIntAttribute("tileid")));
+                            staticTiles.add((StaticTiledMapTile)tileset.getTile(firstgid + frameElement.getIntAttribute("tileid")));
                             intervals.add(frameElement.getIntAttribute("duration"));
                         }
 
@@ -491,6 +476,10 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
             }
             map.getTileSets().addTileSet(tileset);
         }
+    }
+
+    public static class Parameters extends BaseTmxMapLoader.Parameters{
+
     }
 
 }

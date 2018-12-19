@@ -31,7 +31,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.serialization.SerializationException;
 import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
@@ -43,51 +43,12 @@ import java.io.IOException;
  * It requires a map-level property called 'atlas' with its value being the relative path to the TextureAtlas. The atlas must have
  * in it indexed regions named after the tilesets used in the map. The indexes shall be local to the tileset (not the global id).
  * Strip whitespace and rotation should not be used when creating the atlas.
- *
  * @author Justin Shapcott
  * @author Manuel Bua
  */
 public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMapLoaderParameters>{
 
-    public static class AtlasTiledMapLoaderParameters extends BaseTmxMapLoader.Parameters{
-        /** force texture filters? **/
-        public boolean forceTextureFilters = false;
-    }
-
     protected Array<Texture> trackedTextures = new Array<Texture>();
-
-    private interface AtlasResolver{
-
-        TextureAtlas getAtlas(String name);
-
-        class DirectAtlasResolver implements AtlasResolver{
-
-            private final ObjectMap<String, TextureAtlas> atlases;
-
-            public DirectAtlasResolver(ObjectMap<String, TextureAtlas> atlases){
-                this.atlases = atlases;
-            }
-
-            @Override
-            public TextureAtlas getAtlas(String name){
-                return atlases.get(name);
-            }
-
-        }
-
-        class AssetManagerAtlasResolver implements AtlasResolver{
-            private final AssetManager assetManager;
-
-            public AssetManagerAtlasResolver(AssetManager assetManager){
-                this.assetManager = assetManager;
-            }
-
-            @Override
-            public TextureAtlas getAtlas(String name){
-                return assetManager.get(name, TextureAtlas.class);
-            }
-        }
-    }
 
     public AtlasTmxMapLoader(){
         super(new InternalFileHandleResolver());
@@ -420,7 +381,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                         Array<StaticTiledMapTile> staticTiles = new Array<StaticTiledMapTile>();
                         IntArray intervals = new IntArray();
                         for(Element frameElement : animationElement.getChildrenByName("frame")){
-                            staticTiles.add((StaticTiledMapTile) tileset.getTile(firstgid + frameElement.getIntAttribute("tileid")));
+                            staticTiles.add((StaticTiledMapTile)tileset.getTile(firstgid + frameElement.getIntAttribute("tileid")));
                             intervals.add(frameElement.getIntAttribute("duration"));
                         }
 
@@ -463,6 +424,44 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
             }
             map.getTileSets().addTileSet(tileset);
         }
+    }
+
+    private interface AtlasResolver{
+
+        TextureAtlas getAtlas(String name);
+
+        class DirectAtlasResolver implements AtlasResolver{
+
+            private final ObjectMap<String, TextureAtlas> atlases;
+
+            public DirectAtlasResolver(ObjectMap<String, TextureAtlas> atlases){
+                this.atlases = atlases;
+            }
+
+            @Override
+            public TextureAtlas getAtlas(String name){
+                return atlases.get(name);
+            }
+
+        }
+
+        class AssetManagerAtlasResolver implements AtlasResolver{
+            private final AssetManager assetManager;
+
+            public AssetManagerAtlasResolver(AssetManager assetManager){
+                this.assetManager = assetManager;
+            }
+
+            @Override
+            public TextureAtlas getAtlas(String name){
+                return assetManager.get(name, TextureAtlas.class);
+            }
+        }
+    }
+
+    public static class AtlasTiledMapLoaderParameters extends BaseTmxMapLoader.Parameters{
+        /** force texture filters? **/
+        public boolean forceTextureFilters = false;
     }
 
 }

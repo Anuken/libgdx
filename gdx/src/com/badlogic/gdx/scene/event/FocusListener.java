@@ -20,13 +20,12 @@ import com.badlogic.gdx.scene.Element;
 
 /**
  * Listener for {@link FocusEvent}.
- *
  * @author Nathan Sweet
  */
 abstract public class FocusListener implements EventListener{
     public boolean handle(Event event){
         if(!(event instanceof FocusEvent)) return false;
-        FocusEvent focusEvent = (FocusEvent) event;
+        FocusEvent focusEvent = (FocusEvent)event;
         switch(focusEvent.type){
             case keyboard:
                 keyboardFocusChanged(focusEvent, event.targetActor, focusEvent.focused);
@@ -48,7 +47,6 @@ abstract public class FocusListener implements EventListener{
 
     /**
      * Fired when an element gains or loses keyboard or scroll focus. Can be cancelled to prevent losing or gaining focus.
-     *
      * @author Nathan Sweet
      */
     static public class FocusEvent extends Event{

@@ -46,10 +46,19 @@ import java.lang.reflect.Method;
  * An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class. In
  * the {@link Activity#onCreate(Bundle)} method call the {@link #initialize(ApplicationListener)} method specifying the
  * configuration for the GLSurfaceView.
- *
  * @author mzechner
  */
 public class AndroidApplication extends Activity implements AndroidApplicationBase{
+    static{
+        GdxNativesLoader.load();
+        Log.setLogger(new AndroidApplicationLogger());
+    }
+
+    protected final Array<ApplicationListener> listeners = new Array<>();
+    protected final Array<Runnable> runnables = new Array<>();
+    protected final Array<Runnable> executedRunnables = new Array<>();
+    private final Array<AndroidEventListener> androidEventListeners = new Array<>();
+    public Handler handler;
     protected AndroidGraphics graphics;
     protected AndroidInput input;
     protected AndroidAudio audio;
@@ -57,26 +66,15 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     protected AndroidNet net;
     protected AndroidClipboard clipboard;
     protected ApplicationListener listener;
-    public Handler handler;
     protected boolean firstResume = true;
-    protected final Array<ApplicationListener> listeners = new Array<>();
-    protected final Array<Runnable> runnables = new Array<>();
-    protected final Array<Runnable> executedRunnables = new Array<>();
-    private final Array<AndroidEventListener> androidEventListeners = new Array<>();
     protected boolean useImmersiveMode = false;
     protected boolean hideStatusBar = false;
     private int wasFocusChanged = -1;
     private boolean isWaitingForAudio = false;
 
-    static{
-        GdxNativesLoader.load();
-        Log.setLogger(new AndroidApplicationLogger());
-    }
-
     /**
      * This method has to be called in the {@link Activity#onCreate(Bundle)} method. It sets up all the things necessary to get
      * input, render via OpenGL and so on. Uses a default {@link AndroidApplicationConfiguration}.
-     *
      * @param listener the {@link ApplicationListener} implementing the program logic
      **/
     public void initialize(ApplicationListener listener){
@@ -88,7 +86,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
      * This method has to be called in the {@link Activity#onCreate(Bundle)} method. It sets up all the things necessary to get
      * input, render via OpenGL and so on. You can configure other aspects of the application with the rest of the fields in the
      * {@link AndroidApplicationConfiguration} instance.
-     *
      * @param listener the {@link ApplicationListener} implementing the program logic
      * @param config the {@link AndroidApplicationConfiguration}, defining various settings of the application (use accelerometer,
      * etc.).
@@ -102,7 +99,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
      * input, render via OpenGL and so on. Uses a default {@link AndroidApplicationConfiguration}.
      * <p>
      * Note: you have to add the returned view to your layout!
-     *
      * @param listener the {@link ApplicationListener} implementing the program logic
      * @return the GLSurfaceView of the application
      */
@@ -117,7 +113,6 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
      * {@link AndroidApplicationConfiguration} instance.
      * <p>
      * Note: you have to add the returned view to your layout!
-     *
      * @param listener the {@link ApplicationListener} implementing the program logic
      * @param config the {@link AndroidApplicationConfiguration}, defining various settings of the application (use accelerometer,
      * etc.).

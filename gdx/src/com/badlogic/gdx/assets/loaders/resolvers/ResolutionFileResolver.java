@@ -53,33 +53,10 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class ResolutionFileResolver implements FileHandleResolver{
 
-    public static class Resolution{
-        public final int portraitWidth;
-        public final int portraitHeight;
-
-        /** The name of the folder, where the assets which fit this resolution, are located. */
-        public final String folder;
-
-        /**
-         * Constructs a {@code Resolution}.
-         *
-         * @param portraitWidth This resolution's width.
-         * @param portraitHeight This resolution's height.
-         * @param folder The name of the folder, where the assets which fit this resolution, are located.
-         */
-        public Resolution(int portraitWidth, int portraitHeight, String folder){
-            this.portraitWidth = portraitWidth;
-            this.portraitHeight = portraitHeight;
-            this.folder = folder;
-        }
-    }
-
     protected final FileHandleResolver baseResolver;
     protected final Resolution[] descriptors;
-
     /**
      * Creates a {@code ResolutionFileResolver} based on a given {@link FileHandleResolver} and a list of {@link Resolution}s.
-     *
      * @param baseResolver The {@link FileHandleResolver} that will ultimately used to resolve the file.
      * @param descriptors A list of {@link Resolution}s. At least one has to be supplied.
      */
@@ -87,24 +64,6 @@ public class ResolutionFileResolver implements FileHandleResolver{
         if(descriptors.length == 0) throw new IllegalArgumentException("At least one Resolution needs to be supplied.");
         this.baseResolver = baseResolver;
         this.descriptors = descriptors;
-    }
-
-    @Override
-    public FileHandle resolve(String fileName){
-        Resolution bestResolution = choose(descriptors);
-        FileHandle originalHandle = new FileHandle(fileName);
-        FileHandle handle = baseResolver.resolve(resolve(originalHandle, bestResolution.folder));
-        if(!handle.exists()) handle = baseResolver.resolve(fileName);
-        return handle;
-    }
-
-    protected String resolve(FileHandle originalHandle, String suffix){
-        String parentString = "";
-        FileHandle parent = originalHandle.parent();
-        if(parent != null && !parent.name().equals("")){
-            parentString = parent + "/";
-        }
-        return parentString + suffix + "/" + originalHandle.name();
     }
 
     static public Resolution choose(Resolution... descriptors){
@@ -126,5 +85,43 @@ public class ResolutionFileResolver implements FileHandleResolver{
             }
         }
         return best;
+    }
+
+    @Override
+    public FileHandle resolve(String fileName){
+        Resolution bestResolution = choose(descriptors);
+        FileHandle originalHandle = new FileHandle(fileName);
+        FileHandle handle = baseResolver.resolve(resolve(originalHandle, bestResolution.folder));
+        if(!handle.exists()) handle = baseResolver.resolve(fileName);
+        return handle;
+    }
+
+    protected String resolve(FileHandle originalHandle, String suffix){
+        String parentString = "";
+        FileHandle parent = originalHandle.parent();
+        if(parent != null && !parent.name().equals("")){
+            parentString = parent + "/";
+        }
+        return parentString + suffix + "/" + originalHandle.name();
+    }
+
+    public static class Resolution{
+        public final int portraitWidth;
+        public final int portraitHeight;
+
+        /** The name of the folder, where the assets which fit this resolution, are located. */
+        public final String folder;
+
+        /**
+         * Constructs a {@code Resolution}.
+         * @param portraitWidth This resolution's width.
+         * @param portraitHeight This resolution's height.
+         * @param folder The name of the folder, where the assets which fit this resolution, are located.
+         */
+        public Resolution(int portraitWidth, int portraitHeight, String folder){
+            this.portraitWidth = portraitWidth;
+            this.portraitHeight = portraitHeight;
+            this.folder = folder;
+        }
     }
 }

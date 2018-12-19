@@ -19,11 +19,10 @@ package com.badlogic.gdx.scene.style;
 /**
  * A drawable knows how to draw itself at a given rectangular size. It provides border sizes and a minimum size so that other code
  * can determine how to size and position content.
- *
  * @author Nathan Sweet
  */
 public interface Drawable{
-    /**Draws this drawable at the specified bounds.*/
+    /** Draws this drawable at the specified bounds. */
     void draw(float x, float y, float width, float height);
 
     void draw(float x, float y, float originX, float originY, float width, float height, float scaleX,

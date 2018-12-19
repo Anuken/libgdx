@@ -30,7 +30,6 @@ import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
 /**
  * Draws batched quads using indices.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -56,7 +55,6 @@ public class SpriteBatch implements Disposable{
 
     /**
      * Constructs a new SpriteBatch with a size of 1000, one buffer, and the default shader.
-     *
      * @see SpriteBatch#SpriteBatch(int, ShaderProgram)
      */
     public SpriteBatch(){
@@ -65,7 +63,6 @@ public class SpriteBatch implements Disposable{
 
     /**
      * Constructs a SpriteBatch with one buffer and the default shader.
-     *
      * @see SpriteBatch#SpriteBatch(int, ShaderProgram)
      */
     public SpriteBatch(int size){
@@ -79,7 +76,6 @@ public class SpriteBatch implements Disposable{
      * <p>
      * The defaultShader specifies the shader to use. Note that the names for uniforms for this default shader are different than
      * the ones expect for shaders set with {@link #setShader(ShaderProgram)}. See {@link #createDefaultShader()}.
-     *
      * @param size The max number of sprites in a single batch. Max of 8191.
      * @param defaultShader The default shader to use. This is not owned by the SpriteBatch and must be disposed separately.
      */
@@ -103,10 +99,10 @@ public class SpriteBatch implements Disposable{
         short j = 0;
         for(int i = 0; i < len; i += 6, j += 4){
             indices[i] = j;
-            indices[i + 1] = (short) (j + 1);
-            indices[i + 2] = (short) (j + 2);
-            indices[i + 3] = (short) (j + 2);
-            indices[i + 4] = (short) (j + 3);
+            indices[i + 1] = (short)(j + 1);
+            indices[i + 2] = (short)(j + 2);
+            indices[i + 3] = (short)(j + 2);
+            indices[i + 4] = (short)(j + 3);
             indices[i + 5] = j;
         }
         mesh.setIndices(indices);
@@ -123,14 +119,51 @@ public class SpriteBatch implements Disposable{
         }
     }
 
+    /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
+    public static ShaderProgram createDefaultShader(){
+        String vertexShader =
+        String.join("\n",
+        "attribute vec3 " + ShaderProgram.POSITION_ATTRIBUTE + ";",
+        "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";",
+        "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;",
+        "uniform mat3 u_projTrans;",
+        "varying vec4 v_color;",
+        "varying vec2 v_texCoords;",
+        "",
+        "void main(){",
+        "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";",
+        "   v_color.a = v_color.a * (255.0/254.0);",
+        "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;",
+        "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";",
+        "}"
+        );
+        String fragmentShader = "#ifdef GL_ES\n" //
+        + "#define LOWP lowp\n" //
+        + "precision mediump float;\n" //
+        + "#else\n" //
+        + "#define LOWP \n" //
+        + "#endif\n" //
+        + "varying LOWP vec4 v_color;\n" //
+        + "varying vec2 v_texCoords;\n" //
+        + "uniform sampler2D u_texture;\n" //
+        + "void main()\n"//
+        + "{\n" //
+        + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+        + "}";
+
+        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+        if(!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        return shader;
+    }
+
     public BatchRect draw(){
         if(rectAmount >= rects.size) rects.add(new BatchRect());
-        BatchRect rect = rects.get(rectAmount ++);
+        BatchRect rect = rects.get(rectAmount++);
         rect.reset();
         return rect;
     }
 
-    /**Sets whether or not to sort draw calls by their Z. Default is false.*/
+    /** Sets whether or not to sort draw calls by their Z. Default is false. */
     public void setSort(boolean sort){
         this.sort = sort;
     }
@@ -286,7 +319,7 @@ public class SpriteBatch implements Disposable{
                 int verticesLength = vertices.length;
                 int remainingVertices = verticesLength;
                 remainingVertices -= idx;
-                if (remainingVertices == 0) {
+                if(remainingVertices == 0){
                     render(idx, blending, rect.region.texture);
                     idx = 0;
                     remainingVertices = verticesLength;
@@ -296,7 +329,7 @@ public class SpriteBatch implements Disposable{
                 System.arraycopy(rect.vertices, offset, vertices, idx, copyCount);
                 idx += copyCount;
                 count -= copyCount;
-                while (count > 0) {
+                while(count > 0){
                     offset += copyCount;
                     render(idx, blending, rect.region.texture);
                     idx = 0;
@@ -344,12 +377,12 @@ public class SpriteBatch implements Disposable{
         return projectionMatrix;
     }
 
-    public Matrix3 getTransform(){
-        return transformMatrix;
-    }
-
     public void setProjection(Matrix3 projection){
         projectionMatrix.set(projection);
+    }
+
+    public Matrix3 getTransform(){
+        return transformMatrix;
     }
 
     public void setTransform(Matrix3 transform){
@@ -367,10 +400,6 @@ public class SpriteBatch implements Disposable{
         }
     }
 
-    public void setShader(ShaderProgram shader){
-        customShader = shader;
-    }
-
     public ShaderProgram getShader(){
         if(customShader == null){
             return shader;
@@ -378,7 +407,11 @@ public class SpriteBatch implements Disposable{
         return customShader;
     }
 
-    /**@return Whether there are still pending draw requests.*/
+    public void setShader(ShaderProgram shader){
+        customShader = shader;
+    }
+
+    /** @return Whether there are still pending draw requests. */
     public boolean needsFlush(){
         return rectAmount > 0;
     }
@@ -389,43 +422,6 @@ public class SpriteBatch implements Disposable{
         if(ownsShader && shader != null) shader.dispose();
     }
 
-    /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
-    public static ShaderProgram createDefaultShader(){
-        String vertexShader =
-        String.join("\n",
-        "attribute vec3 " + ShaderProgram.POSITION_ATTRIBUTE + ";",
-        "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";",
-        "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;",
-        "uniform mat3 u_projTrans;",
-        "varying vec4 v_color;",
-        "varying vec2 v_texCoords;",
-        "",
-        "void main(){",
-        "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";",
-        "   v_color.a = v_color.a * (255.0/254.0);",
-        "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;",
-        "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";",
-        "}"
-        );
-        String fragmentShader = "#ifdef GL_ES\n" //
-        + "#define LOWP lowp\n" //
-        + "precision mediump float;\n" //
-        + "#else\n" //
-        + "#define LOWP \n" //
-        + "#endif\n" //
-        + "varying LOWP vec4 v_color;\n" //
-        + "varying vec2 v_texCoords;\n" //
-        + "uniform sampler2D u_texture;\n" //
-        + "void main()\n"//
-        + "{\n" //
-        + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
-        + "}";
-
-        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-        if(!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
-        return shader;
-    }
-
     public class BatchRect implements Poolable, Comparable<BatchRect>{
         final TextureRegion region = new TextureRegion();
         float x, y, z, originX, originY, scaleX = 1f, scaleY = 1f, rotation, width, height;
@@ -434,19 +430,19 @@ public class SpriteBatch implements Disposable{
         int voffset, vcount;
         Blending blending = Blending.normal;
 
-        public BatchRect pos(float x, float y) {
+        public BatchRect pos(float x, float y){
             this.x = x;
             this.y = y;
             return this;
         }
 
-        public BatchRect color(Color color) {
+        public BatchRect color(Color color){
             this.color = Color.toFloatBits(color.r * SpriteBatch.this.color.r, color.g * SpriteBatch.this.color.g,
             color.b * SpriteBatch.this.color.b, color.a * SpriteBatch.this.color.a);
             return this;
         }
 
-        public BatchRect set(float x, float y, float w, float h) {
+        public BatchRect set(float x, float y, float w, float h){
             this.width = w;
             this.height = h;
             this.x = x;
@@ -454,40 +450,40 @@ public class SpriteBatch implements Disposable{
             return this;
         }
 
-        public BatchRect size(float w, float h) {
+        public BatchRect size(float w, float h){
             this.width = w;
             this.height = h;
             return this;
         }
 
-        public BatchRect origin(float x, float y) {
+        public BatchRect origin(float x, float y){
             this.originX = x;
             this.originY = y;
             return this;
         }
 
-        public BatchRect scl(float x, float y) {
+        public BatchRect scl(float x, float y){
             this.scaleX = x;
             this.scaleY = y;
             return this;
         }
 
-        public BatchRect rot(float rot) {
+        public BatchRect rot(float rot){
             this.rotation = rot;
             return this;
         }
 
-        public BatchRect tex(String name) {
+        public BatchRect tex(String name){
             this.region.set(Core.atlas.find(name));
             return this;
         }
 
-        public BatchRect tex(Texture tex) {
+        public BatchRect tex(Texture tex){
             this.region.set(tex);
             return this;
         }
 
-        public BatchRect tex(TextureRegion region) {
+        public BatchRect tex(TextureRegion region){
             this.region.set(region);
             return this;
         }

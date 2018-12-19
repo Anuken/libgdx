@@ -27,11 +27,11 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 /** @author Tomski **/
 public class FileTextureArrayData implements TextureArrayData{
 
+    boolean useMipMaps;
     private TextureData[] textureDatas;
     private boolean prepared;
     private Pixmap.Format format;
     private int depth;
-    boolean useMipMaps;
 
     public FileTextureArrayData(Pixmap.Format format, boolean useMipMaps, FileHandle[] files){
         this.format = format;

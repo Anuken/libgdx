@@ -1,6 +1,6 @@
 package com.badlogic.gdx.graphics;
 
-/**Specific blending modes.*/
+/** Specific blending modes. */
 public enum Blending{
     normal(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
     additive(GL20.GL_SRC_ALPHA, GL20.GL_ONE);

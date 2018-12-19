@@ -17,32 +17,35 @@
 apply from: "gradle/dependencies.gradle"
 
 
-allprojects {
+allprojects{
     group = 'com.badlogicgames.gdx'
-    version = '1.9.9-SNAPSHOT'
+    version = '2.0'
 
-    buildscript {
-        repositories {
+    buildscript{
+        repositories{
             mavenCentral()
             jcenter()
-            maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+            maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
             google()
         }
     }
 
-    repositories {
+    repositories{
         mavenCentral()
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
     }
 }
 
-configure(subprojects - project(":tests:gdx-tests-android")){
+configure(subprojects){
     apply plugin: "idea"
     apply plugin: "java"
 
-    compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileJava{
         options.fork = true
         options.incremental = true
     }

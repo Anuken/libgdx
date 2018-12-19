@@ -20,7 +20,6 @@ import com.badlogic.gdx.scene.Action;
 
 /**
  * Sets the actor's {@link Element#visible(boolean) visibility}.
- *
  * @author Nathan Sweet
  */
 public class VisibleAction extends Action{

@@ -27,9 +27,9 @@ public class AndroidClipboard implements Clipboard{
 
     public AndroidClipboard(Context context){
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
-            clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard = (android.text.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         }else{
-            honeycombClipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            honeycombClipboard = (android.content.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         }
     }
 

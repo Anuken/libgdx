@@ -45,7 +45,6 @@ import static com.badlogic.gdx.Core.graphics;
  * <p>
  * The preferred size of a SplitPane is that of the child widgets and the size of the {@link SplitPaneStyle#handle}. The widgets
  * are sized depending on the SplitPane size and the {@link #setSplitAmount(float) split position}.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -179,9 +178,9 @@ public class SplitPane extends WidgetGroup{
     @Override
     public float getPrefWidth(){
         float first = firstWidget == null ? 0
-                : (firstWidget instanceof Layout ? firstWidget.getPrefWidth() : firstWidget.getWidth());
+        : (firstWidget instanceof Layout ? firstWidget.getPrefWidth() : firstWidget.getWidth());
         float second = secondWidget == null ? 0
-                : (secondWidget instanceof Layout ? secondWidget.getPrefWidth() : secondWidget.getWidth());
+        : (secondWidget instanceof Layout ? secondWidget.getPrefWidth() : secondWidget.getWidth());
         if(vertical) return Math.max(first, second);
         return first + style.handle.getMinWidth() + second;
     }
@@ -189,9 +188,9 @@ public class SplitPane extends WidgetGroup{
     @Override
     public float getPrefHeight(){
         float first = firstWidget == null ? 0
-                : (firstWidget instanceof Layout ? firstWidget.getPrefHeight() : firstWidget.getHeight());
+        : (firstWidget instanceof Layout ? firstWidget.getPrefHeight() : firstWidget.getHeight());
         float second = secondWidget == null ? 0
-                : (secondWidget instanceof Layout ? secondWidget.getPrefHeight() : secondWidget.getHeight());
+        : (secondWidget instanceof Layout ? secondWidget.getPrefHeight() : secondWidget.getHeight());
         if(!vertical) return Math.max(first, second);
         return first + style.handle.getMinHeight() + second;
     }
@@ -227,7 +226,7 @@ public class SplitPane extends WidgetGroup{
         float height = getHeight();
 
         float availWidth = getWidth() - handle.getMinWidth();
-        float leftAreaWidth = (int) (availWidth * splitAmount);
+        float leftAreaWidth = (int)(availWidth * splitAmount);
         float rightAreaWidth = availWidth - leftAreaWidth;
         float handleWidth = handle.getMinWidth();
 
@@ -243,7 +242,7 @@ public class SplitPane extends WidgetGroup{
         float height = getHeight();
 
         float availHeight = height - handle.getMinHeight();
-        float topAreaHeight = (int) (availHeight * splitAmount);
+        float topAreaHeight = (int)(availHeight * splitAmount);
         float bottomAreaHeight = availHeight - topAreaHeight;
         float handleHeight = handle.getMinHeight();
 
@@ -402,7 +401,6 @@ public class SplitPane extends WidgetGroup{
 
     /**
      * The style for a splitpane, see {@link SplitPane}.
-     *
      * @author mzechner
      * @author Nathan Sweet
      */

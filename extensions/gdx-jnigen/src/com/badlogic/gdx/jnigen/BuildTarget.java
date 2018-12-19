@@ -21,11 +21,6 @@ package com.badlogic.gdx.jnigen;
  * create Ant build files that invoke the compiler toolchain to create the shared libraries.
  */
 public class BuildTarget{
-    /** The target operating system of a build target. */
-    public enum TargetOs{
-        Windows, Linux, MacOsX, Android, IOS
-    }
-
     /** the target operating system **/
     public BuildTarget.TargetOs os;
     /** whether this is a 64-bit build, not used for Android **/
@@ -65,7 +60,6 @@ public class BuildTarget{
      * E.g. "lib{sharedLibName}64.so"
      **/
     public String libName;
-
     /** Creates a new build target. See members of this class for a description of the parameters. */
     public BuildTarget(BuildTarget.TargetOs targetType, boolean is64Bit, String[] cIncludes, String[] cExcludes,
                        String[] cppIncludes, String[] cppExcludes, String[] headerDirs, String compilerPrefix, String cFlags, String cppFlags,
@@ -165,5 +159,10 @@ public class BuildTarget{
         }
 
         throw new RuntimeException("Unknown target type");
+    }
+
+    /** The target operating system of a build target. */
+    public enum TargetOs{
+        Windows, Linux, MacOsX, Android, IOS
     }
 }

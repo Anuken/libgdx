@@ -38,7 +38,6 @@ import static com.badlogic.gdx.Core.graphics;
  * <p>
  * {@link ChangeEvent} is fired when the touchpad knob is moved. Cancelling the event will move the knob to where it was
  * previously.
- *
  * @author Josh Street
  */
 public class Touchpad extends Element{
@@ -240,7 +239,6 @@ public class Touchpad extends Element{
 
     /**
      * The style for a {@link Touchpad}.
-     *
      * @author Josh Street
      */
     public static class TouchpadStyle{

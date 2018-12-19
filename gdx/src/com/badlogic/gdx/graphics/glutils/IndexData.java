@@ -22,7 +22,6 @@ import java.nio.ShortBuffer;
 
 /**
  * An IndexData instance holds index data. Can be either a plain short buffer or an OpenGL buffer object.
- *
  * @author mzechner
  */
 public interface IndexData extends Disposable{
@@ -41,7 +40,6 @@ public interface IndexData extends Disposable{
      * <p>
      * This can be called in between calls to {@link #bind()} and {@link #unbind()}. The index data will be updated instantly.
      * </p>
-     *
      * @param indices the index data
      * @param offset the offset to start copying the data from
      * @param count the number of shorts to copy
@@ -53,14 +51,12 @@ public interface IndexData extends Disposable{
      * current {@link ShortBuffer#position()} of the specified buffer and copied the {@link ShortBuffer#remaining()} amount of
      * indices. This can be called in between calls to {@link #bind()} and {@link #unbind()}. The index data will be updated
      * instantly.
-     *
      * @param indices the index data to copy
      */
     void setIndices(ShortBuffer indices);
 
     /**
      * Update (a portion of) the indices.
-     *
      * @param targetOffset offset in indices buffer
      * @param indices the index data
      * @param offset the offset to start copying the data from
@@ -73,7 +69,6 @@ public interface IndexData extends Disposable{
      * Returns the underlying ShortBuffer. If you modify the buffer contents they wil be uploaded on the call to {@link #bind()}.
      * If you need immediate uploading use {@link #setIndices(short[], int, int)}.
      * </p>
-     *
      * @return the underlying short buffer.
      */
     ShortBuffer getBuffer();

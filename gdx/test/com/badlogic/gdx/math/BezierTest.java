@@ -1,8 +1,8 @@
 package com.badlogic.gdx.math;
 
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.math.geom.Bezier;
 import com.badlogic.gdx.math.geom.Vector2;
-import com.badlogic.gdx.collection.Array;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,10 +19,12 @@ public class BezierTest{
 
     private static float epsilon = Float.MIN_NORMAL;
     private static float epsilonApprimations = 1e-6f;
-
-    private enum ImportType{
-        LibGDXArrays, JavaArrays, JavaVarArgs
-    }
+    @Parameter(0)
+    public ImportType type;
+    /** use constructor or setter */
+    @Parameter(1)
+    public boolean useSetter;
+    private Bezier<Vector2> bezier;
 
     @Parameters(name = "use setter {0} imported type {1}")
     public static Collection<Object[]> parameters(){
@@ -33,16 +35,6 @@ public class BezierTest{
         }
         return parameters;
     }
-
-    @Parameter(0)
-    public ImportType type;
-
-    /** use constructor or setter */
-    @Parameter(1)
-    public boolean useSetter;
-
-
-    private Bezier<Vector2> bezier;
 
     @Before
     public void setup(){
@@ -92,5 +84,9 @@ public class BezierTest{
 
         float l = bezier.locate(new Vector2(.5f, .5f));
         Assert.assertEquals(.5f, t, epsilon);
+    }
+
+    private enum ImportType{
+        LibGDXArrays, JavaArrays, JavaVarArgs
     }
 }

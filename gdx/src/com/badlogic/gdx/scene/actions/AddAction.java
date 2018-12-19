@@ -20,7 +20,6 @@ import com.badlogic.gdx.scene.Action;
 
 /**
  * Adds an action to an actor.
- *
  * @author Nathan Sweet
  */
 public class AddAction extends Action{

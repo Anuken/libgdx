@@ -41,7 +41,6 @@ import static com.badlogic.gdx.Core.scene;
  * <p>
  * The preferred size of a window is the preferred size of the title text and the children as laid out by the table. After adding
  * children to the window, it can be convenient to call {@link #pack()} to size the window to the size of the children.
- *
  * @author Nathan Sweet
  */
 public class Window extends Table{
@@ -249,7 +248,7 @@ public class Window extends Table{
             stageToLocalCoordinates(tmpPosition.set(0, 0));
             stageToLocalCoordinates(tmpSize.set(stage.getWidth(), stage.getHeight()));
             drawStageBackground(getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x,
-                    getY() + tmpSize.y);
+            getY() + tmpSize.y);
         }
 
         super.draw();
@@ -357,7 +356,6 @@ public class Window extends Table{
 
     /**
      * The style for a window, see {@link Window}.
-     *
      * @author Nathan Sweet
      */
     static public class WindowStyle extends Style{

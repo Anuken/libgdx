@@ -19,27 +19,27 @@ public class Settings{
     protected ObjectMap<String, Object> defaults = new ObjectMap<>();
     protected ObjectMap<String, Object> values = new ObjectMap<>();
 
-    public void setAppName(String name){
-        appName = name;
-    }
-
     public String getAppName(){
         return appName;
     }
 
-    /**Loads all values and keybinds.*/
+    public void setAppName(String name){
+        appName = name;
+    }
+
+    /** Loads all values and keybinds. */
     public void load(){
         keybinds.save();
         saveValues();
     }
 
-    /**Saves all values and keybinds.*/
+    /** Saves all values and keybinds. */
     public void save(){
         loadValues();
         keybinds.load();
     }
 
-    /**Loads a settings file into {@link values} using the specified appName.*/
+    /** Loads a settings file into {@link values} using the specified appName. */
     public void loadValues(){
         FileHandle file = getSettingsFile();
 
@@ -78,7 +78,7 @@ public class Settings{
         }
     }
 
-    /**Saves all entries from {@link values} into the correct location.*/
+    /** Saves all entries from {@link values} into the correct location. */
     public void saveValues(){
         FileHandle file = getSettingsFile();
 
@@ -92,23 +92,23 @@ public class Settings{
 
                 if(value instanceof Boolean){
                     stream.writeByte(TYPE_BOOL);
-                    stream.writeBoolean((Boolean) value);
+                    stream.writeBoolean((Boolean)value);
                 }else if(value instanceof Integer){
                     stream.writeByte(TYPE_INT);
-                    stream.writeInt((Integer) value);
+                    stream.writeInt((Integer)value);
                 }else if(value instanceof Long){
                     stream.writeByte(TYPE_LONG);
-                    stream.writeLong((Long) value);
+                    stream.writeLong((Long)value);
                 }else if(value instanceof Float){
                     stream.writeByte(TYPE_FLOAT);
-                    stream.writeFloat((Float) value);
+                    stream.writeFloat((Float)value);
                 }else if(value instanceof String){
                     stream.writeByte(TYPE_STRING);
-                    stream.writeUTF((String) value);
+                    stream.writeUTF((String)value);
                 }else if(value instanceof byte[]){
                     stream.writeByte(TYPE_BINARY);
-                    stream.writeInt(((byte[]) value).length);
-                    stream.write((byte[]) value);
+                    stream.writeInt(((byte[])value).length);
+                    stream.write((byte[])value);
                 }
             }
         }catch(IOException e){
@@ -116,30 +116,32 @@ public class Settings{
         }
     }
 
-    /**Returns the file used for writing settings to. Not available on all platforms!*/
+    /** Returns the file used for writing settings to. Not available on all platforms! */
     public FileHandle getSettingsFile(){
         return getDataDirectory().child("settings.bin");
     }
 
-    /**Sets the settings file where everything is written to.*/
-    public void setDataDirectory(FileHandle file){
-        this.dataDirectory = file;
-    }
-
-    /**Returns the directory where all settings and data is placed.*/
+    /** Returns the directory where all settings and data is placed. */
     public FileHandle getDataDirectory(){
         return dataDirectory == null ? Core.files.absolute(OS.getAppDataDirectoryString(appName)) : dataDirectory;
     }
 
-    /**Set up a list of defaults values.
-     * Format: name1, default1, name2, default2, etc*/
+    /** Sets the settings file where everything is written to. */
+    public void setDataDirectory(FileHandle file){
+        this.dataDirectory = file;
+    }
+
+    /**
+     * Set up a list of defaults values.
+     * Format: name1, default1, name2, default2, etc
+     */
     public void defaults(Object... objects){
         for(int i = 0; i < objects.length; i += 2){
-            defaults.put((String) objects[i], objects[i + 1]);
+            defaults.put((String)objects[i], objects[i + 1]);
         }
     }
 
-    /**Clears all prefence values.*/
+    /** Clears all prefence values. */
     public void clear(){
         values.clear();
     }
@@ -192,10 +194,10 @@ public class Settings{
         return getString(name, (String)defaults.get(name, null));
     }
 
-    /**Stores an object in the preference map.*/
+    /** Stores an object in the preference map. */
     public void put(String name, Object object){
         if(object instanceof Float || object instanceof Integer || object instanceof Boolean
-            || object instanceof String || object instanceof byte[]){
+        || object instanceof String || object instanceof byte[]){
             values.put(name, object);
         }else{
             throw new IllegalArgumentException("Invalid object stored: " + object);

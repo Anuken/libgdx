@@ -260,7 +260,7 @@ public class QueueTest{
         queue.addLast(1337);
 
         Integer i = queue.first();
-        assertEquals(1337, (int) i);
+        assertEquals(1337, (int)i);
     }
 
     @Test

@@ -24,7 +24,6 @@ import java.util.Arrays;
 /**
  * A resizable, ordered or unordered short array. Avoids the boxing that occurs with ArrayList<Short>. If unordered, this class
  * avoids a memory copy when removing elements (the last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class ShortArray{
@@ -75,7 +74,6 @@ public class ShortArray{
     /**
      * Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
      * subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -85,22 +83,27 @@ public class ShortArray{
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
+    /** @see #ShortArray(short[]) */
+    static public ShortArray with(short... array){
+        return new ShortArray(array);
+    }
+
     /** Casts the specified value to short and adds it. */
     public void add(int value){
         short[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
-        items[size++] = (short) value;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = (short)value;
     }
 
     public void add(short value){
         short[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(short value1, short value2){
         short[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -108,7 +111,7 @@ public class ShortArray{
 
     public void add(short value1, short value2, short value3){
         short[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -117,7 +120,7 @@ public class ShortArray{
 
     public void add(short value1, short value2, short value3, short value4){
         short[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -142,7 +145,7 @@ public class ShortArray{
     public void addAll(short[] array, int offset, int length){
         short[] items = this.items;
         int sizeNeeded = size + length;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, offset, items, size, length);
         size += length;
     }
@@ -170,7 +173,7 @@ public class ShortArray{
     public void insert(int index, short value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         short[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -252,7 +255,6 @@ public class ShortArray{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @return true if this array was modified.
      */
     public boolean removeAll(ShortArray array){
@@ -300,7 +302,6 @@ public class ShortArray{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public short[] shrink(){
@@ -311,7 +312,6 @@ public class ShortArray{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public short[] ensureCapacity(int additionalCapacity){
@@ -324,7 +324,6 @@ public class ShortArray{
 
     /**
      * Sets the array size, leaving any values beyond the current size undefined.
-     *
      * @return {@link #items}
      */
     public short[] setSize(int newSize){
@@ -399,7 +398,7 @@ public class ShortArray{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof ShortArray)) return false;
-        ShortArray array = (ShortArray) object;
+        ShortArray array = (ShortArray)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -434,10 +433,5 @@ public class ShortArray{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #ShortArray(short[]) */
-    static public ShortArray with(short... array){
-        return new ShortArray(array);
     }
 }

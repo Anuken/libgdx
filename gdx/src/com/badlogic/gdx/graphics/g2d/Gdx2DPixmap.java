@@ -39,6 +39,66 @@ public class Gdx2DPixmap implements Disposable{
 
     public static final int GDX2D_BLEND_NONE = 0;
     public static final int GDX2D_BLEND_SRC_OVER = 1;
+    long basePtr;
+    int width;
+    int height;
+    int format;
+    ByteBuffer pixelPtr;
+    long[] nativeData = new long[4];
+    public Gdx2DPixmap(byte[] encodedData, int offset, int len, int requestedFormat) throws IOException{
+        pixelPtr = load(nativeData, encodedData, offset, len);
+        if(pixelPtr == null) throw new IOException("Error loading pixmap: " + getFailureReason());
+
+        basePtr = nativeData[0];
+        width = (int)nativeData[1];
+        height = (int)nativeData[2];
+        format = (int)nativeData[3];
+
+        if(requestedFormat != 0 && requestedFormat != format){
+            convert(requestedFormat);
+        }
+    }
+    public Gdx2DPixmap(InputStream in, int requestedFormat) throws IOException{
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream(1024);
+        byte[] buffer = new byte[1024];
+        int readBytes = 0;
+
+        while((readBytes = in.read(buffer)) != -1){
+            bytes.write(buffer, 0, readBytes);
+        }
+
+        buffer = bytes.toByteArray();
+        pixelPtr = load(nativeData, buffer, 0, buffer.length);
+        if(pixelPtr == null) throw new IOException("Error loading pixmap: " + getFailureReason());
+
+        basePtr = nativeData[0];
+        width = (int)nativeData[1];
+        height = (int)nativeData[2];
+        format = (int)nativeData[3];
+
+        if(requestedFormat != 0 && requestedFormat != format){
+            convert(requestedFormat);
+        }
+    }
+
+    /** @throws GdxRuntimeException if allocation failed. */
+    public Gdx2DPixmap(int width, int height, int format) throws GdxRuntimeException{
+        pixelPtr = newPixmap(nativeData, width, height, format);
+        if(pixelPtr == null) throw new GdxRuntimeException("Error loading pixmap.");
+
+        this.basePtr = nativeData[0];
+        this.width = (int)nativeData[1];
+        this.height = (int)nativeData[2];
+        this.format = (int)nativeData[3];
+    }
+
+    public Gdx2DPixmap(ByteBuffer pixelPtr, long[] nativeData){
+        this.pixelPtr = pixelPtr;
+        this.basePtr = nativeData[0];
+        this.width = (int)nativeData[1];
+        this.height = (int)nativeData[2];
+        this.format = (int)nativeData[3];
+    }
 
     public static int toGlFormat(int format){
         switch(format){
@@ -73,139 +133,6 @@ public class Gdx2DPixmap implements Disposable{
         }
     }
 
-    long basePtr;
-    int width;
-    int height;
-    int format;
-    ByteBuffer pixelPtr;
-    long[] nativeData = new long[4];
-
-    public Gdx2DPixmap(byte[] encodedData, int offset, int len, int requestedFormat) throws IOException{
-        pixelPtr = load(nativeData, encodedData, offset, len);
-        if(pixelPtr == null) throw new IOException("Error loading pixmap: " + getFailureReason());
-
-        basePtr = nativeData[0];
-        width = (int) nativeData[1];
-        height = (int) nativeData[2];
-        format = (int) nativeData[3];
-
-        if(requestedFormat != 0 && requestedFormat != format){
-            convert(requestedFormat);
-        }
-    }
-
-    public Gdx2DPixmap(InputStream in, int requestedFormat) throws IOException{
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream(1024);
-        byte[] buffer = new byte[1024];
-        int readBytes = 0;
-
-        while((readBytes = in.read(buffer)) != -1){
-            bytes.write(buffer, 0, readBytes);
-        }
-
-        buffer = bytes.toByteArray();
-        pixelPtr = load(nativeData, buffer, 0, buffer.length);
-        if(pixelPtr == null) throw new IOException("Error loading pixmap: " + getFailureReason());
-
-        basePtr = nativeData[0];
-        width = (int) nativeData[1];
-        height = (int) nativeData[2];
-        format = (int) nativeData[3];
-
-        if(requestedFormat != 0 && requestedFormat != format){
-            convert(requestedFormat);
-        }
-    }
-
-    /** @throws GdxRuntimeException if allocation failed. */
-    public Gdx2DPixmap(int width, int height, int format) throws GdxRuntimeException{
-        pixelPtr = newPixmap(nativeData, width, height, format);
-        if(pixelPtr == null) throw new GdxRuntimeException("Error loading pixmap.");
-
-        this.basePtr = nativeData[0];
-        this.width = (int) nativeData[1];
-        this.height = (int) nativeData[2];
-        this.format = (int) nativeData[3];
-    }
-
-    public Gdx2DPixmap(ByteBuffer pixelPtr, long[] nativeData){
-        this.pixelPtr = pixelPtr;
-        this.basePtr = nativeData[0];
-        this.width = (int) nativeData[1];
-        this.height = (int) nativeData[2];
-        this.format = (int) nativeData[3];
-    }
-
-    private void convert(int requestedFormat){
-        Gdx2DPixmap pixmap = new Gdx2DPixmap(width, height, requestedFormat);
-        pixmap.drawPixmap(this, 0, 0, 0, 0, width, height);
-        dispose();
-        this.basePtr = pixmap.basePtr;
-        this.format = pixmap.format;
-        this.height = pixmap.height;
-        this.nativeData = pixmap.nativeData;
-        this.pixelPtr = pixmap.pixelPtr;
-        this.width = pixmap.width;
-    }
-
-    @Override
-    public void dispose(){
-        free(basePtr);
-    }
-
-    public void clear(int color){
-        clear(basePtr, color);
-    }
-
-    public void setPixel(int x, int y, int color){
-        setPixel(basePtr, x, y, color);
-    }
-
-    public int getPixel(int x, int y){
-        return getPixel(basePtr, x, y);
-    }
-
-    public void drawLine(int x, int y, int x2, int y2, int color){
-        drawLine(basePtr, x, y, x2, y2, color);
-    }
-
-    public void drawRect(int x, int y, int width, int height, int color){
-        drawRect(basePtr, x, y, width, height, color);
-    }
-
-    public void drawCircle(int x, int y, int radius, int color){
-        drawCircle(basePtr, x, y, radius, color);
-    }
-
-    public void fillRect(int x, int y, int width, int height, int color){
-        fillRect(basePtr, x, y, width, height, color);
-    }
-
-    public void fillCircle(int x, int y, int radius, int color){
-        fillCircle(basePtr, x, y, radius, color);
-    }
-
-    public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color){
-        fillTriangle(basePtr, x1, y1, x2, y2, x3, y3, color);
-    }
-
-    public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height){
-        drawPixmap(src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height);
-    }
-
-    public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth,
-                           int dstHeight){
-        drawPixmap(src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
-    }
-
-    public void setBlend(int blend){
-        setBlend(basePtr, blend);
-    }
-
-    public void setScale(int scale){
-        setScale(basePtr, scale);
-    }
-
     public static Gdx2DPixmap newPixmap(InputStream in, int requestedFormat){
         try{
             return new Gdx2DPixmap(in, requestedFormat);
@@ -221,59 +148,6 @@ public class Gdx2DPixmap implements Disposable{
             return null;
         }
     }
-
-    public ByteBuffer getPixels(){
-        return pixelPtr;
-    }
-
-    public int getHeight(){
-        return height;
-    }
-
-    public int getWidth(){
-        return width;
-    }
-
-    public int getFormat(){
-        return format;
-    }
-
-    public int getGLInternalFormat(){
-        return toGlFormat(format);
-    }
-
-    public int getGLFormat(){
-        return getGLInternalFormat();
-    }
-
-    public int getGLType(){
-        return toGlType(format);
-    }
-
-    public String getFormatString(){
-        switch(format){
-            case GDX2D_FORMAT_ALPHA:
-                return "alpha";
-            case GDX2D_FORMAT_LUMINANCE_ALPHA:
-                return "luminance alpha";
-            case GDX2D_FORMAT_RGB888:
-                return "rgb888";
-            case GDX2D_FORMAT_RGBA8888:
-                return "rgba8888";
-            case GDX2D_FORMAT_RGB565:
-                return "rgb565";
-            case GDX2D_FORMAT_RGBA4444:
-                return "rgba4444";
-            default:
-                return "unknown";
-        }
-    }
-
-    // @off
-	/*JNI
-	#include <gdx2d/gdx2d.h>
-	#include <stdlib.h>
-	 */
 
     private static native ByteBuffer load(long[] nativeData, byte[] buffer, int offset, int len); /*MANUAL
 		const unsigned char* p_buffer = (const unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
@@ -366,4 +240,127 @@ public class Gdx2DPixmap implements Disposable{
     public static native String getFailureReason(); /*
      return env->NewStringUTF(gdx2d_get_failure_reason());
 	 */
+
+    private void convert(int requestedFormat){
+        Gdx2DPixmap pixmap = new Gdx2DPixmap(width, height, requestedFormat);
+        pixmap.drawPixmap(this, 0, 0, 0, 0, width, height);
+        dispose();
+        this.basePtr = pixmap.basePtr;
+        this.format = pixmap.format;
+        this.height = pixmap.height;
+        this.nativeData = pixmap.nativeData;
+        this.pixelPtr = pixmap.pixelPtr;
+        this.width = pixmap.width;
+    }
+
+    @Override
+    public void dispose(){
+        free(basePtr);
+    }
+
+    public void clear(int color){
+        clear(basePtr, color);
+    }
+
+    public void setPixel(int x, int y, int color){
+        setPixel(basePtr, x, y, color);
+    }
+
+    public int getPixel(int x, int y){
+        return getPixel(basePtr, x, y);
+    }
+
+    public void drawLine(int x, int y, int x2, int y2, int color){
+        drawLine(basePtr, x, y, x2, y2, color);
+    }
+
+    public void drawRect(int x, int y, int width, int height, int color){
+        drawRect(basePtr, x, y, width, height, color);
+    }
+
+    // @off
+	/*JNI
+	#include <gdx2d/gdx2d.h>
+	#include <stdlib.h>
+	 */
+
+    public void drawCircle(int x, int y, int radius, int color){
+        drawCircle(basePtr, x, y, radius, color);
+    }
+
+    public void fillRect(int x, int y, int width, int height, int color){
+        fillRect(basePtr, x, y, width, height, color);
+    }
+
+    public void fillCircle(int x, int y, int radius, int color){
+        fillCircle(basePtr, x, y, radius, color);
+    }
+
+    public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color){
+        fillTriangle(basePtr, x1, y1, x2, y2, x3, y3, color);
+    }
+
+    public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height){
+        drawPixmap(src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height);
+    }
+
+    public void drawPixmap(Gdx2DPixmap src, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth,
+                           int dstHeight){
+        drawPixmap(src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
+    }
+
+    public void setBlend(int blend){
+        setBlend(basePtr, blend);
+    }
+
+    public void setScale(int scale){
+        setScale(basePtr, scale);
+    }
+
+    public ByteBuffer getPixels(){
+        return pixelPtr;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public int getFormat(){
+        return format;
+    }
+
+    public int getGLInternalFormat(){
+        return toGlFormat(format);
+    }
+
+    public int getGLFormat(){
+        return getGLInternalFormat();
+    }
+
+    public int getGLType(){
+        return toGlType(format);
+    }
+
+    public String getFormatString(){
+        switch(format){
+            case GDX2D_FORMAT_ALPHA:
+                return "alpha";
+            case GDX2D_FORMAT_LUMINANCE_ALPHA:
+                return "luminance alpha";
+            case GDX2D_FORMAT_RGB888:
+                return "rgb888";
+            case GDX2D_FORMAT_RGBA8888:
+                return "rgba8888";
+            case GDX2D_FORMAT_RGB565:
+                return "rgb565";
+            case GDX2D_FORMAT_RGBA4444:
+                return "rgba4444";
+            default:
+                return "unknown";
+        }
+    }
 }

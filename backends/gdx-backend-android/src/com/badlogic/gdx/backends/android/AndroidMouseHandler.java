@@ -23,7 +23,6 @@ import com.badlogic.gdx.backends.android.AndroidInput.TouchEvent;
 
 /**
  * Mouse handler for devices running Android >= 3.1.
- *
  * @author Richard Martin
  */
 public class AndroidMouseHandler{
@@ -43,8 +42,8 @@ public class AndroidMouseHandler{
         synchronized(input){
             switch(action){
                 case MotionEvent.ACTION_HOVER_MOVE:
-                    x = (int) event.getX();
-                    y = (int) event.getY();
+                    x = (int)event.getX();
+                    y = (int)event.getY();
                     if((x != deltaX) || (y != deltaY)){ // Avoid garbage events
                         postTouchEvent(input, TouchEvent.TOUCH_MOVED, x, y, 0, 0, timeStamp);
                         deltaX = x;
@@ -53,8 +52,8 @@ public class AndroidMouseHandler{
                     break;
 
                 case MotionEvent.ACTION_SCROLL:
-                    scrollAmountY = (int) -Math.signum(event.getAxisValue(MotionEvent.AXIS_VSCROLL));
-                    scrollAmountX = (int) -Math.signum(event.getAxisValue(MotionEvent.AXIS_HSCROLL));
+                    scrollAmountY = (int)-Math.signum(event.getAxisValue(MotionEvent.AXIS_VSCROLL));
+                    scrollAmountX = (int)-Math.signum(event.getAxisValue(MotionEvent.AXIS_HSCROLL));
                     postTouchEvent(input, TouchEvent.TOUCH_SCROLLED, 0, 0, scrollAmountX, scrollAmountY, timeStamp);
 
             }

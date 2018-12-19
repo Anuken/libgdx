@@ -53,13 +53,11 @@ import java.util.ArrayList;
  * are available on the system. Mac OS X might have to be treated separately as there are no cross-compilers for it.</p>
  * <p>
  * The generator will also copy the necessary JNI headers to the jni/jni-headers folder for Windows, Linux and Mac OS X.</p>
- *
  * @author mzechner
  */
 public class AntScriptGenerator{
     /**
      * Creates a master build script and one build script for each target to generated native shared libraries.
-     *
      * @param config the {@link BuildConfig}
      * @param targets list of {@link BuildTarget} instances
      */

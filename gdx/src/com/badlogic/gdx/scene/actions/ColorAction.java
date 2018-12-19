@@ -21,7 +21,6 @@ import com.badlogic.gdx.graphics.Color;
 /**
  * Sets the actor's color (or a specified color), from the current to the new color. Note this action transitions from the color
  * at the time the action starts to the specified color.
- *
  * @author Nathan Sweet
  */
 public class ColorAction extends TemporalAction{

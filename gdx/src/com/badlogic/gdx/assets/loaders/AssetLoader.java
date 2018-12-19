@@ -18,12 +18,11 @@ package com.badlogic.gdx.assets.loaders;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  * Abstract base class for asset loaders.
- *
  * @param <T> the class of the asset the loader supports
  * @param <P> the class of the loading parameters the loader supports.
  * @author mzechner
@@ -34,8 +33,6 @@ public abstract class AssetLoader<T, P extends AssetLoaderParameters<T>>{
 
     /**
      * Constructor, sets the {@link FileHandleResolver} to use to resolve the file associated with the asset name.
-     *
-     * @param resolver
      */
     public AssetLoader(FileHandleResolver resolver){
         this.resolver = resolver;
@@ -51,7 +48,6 @@ public abstract class AssetLoader<T, P extends AssetLoaderParameters<T>>{
 
     /**
      * Returns the assets this asset requires to be loaded first. This method may be called on a thread other than the GL thread.
-     *
      * @param fileName name of the asset to load
      * @param file the resolved file to load
      * @param parameter parameters for loading the asset

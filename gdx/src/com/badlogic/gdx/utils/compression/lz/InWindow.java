@@ -6,19 +6,16 @@ import java.io.IOException;
 
 public class InWindow{
     public byte[] _bufferBase; // pointer to buffer with data
+    public int _bufferOffset;
+    public int _blockSize; // Size of Allocated memory block
+    public int _pos; // offset (from _buffer) of curent byte
+    public int _streamPos; // offset (from _buffer) of first not read byte from Stream
     java.io.InputStream _stream;
     int _posLimit; // offset (from _buffer) of first byte when new block reading must be done
     boolean _streamEndWasReached; // if (true) then _streamPos shows real end of stream
-
     int _pointerToLastSafePosition;
-
-    public int _bufferOffset;
-
-    public int _blockSize; // Size of Allocated memory block
-    public int _pos; // offset (from _buffer) of curent byte
     int _keepSizeBefore; // how many BYTEs must be kept in buffer before _pos
     int _keepSizeAfter; // how many BYTEs must be kept buffer after _pos
-    public int _streamPos; // offset (from _buffer) of first not read byte from Stream
 
     public void MoveBlock(){
         int offset = _bufferOffset + _pos - _keepSizeBefore;

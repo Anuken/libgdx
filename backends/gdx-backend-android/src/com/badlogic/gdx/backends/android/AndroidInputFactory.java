@@ -23,7 +23,6 @@ import java.lang.reflect.Constructor;
 
 /**
  * Class that instantiates AndroidInput or AndroidInputThreePlus depending on the SDK level, via reflection.
- *
  * @author mzechner
  */
 public class AndroidInputFactory{
@@ -41,7 +40,7 @@ public class AndroidInputFactory{
             }
             Constructor<?> constructor = clazz.getConstructor(Application.class, Context.class, Object.class,
             AndroidApplicationConfiguration.class);
-            input = (AndroidInput) constructor.newInstance(activity, context, view, config);
+            input = (AndroidInput)constructor.newInstance(activity, context, view, config);
             return input;
         }catch(Exception e){
             throw new RuntimeException("Couldn't construct AndroidInput, this should never happen", e);

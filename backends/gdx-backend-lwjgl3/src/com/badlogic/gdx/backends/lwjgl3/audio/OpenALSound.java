@@ -25,8 +25,8 @@ import static org.lwjgl.openal.AL10.*;
 
 /** @author Nathan Sweet */
 public class OpenALSound implements Sound{
-    private int bufferID = -1;
     private final OpenALAudio audio;
+    private int bufferID = -1;
     private float duration;
 
     public OpenALSound(OpenALAudio audio){
@@ -36,7 +36,7 @@ public class OpenALSound implements Sound{
     void setup(byte[] pcm, int channels, int sampleRate){
         int bytes = pcm.length - (pcm.length % (channels > 1 ? 4 : 2));
         int samples = bytes / (2 * channels);
-        duration = samples / (float) sampleRate;
+        duration = samples / (float)sampleRate;
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(bytes);
         buffer.order(ByteOrder.nativeOrder());

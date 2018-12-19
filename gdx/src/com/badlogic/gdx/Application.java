@@ -22,17 +22,17 @@ import com.badlogic.gdx.utils.Disposable;
 
 public interface Application extends Disposable{
 
-    /**Returns a list of all the application listeners used.*/
+    /** Returns a list of all the application listeners used. */
     Array<ApplicationListener> getListeners();
 
-    /**Adds a new application listener.*/
+    /** Adds a new application listener. */
     default void addListener(ApplicationListener listener){
         synchronized(getListeners()){
             getListeners().add(listener);
         }
     }
 
-    /**Removes an application listener.*/
+    /** Removes an application listener. */
     default void removeListener(ApplicationListener listener){
         synchronized(getListeners()){
             getListeners().remove(listener);
@@ -72,12 +72,7 @@ public interface Application extends Disposable{
      */
     void exit();
 
-    /**Enumeration of possible {@link Application} types*/
-    enum ApplicationType{
-        Android, Desktop, HeadlessDesktop, WebGL, iOS
-    }
-
-    /**Disposes of core resources.*/
+    /** Disposes of core resources. */
     @Override
     default void dispose(){
         if(Core.assets != null){
@@ -94,5 +89,10 @@ public interface Application extends Disposable{
             Core.atlas.dispose();
             Core.atlas = null;
         }
+    }
+
+    /** Enumeration of possible {@link Application} types */
+    enum ApplicationType{
+        Android, Desktop, HeadlessDesktop, WebGL, iOS
     }
 }

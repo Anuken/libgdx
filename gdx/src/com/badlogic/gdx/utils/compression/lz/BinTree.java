@@ -5,19 +5,6 @@ package com.badlogic.gdx.utils.compression.lz;
 import java.io.IOException;
 
 public class BinTree extends InWindow{
-    int _cyclicBufferPos;
-    int _cyclicBufferSize = 0;
-    int _matchMaxLen;
-
-    int[] _son;
-    int[] _hash;
-
-    int _cutValue = 0xFF;
-    int _hashMask;
-    int _hashSizeSum = 0;
-
-    boolean HASH_ARRAY = true;
-
     static final int kHash2Size = 1 << 10;
     static final int kHash3Size = 1 << 16;
     static final int kBT2HashSize = 1 << 16;
@@ -25,7 +12,29 @@ public class BinTree extends InWindow{
     static final int kHash3Offset = kHash2Size;
     static final int kEmptyHashValue = 0;
     static final int kMaxValForNormalize = (1 << 30) - 1;
+    private static final int[] CrcTable = new int[256];
 
+    static{
+        for(int i = 0; i < 256; i++){
+            int r = i;
+            for(int j = 0; j < 8; j++)
+                if((r & 1) != 0)
+                    r = (r >>> 1) ^ 0xEDB88320;
+                else
+                    r >>>= 1;
+            CrcTable[i] = r;
+        }
+    }
+
+    int _cyclicBufferPos;
+    int _cyclicBufferSize = 0;
+    int _matchMaxLen;
+    int[] _son;
+    int[] _hash;
+    int _cutValue = 0xFF;
+    int _hashMask;
+    int _hashSizeSum = 0;
+    boolean HASH_ARRAY = true;
     int kNumHashDirectBytes = 0;
     int kMinMatchCheck = 4;
     int kFixHashSize = kHash2Size + kHash3Size;
@@ -293,19 +302,5 @@ public class BinTree extends InWindow{
 
     public void SetCutValue(int cutValue){
         _cutValue = cutValue;
-    }
-
-    private static final int[] CrcTable = new int[256];
-
-    static{
-        for(int i = 0; i < 256; i++){
-            int r = i;
-            for(int j = 0; j < 8; j++)
-                if((r & 1) != 0)
-                    r = (r >>> 1) ^ 0xEDB88320;
-                else
-                    r >>>= 1;
-            CrcTable[i] = r;
-        }
     }
 }

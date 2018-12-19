@@ -32,7 +32,7 @@ public final class NumberUtils{
      */
     public static int floatToIntColor(float value){
         int intBits = Float.floatToRawIntBits(value);
-        intBits |= (int) ((intBits >>> 24) * (255f / 254f)) << 24;
+        intBits |= (int)((intBits >>> 24) * (255f / 254f)) << 24;
         return intBits;
     }
 

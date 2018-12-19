@@ -30,6 +30,11 @@ public class Decoder{
 
     java.io.InputStream Stream;
 
+    public static void InitBitModels(short[] probs){
+        for(int i = 0; i < probs.length; i++)
+            probs[i] = (kBitModelTotal >>> 1);
+    }
+
     public final void SetStream(java.io.InputStream stream){
         Stream = stream;
     }
@@ -66,7 +71,7 @@ public class Decoder{
         int newBound = (Range >>> kNumBitModelTotalBits) * prob;
         if((Code ^ 0x80000000) < (newBound ^ 0x80000000)){
             Range = newBound;
-            probs[index] = (short) (prob + ((kBitModelTotal - prob) >>> kNumMoveBits));
+            probs[index] = (short)(prob + ((kBitModelTotal - prob) >>> kNumMoveBits));
             if((Range & kTopMask) == 0){
                 Code = (Code << 8) | Stream.read();
                 Range <<= 8;
@@ -75,17 +80,12 @@ public class Decoder{
         }else{
             Range -= newBound;
             Code -= newBound;
-            probs[index] = (short) (prob - ((prob) >>> kNumMoveBits));
+            probs[index] = (short)(prob - ((prob) >>> kNumMoveBits));
             if((Range & kTopMask) == 0){
                 Code = (Code << 8) | Stream.read();
                 Range <<= 8;
             }
             return 1;
         }
-    }
-
-    public static void InitBitModels(short[] probs){
-        for(int i = 0; i < probs.length; i++)
-            probs[i] = (kBitModelTotal >>> 1);
     }
 }

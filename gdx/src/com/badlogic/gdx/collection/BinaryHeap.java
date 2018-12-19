@@ -20,10 +20,9 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 /** @author Nathan Sweet */
 public class BinaryHeap<T extends BinaryHeap.Node>{
-    public int size;
-
-    private Node[] nodes;
     private final boolean isMaxHeap;
+    public int size;
+    private Node[] nodes;
 
     public BinaryHeap(){
         this(16, false);
@@ -55,7 +54,6 @@ public class BinaryHeap<T extends BinaryHeap.Node>{
 
     /**
      * Returns if binary heap contains the provided node.
-     *
      * @param node May be null.
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      */
@@ -72,7 +70,7 @@ public class BinaryHeap<T extends BinaryHeap.Node>{
 
     public T peek(){
         if(size == 0) throw new IllegalStateException("The heap is empty.");
-        return (T) nodes[0];
+        return (T)nodes[0];
     }
 
     public T pop(){
@@ -89,7 +87,7 @@ public class BinaryHeap<T extends BinaryHeap.Node>{
         nodes[index] = nodes[--size];
         nodes[size] = null;
         if(size > 0 && index < size) down(index);
-        return (T) removed;
+        return (T)removed;
     }
 
     /** Returns true if the heap is empty. */
@@ -179,7 +177,7 @@ public class BinaryHeap<T extends BinaryHeap.Node>{
     @Override
     public boolean equals(Object obj){
         if(!(obj instanceof BinaryHeap)) return false;
-        BinaryHeap other = (BinaryHeap) obj;
+        BinaryHeap other = (BinaryHeap)obj;
         if(other.size != size) return false;
         for(int i = 0, n = size; i < n; i++)
             if(other.nodes[i].value != nodes[i].value) return false;

@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils;
 
 /**
  * A bitset, without size limitation, allows comparison via bitwise operators to other bitfields.
- *
  * @author mzechner
  * @author jshapcott
  */
@@ -32,7 +31,6 @@ public class Bits{
     /**
      * Creates a bit set whose initial size is large enough to explicitly represent bits with indices in the range 0 through
      * nbits-1.
-     *
      * @param nbits the initial size of the bit set
      */
     public Bits(int nbits){
@@ -52,7 +50,6 @@ public class Bits{
 
     /**
      * Returns the bit at the given index and clears it in one go.
-     *
      * @param index the index of the bit
      * @return whether the bit was set before invocation
      * @throws ArrayIndexOutOfBoundsException if index < 0
@@ -67,7 +64,6 @@ public class Bits{
 
     /**
      * Returns the bit at the given index and sets it in one go.
-     *
      * @param index the index of the bit
      * @return whether the bit was set before invocation
      * @throws ArrayIndexOutOfBoundsException if index < 0
@@ -132,7 +128,6 @@ public class Bits{
     /**
      * Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if the
      * bitset contains no set bits.
-     *
      * @return the logical size of this bitset
      */
     public int length(){
@@ -224,7 +219,6 @@ public class Bits{
      * Performs a logical <b>AND</b> of this target bit set with the argument bit set. This bit set is modified so that each bit in
      * it has the value true if and only if it both initially had the value true and the corresponding bit in the bit set argument
      * also had the value true.
-     *
      * @param other a bit set
      */
     public void and(Bits other){
@@ -242,7 +236,6 @@ public class Bits{
 
     /**
      * Clears all of the bits in this bit set whose corresponding bit is set in the specified bit set.
-     *
      * @param other a bit set
      */
     public void andNot(Bits other){
@@ -255,7 +248,6 @@ public class Bits{
      * Performs a logical <b>OR</b> of this bit set with the bit set argument. This bit set is modified so that a bit in it has the
      * value true if and only if it either already had the value true or the corresponding bit in the bit set argument has the
      * value true.
-     *
      * @param other a bit set
      */
     public void or(Bits other){
@@ -279,8 +271,6 @@ public class Bits{
      * <li>The bit initially has the value true, and the corresponding bit in the argument has the value false.</li>
      * <li>The bit initially has the value false, and the corresponding bit in the argument has the value true.</li>
      * </ul>
-     *
-     * @param other
      */
     public void xor(Bits other){
         int commonWords = Math.min(bits.length, other.bits.length);
@@ -299,7 +289,6 @@ public class Bits{
 
     /**
      * Returns true if the specified BitSet has any bits set to true that are also set to true in this BitSet.
-     *
      * @param other a bit set
      * @return boolean indicating whether this bit set intersects the specified bit set
      */
@@ -317,7 +306,6 @@ public class Bits{
     /**
      * Returns true if this bit set is a super set of the specified set, i.e. it has all bits set to true that are also set to true
      * in the specified BitSet.
-     *
      * @param other a bit set
      * @return boolean indicating whether this bit set is a super set of the specified set
      */
@@ -345,7 +333,7 @@ public class Bits{
         final int word = length() >>> 6;
         int hash = 0;
         for(int i = 0; word >= i; i++){
-            hash = 127 * hash + (int) (bits[i] ^ (bits[i] >>> 32));
+            hash = 127 * hash + (int)(bits[i] ^ (bits[i] >>> 32));
         }
         return hash;
     }
@@ -359,7 +347,7 @@ public class Bits{
         if(getClass() != obj.getClass())
             return false;
 
-        Bits other = (Bits) obj;
+        Bits other = (Bits)obj;
         long[] otherBits = other.bits;
 
         int commonWords = Math.min(bits.length, otherBits.length);

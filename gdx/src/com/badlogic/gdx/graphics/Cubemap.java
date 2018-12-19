@@ -22,6 +22,7 @@ import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.CubemapLoader.CubemapParameter;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -29,7 +30,6 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.glutils.FacedCubemapData;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.HashMap;
@@ -37,60 +37,11 @@ import java.util.Map;
 
 /**
  * Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
- *
  * @author Xoppa
  */
 public class Cubemap extends GLTexture{
-    private static AssetManager assetManager;
     final static Map<Application, Array<Cubemap>> managedCubemaps = new HashMap<Application, Array<Cubemap>>();
-
-    /** Enum to identify each side of a Cubemap */
-    public enum CubemapSide{
-        /** The positive X and first side of the cubemap */
-        PositiveX(0, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, -1, 0, 1, 0, 0),
-        /** The negative X and second side of the cubemap */
-        NegativeX(1, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, -1, 0, -1, 0, 0),
-        /** The positive Y and third side of the cubemap */
-        PositiveY(2, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 1, 0, 1, 0),
-        /** The negative Y and fourth side of the cubemap */
-        NegativeY(3, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, -1, 0, -1, 0),
-        /** The positive Z and fifth side of the cubemap */
-        PositiveZ(4, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, -1, 0, 0, 0, 1),
-        /** The negative Z and sixth side of the cubemap */
-        NegativeZ(5, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1);
-
-        /** The zero based index of the side in the cubemap */
-        public final int index;
-        /** The OpenGL target (used for glTexImage2D) of the side. */
-        public final int glEnum;
-        /** The up vector to target the side. */
-        public final Vector3 up;
-        /** The direction vector to target the side. */
-        public final Vector3 direction;
-
-        CubemapSide(int index, int glEnum, float upX, float upY, float upZ, float directionX, float directionY, float directionZ){
-            this.index = index;
-            this.glEnum = glEnum;
-            this.up = new Vector3(upX, upY, upZ);
-            this.direction = new Vector3(directionX, directionY, directionZ);
-        }
-
-        /** @return The OpenGL target (used for glTexImage2D) of the side. */
-        public int getGLEnum(){
-            return glEnum;
-        }
-
-        /** @return The up vector of the side. */
-        public Vector3 getUp(Vector3 out){
-            return out.set(up);
-        }
-
-        /** @return The direction vector of the side. */
-        public Vector3 getDirection(Vector3 out){
-            return out.set(direction);
-        }
-    }
-
+    private static AssetManager assetManager;
     protected CubemapData data;
 
     /** Construct a Cubemap based on the given CubemapData. */
@@ -147,60 +98,6 @@ public class Cubemap extends GLTexture{
         vWrap = TextureWrap.ClampToEdge;
         data = new FacedCubemapData(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ);
         load(data);
-    }
-
-    /** Sets the sides of this cubemap to the specified {@link CubemapData}. */
-    public void load(CubemapData data){
-        if(!data.isPrepared()) data.prepare();
-        bind();
-        unsafeSetFilter(minFilter, magFilter, true);
-        unsafeSetWrap(uWrap, vWrap, true);
-        data.consumeCubemapData();
-        Core.gl.glBindTexture(glTarget, 0);
-    }
-
-    public CubemapData getCubemapData(){
-        return data;
-    }
-
-    @Override
-    public boolean isManaged(){
-        return data.isManaged();
-    }
-
-    @Override
-    protected void reload(){
-        if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged Cubemap");
-        glHandle = Core.gl.glGenTexture();
-        load(data);
-    }
-
-    @Override
-    public int getWidth(){
-        return data.getWidth();
-    }
-
-    @Override
-    public int getHeight(){
-        return data.getHeight();
-    }
-
-    @Override
-    public int getDepth(){
-        return 0;
-    }
-
-    /** Disposes all resources associated with the cubemap */
-    @Override
-    public void dispose(){
-        // this is a hack. reason: we have to set the glHandle to 0 for textures that are
-        // reloaded through the asset manager as we first remove (and thus dispose) the texture
-        // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-        // removal from the asset manager.
-        if(glHandle == 0) return;
-        delete();
-        if(data.isManaged())
-            if(managedCubemaps.get(Core.app) != null) managedCubemaps.get(Core.app).removeValue(this, true);
     }
 
     private static void addManagedCubemap(Application app, Cubemap cubemap){
@@ -278,7 +175,6 @@ public class Cubemap extends GLTexture{
      * Sets the {@link AssetManager}. When the context is lost, cubemaps managed by the asset manager are reloaded by the manager
      * on a separate thread (provided that a suitable {@link AssetLoader} is registered with the manager). Cubemaps not managed by
      * the AssetManager are reloaded via the usual means on the rendering thread.
-     *
      * @param manager the asset manager.
      */
     public static void setAssetManager(AssetManager manager){
@@ -299,6 +195,107 @@ public class Cubemap extends GLTexture{
     /** @return the number of managed cubemaps currently loaded */
     public static int getNumManagedCubemaps(){
         return managedCubemaps.get(Core.app).size;
+    }
+
+    /** Sets the sides of this cubemap to the specified {@link CubemapData}. */
+    public void load(CubemapData data){
+        if(!data.isPrepared()) data.prepare();
+        bind();
+        unsafeSetFilter(minFilter, magFilter, true);
+        unsafeSetWrap(uWrap, vWrap, true);
+        data.consumeCubemapData();
+        Core.gl.glBindTexture(glTarget, 0);
+    }
+
+    public CubemapData getCubemapData(){
+        return data;
+    }
+
+    @Override
+    public boolean isManaged(){
+        return data.isManaged();
+    }
+
+    @Override
+    protected void reload(){
+        if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged Cubemap");
+        glHandle = Core.gl.glGenTexture();
+        load(data);
+    }
+
+    @Override
+    public int getWidth(){
+        return data.getWidth();
+    }
+
+    @Override
+    public int getHeight(){
+        return data.getHeight();
+    }
+
+    @Override
+    public int getDepth(){
+        return 0;
+    }
+
+    /** Disposes all resources associated with the cubemap */
+    @Override
+    public void dispose(){
+        // this is a hack. reason: we have to set the glHandle to 0 for textures that are
+        // reloaded through the asset manager as we first remove (and thus dispose) the texture
+        // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
+        // removal from the asset manager.
+        if(glHandle == 0) return;
+        delete();
+        if(data.isManaged())
+            if(managedCubemaps.get(Core.app) != null) managedCubemaps.get(Core.app).removeValue(this, true);
+    }
+
+    /** Enum to identify each side of a Cubemap */
+    public enum CubemapSide{
+        /** The positive X and first side of the cubemap */
+        PositiveX(0, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, -1, 0, 1, 0, 0),
+        /** The negative X and second side of the cubemap */
+        NegativeX(1, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, -1, 0, -1, 0, 0),
+        /** The positive Y and third side of the cubemap */
+        PositiveY(2, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 1, 0, 1, 0),
+        /** The negative Y and fourth side of the cubemap */
+        NegativeY(3, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, -1, 0, -1, 0),
+        /** The positive Z and fifth side of the cubemap */
+        PositiveZ(4, GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, -1, 0, 0, 0, 1),
+        /** The negative Z and sixth side of the cubemap */
+        NegativeZ(5, GL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1);
+
+        /** The zero based index of the side in the cubemap */
+        public final int index;
+        /** The OpenGL target (used for glTexImage2D) of the side. */
+        public final int glEnum;
+        /** The up vector to target the side. */
+        public final Vector3 up;
+        /** The direction vector to target the side. */
+        public final Vector3 direction;
+
+        CubemapSide(int index, int glEnum, float upX, float upY, float upZ, float directionX, float directionY, float directionZ){
+            this.index = index;
+            this.glEnum = glEnum;
+            this.up = new Vector3(upX, upY, upZ);
+            this.direction = new Vector3(directionX, directionY, directionZ);
+        }
+
+        /** @return The OpenGL target (used for glTexImage2D) of the side. */
+        public int getGLEnum(){
+            return glEnum;
+        }
+
+        /** @return The up vector of the side. */
+        public Vector3 getUp(Vector3 out){
+            return out.set(up);
+        }
+
+        /** @return The direction vector of the side. */
+        public Vector3 getDirection(Vector3 out){
+            return out.set(direction);
+        }
     }
 
 }

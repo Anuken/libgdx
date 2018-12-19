@@ -2,7 +2,7 @@ package com.badlogic.gdx.input;
 
 import com.badlogic.gdx.KeyBinds.KeybindValue;
 
-/** Enum for storing input codes of mouse, keyboard and controllers.*/
+/** Enum for storing input codes of mouse, keyboard and controllers. */
 public enum KeyCode implements KeybindValue{
     //controller general
     CONTROLLER_A(KeyType.controller, "A"),
@@ -27,7 +27,7 @@ public enum KeyCode implements KeybindValue{
     CONTROLLER_L_STICK_VERTICAL_AXIS(KeyType.controller, "L Stick Y Axis", true),
     CONTROLLER_L_STICK_HORIZONTAL_AXIS(KeyType.controller, "L Stick X Axis", true),
     CONTROLLER_R_STICK_VERTICAL_AXIS(KeyType.controller, "R Stick Y Axis", true),
-    CONTROLLER_R_STICK_HORIZONTAL_AXIS(KeyType.controller,"R Stick X Axis", true),
+    CONTROLLER_R_STICK_HORIZONTAL_AXIS(KeyType.controller, "R Stick X Axis", true),
     //mouse
     MOUSE_LEFT(KeyType.mouse, "Mouse Left"),
     MOUSE_RIGHT(KeyType.mouse, "Mouse Right"),
@@ -61,7 +61,7 @@ public enum KeyCode implements KeybindValue{
     CAMERA(KeyType.key, "Camera"),
     CLEAR(KeyType.key, "Clear"),
     COMMA(KeyType.key, ","),
-    D(KeyType.key,  "D"),
+    D(KeyType.key, "D"),
     DEL(KeyType.key, "Delete"),
     BACKSPACE(KeyType.key, "Delete"),
     FORWARD_DEL(KeyType.key, "Forward Delete"),
@@ -194,11 +194,10 @@ public enum KeyCode implements KeybindValue{
     F12(KeyType.key, "F12"),
     UNSET(KeyType.key, "Unset");
 
+    public static final KeyCode[] all = values();
     public final KeyType type;
     public final String value;
     public final boolean axis;
-
-    public static final KeyCode[] all = values();
 
     KeyCode(KeyType type, String value){
         this(type, value, false);
@@ -210,14 +209,14 @@ public enum KeyCode implements KeybindValue{
         this.axis = axis;
     }
 
-    @Override
-    public String toString(){
-        return value;
-    }
-
     public static KeyCode byOrdinal(int id){
         if(id < 0 || id >= all.length) throw new ArrayIndexOutOfBoundsException("Invalid key code: " + id);
         return all[id];
+    }
+
+    @Override
+    public String toString(){
+        return value;
     }
 
     public enum KeyType{

@@ -29,7 +29,6 @@ import java.nio.ByteBuffer;
 /**
  * Class with static helper methods that provide access to the default OpenGL FrameBuffer. These methods can be used to get the
  * entire screen content or a portion thereof.
- *
  * @author espitz
  */
 public final class ScreenUtils{
@@ -52,7 +51,6 @@ public final class ScreenUtils{
      * {@link Format}. It can be accessed via {@link TextureRegion#getTexture}. This texture is not managed and has to be reloaded
      * manually on a context loss. If the width and height specified are larger than the framebuffer dimensions, the Texture will
      * be padded accordingly. Pixels that fall outside of the current screen will have RGBA values of 0.
-     *
      * @param x the x position of the framebuffer contents to capture
      * @param y the y position of the framebuffer contents to capture
      * @param w the width of the framebuffer contents to capture
@@ -88,7 +86,6 @@ public final class ScreenUtils{
      * always contain RGBA8888 data. Because of differences in screen and image origins the framebuffer contents should be flipped
      * along the Y axis if you intend save them to disk as a bitmap. Flipping is not a cheap operation, so use this functionality
      * wisely.
-     *
      * @param flipY whether to flip pixels along Y axis
      */
     public static byte[] getFrameBufferPixels(boolean flipY){
@@ -104,7 +101,6 @@ public final class ScreenUtils{
      * screen will have RGBA values of 0. Because of differences in screen and image origins the framebuffer contents should be
      * flipped along the Y axis if you intend save them to disk as a bitmap. Flipping is not a cheap operation, so use this
      * functionality wisely.
-     *
      * @param flipY whether to flip pixels along Y axis
      */
     public static byte[] getFrameBufferPixels(int x, int y, int w, int h, boolean flipY){

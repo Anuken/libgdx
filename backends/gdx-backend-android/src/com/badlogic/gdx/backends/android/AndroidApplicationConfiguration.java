@@ -27,7 +27,6 @@ import com.badlogic.gdx.backends.android.surfaceview.ResolutionStrategy;
 /**
  * Class defining the configuration of an {@link AndroidApplication}. Allows you to disable the use of the accelerometer to save
  * battery among other things.
- *
  * @author mzechner
  */
 public class AndroidApplicationConfiguration{
@@ -111,7 +110,6 @@ public class AndroidApplicationConfiguration{
     /**
      * Experimental, whether to enable OpenGL ES 3 if supported. If not supported it will fall-back to OpenGL ES 2.0.
      * When GL ES 3* is enabled, {@link Core#gl30} can be used to access its functionality. Requires at least Android 4.3 (API level 18).
-     *
      * @deprecated this option is currently experimental and not yet fully supported, expect issues.
      */
     @Deprecated

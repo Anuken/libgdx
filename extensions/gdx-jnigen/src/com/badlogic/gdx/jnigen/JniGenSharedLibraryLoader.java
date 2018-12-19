@@ -16,7 +16,6 @@
 
 package com.badlogic.gdx.jnigen;
 
-import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.CRC32;
@@ -28,7 +27,6 @@ import java.util.zip.ZipFile;
  * in the classpath, for Android projects put the shared libraries in the libs/armeabi and libs/armeabi-v7a folders.
  * <p>
  * See {@link AntScriptGenerator}.
- *
  * @author mzechner
  */
 public class JniGenSharedLibraryLoader{
@@ -43,8 +41,6 @@ public class JniGenSharedLibraryLoader{
 
     /**
      * Fetches the natives from the given natives jar file. Used for testing a shared lib on the fly, see MyJniClass.
-     *
-     * @param nativesJar
      */
     public JniGenSharedLibraryLoader(String nativesJar){
         this.nativesJar = nativesJar;
@@ -52,8 +48,6 @@ public class JniGenSharedLibraryLoader{
 
     /**
      * Fetches the natives from the given natives jar file. Used for testing a shared lib on the fly, see MyJniClass.
-     *
-     * @param nativesJar
      * @param libraryFinder A custom libraryfinder, which enables the use of different dynamic libs naming.
      */
     public JniGenSharedLibraryLoader(String nativesJar, SharedLibraryFinder libraryFinder){
@@ -70,8 +64,6 @@ public class JniGenSharedLibraryLoader{
 
     /**
      * Setting a SharedLibraryFinder enables you to load libraries according to a nondefault natives jar layout or library names.
-     *
-     * @param libraryFinder
      */
     public void setSharedLibraryFinder(SharedLibraryFinder libraryFinder){
         this.libraryFinder = libraryFinder;
@@ -161,8 +153,6 @@ public class JniGenSharedLibraryLoader{
     /**
      * Loads a shared library with the given name for the platform the application is running on. The name should not contain a
      * prefix (e.g. 'lib') or suffix (e.g. '.dll).
-     *
-     * @param sharedLibName
      */
     public synchronized void load(String sharedLibName){
         if(loadedLibraries.contains(sharedLibName)) return;

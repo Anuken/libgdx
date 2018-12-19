@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Sets the actor's rotation from its current value to a relative value.
- *
  * @author Nathan Sweet
  */
 public class RotateByAction extends RelativeTemporalAction{

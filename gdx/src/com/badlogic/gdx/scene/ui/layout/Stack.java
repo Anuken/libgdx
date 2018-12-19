@@ -38,7 +38,6 @@ import com.badlogic.gdx.scene.utils.Layout;
  * <p>
  * The preferred and min size of the stack is the largest preferred and min size of any children. The max size of the stack is the
  * smallest max size of any children.
- *
  * @author Nathan Sweet
  */
 public class Stack extends WidgetGroup{

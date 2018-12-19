@@ -24,7 +24,6 @@ import com.badlogic.gdx.collection.Array;
 
 /**
  * Executes tasks in the future on the main loop thread.
- *
  * @author Nathan Sweet
  */
 public class Timer{
@@ -34,6 +33,11 @@ public class Timer{
 
     static final Object threadLock = new Object();
     static TimerThread thread;
+    final Array<Task> tasks = new Array<>(false, 8);
+
+    public Timer(){
+        start();
+    }
 
     /**
      * Timer instance singleton for general application wide usage. Static methods on {@link Timer} make convenient use of this
@@ -57,10 +61,36 @@ public class Timer{
         }
     }
 
-    final Array<Task> tasks = new Array<>(false, 8);
+    /**
+     * Schedules a task on {@link #instance}.
+     * @see #postTask(Task)
+     */
+    static public Task post(Task task){
+        return instance().postTask(task);
+    }
 
-    public Timer(){
-        start();
+    /**
+     * Schedules a task on {@link #instance}.
+     * @see #scheduleTask(Task, float)
+     */
+    static public Task schedule(Task task, float delaySeconds){
+        return instance().scheduleTask(task, delaySeconds);
+    }
+
+    /**
+     * Schedules a task on {@link #instance}.
+     * @see #scheduleTask(Task, float, float)
+     */
+    static public Task schedule(Task task, float delaySeconds, float intervalSeconds){
+        return instance().scheduleTask(task, delaySeconds, intervalSeconds);
+    }
+
+    /**
+     * Schedules a task on {@link #instance}.
+     * @see #scheduleTask(Task, float, float, int)
+     */
+    static public Task schedule(Task task, float delaySeconds, float intervalSeconds, int repeatCount){
+        return instance().scheduleTask(task, delaySeconds, intervalSeconds, repeatCount);
     }
 
     /** Schedules a task to occur once as soon as possible, but not sooner than the start of the next frame. */
@@ -80,7 +110,6 @@ public class Timer{
 
     /**
      * Schedules a task to occur once after the specified delay and then a number of additional times at the specified interval.
-     *
      * @param repeatCount If negative, the task will repeat forever.
      */
     public Task scheduleTask(Task task, float delaySeconds, float intervalSeconds, int repeatCount){
@@ -88,8 +117,8 @@ public class Timer{
             synchronized(task){
                 if(task.timer != null) throw new IllegalArgumentException("The same task may not be scheduled twice.");
                 task.timer = this;
-                task.executeTimeMillis = System.nanoTime() / 1000000 + (long) (delaySeconds * 1000);
-                task.intervalMillis = (long) (intervalSeconds * 1000);
+                task.executeTimeMillis = System.nanoTime() / 1000000 + (long)(delaySeconds * 1000);
+                task.intervalMillis = (long)(intervalSeconds * 1000);
                 task.repeatCount = repeatCount;
                 tasks.add(task);
             }
@@ -173,44 +202,7 @@ public class Timer{
     }
 
     /**
-     * Schedules a task on {@link #instance}.
-     *
-     * @see #postTask(Task)
-     */
-    static public Task post(Task task){
-        return instance().postTask(task);
-    }
-
-    /**
-     * Schedules a task on {@link #instance}.
-     *
-     * @see #scheduleTask(Task, float)
-     */
-    static public Task schedule(Task task, float delaySeconds){
-        return instance().scheduleTask(task, delaySeconds);
-    }
-
-    /**
-     * Schedules a task on {@link #instance}.
-     *
-     * @see #scheduleTask(Task, float, float)
-     */
-    static public Task schedule(Task task, float delaySeconds, float intervalSeconds){
-        return instance().scheduleTask(task, delaySeconds, intervalSeconds);
-    }
-
-    /**
-     * Schedules a task on {@link #instance}.
-     *
-     * @see #scheduleTask(Task, float, float, int)
-     */
-    static public Task schedule(Task task, float delaySeconds, float intervalSeconds, int repeatCount){
-        return instance().scheduleTask(task, delaySeconds, intervalSeconds, repeatCount);
-    }
-
-    /**
      * Runnable that can be scheduled on a {@link Timer}.
-     *
      * @author Nathan Sweet
      */
     static abstract public class Task implements Runnable{
@@ -272,7 +264,6 @@ public class Timer{
 
     /**
      * Manages a single thread for updating timers. Uses libgdx application events to pause, resume, and dispose the thread.
-     *
      * @author Nathan Sweet
      */
     static class TimerThread implements Runnable, ApplicationListener{

@@ -24,15 +24,14 @@ import javax.microedition.khronos.egl.EGLDisplay;
 /**
  * {@link EGLConfigChooser} implementation for GLES 1.x and 2.0. Let's hope this really works for all devices. Includes MSAA/CSAA
  * config selection if requested. Taken from GLSurfaceView20, heavily modified to accommodate MSAA/CSAA.
- *
  * @author mzechner
  */
 public class GdxEglConfigChooser implements GLSurfaceView.EGLConfigChooser{
-    private static final int EGL_OPENGL_ES2_BIT = 4;
     public static final int EGL_COVERAGE_BUFFERS_NV = 0x30E0;
     public static final int EGL_COVERAGE_SAMPLES_NV = 0x30E1;
+    private static final int EGL_OPENGL_ES2_BIT = 4;
     private static final String TAG = "GdxEglConfigChooser";
-
+    protected final int[] mConfigAttribs;
     protected int mRedSize;
     protected int mGreenSize;
     protected int mBlueSize;
@@ -40,7 +39,6 @@ public class GdxEglConfigChooser implements GLSurfaceView.EGLConfigChooser{
     protected int mDepthSize;
     protected int mStencilSize;
     protected int mNumSamples;
-    protected final int[] mConfigAttribs;
     private int[] mValue = new int[1];
 
     public GdxEglConfigChooser(int r, int g, int b, int a, int depth, int stencil, int numSamples){

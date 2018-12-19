@@ -41,7 +41,6 @@ import com.badlogic.gdx.Input.Peripheral;
  * <p>
  * Since the input mechanism for softkeyboards is a bit complex, we don't directly get key events from the softkeyboard. Instead
  * we intercept calls to the Editable of the invisible TextView which we translate into delete key events and key typed events.
- *
  * @author mzechner
  */
 class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
@@ -55,27 +54,6 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
         this.context = context;
         this.handler = handler;
         this.input = input;
-    }
-
-    Dialog createDialog(){
-        textView = createView(context);
-        textView.setOnKeyListener(this);
-        FrameLayout.LayoutParams textBoxLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-        textView.setLayoutParams(textBoxLayoutParams);
-        textView.setFocusable(true);
-        textView.setFocusableInTouchMode(true);
-        textView.setImeOptions(textView.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-
-        final FrameLayout layout = new FrameLayout(context);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        layout.setLayoutParams(layoutParams);
-        layout.addView(textView);
-        layout.setOnTouchListener(this);
-
-        dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        dialog.setContentView(layout);
-        return dialog;
     }
 
     public static TextView createView(Context context){
@@ -113,6 +91,27 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
         return view;
     }
 
+    Dialog createDialog(){
+        textView = createView(context);
+        textView.setOnKeyListener(this);
+        FrameLayout.LayoutParams textBoxLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        textView.setLayoutParams(textBoxLayoutParams);
+        textView.setFocusable(true);
+        textView.setFocusableInTouchMode(true);
+        textView.setImeOptions(textView.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+
+        final FrameLayout layout = new FrameLayout(context);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        layout.setLayoutParams(layoutParams);
+        layout.addView(textView);
+        layout.setOnTouchListener(this);
+
+        dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setContentView(layout);
+        return dialog;
+    }
+
     public void setVisible(boolean visible){
         if(visible && dialog != null){
             dialog.dismiss();
@@ -129,7 +128,7 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
                         @Override
                         public void run(){
                             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-                            InputMethodManager input = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager input = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                             if(input != null) input.showSoftInput(textView, InputMethodManager.SHOW_FORCED);
                         }
                     });
@@ -159,6 +158,16 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
                 dialog.dismiss();
             }
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent e){
+        return false;
+    }
+
+    @Override
+    public boolean onKey(View view, int keycode, KeyEvent e){
+        return false;
     }
 
     public static class PassThroughEditable implements Editable{
@@ -267,6 +276,11 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
         }
 
         @Override
+        public void setFilters(InputFilter[] filters){
+            Log.d("Editable", "setFilters");
+        }
+
+        @Override
         public Editable insert(int where, CharSequence text){
             Log.d("Editable", "insert: " + text);
             return this;
@@ -289,20 +303,5 @@ class AndroidOnscreenKeyboard implements OnKeyListener, OnTouchListener{
             Log.d("Editable", "replace: " + source);
             return this;
         }
-
-        @Override
-        public void setFilters(InputFilter[] filters){
-            Log.d("Editable", "setFilters");
-        }
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent e){
-        return false;
-    }
-
-    @Override
-    public boolean onKey(View view, int keycode, KeyEvent e){
-        return false;
     }
 }

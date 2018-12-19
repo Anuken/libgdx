@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * An action that has a float, whose value is transitioned over time.
- *
  * @author Nathan Sweet
  */
 public class FloatAction extends TemporalAction{

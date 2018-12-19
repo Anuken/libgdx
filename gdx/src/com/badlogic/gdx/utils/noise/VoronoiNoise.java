@@ -91,13 +91,13 @@ public class VoronoiNoise{
     public static double valueNoise2D(int x, int z, long seed){
         long n = (1619 * x + 6971 * z + 1013 * seed) & 0x7fffffff;
         n = (n >> 13) ^ n;
-        return 1.0 - ((double) ((n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff) / 1073741824.0);
+        return 1.0 - ((double)((n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff) / 1073741824.0);
     }
 
     public static double valueNoise3D(int x, int y, int z, long seed){
         long n = (1619 * x + 31337 * y + 6971 * z + 1013 * seed) & 0x7fffffff;
         n = (n >> 13) ^ n;
-        return 1.0 - ((double) ((n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff) / 1073741824.0);
+        return 1.0 - ((double)((n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff) / 1073741824.0);
     }
 
     private double getDistance(double xDist, double zDist){
@@ -152,8 +152,8 @@ public class VoronoiNoise{
         rnd.setSeed(seed);
         long result = rnd.nextLong();
 
-        int xInt = (x > .0 ? (int) x : (int) x - 1);
-        int zInt = (z > .0 ? (int) z : (int) z - 1);
+        int xInt = (x > .0 ? (int)x : (int)x - 1);
+        int zInt = (z > .0 ? (int)z : (int)z - 1);
 
         double minDist = 32000000.0;
 
@@ -182,8 +182,8 @@ public class VoronoiNoise{
             double zDist = zCandidate - z;
             return getDistance(xDist, zDist);
         }else return (VoronoiNoise.valueNoise2D(
-                (int) (Math.floor(xCandidate)),
-                (int) (Math.floor(zCandidate)), seed));
+        (int)(Math.floor(xCandidate)),
+        (int)(Math.floor(zCandidate)), seed));
     }
 
     public double noise(double x, double y, double z, double frequency){
@@ -194,9 +194,9 @@ public class VoronoiNoise{
         y *= frequency;
         z *= frequency;
 
-        int xInt = (x > .0 ? (int) x : (int) x - 1);
-        int yInt = (y > .0 ? (int) y : (int) y - 1);
-        int zInt = (z > .0 ? (int) z : (int) z - 1);
+        int xInt = (x > .0 ? (int)x : (int)x - 1);
+        int yInt = (y > .0 ? (int)y : (int)y - 1);
+        int zInt = (z > .0 ? (int)z : (int)z - 1);
 
         double minDist = 32000000.0;
 
@@ -239,9 +239,9 @@ public class VoronoiNoise{
 
             return getDistance(xDist, yDist, zDist);
         }else return VoronoiNoise.valueNoise3D(
-                (int) (Math.floor(xCandidate)),
-                (int) (Math.floor(yCandidate)),
-                (int) (Math.floor(zCandidate)), seed);
+        (int)(Math.floor(xCandidate)),
+        (int)(Math.floor(yCandidate)),
+        (int)(Math.floor(zCandidate)), seed);
 
     }
 }

@@ -42,46 +42,11 @@ public class IOSApplication implements Application{
 
     /** The display scale factor (1.0f for normal; 2.0f to use retina coordinates/dimensions). */
     float displayScaleFactor;
-
-    private CGRect lastScreenBounds = null;
-
     Array<ApplicationListener> listeners = new Array<>();
     Array<Runnable> runnables = new Array<>();
     Array<Runnable> executedRunnables = new Array<>();
+    private CGRect lastScreenBounds = null;
 
-
-    public static abstract class Delegate extends UIApplicationDelegateAdapter{
-        private IOSApplication app;
-
-        protected abstract IOSApplication createApplication();
-
-        @Override
-        public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions){
-            application.addStrongRef(this); // Prevent this from being GCed until the ObjC UIApplication is deallocated
-            this.app = createApplication();
-            return app.didFinishLaunching(application, launchOptions);
-        }
-
-        @Override
-        public void didBecomeActive(UIApplication application){
-            app.didBecomeActive(application);
-        }
-
-        @Override
-        public void willEnterForeground(UIApplication application){
-            app.willEnterForeground(application);
-        }
-
-        @Override
-        public void willResignActive(UIApplication application){
-            app.willResignActive(application);
-        }
-
-        @Override
-        public void willTerminate(UIApplication application){
-            app.willTerminate(application);
-        }
-    }
 
     public IOSApplication(ApplicationListener listener, IOSApplicationConfiguration config){
         addListener(listener);
@@ -100,7 +65,7 @@ public class IOSApplication implements Application{
 
         Log.info("[IOSApplication] Running in " + (Bro.IS_64BIT ? "64-bit" : "32-bit") + " mode");
 
-        float scale = (float) (getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen()
+        float scale = (float)(getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen()
         .getScale());
         if(scale >= 2.0f){
             Log.info("[IOSApplication] scale: " + scale);
@@ -162,7 +127,6 @@ public class IOSApplication implements Application{
 
     /**
      * Return the UI view controller of IOSApplication
-     *
      * @return the view controller of IOSApplication
      */
     public UIViewController getUIViewController(){
@@ -171,7 +135,6 @@ public class IOSApplication implements Application{
 
     /**
      * Return the UI Window of IOSApplication
-     *
      * @return the window
      */
     public UIWindow getUIWindow(){
@@ -181,7 +144,6 @@ public class IOSApplication implements Application{
     /**
      * GL View spans whole screen, that is, even under the status bar. iOS can also rotate the screen, which is not handled
      * consistently over iOS versions. This method returns, in pixels, rectangle in which libGDX draws.
-     *
      * @return dimensions of space we draw to, adjusted for device orientation
      */
     protected CGRect getBounds(){
@@ -329,13 +291,13 @@ public class IOSApplication implements Application{
     public Clipboard getClipboard(){
         return new Clipboard(){
             @Override
-            public void setContents(String content){
-                UIPasteboard.getGeneralPasteboard().setString(content);
+            public String getContents(){
+                return UIPasteboard.getGeneralPasteboard().getString();
             }
 
             @Override
-            public String getContents(){
-                return UIPasteboard.getGeneralPasteboard().getString();
+            public void setContents(String content){
+                UIPasteboard.getGeneralPasteboard().setString(content);
             }
         };
     }
@@ -347,10 +309,42 @@ public class IOSApplication implements Application{
 
     /**
      * Add a listener to handle events from the libgdx root view controller
-     *
      * @param listener The {#link IOSViewControllerListener} to add
      */
     public void addViewControllerListener(IOSViewControllerListener listener){
         viewControllerListener = listener;
+    }
+
+    public static abstract class Delegate extends UIApplicationDelegateAdapter{
+        private IOSApplication app;
+
+        protected abstract IOSApplication createApplication();
+
+        @Override
+        public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions){
+            application.addStrongRef(this); // Prevent this from being GCed until the ObjC UIApplication is deallocated
+            this.app = createApplication();
+            return app.didFinishLaunching(application, launchOptions);
+        }
+
+        @Override
+        public void didBecomeActive(UIApplication application){
+            app.didBecomeActive(application);
+        }
+
+        @Override
+        public void willEnterForeground(UIApplication application){
+            app.willEnterForeground(application);
+        }
+
+        @Override
+        public void willResignActive(UIApplication application){
+            app.willResignActive(application);
+        }
+
+        @Override
+        public void willTerminate(UIApplication application){
+            app.willTerminate(application);
+        }
     }
 }

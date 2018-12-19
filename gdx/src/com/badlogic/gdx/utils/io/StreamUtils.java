@@ -72,7 +72,6 @@ public final class StreamUtils{
     /**
      * Copy the data from an {@link InputStream} to a {@link ByteBuffer}, using the specified byte[] as a temporary buffer. The
      * buffer's limit is increased by the number of bytes copied, the position is left unchanged. The stream is not closed.
-     *
      * @param output Must be a direct Buffer with native byte order and the buffer MUST be large enough to hold all the bytes in
      * the stream. No error checking is performed.
      * @return the number of bytes copied.
@@ -95,7 +94,6 @@ public final class StreamUtils{
 
     /**
      * Copy the data from an {@link InputStream} to a byte array. The stream is not closed.
-     *
      * @param estimatedSize Used to allocate the output byte[] to possibly avoid an array copy.
      */
     public static byte[] copyStreamToByteArray(InputStream input, int estimatedSize) throws IOException{
@@ -119,7 +117,6 @@ public final class StreamUtils{
 
     /**
      * Copy the data from an {@link InputStream} to a string using the specified charset.
-     *
      * @param estimatedSize Used to allocate the output buffer to possibly avoid an array copy.
      * @param charset May be null to use the platform's default charset.
      */

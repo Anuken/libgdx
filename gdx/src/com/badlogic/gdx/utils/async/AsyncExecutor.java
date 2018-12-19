@@ -25,7 +25,6 @@ import java.util.concurrent.*;
  * Allows asnynchronous execution of {@link AsyncTask} instances on a separate thread. Needs to be disposed via a call to
  * {@link #dispose()} when no longer used, in which case the executor waits for running tasks to finish. Scheduled but not yet
  * running tasks will not be executed.
- *
  * @author badlogic
  */
 public class AsyncExecutor implements Disposable{
@@ -33,8 +32,6 @@ public class AsyncExecutor implements Disposable{
 
     /**
      * Creates a new AsynchExecutor that allows maxConcurrent {@link Runnable} instances to run in parallel.
-     *
-     * @param maxConcurrent
      */
     public AsyncExecutor(int maxConcurrent){
         executor = Executors.newFixedThreadPool(maxConcurrent, new ThreadFactory(){
@@ -50,7 +47,6 @@ public class AsyncExecutor implements Disposable{
     /**
      * Submits a {@link Runnable} to be executed asynchronously. If maxConcurrent runnables are already running, the runnable will
      * be queued.
-     *
      * @param task the task to execute asynchronously
      */
     public <T> AsyncResult<T> submit(final AsyncTask<T> task){

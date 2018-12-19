@@ -67,28 +67,23 @@ public class IOSMusic implements Music{
     }
 
     @Override
-    public void setLooping(boolean isLooping){
-        track.setNumberOfLoops(isLooping ? -1 : 0);
-    }
-
-    @Override
     public boolean isLooping(){
         return track.getNumberOfLoops() == -1;
     }
 
     @Override
-    public void setVolume(float volume){
-        track.setVolume(volume);
+    public void setLooping(boolean isLooping){
+        track.setNumberOfLoops(isLooping ? -1 : 0);
+    }
+
+    @Override
+    public float getPosition(){
+        return (float)(track.getCurrentTime());
     }
 
     @Override
     public void setPosition(float position){
         track.setCurrentTime(position);
-    }
-
-    @Override
-    public float getPosition(){
-        return (float) (track.getCurrentTime());
     }
 
     @Override
@@ -99,6 +94,11 @@ public class IOSMusic implements Music{
     @Override
     public float getVolume(){
         return track.getVolume();
+    }
+
+    @Override
+    public void setVolume(float volume){
+        track.setVolume(volume);
     }
 
     @Override

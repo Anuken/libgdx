@@ -28,7 +28,7 @@ public class Structs{
 
     public static boolean inBounds(int x, int y, int z, int size, int padding){
         return x >= padding && y >= padding && z >= padding && x < size - padding && y < size - padding
-                && z < size - padding;
+        && z < size - padding;
     }
 
     public static <T> boolean inBounds(int x, int y, int width, int height){

@@ -58,24 +58,20 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * frameBuffer.end(); <br />
  * Cubemap cubemap = frameBuffer.getColorBufferCubemap();
  * </p>
- *
  * @author realitix
  */
 public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
 
-    /** the zero-based index of the active side **/
-    private int currentSide;
-
     /** cubemap sides cache */
     private static final Cubemap.CubemapSide[] cubemapSides = Cubemap.CubemapSide.values();
+    /** the zero-based index of the active side **/
+    private int currentSide;
 
     FrameBufferCubemap(){
     }
 
     /**
      * Creates a GLFrameBuffer from the specifications provided by bufferBuilder
-     *
-     * @param bufferBuilder
      **/
     protected FrameBufferCubemap(GLFrameBufferBuilder<? extends GLFrameBuffer<Cubemap>> bufferBuilder){
         super(bufferBuilder);
@@ -83,11 +79,6 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
 
     /**
      * Creates a new FrameBuffer having the given dimensions and potentially a depth buffer attached.
-     *
-     * @param format
-     * @param width
-     * @param height
-     * @param hasDepth
      */
     public FrameBufferCubemap(Pixmap.Format format, int width, int height, boolean hasDepth){
         this(format, width, height, hasDepth, false);
@@ -95,7 +86,6 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
 
     /**
      * Creates a new FrameBuffer having the given dimensions and potentially a depth and a stencil buffer attached.
-     *
      * @param format the format of the color buffer; according to the OpenGL ES 2.0 spec, only RGB565, RGBA4444 and RGB5_A1 are
      * color-renderable
      * @param width the width of the cubemap in pixels
@@ -168,7 +158,6 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
 
     /**
      * Bind the side, making it active to render on. Should be called in between a call to {@link #begin()} and {@link #end()}.
-     *
      * @param side The side to bind
      */
     protected void bindSide(final Cubemap.CubemapSide side){

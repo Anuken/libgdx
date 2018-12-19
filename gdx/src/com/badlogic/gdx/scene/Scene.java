@@ -44,6 +44,8 @@ import static com.badlogic.gdx.Core.graphics;
 
 
 public class Scene implements InputProcessor, Disposable{
+    public final Skin skin;
+    public final Group root;
     private final Vector2 tempCoords = new Vector2();
     private final Element[] pointerOverActors = new Element[20];
     private final boolean[] pointerTouched = new boolean[20];
@@ -55,9 +57,6 @@ public class Scene implements InputProcessor, Disposable{
     private Element mouseOverActor;
     private Element keyboardFocus, scrollFocus;
     private boolean actionsRequestRendering = true;
-
-    public final Skin skin;
-    public final Group root;
 
     public Scene(Skin skin){
         this.skin = skin;
@@ -100,7 +99,6 @@ public class Scene implements InputProcessor, Disposable{
     /**
      * Calls the {@link Element#act(float)} method on each actor in the stage. Typically called each frame. This method also fires
      * enter and exit events.
-     *
      * @param delta Time in seconds since the last frame.
      */
     public void act(float delta){
@@ -143,7 +141,7 @@ public class Scene implements InputProcessor, Disposable{
         return root.find(pred);
     }
 
-    /** Adds and returns a table. This table will fill the whole scene.*/
+    /** Adds and returns a table. This table will fill the whole scene. */
     public Table table(){
         Table table = new Table();
         table.setFillParent(true);
@@ -151,7 +149,7 @@ public class Scene implements InputProcessor, Disposable{
         return table;
     }
 
-    /** Adds and returns a table. This table will fill the whole scene.*/
+    /** Adds and returns a table. This table will fill the whole scene. */
     public Table table(Consumer<Table> cons){
         Table table = new Table();
         table.setFillParent(true);
@@ -160,7 +158,7 @@ public class Scene implements InputProcessor, Disposable{
         return table;
     }
 
-    /** Adds and returns a table. This table will fill the whole scene.*/
+    /** Adds and returns a table. This table will fill the whole scene. */
     public Table table(String style, Consumer<Table> cons){
         Table table = new Table(style);
         table.setFillParent(true);
@@ -406,7 +404,7 @@ public class Scene implements InputProcessor, Disposable{
         return handled;
     }
 
-    /**Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button.*/
+    /** Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button. */
     public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
         TouchFocus focus = Pools.obtain(TouchFocus.class, TouchFocus::new);
         focus.listenerActor = listenerActor;
@@ -426,7 +424,7 @@ public class Scene implements InputProcessor, Disposable{
         for(int i = touchFocuses.size - 1; i >= 0; i--){
             TouchFocus focus = touchFocuses.get(i);
             if(focus.listener == listener && focus.listenerActor == listenerActor && focus.target == target
-                    && focus.pointer == pointer && focus.button == button){
+            && focus.pointer == pointer && focus.button == button){
                 touchFocuses.removeAt(i);
                 Pools.free(focus);
             }
@@ -435,7 +433,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Cancels touch focus for the specified actor.
-     *
      * @see #cancelTouchFocus()
      */
     public void cancelTouchFocus(Element actor){
@@ -476,7 +473,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Cancels touch focus for all listeners except the specified listener.
-     *
      * @see #cancelTouchFocus()
      */
     public void cancelTouchFocusExcept(EventListener exceptListener, Element exceptActor){
@@ -507,7 +503,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Adds an actor to the root of the stage.
-     *
      * @see Group#addChild(Element)
      */
     public void add(Element actor){
@@ -516,7 +511,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Adds an action to the root of the stage.
-     *
      * @see Group#addAction(Action)
      */
     public void addAction(Action action){
@@ -525,7 +519,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Returns the root's child actors.
-     *
      * @see Group#getChildren()
      */
     public Array<Element> getElements(){
@@ -534,7 +527,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Adds a listener to the root.
-     *
      * @see Element#addListener(EventListener)
      */
     public boolean addListener(EventListener listener){
@@ -543,7 +535,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Removes a listener from the root.
-     *
      * @see Element#removeListener(EventListener)
      */
     public boolean removeListener(EventListener listener){
@@ -552,7 +543,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Adds a capture listener to the root.
-     *
      * @see Element#addCaptureListener(EventListener)
      */
     public boolean addCaptureListener(EventListener listener){
@@ -561,7 +551,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Removes a listener from the root.
-     *
      * @see Element#removeCaptureListener(EventListener)
      */
     public boolean removeCaptureListener(EventListener listener){
@@ -590,7 +579,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Sets the actor that will receive key events.
-     *
      * @param actor May be null.
      * @return true if the unfocus and focus events were not cancelled by a {@link FocusListener}.
      */
@@ -621,7 +609,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Gets the actor that will receive key events.
-     *
      * @return May be null.
      */
     public Element getKeyboardFocus(){
@@ -630,7 +617,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Sets the actor that will receive scroll events.
-     *
      * @param actor May be null.
      * @return true if the unfocus and focus events were not cancelled by a {@link FocusListener}.
      */
@@ -661,7 +647,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Gets the actor that will receive scroll events.
-     *
      * @return May be null.
      */
     public Element getScrollFocus(){
@@ -695,7 +680,6 @@ public class Scene implements InputProcessor, Disposable{
      * Returns the {@link Element} at the specified location in stage coordinates. Hit testing is performed in the order the actors
      * were inserted into the stage, last inserted actors being tested first. To get stage coordinates from screen coordinates, use
      * {@link #screenToStageCoordinates(Vector2)}.
-     *
      * @param touchable If true, the hit detection will respect the {@link Element#touchable(Touchable) touchability}.
      * @return May be null if no actor was hit.
      */
@@ -706,7 +690,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Transforms the screen coordinates to stage coordinates.
-     *
      * @param screenCoords Input screen coordinates and output for resulting stage coordinates.
      */
     public Vector2 screenToStageCoordinates(Vector2 screenCoords){
@@ -716,7 +699,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Transforms the stage coordinates to screen coordinates.
-     *
      * @param stageCoords Input stage coordinates and output for resulting screen coordinates.
      */
     public Vector2 stageToScreenCoordinates(Vector2 stageCoords){
@@ -728,14 +710,13 @@ public class Scene implements InputProcessor, Disposable{
     /**
      * Transforms the coordinates to screen coordinates. The coordinates can be anywhere in the stage since the transform matrix
      * describes how to convert them.
-     *
      * @see Element#localToStageCoordinates(Vector2)
      */
     public Vector2 toScreenCoordinates(Vector2 coords, Matrix3 transformMatrix){
         return viewport.toScreenCoordinates(coords, transformMatrix);
     }
 
-    /**Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.*/
+    /** Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix. */
     public void calculateScissors(Rectangle localRect, Rectangle scissorRect){
         viewport.calculateScissors(graphics.batch().getTransform(), localRect, scissorRect);
         Matrix3 transformMatrix = graphics.batch().getTransform();
@@ -777,7 +758,6 @@ public class Scene implements InputProcessor, Disposable{
 
     /**
      * Internal class for managing touch focus. Public only for GWT.
-     *
      * @author Nathan Sweet
      */
     public static final class TouchFocus implements Poolable{

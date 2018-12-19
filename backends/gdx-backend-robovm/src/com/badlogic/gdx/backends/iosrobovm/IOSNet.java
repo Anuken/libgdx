@@ -23,8 +23,8 @@ import org.robovm.apple.uikit.UIApplication;
 
 public class IOSNet implements Net{
 
-    NetJavaImpl netJavaImpl = new NetJavaImpl();
     final UIApplication uiApp;
+    NetJavaImpl netJavaImpl = new NetJavaImpl();
 
     public IOSNet(IOSApplication app){
         uiApp = app.uiApp;

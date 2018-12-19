@@ -54,9 +54,9 @@ public class Strings{
                     dp[i][j] = i;
                 }else{
                     dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1]
-                                    + (x.charAt(i - 1) == y.charAt(j - 1) ? 0 : 1),
-                            dp[i - 1][j] + 1),
-                            dp[i][j - 1] + 1);
+                    + (x.charAt(i - 1) == y.charAt(j - 1) ? 0 : 1),
+                    dp[i - 1][j] + 1),
+                    dp[i][j - 1] + 1);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class Strings{
     }
 
     public static String animated(float time, int length, float scale, String replacement){
-        return new String(new char[Math.abs((int) (time / scale) % length)]).replace("\0", replacement);
+        return new String(new char[Math.abs((int)(time / scale) % length)]).replace("\0", replacement);
     }
 
     public static String capitalize(String s){
@@ -129,7 +129,7 @@ public class Strings{
     public static String toFixed(double d, int decimalPlaces){
         if(decimalPlaces < 0 || decimalPlaces > 8){
             throw new IllegalArgumentException("Unsupported number of "
-                    + "decimal places: " + decimalPlaces);
+            + "decimal places: " + decimalPlaces);
         }
         String s = "" + Math.round(d * Math.pow(10, decimalPlaces));
         int len = s.length();
@@ -153,24 +153,27 @@ public class Strings{
         return result.toString();
     }
 
-    static public String formatMillis(long val) {
-        java.lang.StringBuilder buf=new java.lang.StringBuilder(20);
-        String sgn="";
+    static public String formatMillis(long val){
+        java.lang.StringBuilder buf = new java.lang.StringBuilder(20);
+        String sgn = "";
 
-        if(val<0) sgn="-"; val = Math.abs(val);
+        if(val < 0) sgn = "-";
+        val = Math.abs(val);
 
-        append(buf,sgn,0,(val/3600000)); val %= 3600000;
-        append(buf,":",2,(val/ 60000)); val %= 60000;
-        append(buf,":",2,(val/1000));
+        append(buf, sgn, 0, (val / 3600000));
+        val %= 3600000;
+        append(buf, ":", 2, (val / 60000));
+        val %= 60000;
+        append(buf, ":", 2, (val / 1000));
         return buf.toString();
     }
 
-    static private void append(java.lang.StringBuilder tgt, String pfx, int dgt, long val) {
+    static private void append(java.lang.StringBuilder tgt, String pfx, int dgt, long val){
         tgt.append(pfx);
-        if(dgt > 1) {
-            int pad=(dgt-1);
-            for(long xa=val; xa>9 && pad>0; xa/=10) pad--;
-            for(int xa=0; xa<pad; xa++) tgt.append('0');
+        if(dgt > 1){
+            int pad = (dgt - 1);
+            for(long xa = val; xa > 9 && pad > 0; xa /= 10) pad--;
+            for(int xa = 0; xa < pad; xa++) tgt.append('0');
         }
         tgt.append(val);
     }

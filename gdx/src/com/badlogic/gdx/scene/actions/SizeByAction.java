@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Moves an actor from its current size to a relative size.
- *
  * @author Nathan Sweet
  */
 public class SizeByAction extends RelativeTemporalAction{

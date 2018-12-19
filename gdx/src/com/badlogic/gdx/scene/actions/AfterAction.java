@@ -22,7 +22,6 @@ import com.badlogic.gdx.scene.Element;
 
 /**
  * Executes an action only after all other actions on the actor at the time this action's target was set have finished.
- *
  * @author Nathan Sweet
  */
 public class AfterAction extends DelegateAction{

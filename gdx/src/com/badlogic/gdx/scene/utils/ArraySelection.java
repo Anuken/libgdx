@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 /**
  * A selection that supports range selection by knowing about the array of items being selected.
- *
  * @author Nathan Sweet
  */
 public class ArraySelection<T> extends Selection<T>{

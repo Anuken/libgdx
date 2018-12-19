@@ -39,17 +39,15 @@ import java.io.Writer;
  * .pop();
  * System.out.println(writer);
  * </pre>
- *
  * @author Nathan Sweet
  */
 //@on
 public class XmlWriter extends Writer{
     private final Writer writer;
     private final Array<String> stack = new Array();
+    public int indent;
     private String currentElement;
     private boolean indentNextClose;
-
-    public int indent;
 
     public XmlWriter(Writer writer){
         this.writer = writer;

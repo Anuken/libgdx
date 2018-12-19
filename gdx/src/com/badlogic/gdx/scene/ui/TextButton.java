@@ -18,17 +18,16 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 import com.badlogic.gdx.scene.ui.layout.Cell;
+import com.badlogic.gdx.utils.Align;
 
 import static com.badlogic.gdx.Core.scene;
 
 /**
  * A button with a child {@link Label} to display text.
- *
  * @author Nathan Sweet
  */
 public class TextButton extends Button{
@@ -61,9 +60,9 @@ public class TextButton extends Button{
         if(style == null) throw new NullPointerException("style cannot be null");
         if(!(style instanceof TextButtonStyle)) throw new IllegalArgumentException("style must be a TextButtonStyle.");
         super.setStyle(style);
-        this.style = (TextButtonStyle) style;
+        this.style = (TextButtonStyle)style;
         if(label != null){
-            TextButtonStyle textButtonStyle = (TextButtonStyle) style;
+            TextButtonStyle textButtonStyle = (TextButtonStyle)style;
             LabelStyle labelStyle = label.getStyle();
             labelStyle.font = textButtonStyle.font;
             labelStyle.fontColor = textButtonStyle.fontColor;
@@ -106,7 +105,6 @@ public class TextButton extends Button{
 
     /**
      * The style for a text button, see {@link TextButton}.
-     *
      * @author Nathan Sweet
      */
     static public class TextButtonStyle extends ButtonStyle{

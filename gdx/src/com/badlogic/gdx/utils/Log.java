@@ -83,6 +83,13 @@ public class Log{
         Log.level = level;
     }
 
+    public enum LogLevel{
+        info,
+        warn,
+        err,
+        none
+    }
+
     public static class LogHandler{
 
         public void info(String text, Object... args){
@@ -104,14 +111,8 @@ public class Log{
 
     public static class NoopLogHandler extends LogHandler{
         @Override
-        public void print(String text, Object... args){}
-    }
-
-    public enum LogLevel{
-        info,
-        warn,
-        err,
-        none
+        public void print(String text, Object... args){
+        }
     }
 
 }

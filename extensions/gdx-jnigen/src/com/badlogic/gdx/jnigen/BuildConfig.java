@@ -24,7 +24,6 @@ package com.badlogic.gdx.jnigen;
  * libs directory is the final output directory where the natives jar and arm shared libraries will be written to.
  * <p>
  * Used with {@link AntScriptGenerator} to generate the build scripts for build targets.
- *
  * @author mzechner
  */
 public class BuildConfig{
@@ -42,7 +41,6 @@ public class BuildConfig{
     /**
      * Creates a new BuildConfig. The build directory, the libs directory and the jni directory are assumed to be "target", "libs"
      * and "jni". All paths are relative to the application's working directory.
-     *
      * @param sharedLibName the shared library name, without prefix or suffix, e.g. 'gdx', 'bullet'
      */
     public BuildConfig(String sharedLibName){
@@ -54,11 +52,7 @@ public class BuildConfig{
 
     /**
      * Creates a new BuildConfig. All paths are relative to the application's working directory.
-     *
      * @param sharedLibName the shared library name, without prefix or suffix, e.g. 'gdx', 'bullet'
-     * @param temporaryDir
-     * @param libsDir
-     * @param jniDir
      */
     public BuildConfig(String sharedLibName, String temporaryDir, String libsDir, String jniDir){
         this.sharedLibName = sharedLibName;

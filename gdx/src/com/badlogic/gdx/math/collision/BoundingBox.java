@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * Encapsulates an axis aligned bounding box represented by a minimum and a maximum Vector. Additionally you can query for the
  * bounding box's center, dimensions and corner points.
- *
  * @author badlogicgames@gmail.com, Xoppa
  */
 public class BoundingBox implements Serializable{
@@ -37,6 +36,36 @@ public class BoundingBox implements Serializable{
 
     private final Vector3 cnt = new Vector3();
     private final Vector3 dim = new Vector3();
+
+    /** Constructs a new bounding box with the minimum and maximum vector set to zeros. */
+    public BoundingBox(){
+        clr();
+    }
+
+    /**
+     * Constructs a new bounding box from the given bounding box.
+     * @param bounds The bounding box to copy
+     */
+    public BoundingBox(BoundingBox bounds){
+        this.set(bounds);
+    }
+
+    /**
+     * Constructs the new bounding box using the given minimum and maximum vector.
+     * @param minimum The minimum vector
+     * @param maximum The maximum vector
+     */
+    public BoundingBox(Vector3 minimum, Vector3 maximum){
+        this.set(minimum, maximum);
+    }
+
+    static final float min(final float a, final float b){
+        return a > b ? b : a;
+    }
+
+    static final float max(final float a, final float b){
+        return a > b ? a : b;
+    }
 
     /**
      * @param out The {@link Vector3} to receive the center of the bounding box.
@@ -126,33 +155,8 @@ public class BoundingBox implements Serializable{
         return out.set(max);
     }
 
-    /** Constructs a new bounding box with the minimum and maximum vector set to zeros. */
-    public BoundingBox(){
-        clr();
-    }
-
-    /**
-     * Constructs a new bounding box from the given bounding box.
-     *
-     * @param bounds The bounding box to copy
-     */
-    public BoundingBox(BoundingBox bounds){
-        this.set(bounds);
-    }
-
-    /**
-     * Constructs the new bounding box using the given minimum and maximum vector.
-     *
-     * @param minimum The minimum vector
-     * @param maximum The maximum vector
-     */
-    public BoundingBox(Vector3 minimum, Vector3 maximum){
-        this.set(minimum, maximum);
-    }
-
     /**
      * Sets the given bounding box.
-     *
      * @param bounds The bounds.
      * @return This bounding box for chaining.
      */
@@ -162,7 +166,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Sets the given minimum and maximum vector.
-     *
      * @param minimum The minimum vector
      * @param maximum The maximum vector
      * @return This bounding box for chaining.
@@ -179,7 +182,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Sets the bounding box minimum and maximum vector from the given points.
-     *
      * @param points The points.
      * @return This bounding box for chaining.
      */
@@ -192,7 +194,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Sets the bounding box minimum and maximum vector from the given points.
-     *
      * @param points The points.
      * @return This bounding box for chaining.
      */
@@ -205,7 +206,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Sets the minimum and maximum vector to positive and negative infinity.
-     *
      * @return This bounding box for chaining.
      */
     public BoundingBox inf(){
@@ -218,7 +218,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Extends the bounding box to incorporate the given {@link Vector3}.
-     *
      * @param point The vector
      * @return This bounding box for chaining.
      */
@@ -229,7 +228,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Sets the minimum and maximum vector to zeros.
-     *
      * @return This bounding box for chaining.
      */
     public BoundingBox clr(){
@@ -238,7 +236,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Returns whether this bounding box is valid. This means that {@link #max} is greater than or equal to {@link #min}.
-     *
      * @return True in case the bounding box is valid, false otherwise
      */
     public boolean isValid(){
@@ -247,7 +244,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Extends this bounding box by the given bounding box.
-     *
      * @param a_bounds The bounding box
      * @return This bounding box for chaining.
      */
@@ -258,7 +254,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Extends this bounding box by the given sphere.
-     *
      * @param center Sphere center
      * @param radius Sphere radius
      * @return This bounding box for chaining.
@@ -270,7 +265,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Returns whether the given bounding box is contained in this bounding box.
-     *
      * @param b The bounding box
      * @return Whether the given bounding box is contained
      */
@@ -281,7 +275,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Returns whether the given bounding box is intersecting this bounding box (at least one point in).
-     *
      * @param b The bounding box
      * @return Whether the given bounding box is intersected
      */
@@ -305,7 +298,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Returns whether the given vector is contained in this bounding box.
-     *
      * @param v The vector
      * @return Whether the vector is contained or not.
      */
@@ -320,7 +312,6 @@ public class BoundingBox implements Serializable{
 
     /**
      * Extends the bounding box by the given vector.
-     *
      * @param x The x-coordinate
      * @param y The y-coordinate
      * @param z The z-coordinate
@@ -328,13 +319,5 @@ public class BoundingBox implements Serializable{
      */
     public BoundingBox ext(float x, float y, float z){
         return this.set(min.set(min(min.x, x), min(min.y, y), min(min.z, z)), max.set(max(max.x, x), max(max.y, y), max(max.z, z)));
-    }
-
-    static final float min(final float a, final float b){
-        return a > b ? b : a;
-    }
-
-    static final float max(final float a, final float b){
-        return a > b ? a : b;
     }
 }

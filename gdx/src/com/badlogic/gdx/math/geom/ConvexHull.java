@@ -22,15 +22,14 @@ import com.badlogic.gdx.collection.ShortArray;
 
 /**
  * Computes the convex hull of a set of points using the monotone chain convex hull algorithm (aka Andrew's algorithm).
- *
  * @author Nathan Sweet
  */
 public class ConvexHull{
     private final IntArray quicksortStack = new IntArray();
-    private float[] sortedPoints;
     private final FloatArray hull = new FloatArray();
     private final IntArray indices = new IntArray();
     private final ShortArray originalIndices = new ShortArray(false, 0);
+    private float[] sortedPoints;
 
     /** @see #computePolygon(float[], int, int, boolean) */
     public FloatArray computePolygon(FloatArray points, boolean sorted){
@@ -46,7 +45,6 @@ public class ConvexHull{
      * same as the first one. */
     /**
      * Returns the convex hull polygon for the given point cloud.
-     *
      * @param points x,y pairs describing points. Duplicate points will result in undefined behavior.
      * @param sorted If false, the points will be sorted by the x coordinate then the y coordinate, which is required by the convex
      * hull algorithm. If sorting is done the input array is not modified and count additional working memory is needed.
@@ -168,7 +166,6 @@ public class ConvexHull{
 
     /**
      * Sorts x,y pairs of values by the x value, then the y value.
-     *
      * @param count Number of indices, must be even.
      */
     private void sort(float[] values, int count){
@@ -228,7 +225,6 @@ public class ConvexHull{
 
     /**
      * Sorts x,y pairs of values by the x value, then the y value and stores unsorted original indices.
-     *
      * @param count Number of indices, must be even.
      */
     private void sortWithIndices(float[] values, int count, boolean yDown){

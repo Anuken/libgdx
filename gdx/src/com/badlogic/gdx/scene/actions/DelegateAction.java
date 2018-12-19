@@ -16,13 +16,12 @@
 
 package com.badlogic.gdx.scene.actions;
 
+import com.badlogic.gdx.scene.Action;
 import com.badlogic.gdx.scene.Element;
 import com.badlogic.gdx.utils.pooling.Pool;
-import com.badlogic.gdx.scene.Action;
 
 /**
  * Base class for an action that wraps another action.
- *
  * @author Nathan Sweet
  */
 abstract public class DelegateAction extends Action{

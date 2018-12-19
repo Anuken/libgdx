@@ -18,7 +18,6 @@ package com.badlogic.gdx;
 
 /**
  * The version of libgdx
- *
  * @author mzechner
  */
 public class Version{

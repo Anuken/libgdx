@@ -17,6 +17,8 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.OrderedMap;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
@@ -26,10 +28,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker.SkylineStrategy.SkylinePage.Row;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.math.geom.Rectangle;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.collection.OrderedMap;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -92,12 +92,12 @@ import java.util.Comparator;
  *
  * packer.dispose();
  * </pre>
- *
  * @author mzechner
  * @author Nathan Sweet
  * @author Rob Rendell
  */
 public class PixmapPacker implements Disposable{
+    final Array<Page> pages = new Array();
     boolean packToTexture;
     boolean disposed;
     int pageWidth, pageHeight;
@@ -107,12 +107,11 @@ public class PixmapPacker implements Disposable{
     boolean stripWhitespaceX, stripWhitespaceY;
     int alphaThreshold;
     Color transparentColor = new Color(0f, 0f, 0f, 0f);
-    final Array<Page> pages = new Array();
     PackStrategy packStrategy;
+    private Color c = new Color();
 
     /**
      * Uses {@link GuillotineStrategy}.
-     *
      * @see PixmapPacker#PixmapPacker(int, int, Format, int, boolean, boolean, boolean, PackStrategy)
      */
     public PixmapPacker(int pageWidth, int pageHeight, Format pageFormat, int padding, boolean duplicateBorder){
@@ -121,7 +120,6 @@ public class PixmapPacker implements Disposable{
 
     /**
      * Uses {@link GuillotineStrategy}.
-     *
      * @see PixmapPacker#PixmapPacker(int, int, Format, int, boolean, boolean, boolean, PackStrategy)
      */
     public PixmapPacker(int pageWidth, int pageHeight, Format pageFormat, int padding, boolean duplicateBorder, PackStrategy packStrategy){
@@ -131,7 +129,6 @@ public class PixmapPacker implements Disposable{
     /**
      * Creates a new ImagePacker which will insert all supplied pixmaps into one or more <code>pageWidth</code> by
      * <code>pageHeight</code> pixmaps using the specified strategy.
-     *
      * @param padding the number of blank pixels to insert between pixmaps.
      * @param duplicateBorder duplicate the border pixels of the inserted images to avoid seams when rendering with bi-linear
      * filtering on.
@@ -160,7 +157,6 @@ public class PixmapPacker implements Disposable{
 
     /**
      * Inserts the pixmap without a name. It cannot be looked up by name.
-     *
      * @see #pack(String, Pixmap)
      */
     public synchronized Rectangle pack(Pixmap image){
@@ -170,7 +166,6 @@ public class PixmapPacker implements Disposable{
     /**
      * Inserts the pixmap. If name was not null, you can later retrieve the image's position in the output image via
      * {@link #getRect(String)}.
-     *
      * @param name If null, the image cannot be looked up by name.
      * @return Rectangle describing the area the pixmap was rendered to.
      * @throws GdxRuntimeException in case the image did not fit due to the page size being too small or providing a duplicate
@@ -267,7 +262,7 @@ public class PixmapPacker implements Disposable{
             page.addedRects.add(name);
         }
 
-        int rectX = (int) rect.x, rectY = (int) rect.y, rectWidth = (int) rect.width, rectHeight = (int) rect.height;
+        int rectX = (int)rect.x, rectY = (int)rect.y, rectWidth = (int)rect.width, rectHeight = (int)rect.height;
 
         if(packToTexture && !duplicateBorder && page.texture != null && !page.dirty){
             page.texture.bind();
@@ -335,7 +330,6 @@ public class PixmapPacker implements Disposable{
 
     /**
      * Returns the index of the page containing the given packed rectangle.
-     *
      * @param name the name of the image
      * @return the index of the page the image is stored in or -1
      */
@@ -383,7 +377,7 @@ public class PixmapPacker implements Disposable{
             if(page.addedRects.size > 0){
                 for(String name : page.addedRects){
                     PixmapPackerRectangle rect = page.rects.get(name);
-                    TextureAtlas.AtlasRegion region = new TextureAtlas.AtlasRegion(page.texture, (int) rect.x, (int) rect.y, (int) rect.width, (int) rect.height);
+                    TextureAtlas.AtlasRegion region = new TextureAtlas.AtlasRegion(page.texture, (int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
 
                     if(rect.splits != null){
                         region.splits = rect.splits;
@@ -394,7 +388,7 @@ public class PixmapPacker implements Disposable{
                     region.name = name;
                     region.index = -1;
                     region.offsetX = rect.offsetX;
-                    region.offsetY = (int) (rect.originalHeight - rect.height - rect.offsetY);
+                    region.offsetY = (int)(rect.originalHeight - rect.height - rect.offsetY);
                     region.originalWidth = rect.originalWidth;
                     region.originalHeight = rect.originalHeight;
 
@@ -476,273 +470,6 @@ public class PixmapPacker implements Disposable{
         this.packToTexture = packToTexture;
     }
 
-    /**
-     * @author mzechner
-     * @author Nathan Sweet
-     * @author Rob Rendell
-     */
-    static public class Page{
-        OrderedMap<String, PixmapPackerRectangle> rects = new OrderedMap();
-        Pixmap image;
-        Texture texture;
-        final Array<String> addedRects = new Array();
-        boolean dirty;
-
-        /** Creates a new page filled with the color provided by the {@link PixmapPacker#getTransparentColor()} */
-        public Page(PixmapPacker packer){
-            image = new Pixmap(packer.pageWidth, packer.pageHeight, packer.pageFormat);
-            final Color transparentColor = packer.getTransparentColor();
-            this.image.setColor(transparentColor);
-            this.image.fill();
-        }
-
-        public Pixmap getPixmap(){
-            return image;
-        }
-
-        public OrderedMap<String, PixmapPackerRectangle> getRects(){
-            return rects;
-        }
-
-        /**
-         * Returns the texture for this page, or null if the texture has not been created.
-         *
-         * @see #updateTexture(TextureFilter, TextureFilter, boolean)
-         */
-        public Texture getTexture(){
-            return texture;
-        }
-
-        /**
-         * Creates the texture if it has not been created, else reuploads the entire page pixmap to the texture if the pixmap has
-         * changed since this method was last called.
-         *
-         * @return true if the texture was created or reuploaded.
-         */
-        public boolean updateTexture(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps){
-            if(texture != null){
-                if(!dirty) return false;
-                texture.load(texture.getTextureData());
-            }else{
-                texture = new Texture(new PixmapTextureData(image, image.getFormat(), useMipMaps, false, true)){
-                    @Override
-                    public void dispose(){
-                        super.dispose();
-                        image.dispose();
-                    }
-                };
-                texture.setFilter(minFilter, magFilter);
-            }
-            dirty = false;
-            return true;
-        }
-    }
-
-    /**
-     * Choose the page and location for each rectangle.
-     *
-     * @author Nathan Sweet
-     */
-    public interface PackStrategy{
-        void sort(Array<Pixmap> images);
-
-        /** Returns the page the rectangle should be placed in and modifies the specified rectangle position. */
-        Page pack(PixmapPacker packer, String name, Rectangle rect);
-    }
-
-    /**
-     * Does bin packing by inserting to the right or below previously packed rectangles. This is good at packing arbitrarily sized
-     * images.
-     *
-     * @author mzechner
-     * @author Nathan Sweet
-     * @author Rob Rendell
-     */
-    static public class GuillotineStrategy implements PackStrategy{
-        Comparator<Pixmap> comparator;
-
-        public void sort(Array<Pixmap> pixmaps){
-            if(comparator == null){
-                comparator = new Comparator<Pixmap>(){
-                    public int compare(Pixmap o1, Pixmap o2){
-                        return Math.max(o1.getWidth(), o1.getHeight()) - Math.max(o2.getWidth(), o2.getHeight());
-                    }
-                };
-            }
-            pixmaps.sort(comparator);
-        }
-
-        public Page pack(PixmapPacker packer, String name, Rectangle rect){
-            GuillotinePage page;
-            if(packer.pages.size == 0){
-                // Add a page if empty.
-                page = new GuillotinePage(packer);
-                packer.pages.add(page);
-            }else{
-                // Always try to pack into the last page.
-                page = (GuillotinePage) packer.pages.peek();
-            }
-
-            int padding = packer.padding;
-            rect.width += padding;
-            rect.height += padding;
-            Node node = insert(page.root, rect);
-            if(node == null){
-                // Didn't fit, pack into a new page.
-                page = new GuillotinePage(packer);
-                packer.pages.add(page);
-                node = insert(page.root, rect);
-            }
-            node.full = true;
-            rect.set(node.rect.x, node.rect.y, node.rect.width - padding, node.rect.height - padding);
-            return page;
-        }
-
-        private Node insert(Node node, Rectangle rect){
-            if(!node.full && node.leftChild != null && node.rightChild != null){
-                Node newNode = insert(node.leftChild, rect);
-                if(newNode == null) newNode = insert(node.rightChild, rect);
-                return newNode;
-            }else{
-                if(node.full) return null;
-                if(node.rect.width == rect.width && node.rect.height == rect.height) return node;
-                if(node.rect.width < rect.width || node.rect.height < rect.height) return null;
-
-                node.leftChild = new Node();
-                node.rightChild = new Node();
-
-                int deltaWidth = (int) node.rect.width - (int) rect.width;
-                int deltaHeight = (int) node.rect.height - (int) rect.height;
-                if(deltaWidth > deltaHeight){
-                    node.leftChild.rect.x = node.rect.x;
-                    node.leftChild.rect.y = node.rect.y;
-                    node.leftChild.rect.width = rect.width;
-                    node.leftChild.rect.height = node.rect.height;
-
-                    node.rightChild.rect.x = node.rect.x + rect.width;
-                    node.rightChild.rect.y = node.rect.y;
-                    node.rightChild.rect.width = node.rect.width - rect.width;
-                    node.rightChild.rect.height = node.rect.height;
-                }else{
-                    node.leftChild.rect.x = node.rect.x;
-                    node.leftChild.rect.y = node.rect.y;
-                    node.leftChild.rect.width = node.rect.width;
-                    node.leftChild.rect.height = rect.height;
-
-                    node.rightChild.rect.x = node.rect.x;
-                    node.rightChild.rect.y = node.rect.y + rect.height;
-                    node.rightChild.rect.width = node.rect.width;
-                    node.rightChild.rect.height = node.rect.height - rect.height;
-                }
-
-                return insert(node.leftChild, rect);
-            }
-        }
-
-        static final class Node{
-            public Node leftChild;
-            public Node rightChild;
-            public final Rectangle rect = new Rectangle();
-            public boolean full;
-        }
-
-        static class GuillotinePage extends Page{
-            Node root;
-
-            public GuillotinePage(PixmapPacker packer){
-                super(packer);
-                root = new Node();
-                root.rect.x = packer.padding;
-                root.rect.y = packer.padding;
-                root.rect.width = packer.pageWidth - packer.padding * 2;
-                root.rect.height = packer.pageHeight - packer.padding * 2;
-            }
-        }
-    }
-
-    /**
-     * Does bin packing by inserting in rows. This is good at packing images that have similar heights.
-     *
-     * @author Nathan Sweet
-     */
-    static public class SkylineStrategy implements PackStrategy{
-        Comparator<Pixmap> comparator;
-
-        public void sort(Array<Pixmap> images){
-            if(comparator == null){
-                comparator = new Comparator<Pixmap>(){
-                    public int compare(Pixmap o1, Pixmap o2){
-                        return o1.getHeight() - o2.getHeight();
-                    }
-                };
-            }
-            images.sort(comparator);
-        }
-
-        public Page pack(PixmapPacker packer, String name, Rectangle rect){
-            int padding = packer.padding;
-            int pageWidth = packer.pageWidth - padding * 2, pageHeight = packer.pageHeight - padding * 2;
-            int rectWidth = (int) rect.width + padding, rectHeight = (int) rect.height + padding;
-            for(int i = 0, n = packer.pages.size; i < n; i++){
-                SkylinePage page = (SkylinePage) packer.pages.get(i);
-                Row bestRow = null;
-                // Fit in any row before the last.
-                for(int ii = 0, nn = page.rows.size - 1; ii < nn; ii++){
-                    Row row = page.rows.get(ii);
-                    if(row.x + rectWidth >= pageWidth) continue;
-                    if(row.y + rectHeight >= pageHeight) continue;
-                    if(rectHeight > row.height) continue;
-                    if(bestRow == null || row.height < bestRow.height) bestRow = row;
-                }
-                if(bestRow == null){
-                    // Fit in last row, increasing height.
-                    Row row = page.rows.peek();
-                    if(row.y + rectHeight >= pageHeight) continue;
-                    if(row.x + rectWidth < pageWidth){
-                        row.height = Math.max(row.height, rectHeight);
-                        bestRow = row;
-                    }else if(row.y + row.height + rectHeight < pageHeight){
-                        // Fit in new row.
-                        bestRow = new Row();
-                        bestRow.y = row.y + row.height;
-                        bestRow.height = rectHeight;
-                        page.rows.add(bestRow);
-                    }
-                }
-                if(bestRow != null){
-                    rect.x = bestRow.x;
-                    rect.y = bestRow.y;
-                    bestRow.x += rectWidth;
-                    return page;
-                }
-            }
-            // Fit in new page.
-            SkylinePage page = new SkylinePage(packer);
-            packer.pages.add(page);
-            Row row = new Row();
-            row.x = padding + rectWidth;
-            row.y = padding;
-            row.height = rectHeight;
-            page.rows.add(row);
-            rect.x = padding;
-            rect.y = padding;
-            return page;
-        }
-
-        static class SkylinePage extends Page{
-            Array<Row> rows = new Array();
-
-            public SkylinePage(PixmapPacker packer){
-                super(packer);
-
-            }
-
-            static class Row{
-                int x, y, height;
-            }
-        }
-    }
-
     /** @see PixmapPacker#setTransparentColor(Color color) */
     public Color getTransparentColor(){
         return this.transparentColor;
@@ -751,7 +478,6 @@ public class PixmapPacker implements Disposable{
     /**
      * Sets the default <code>color</code> of the whole {@link PixmapPacker.Page} when a new one created. Helps to avoid texture
      * bleeding or to highlight the page for debugging.
-     *
      * @see Page#Page(PixmapPacker packer)
      */
     public void setTransparentColor(Color color){
@@ -849,8 +575,6 @@ public class PixmapPacker implements Disposable{
         return pads;
     }
 
-    private Color c = new Color();
-
     private int getSplitPoint(Pixmap raster, int startX, int startY, boolean startPoint, boolean xAxis){
         int[] rgba = new int[4];
 
@@ -868,10 +592,10 @@ public class PixmapPacker implements Disposable{
 
             int colint = raster.getPixel(x, y);
             c.set(colint);
-            rgba[0] = (int) (c.r * 255);
-            rgba[1] = (int) (c.g * 255);
-            rgba[2] = (int) (c.b * 255);
-            rgba[3] = (int) (c.a * 255);
+            rgba[0] = (int)(c.r * 255);
+            rgba[1] = (int)(c.g * 255);
+            rgba[2] = (int)(c.b * 255);
+            rgba[3] = (int)(c.a * 255);
             if(rgba[3] == breakA) return next;
 
             if(!startPoint && (rgba[0] != 0 || rgba[1] != 0 || rgba[2] != 0 || rgba[3] != 255))
@@ -881,6 +605,268 @@ public class PixmapPacker implements Disposable{
         }
 
         return 0;
+    }
+
+    /**
+     * Choose the page and location for each rectangle.
+     * @author Nathan Sweet
+     */
+    public interface PackStrategy{
+        void sort(Array<Pixmap> images);
+
+        /** Returns the page the rectangle should be placed in and modifies the specified rectangle position. */
+        Page pack(PixmapPacker packer, String name, Rectangle rect);
+    }
+
+    /**
+     * @author mzechner
+     * @author Nathan Sweet
+     * @author Rob Rendell
+     */
+    static public class Page{
+        final Array<String> addedRects = new Array();
+        OrderedMap<String, PixmapPackerRectangle> rects = new OrderedMap();
+        Pixmap image;
+        Texture texture;
+        boolean dirty;
+
+        /** Creates a new page filled with the color provided by the {@link PixmapPacker#getTransparentColor()} */
+        public Page(PixmapPacker packer){
+            image = new Pixmap(packer.pageWidth, packer.pageHeight, packer.pageFormat);
+            final Color transparentColor = packer.getTransparentColor();
+            this.image.setColor(transparentColor);
+            this.image.fill();
+        }
+
+        public Pixmap getPixmap(){
+            return image;
+        }
+
+        public OrderedMap<String, PixmapPackerRectangle> getRects(){
+            return rects;
+        }
+
+        /**
+         * Returns the texture for this page, or null if the texture has not been created.
+         * @see #updateTexture(TextureFilter, TextureFilter, boolean)
+         */
+        public Texture getTexture(){
+            return texture;
+        }
+
+        /**
+         * Creates the texture if it has not been created, else reuploads the entire page pixmap to the texture if the pixmap has
+         * changed since this method was last called.
+         * @return true if the texture was created or reuploaded.
+         */
+        public boolean updateTexture(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps){
+            if(texture != null){
+                if(!dirty) return false;
+                texture.load(texture.getTextureData());
+            }else{
+                texture = new Texture(new PixmapTextureData(image, image.getFormat(), useMipMaps, false, true)){
+                    @Override
+                    public void dispose(){
+                        super.dispose();
+                        image.dispose();
+                    }
+                };
+                texture.setFilter(minFilter, magFilter);
+            }
+            dirty = false;
+            return true;
+        }
+    }
+
+    /**
+     * Does bin packing by inserting to the right or below previously packed rectangles. This is good at packing arbitrarily sized
+     * images.
+     * @author mzechner
+     * @author Nathan Sweet
+     * @author Rob Rendell
+     */
+    static public class GuillotineStrategy implements PackStrategy{
+        Comparator<Pixmap> comparator;
+
+        public void sort(Array<Pixmap> pixmaps){
+            if(comparator == null){
+                comparator = new Comparator<Pixmap>(){
+                    public int compare(Pixmap o1, Pixmap o2){
+                        return Math.max(o1.getWidth(), o1.getHeight()) - Math.max(o2.getWidth(), o2.getHeight());
+                    }
+                };
+            }
+            pixmaps.sort(comparator);
+        }
+
+        public Page pack(PixmapPacker packer, String name, Rectangle rect){
+            GuillotinePage page;
+            if(packer.pages.size == 0){
+                // Add a page if empty.
+                page = new GuillotinePage(packer);
+                packer.pages.add(page);
+            }else{
+                // Always try to pack into the last page.
+                page = (GuillotinePage)packer.pages.peek();
+            }
+
+            int padding = packer.padding;
+            rect.width += padding;
+            rect.height += padding;
+            Node node = insert(page.root, rect);
+            if(node == null){
+                // Didn't fit, pack into a new page.
+                page = new GuillotinePage(packer);
+                packer.pages.add(page);
+                node = insert(page.root, rect);
+            }
+            node.full = true;
+            rect.set(node.rect.x, node.rect.y, node.rect.width - padding, node.rect.height - padding);
+            return page;
+        }
+
+        private Node insert(Node node, Rectangle rect){
+            if(!node.full && node.leftChild != null && node.rightChild != null){
+                Node newNode = insert(node.leftChild, rect);
+                if(newNode == null) newNode = insert(node.rightChild, rect);
+                return newNode;
+            }else{
+                if(node.full) return null;
+                if(node.rect.width == rect.width && node.rect.height == rect.height) return node;
+                if(node.rect.width < rect.width || node.rect.height < rect.height) return null;
+
+                node.leftChild = new Node();
+                node.rightChild = new Node();
+
+                int deltaWidth = (int)node.rect.width - (int)rect.width;
+                int deltaHeight = (int)node.rect.height - (int)rect.height;
+                if(deltaWidth > deltaHeight){
+                    node.leftChild.rect.x = node.rect.x;
+                    node.leftChild.rect.y = node.rect.y;
+                    node.leftChild.rect.width = rect.width;
+                    node.leftChild.rect.height = node.rect.height;
+
+                    node.rightChild.rect.x = node.rect.x + rect.width;
+                    node.rightChild.rect.y = node.rect.y;
+                    node.rightChild.rect.width = node.rect.width - rect.width;
+                    node.rightChild.rect.height = node.rect.height;
+                }else{
+                    node.leftChild.rect.x = node.rect.x;
+                    node.leftChild.rect.y = node.rect.y;
+                    node.leftChild.rect.width = node.rect.width;
+                    node.leftChild.rect.height = rect.height;
+
+                    node.rightChild.rect.x = node.rect.x;
+                    node.rightChild.rect.y = node.rect.y + rect.height;
+                    node.rightChild.rect.width = node.rect.width;
+                    node.rightChild.rect.height = node.rect.height - rect.height;
+                }
+
+                return insert(node.leftChild, rect);
+            }
+        }
+
+        static final class Node{
+            public final Rectangle rect = new Rectangle();
+            public Node leftChild;
+            public Node rightChild;
+            public boolean full;
+        }
+
+        static class GuillotinePage extends Page{
+            Node root;
+
+            public GuillotinePage(PixmapPacker packer){
+                super(packer);
+                root = new Node();
+                root.rect.x = packer.padding;
+                root.rect.y = packer.padding;
+                root.rect.width = packer.pageWidth - packer.padding * 2;
+                root.rect.height = packer.pageHeight - packer.padding * 2;
+            }
+        }
+    }
+
+    /**
+     * Does bin packing by inserting in rows. This is good at packing images that have similar heights.
+     * @author Nathan Sweet
+     */
+    static public class SkylineStrategy implements PackStrategy{
+        Comparator<Pixmap> comparator;
+
+        public void sort(Array<Pixmap> images){
+            if(comparator == null){
+                comparator = new Comparator<Pixmap>(){
+                    public int compare(Pixmap o1, Pixmap o2){
+                        return o1.getHeight() - o2.getHeight();
+                    }
+                };
+            }
+            images.sort(comparator);
+        }
+
+        public Page pack(PixmapPacker packer, String name, Rectangle rect){
+            int padding = packer.padding;
+            int pageWidth = packer.pageWidth - padding * 2, pageHeight = packer.pageHeight - padding * 2;
+            int rectWidth = (int)rect.width + padding, rectHeight = (int)rect.height + padding;
+            for(int i = 0, n = packer.pages.size; i < n; i++){
+                SkylinePage page = (SkylinePage)packer.pages.get(i);
+                Row bestRow = null;
+                // Fit in any row before the last.
+                for(int ii = 0, nn = page.rows.size - 1; ii < nn; ii++){
+                    Row row = page.rows.get(ii);
+                    if(row.x + rectWidth >= pageWidth) continue;
+                    if(row.y + rectHeight >= pageHeight) continue;
+                    if(rectHeight > row.height) continue;
+                    if(bestRow == null || row.height < bestRow.height) bestRow = row;
+                }
+                if(bestRow == null){
+                    // Fit in last row, increasing height.
+                    Row row = page.rows.peek();
+                    if(row.y + rectHeight >= pageHeight) continue;
+                    if(row.x + rectWidth < pageWidth){
+                        row.height = Math.max(row.height, rectHeight);
+                        bestRow = row;
+                    }else if(row.y + row.height + rectHeight < pageHeight){
+                        // Fit in new row.
+                        bestRow = new Row();
+                        bestRow.y = row.y + row.height;
+                        bestRow.height = rectHeight;
+                        page.rows.add(bestRow);
+                    }
+                }
+                if(bestRow != null){
+                    rect.x = bestRow.x;
+                    rect.y = bestRow.y;
+                    bestRow.x += rectWidth;
+                    return page;
+                }
+            }
+            // Fit in new page.
+            SkylinePage page = new SkylinePage(packer);
+            packer.pages.add(page);
+            Row row = new Row();
+            row.x = padding + rectWidth;
+            row.y = padding;
+            row.height = rectHeight;
+            page.rows.add(row);
+            rect.x = padding;
+            rect.y = padding;
+            return page;
+        }
+
+        static class SkylinePage extends Page{
+            Array<Row> rows = new Array();
+
+            public SkylinePage(PixmapPacker packer){
+                super(packer);
+
+            }
+
+            static class Row{
+                int x, y, height;
+            }
+        }
     }
 
     public static class PixmapPackerRectangle extends Rectangle{

@@ -120,7 +120,6 @@ public class AndroidFiles implements Files{
     /**
      * This method can be called to set the version code of the APK expansion
      * file(s) used by the application
-     *
      * @param mainVersion - version code of the main expansion file
      * @param patchVersion - version code of the patch expansion file
      * @return true if the APK expansion file could be opened, false otherwise
@@ -129,9 +128,9 @@ public class AndroidFiles implements Files{
         try{
             Context context;
             if(Core.app instanceof Activity){
-                context = ((Activity) Core.app).getBaseContext();
+                context = ((Activity)Core.app).getBaseContext();
             }else if(Core.app instanceof Fragment){
-                context = ((Fragment) Core.app).getActivity().getBaseContext();
+                context = ((Fragment)Core.app).getActivity().getBaseContext();
             }else{
                 throw new GdxRuntimeException("APK expansion not supported for application type");
             }

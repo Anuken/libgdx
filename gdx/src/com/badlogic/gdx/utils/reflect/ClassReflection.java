@@ -20,7 +20,6 @@ import java.lang.reflect.Modifier;
 
 /**
  * Utilities for Class reflection.
- *
  * @author nexsoftware
  */
 public final class ClassReflection{

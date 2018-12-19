@@ -22,7 +22,6 @@ import java.io.InputStream;
 
 /**
  * Extends {@link DataInputStream} with additional convenience methods.
- *
  * @author Nathan Sweet
  */
 public class DataInput extends DataInputStream{
@@ -57,7 +56,6 @@ public class DataInput extends DataInputStream{
 
     /**
      * Reads the length and string of UTF8 characters, or null.
-     *
      * @return May be null.
      */
     public String readString() throws IOException{
@@ -77,7 +75,7 @@ public class DataInput extends DataInputStream{
         while(charIndex < charCount){
             b = read();
             if(b > 127) break;
-            chars[charIndex++] = (char) b;
+            chars[charIndex++] = (char)b;
         }
         // If a char was not ASCII, finish with slow path.
         if(charIndex < charCount) readUtf8_slow(charCount, charIndex, b);
@@ -96,14 +94,14 @@ public class DataInput extends DataInputStream{
                 case 5:
                 case 6:
                 case 7:
-                    chars[charIndex] = (char) b;
+                    chars[charIndex] = (char)b;
                     break;
                 case 12:
                 case 13:
-                    chars[charIndex] = (char) ((b & 0x1F) << 6 | read() & 0x3F);
+                    chars[charIndex] = (char)((b & 0x1F) << 6 | read() & 0x3F);
                     break;
                 case 14:
-                    chars[charIndex] = (char) ((b & 0x0F) << 12 | (read() & 0x3F) << 6 | read() & 0x3F);
+                    chars[charIndex] = (char)((b & 0x0F) << 12 | (read() & 0x3F) << 6 | read() & 0x3F);
                     break;
             }
             if(++charIndex >= charCount) break;

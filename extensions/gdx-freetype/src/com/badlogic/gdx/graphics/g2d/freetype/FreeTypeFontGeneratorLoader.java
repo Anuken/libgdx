@@ -21,8 +21,8 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  * Makes {@link FreeTypeFontGenerator} managable via {@link AssetManager}.
@@ -31,7 +31,6 @@ import com.badlogic.gdx.collection.Array;
  * {@code assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(new InternalFileHandleResolver()))}
  * to register it.
  * </p>
- *
  * @author Daniel Holderbaum
  */
 public class FreeTypeFontGeneratorLoader extends

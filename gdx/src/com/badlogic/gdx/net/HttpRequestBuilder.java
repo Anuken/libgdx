@@ -17,9 +17,9 @@
 package com.badlogic.gdx.net;
 
 import com.badlogic.gdx.Net.HttpRequest;
+import com.badlogic.gdx.utils.pooling.Pools;
 import com.badlogic.gdx.utils.serialization.Base64Coder;
 import com.badlogic.gdx.utils.serialization.Json;
-import com.badlogic.gdx.utils.pooling.Pools;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -30,7 +30,6 @@ import java.util.Map;
  * Make sure to call {@link #newRequest()} first, then set the request up and obtain it via {@link #build()} when you are done.
  * <p>
  * It also offers a few utility methods to deal with content encoding and HTTP headers.
- *
  * @author Daniel Holderbaum
  */
 public class HttpRequestBuilder{
@@ -66,7 +65,6 @@ public class HttpRequestBuilder{
 
     /**
      * The {@link #baseUrl} will automatically be added as a prefix to the given URL.
-     *
      * @see HttpRequest#setUrl(String)
      */
     public HttpRequestBuilder url(String url){
@@ -77,7 +75,6 @@ public class HttpRequestBuilder{
 
     /**
      * If this method is not called, the {@link #defaultTimeout} will be used.
-     *
      * @see HttpRequest#setTimeOut(int)
      */
     public HttpRequestBuilder timeout(int timeOut){

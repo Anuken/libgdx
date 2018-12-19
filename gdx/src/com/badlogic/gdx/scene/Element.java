@@ -27,35 +27,31 @@ public class Element implements Layout{
     private final DelayedRemovalArray<EventListener> listeners = new DelayedRemovalArray<>(0);
     private final DelayedRemovalArray<EventListener> captureListeners = new DelayedRemovalArray<>(0);
     private final Array<Action> actions = new Array<>(0);
-    
+
     /** DO NOT modify without calling positionChanged. */
     protected float x, y;
     /** DO NOT modify without calling sizeChanged. */
     protected float width, height;
-    /**Alpha value of the parent. Should be multiplied with the actor's alpha, allowing a parent's alpha to affect all children.*/
+    /** Alpha value of the parent. Should be multiplied with the actor's alpha, allowing a parent's alpha to affect all children. */
     protected float parentAlpha = 1f;
-
+    protected Vector2 translation = new Vector2(0, 0);
     Group parent;
     float originX, originY;
     float scaleX = 1, scaleY = 1;
     float rotation;
-
     private Scene stage;
     private String name;
     private Touchable touchable = Touchable.enabled;
     private boolean visible = true;
     private Object userObject;
-
     private boolean needsLayout = true;
     private boolean fillParent;
     private boolean layoutEnabled = true;
-
-    protected Vector2 translation = new Vector2(0, 0);
     private BooleanProvider visibility;
     private Runnable update;
     private Supplier<Touchable> touchableSupplier = null;
 
-    /**Draws the element. Does nothing by default.*/
+    /** Draws the element. Does nothing by default. */
     public void draw(){
         validate();
     }
@@ -64,7 +60,6 @@ public class Element implements Layout{
      * Updates the actor based on time. Typically this is called each frame by {@link Scene#act(float)}.
      * <p>
      * The default implementation calls {@link Action#act(float)} on each action and removes actions that are complete.
-     *
      * @param delta Time in seconds since the last frame.
      */
     public void act(float delta){
@@ -111,7 +106,7 @@ public class Element implements Layout{
             // Notify all parent capture listeners, starting at the root. Ancestors may stop an event before children receive it.
             Object[] ancestorsArray = ancestors.items;
             for(int i = ancestors.size - 1; i >= 0; i--){
-                Group currentTarget = (Group) ancestorsArray[i];
+                Group currentTarget = (Group)ancestorsArray[i];
                 currentTarget.notify(event, true);
                 if(event.stopped) return event.cancelled;
             }
@@ -127,7 +122,7 @@ public class Element implements Layout{
 
             // Notify all parent listeners, starting at the target. Children may stop an event before ancestors receive it.
             for(int i = 0, n = ancestors.size; i < n; i++){
-                ((Group) ancestorsArray[i]).notify(event, false);
+                ((Group)ancestorsArray[i]).notify(event, false);
                 if(event.stopped) return event.cancelled;
             }
 
@@ -153,10 +148,10 @@ public class Element implements Layout{
             if(listener.handle(event)){
                 event.handle();
                 if(event instanceof InputEvent){
-                    InputEvent inputEvent = (InputEvent) event;
+                    InputEvent inputEvent = (InputEvent)event;
                     if(inputEvent.type == Type.touchDown){
                         getScene().addTouchFocus(listener, this, inputEvent.targetActor, inputEvent.pointer,
-                                inputEvent.keyCode);
+                        inputEvent.keyCode);
                     }
                 }
             }
@@ -175,7 +170,6 @@ public class Element implements Layout{
      * occur on this Actor.
      * <p>
      * The default implementation returns this actor if the point is within this actor's bounds.
-     *
      * @param touchable If true, the hit detection will respect the {@link #touchable(Touchable) touchability}.
      * @see Touchable
      */
@@ -187,7 +181,6 @@ public class Element implements Layout{
 
     /**
      * Removes this actor from its parent, if it has a parent.
-     *
      * @see Group#removeChild(Element)
      */
     public boolean remove(){
@@ -196,7 +189,6 @@ public class Element implements Layout{
 
     /**
      * Add a listener to receive events that {@link #hit(float, float, boolean) hit} this actor. See {@link #fire(Event)}.
-     *
      * @see InputListener
      * @see ClickListener
      */
@@ -220,7 +212,6 @@ public class Element implements Layout{
 
     /**
      * Adds a listener that is only notified during the capture phase.
-     *
      * @see #fire(Event)
      */
     public boolean addCaptureListener(EventListener listener){
@@ -288,7 +279,6 @@ public class Element implements Layout{
 
     /**
      * Called by the framework when this actor or any parent is added to a group that is in the stage.
-     *
      * @param stage May be null if the actor or any parent is no longer in a stage.
      */
     protected void setScene(Scene stage){
@@ -328,7 +318,6 @@ public class Element implements Layout{
 
     /**
      * Called by the framework when an actor is added to or removed from a group.
-     *
      * @param parent May be null if the actor has been removed from the parent.
      */
     protected void setParent(Group parent){
@@ -666,7 +655,6 @@ public class Element implements Layout{
 
     /**
      * Set the actor's name, which is used for identification convenience and by {@link #toString()}.
-     *
      * @param name May be null.
      */
     public void setName(String name){
@@ -685,7 +673,6 @@ public class Element implements Layout{
 
     /**
      * Returns the z-index of this actor.
-     *
      * @see #setZIndex(int)
      */
     public int getZIndex(){
@@ -720,7 +707,6 @@ public class Element implements Layout{
      * Clips the specified screen aligned rectangle, specified relative to the transform matrix of the stage's Batch. The
      * transform matrix and the stage's camera must not have rotational components. Calling this method must be followed by a call
      * to {@link #clipEnd()} if true is returned.
-     *
      * @return false if the clipping area is zero and no drawing should occur.
      * @see ScissorStack
      */
@@ -760,7 +746,6 @@ public class Element implements Layout{
 
     /**
      * Transforms the specified point in the actor's coordinates to be in the stage's coordinates.
-     *
      */
     public Vector2 localToStageCoordinates(Vector2 localCoords){
         return localToAscendantCoordinates(null, localCoords);
@@ -784,8 +769,8 @@ public class Element implements Layout{
                 localCoords.y = (localCoords.y - originY) * scaleY + originY + y;
             }
         }else{
-            final float cos = (float) Math.cos(rotation * Mathf.degreesToRadians);
-            final float sin = (float) Math.sin(rotation * Mathf.degreesToRadians);
+            final float cos = (float)Math.cos(rotation * Mathf.degreesToRadians);
+            final float sin = (float)Math.sin(rotation * Mathf.degreesToRadians);
             final float originX = this.originX;
             final float originY = this.originY;
             final float tox = (localCoords.x - originX) * scaleX;
@@ -825,8 +810,8 @@ public class Element implements Layout{
                 parentCoords.y = (parentCoords.y - childY - originY) / scaleY + originY;
             }
         }else{
-            final float cos = (float) Math.cos(rotation * Mathf.degreesToRadians);
-            final float sin = (float) Math.sin(rotation * Mathf.degreesToRadians);
+            final float cos = (float)Math.cos(rotation * Mathf.degreesToRadians);
+            final float sin = (float)Math.sin(rotation * Mathf.degreesToRadians);
             final float originX = this.originX;
             final float originY = this.originY;
             final float tox = parentCoords.x - childX - originX;
@@ -947,7 +932,7 @@ public class Element implements Layout{
     public void fireClick(){
         for(EventListener listener : getListeners()){
             if(listener instanceof ClickListener){
-                ((ClickListener) listener).clicked(new InputEvent(), -1, -1);
+                ((ClickListener)listener).clicked(new InputEvent(), -1, -1);
             }
         }
     }
@@ -959,7 +944,7 @@ public class Element implements Layout{
         addListener(click = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                if(r != null && !(elem instanceof Disableable && ((Disableable) elem).isDisabled())) r.run();
+                if(r != null && !(elem instanceof Disableable && ((Disableable)elem).isDisabled())) r.run();
             }
         });
         return click;
@@ -1019,7 +1004,7 @@ public class Element implements Layout{
         addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Element actor){
-                if(!(elem instanceof Disableable && ((Disableable) elem).isDisabled())) r.run();
+                if(!(elem instanceof Disableable && ((Disableable)elem).isDisabled())) r.run();
             }
         });
     }

@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * A point in a 2D grid, with integer x and y coordinates
- *
  * @author badlogic
  */
 public class GridPoint2 implements Serializable{
@@ -35,7 +34,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Constructs a new 2D grid point.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      */
@@ -46,7 +44,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Copy constructor
-     *
      * @param point The 2D grid point to make a copy of.
      */
     public GridPoint2(GridPoint2 point){
@@ -56,7 +53,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Sets the coordinates of this 2D grid point to that of another.
-     *
      * @param point The 2D grid point to copy the coordinates of.
      * @return this 2D grid point for chaining.
      */
@@ -68,7 +64,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Sets the coordinates of this 2D grid point.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @return this 2D grid point for chaining.
@@ -110,7 +105,7 @@ public class GridPoint2 implements Serializable{
         int xd = other.x - x;
         int yd = other.y - y;
 
-        return (float) Math.sqrt(xd * xd + yd * yd);
+        return (float)Math.sqrt(xd * xd + yd * yd);
     }
 
     /**
@@ -122,12 +117,11 @@ public class GridPoint2 implements Serializable{
         int xd = x - this.x;
         int yd = y - this.y;
 
-        return (float) Math.sqrt(xd * xd + yd * yd);
+        return (float)Math.sqrt(xd * xd + yd * yd);
     }
 
     /**
      * Adds another 2D grid point to this point.
-     *
      * @param other The other point
      * @return this 2d grid point for chaining.
      */
@@ -139,7 +133,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Adds another 2D grid point to this point.
-     *
      * @param x The x-coordinate of the other point
      * @param y The y-coordinate of the other point
      * @return this 2d grid point for chaining.
@@ -152,7 +145,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Subtracts another 2D grid point from this point.
-     *
      * @param other The other point
      * @return this 2d grid point for chaining.
      */
@@ -164,7 +156,6 @@ public class GridPoint2 implements Serializable{
 
     /**
      * Subtracts another 2D grid point from this point.
-     *
      * @param x The x-coordinate of the other point
      * @param y The y-coordinate of the other point
      * @return this 2d grid point for chaining.
@@ -186,7 +177,7 @@ public class GridPoint2 implements Serializable{
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        GridPoint2 g = (GridPoint2) o;
+        GridPoint2 g = (GridPoint2)o;
         return this.x == g.x && this.y == g.y;
     }
 

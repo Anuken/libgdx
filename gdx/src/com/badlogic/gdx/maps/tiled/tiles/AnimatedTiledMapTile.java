@@ -16,34 +16,71 @@
 
 package com.badlogic.gdx.maps.tiled.tiles;
 
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /** @brief Represents a changing {@link TiledMapTile}. */
 public class AnimatedTiledMapTile implements TiledMapTile{
 
+    private static final long initialTimeOffset = TimeUtils.millis();
     private static long lastTiledMapRenderTime = 0;
-
     private int id;
-
     private BlendMode blendMode = BlendMode.ALPHA;
-
     private MapProperties properties;
-
     private MapObjects objects;
-
     private StaticTiledMapTile[] frameTiles;
-
     private int[] animationIntervals;
     private int frameCount = 0;
     private int loopDuration;
-    private static final long initialTimeOffset = TimeUtils.millis();
+
+    /**
+     * Creates an animated tile with the given animation interval and frame tiles.
+     * @param interval The interval between each individual frame tile.
+     * @param frameTiles An array of {@link StaticTiledMapTile}s that make up the animation.
+     */
+    public AnimatedTiledMapTile(float interval, Array<StaticTiledMapTile> frameTiles){
+        this.frameTiles = new StaticTiledMapTile[frameTiles.size];
+        this.frameCount = frameTiles.size;
+
+        this.loopDuration = frameTiles.size * (int)(interval * 1000f);
+        this.animationIntervals = new int[frameTiles.size];
+        for(int i = 0; i < frameTiles.size; ++i){
+            this.frameTiles[i] = frameTiles.get(i);
+            this.animationIntervals[i] = (int)(interval * 1000f);
+        }
+    }
+
+    /**
+     * Creates an animated tile with the given animation intervals and frame tiles.
+     * @param intervals The intervals between each individual frame tile in milliseconds.
+     * @param frameTiles An array of {@link StaticTiledMapTile}s that make up the animation.
+     */
+    public AnimatedTiledMapTile(IntArray intervals, Array<StaticTiledMapTile> frameTiles){
+        this.frameTiles = new StaticTiledMapTile[frameTiles.size];
+        this.frameCount = frameTiles.size;
+
+        this.animationIntervals = intervals.toArray();
+        this.loopDuration = 0;
+
+        for(int i = 0; i < intervals.size; ++i){
+            this.frameTiles[i] = frameTiles.get(i);
+            this.loopDuration += intervals.get(i);
+        }
+    }
+
+    /**
+     * Function is called by BatchTiledMapRenderer render(), lastTiledMapRenderTime is used to keep all of the tiles in lock-step
+     * animation and avoids having to call TimeUtils.millis() in getTextureRegion()
+     */
+    public static void updateAnimationBaseTime(){
+        lastTiledMapRenderTime = TimeUtils.millis() - initialTimeOffset;
+    }
 
     @Override
     public int getId(){
@@ -66,7 +103,7 @@ public class AnimatedTiledMapTile implements TiledMapTile{
     }
 
     public int getCurrentFrameIndex(){
-        int currentTime = (int) (lastTiledMapRenderTime % loopDuration);
+        int currentTime = (int)(lastTiledMapRenderTime % loopDuration);
 
         for(int i = 0; i < animationIntervals.length; ++i){
             int animationInterval = animationIntervals[i];
@@ -145,51 +182,6 @@ public class AnimatedTiledMapTile implements TiledMapTile{
             objects = new MapObjects();
         }
         return objects;
-    }
-
-    /**
-     * Function is called by BatchTiledMapRenderer render(), lastTiledMapRenderTime is used to keep all of the tiles in lock-step
-     * animation and avoids having to call TimeUtils.millis() in getTextureRegion()
-     */
-    public static void updateAnimationBaseTime(){
-        lastTiledMapRenderTime = TimeUtils.millis() - initialTimeOffset;
-    }
-
-    /**
-     * Creates an animated tile with the given animation interval and frame tiles.
-     *
-     * @param interval The interval between each individual frame tile.
-     * @param frameTiles An array of {@link StaticTiledMapTile}s that make up the animation.
-     */
-    public AnimatedTiledMapTile(float interval, Array<StaticTiledMapTile> frameTiles){
-        this.frameTiles = new StaticTiledMapTile[frameTiles.size];
-        this.frameCount = frameTiles.size;
-
-        this.loopDuration = frameTiles.size * (int) (interval * 1000f);
-        this.animationIntervals = new int[frameTiles.size];
-        for(int i = 0; i < frameTiles.size; ++i){
-            this.frameTiles[i] = frameTiles.get(i);
-            this.animationIntervals[i] = (int) (interval * 1000f);
-        }
-    }
-
-    /**
-     * Creates an animated tile with the given animation intervals and frame tiles.
-     *
-     * @param intervals The intervals between each individual frame tile in milliseconds.
-     * @param frameTiles An array of {@link StaticTiledMapTile}s that make up the animation.
-     */
-    public AnimatedTiledMapTile(IntArray intervals, Array<StaticTiledMapTile> frameTiles){
-        this.frameTiles = new StaticTiledMapTile[frameTiles.size];
-        this.frameCount = frameTiles.size;
-
-        this.animationIntervals = intervals.toArray();
-        this.loopDuration = 0;
-
-        for(int i = 0; i < intervals.size; ++i){
-            this.frameTiles[i] = frameTiles.get(i);
-            this.loopDuration += intervals.get(i);
-        }
     }
 
     public StaticTiledMapTile[] getFrameTiles(){

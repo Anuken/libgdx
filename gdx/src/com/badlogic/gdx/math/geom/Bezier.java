@@ -16,20 +16,37 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * Implementation of the Bezier curve.
- *
  * @author Xoppa
  */
 public class Bezier<T extends Vector<T>> implements Path<T>{
 
+    public Array<T> points = new Array<T>();
+    private T tmp;
+    private T tmp2;
+    private T tmp3;
+
+    public Bezier(){
+    }
+
+    public Bezier(final T... points){
+        set(points);
+    }
+
+    public Bezier(final T[] points, final int offset, final int length){
+        set(points, offset, length);
+    }
+    public Bezier(final Array<T> points, final int offset, final int length){
+        set(points, offset, length);
+    }
+
     /**
      * Simple linear interpolation
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the line.
      * @param p0 The start point.
@@ -44,7 +61,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     /**
      * Simple linear interpolation derivative
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the line.
      * @param p0 The start point.
@@ -59,7 +75,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     /**
      * Quadratic Bezier curve
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the curve.
      * @param p0 The first bezier point.
@@ -76,7 +91,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     /**
      * Quadratic Bezier curve derivative
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the curve.
      * @param p0 The first bezier point.
@@ -94,7 +108,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     /**
      * Cubic Bezier curve
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the curve.
      * @param p0 The first bezier point.
@@ -116,7 +129,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     /**
      * Cubic Bezier curve derivative
-     *
      * @param out The {@link Vector} to set to the result.
      * @param t The location (ranging 0..1) on the curve.
      * @param p0 The first bezier point.
@@ -133,26 +145,6 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
         final float dt2 = dt * dt;
         final float t2 = t * t;
         return out.set(p1).sub(p0).scl(dt2 * 3).add(tmp.set(p2).sub(p1).scl(dt * t * 6)).add(tmp.set(p3).sub(p2).scl(t2 * 3));
-    }
-
-    public Array<T> points = new Array<T>();
-    private T tmp;
-    private T tmp2;
-    private T tmp3;
-
-    public Bezier(){
-    }
-
-    public Bezier(final T... points){
-        set(points);
-    }
-
-    public Bezier(final T[] points, final int offset, final int length){
-        set(points, offset, length);
-    }
-
-    public Bezier(final Array<T> points, final int offset, final int length){
-        set(points, offset, length);
     }
 
     public Bezier set(final T... points){
@@ -212,7 +204,7 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
         float l1Sqr = p1.dst2(p2);
         float l2Sqr = p3.dst2(p2);
         float l3Sqr = p3.dst2(p1);
-        float l1 = (float) Math.sqrt(l1Sqr);
+        float l1 = (float)Math.sqrt(l1Sqr);
         float s = (l2Sqr + l1Sqr - l3Sqr) / (2 * l1);
         return Mathf.clamp((l1 - s) / l1, 0f, 1f);
     }
@@ -228,7 +220,7 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
         float tempLength = 0;
         for(int i = 0; i < samples; ++i){
             tmp2.set(tmp3);
-            valueAt(tmp3, (i) / ((float) samples - 1));
+            valueAt(tmp3, (i) / ((float)samples - 1));
             if(i > 0) tempLength += tmp2.dst(tmp3);
         }
         return tempLength;

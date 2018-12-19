@@ -17,8 +17,8 @@
 package com.badlogic.gdx.scene.event;
 
 import com.badlogic.gdx.scene.Element;
-import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.scene.Scene;
+import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
 /**
  * The base class for all events.
@@ -32,7 +32,6 @@ import com.badlogic.gdx.scene.Scene;
  * <p>
  * A cancelled event will be stopped and handled. Additionally, many elements will undo the side-effects of a canceled event. (See
  * {@link #cancel()}.)
- *
  * @see InputEvent
  * @see Element#fire(Event)
  */
@@ -65,7 +64,7 @@ public class Event implements Poolable{
         handled = true;
     }
 
-    /**Marks this event has being stopped. This halts event propagation.*/
+    /** Marks this event has being stopped. This halts event propagation. */
     public void stop(){
         stopped = true;
     }

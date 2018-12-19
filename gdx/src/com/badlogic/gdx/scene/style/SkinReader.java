@@ -72,10 +72,10 @@ public class SkinReader{
 
         put("TintedDrawable", (skin, value) -> {
             String name = value.getString("name");
-            Color color = (Color) get("Color").read(skin, value.get("color"));
+            Color color = (Color)get("Color").read(skin, value.get("color"));
             Drawable drawable = skin.newDrawable(name, color);
             if(drawable instanceof BaseDrawable){
-                BaseDrawable named = (BaseDrawable) drawable;
+                BaseDrawable named = (BaseDrawable)drawable;
                 named.setName(value.name + " (" + name + ", " + color + ")");
             }
             return drawable;

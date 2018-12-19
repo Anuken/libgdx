@@ -32,6 +32,7 @@ import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.utils.pooling.Pools;
 
 import static com.badlogic.gdx.Core.scene;
+
 /**
  * A slider is a horizontal indicator that allows a user to set a value. The slider has a range (min, max) and a stepping between
  * each value the slider represents.
@@ -40,7 +41,6 @@ import static com.badlogic.gdx.Core.scene;
  * <p>
  * For a horizontal progress bar, its preferred height is determined by the larger of the knob and background, and the preferred width
  * is 140, a relatively arbitrary size. These parameters are reversed for a vertical progress bar.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -64,7 +64,6 @@ public class Slider extends ProgressBar{
      * the height of either the slider {@link NinePatch} or slider handle {@link TextureRegion}. The min and max values determine
      * the range the values of this slider can take on, the stepSize parameter specifies the distance between individual values.
      * E.g. min could be 4, max could be 10 and stepSize could be 0.2, giving you a total of 30 values, 4.0 4.2, 4.4 and so on.
-     *
      * @param min the minimum value
      * @param max the maximum value
      * @param stepSize the step size between values
@@ -118,7 +117,7 @@ public class Slider extends ProgressBar{
      * called.
      */
     public SliderStyle getStyle(){
-        return (SliderStyle) super.getStyle();
+        return (SliderStyle)super.getStyle();
     }
 
     public void setStyle(SliderStyle style){
@@ -130,8 +129,8 @@ public class Slider extends ProgressBar{
     protected Drawable getKnobDrawable(){
         SliderStyle style = getStyle();
         return (disabled && style.disabledKnob != null) ? style.disabledKnob
-                : (isDragging() && style.knobDown != null) ? style.knobDown
-                : ((mouseOver && style.knobOver != null) ? style.knobOver : style.knob);
+        : (isDragging() && style.knobDown != null) ? style.knobDown
+        : ((mouseOver && style.knobOver != null) ? style.knobOver : style.knob);
     }
 
     boolean calculatePositionAndValue(float x, float y){
@@ -162,7 +161,8 @@ public class Slider extends ProgressBar{
         }
 
         float oldValue = value;
-        if(!Core.input.isKeyPressed(KeyCode.SHIFT_LEFT) && !Core.input.isKeyPressed(KeyCode.SHIFT_RIGHT)) value = snap(value);
+        if(!Core.input.isKeyPressed(KeyCode.SHIFT_LEFT) && !Core.input.isKeyPressed(KeyCode.SHIFT_RIGHT))
+            value = snap(value);
         boolean valueSet = setValue(value);
         if(value == oldValue) position = oldPosition;
         return valueSet;
@@ -185,7 +185,6 @@ public class Slider extends ProgressBar{
 
     /**
      * Will make this progress bar snap to the specified values, if the knob is within the threshold.
-     *
      * @param values May be null.
      */
     public void setSnapToValues(float[] values, float threshold){
@@ -208,7 +207,6 @@ public class Slider extends ProgressBar{
 
     /**
      * The style for a slider, see {@link Slider}.
-     *
      * @author mzechner
      * @author Nathan Sweet
      */

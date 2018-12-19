@@ -20,7 +20,6 @@ import com.badlogic.gdx.math.geom.Vector2;
 
 /**
  * Various scaling types for fitting one rectangle into another.
- *
  * @author Nathan Sweet
  */
 public enum Scaling{

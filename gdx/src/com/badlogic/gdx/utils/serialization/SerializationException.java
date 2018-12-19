@@ -20,7 +20,6 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 /**
  * Indicates an error during serialization due to misconfiguration or during deserialization due to invalid input data.
- *
  * @author Nathan Sweet
  */
 public class SerializationException extends RuntimeException{

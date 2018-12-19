@@ -24,7 +24,6 @@ import static com.badlogic.gdx.Core.graphics;
 
 /**
  * Draws a {@link TextureRegion} repeatedly to fill the area, instead of stretching it.
- *
  * @author Nathan Sweet
  */
 public class TiledDrawable extends TextureRegionDrawable{
@@ -58,7 +57,7 @@ public class TiledDrawable extends TextureRegionDrawable{
     public void draw(float x, float y, float width, float height){
         TextureRegion region = getRegion();
         float regionWidth = tileWidth, regionHeight = tileHeight;
-        int fullX = (int) (width / regionWidth), fullY = (int) (height / regionHeight);
+        int fullX = (int)(width / regionWidth), fullY = (int)(height / regionHeight);
         float remainingX = width - regionWidth * fullX, remainingY = height - regionHeight * fullY;
         float startX = x, startY = y;
         for(int i = 0; i < fullX; i++){

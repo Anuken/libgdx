@@ -27,7 +27,6 @@ import com.badlogic.gdx.utils.pooling.Pools;
 
 /**
  * Static convenience methods for using pooled actions, intended for static import.
- *
  * @author Nathan Sweet
  */
 public class Actions{

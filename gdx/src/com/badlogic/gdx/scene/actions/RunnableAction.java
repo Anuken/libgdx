@@ -16,13 +16,12 @@
 
 package com.badlogic.gdx.scene.actions;
 
-import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.scene.Action;
+import com.badlogic.gdx.utils.pooling.Pool;
 
 /**
  * An action that runs a {@link Runnable}. Alternatively, the {@link #run()} method can be overridden instead of setting a
  * runnable.
- *
  * @author Nathan Sweet
  */
 public class RunnableAction extends Action{

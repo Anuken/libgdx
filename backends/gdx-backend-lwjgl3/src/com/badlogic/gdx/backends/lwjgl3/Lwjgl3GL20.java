@@ -105,30 +105,30 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
         if(data == null)
             GL15.glBufferData(target, size, usage);
         else if(data instanceof ByteBuffer)
-            GL15.glBufferData(target, (ByteBuffer) data, usage);
+            GL15.glBufferData(target, (ByteBuffer)data, usage);
         else if(data instanceof IntBuffer)
-            GL15.glBufferData(target, (IntBuffer) data, usage);
+            GL15.glBufferData(target, (IntBuffer)data, usage);
         else if(data instanceof FloatBuffer)
-            GL15.glBufferData(target, (FloatBuffer) data, usage);
+            GL15.glBufferData(target, (FloatBuffer)data, usage);
         else if(data instanceof DoubleBuffer)
-            GL15.glBufferData(target, (DoubleBuffer) data, usage);
+            GL15.glBufferData(target, (DoubleBuffer)data, usage);
         else if(data instanceof ShortBuffer) //
-            GL15.glBufferData(target, (ShortBuffer) data, usage);
+            GL15.glBufferData(target, (ShortBuffer)data, usage);
     }
 
     public void glBufferSubData(int target, int offset, int size, Buffer data){
         if(data == null)
             throw new GdxRuntimeException("Using null for the data not possible, blame LWJGL");
         else if(data instanceof ByteBuffer)
-            GL15.glBufferSubData(target, offset, (ByteBuffer) data);
+            GL15.glBufferSubData(target, offset, (ByteBuffer)data);
         else if(data instanceof IntBuffer)
-            GL15.glBufferSubData(target, offset, (IntBuffer) data);
+            GL15.glBufferSubData(target, offset, (IntBuffer)data);
         else if(data instanceof FloatBuffer)
-            GL15.glBufferSubData(target, offset, (FloatBuffer) data);
+            GL15.glBufferSubData(target, offset, (FloatBuffer)data);
         else if(data instanceof DoubleBuffer)
-            GL15.glBufferSubData(target, offset, (DoubleBuffer) data);
+            GL15.glBufferSubData(target, offset, (DoubleBuffer)data);
         else if(data instanceof ShortBuffer) //
-            GL15.glBufferSubData(target, offset, (ShortBuffer) data);
+            GL15.glBufferSubData(target, offset, (ShortBuffer)data);
     }
 
     public int glCheckFramebufferStatus(int target){
@@ -162,7 +162,7 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
     public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
                                        int imageSize, Buffer data){
         if(data instanceof ByteBuffer){
-            GL13.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer) data);
+            GL13.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer)data);
         }else{
             throw new GdxRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
         }
@@ -266,11 +266,11 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
 
     public void glDrawElements(int mode, int count, int type, Buffer indices){
         if(indices instanceof ShortBuffer && type == com.badlogic.gdx.graphics.GL20.GL_UNSIGNED_SHORT)
-            GL11.glDrawElements(mode, (ShortBuffer) indices);
+            GL11.glDrawElements(mode, (ShortBuffer)indices);
         else if(indices instanceof ByteBuffer && type == com.badlogic.gdx.graphics.GL20.GL_UNSIGNED_SHORT)
-            GL11.glDrawElements(mode, ((ByteBuffer) indices).asShortBuffer());
+            GL11.glDrawElements(mode, ((ByteBuffer)indices).asShortBuffer());
         else if(indices instanceof ByteBuffer && type == com.badlogic.gdx.graphics.GL20.GL_UNSIGNED_BYTE)
-            GL11.glDrawElements(mode, (ByteBuffer) indices);
+            GL11.glDrawElements(mode, (ByteBuffer)indices);
         else
             throw new GdxRuntimeException("Can't use " + indices.getClass().getName()
             + " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
@@ -344,7 +344,7 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
         IntBuffer typeTmp = BufferUtils.createIntBuffer(2);
         String name = GL20.glGetActiveAttrib(program, index, 256, size, typeTmp);
         size.put(typeTmp.get(0));
-        if(type instanceof IntBuffer) ((IntBuffer) type).put(typeTmp.get(1));
+        if(type instanceof IntBuffer) ((IntBuffer)type).put(typeTmp.get(1));
         return name;
     }
 
@@ -352,12 +352,12 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
         IntBuffer typeTmp = BufferUtils.createIntBuffer(2);
         String name = GL20.glGetActiveUniform(program, index, 256, size, typeTmp);
         size.put(typeTmp.get(0));
-        if(type instanceof IntBuffer) ((IntBuffer) type).put(typeTmp.get(1));
+        if(type instanceof IntBuffer) ((IntBuffer)type).put(typeTmp.get(1));
         return name;
     }
 
     public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders){
-        GL20.glGetAttachedShaders(program, (IntBuffer) count, shaders);
+        GL20.glGetAttachedShaders(program, (IntBuffer)count, shaders);
     }
 
     public int glGetAttribLocation(int program, String name){
@@ -365,7 +365,7 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
     }
 
     public void glGetBooleanv(int pname, Buffer params){
-        GL11.glGetBooleanv(pname, (ByteBuffer) params);
+        GL11.glGetBooleanv(pname, (ByteBuffer)params);
     }
 
     public void glGetBufferParameteriv(int target, int pname, IntBuffer params){
@@ -518,13 +518,13 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
 
     public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels){
         if(pixels instanceof ByteBuffer)
-            GL11.glReadPixels(x, y, width, height, format, type, (ByteBuffer) pixels);
+            GL11.glReadPixels(x, y, width, height, format, type, (ByteBuffer)pixels);
         else if(pixels instanceof ShortBuffer)
-            GL11.glReadPixels(x, y, width, height, format, type, (ShortBuffer) pixels);
+            GL11.glReadPixels(x, y, width, height, format, type, (ShortBuffer)pixels);
         else if(pixels instanceof IntBuffer)
-            GL11.glReadPixels(x, y, width, height, format, type, (IntBuffer) pixels);
+            GL11.glReadPixels(x, y, width, height, format, type, (IntBuffer)pixels);
         else if(pixels instanceof FloatBuffer)
-            GL11.glReadPixels(x, y, width, height, format, type, (FloatBuffer) pixels);
+            GL11.glReadPixels(x, y, width, height, format, type, (FloatBuffer)pixels);
         else
             throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer or FloatBuffer instead. Blame LWJGL");
@@ -581,17 +581,17 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
     public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
                              Buffer pixels){
         if(pixels == null)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer) null);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)null);
         else if(pixels instanceof ByteBuffer)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer) pixels);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)pixels);
         else if(pixels instanceof ShortBuffer)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ShortBuffer) pixels);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ShortBuffer)pixels);
         else if(pixels instanceof IntBuffer)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntBuffer) pixels);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntBuffer)pixels);
         else if(pixels instanceof FloatBuffer)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer) pixels);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer)pixels);
         else if(pixels instanceof DoubleBuffer)
-            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer) pixels);
+            GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer)pixels);
         else
             throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
@@ -616,15 +616,15 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
     public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
                                 Buffer pixels){
         if(pixels instanceof ByteBuffer)
-            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (ByteBuffer) pixels);
+            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (ByteBuffer)pixels);
         else if(pixels instanceof ShortBuffer)
-            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (ShortBuffer) pixels);
+            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (ShortBuffer)pixels);
         else if(pixels instanceof IntBuffer)
-            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (IntBuffer) pixels);
+            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (IntBuffer)pixels);
         else if(pixels instanceof FloatBuffer)
-            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (FloatBuffer) pixels);
+            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (FloatBuffer)pixels);
         else if(pixels instanceof DoubleBuffer)
-            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (DoubleBuffer) pixels);
+            GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (DoubleBuffer)pixels);
         else
             throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
@@ -794,15 +794,15 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
     public void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer buffer){
         if(buffer instanceof ByteBuffer){
             if(type == GL_BYTE)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer) buffer);
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer)buffer);
             else if(type == GL_UNSIGNED_BYTE)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer) buffer);
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer)buffer);
             else if(type == GL_SHORT)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer) buffer).asShortBuffer());
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer());
             else if(type == GL_UNSIGNED_SHORT)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer) buffer).asShortBuffer());
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer());
             else if(type == GL_FLOAT)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer) buffer).asFloatBuffer());
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer());
             else
                 throw new GdxRuntimeException(
                 "Can't use "
@@ -812,7 +812,7 @@ class Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL20{
                 + " with this method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type. Blame LWJGL");
         }else if(buffer instanceof FloatBuffer){
             if(type == GL_FLOAT)
-                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (FloatBuffer) buffer);
+                GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (FloatBuffer)buffer);
             else
                 throw new GdxRuntimeException("Can't use " + buffer.getClass().getName() + " with type " + type
                 + " with this method.");

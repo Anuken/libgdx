@@ -20,17 +20,15 @@ import com.badlogic.gdx.collection.Array;
 
 /**
  * A pool of objects that can be reused to avoid allocation.
- *
  * @author Nathan Sweet
  * @see Pools
  */
 abstract public class Pool<T>{
     /** The maximum number of objects that will be pooled. */
     public final int max;
+    private final Array<T> freeObjects;
     /** The highest number of free objects. Can be reset any time. */
     public int peak;
-
-    private final Array<T> freeObjects;
 
     /** Creates a pool with an initial capacity of 16 and no maximum. */
     public Pool(){
@@ -78,14 +76,13 @@ abstract public class Pool<T>{
      * {@link Poolable#reset()} if the object is {@link Poolable}.
      */
     protected void reset(T object){
-        if(object instanceof Poolable) ((Poolable) object).reset();
+        if(object instanceof Poolable) ((Poolable)object).reset();
     }
 
     /**
      * Puts the specified objects in the pool. Null objects within the array are silently ignored.
      * <p>
      * The pool does not check if an object is already freed, so the same object must not be freed multiple times.
-     *
      * @see #free(Object)
      */
     public void freeAll(Array<T> objects){

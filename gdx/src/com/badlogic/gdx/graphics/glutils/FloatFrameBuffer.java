@@ -32,8 +32,6 @@ public class FloatFrameBuffer extends FrameBuffer{
 
     /**
      * Creates a GLFrameBuffer from the specifications provided by bufferBuilder
-     *
-     * @param bufferBuilder
      **/
     protected FloatFrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder){
         super(bufferBuilder);
@@ -41,7 +39,6 @@ public class FloatFrameBuffer extends FrameBuffer{
 
     /**
      * Creates a new FrameBuffer with a float backing texture, having the given dimensions and potentially a depth buffer attached.
-     *
      * @param width the width of the framebuffer in pixels
      * @param height the height of the framebuffer in pixels
      * @param hasDepth whether to attach a depth buffer

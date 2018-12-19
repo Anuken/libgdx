@@ -23,20 +23,10 @@ import static com.badlogic.gdx.graphics.profiling.GLInterceptor.resolveErrorNumb
 
 /**
  * Listener for GL errors detected by {@link GLProfiler}.
- *
  * @author Jan Polák
  * @see GLProfiler
  */
 public interface GLErrorListener{
-
-    /**
-     * Put your error logging code here.
-     *
-     * @see GLInterceptor#resolveErrorNumber(int)
-     */
-    void onError(int error);
-
-    // Basic implementations
 
     /** Listener that will log using Gdx.app.error GL error name and GL function. */
     GLErrorListener LOGGING_LISTENER = new GLErrorListener(){
@@ -66,6 +56,7 @@ public interface GLErrorListener{
         }
     };
 
+    // Basic implementations
     /** Listener that will throw a GdxRuntimeException with error name. */
     GLErrorListener THROWING_LISTENER = new GLErrorListener(){
         @Override
@@ -73,4 +64,10 @@ public interface GLErrorListener{
             throw new GdxRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
         }
     };
+
+    /**
+     * Put your error logging code here.
+     * @see GLInterceptor#resolveErrorNumber(int)
+     */
+    void onError(int error);
 }

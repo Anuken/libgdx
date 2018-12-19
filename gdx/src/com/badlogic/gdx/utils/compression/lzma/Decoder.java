@@ -22,126 +22,23 @@ import com.badlogic.gdx.utils.compression.rangecoder.BitTreeDecoder;
 import java.io.IOException;
 
 public class Decoder{
-    class LenDecoder{
-        short[] m_Choice = new short[2];
-        BitTreeDecoder[] m_LowCoder = new BitTreeDecoder[Base.kNumPosStatesMax];
-        BitTreeDecoder[] m_MidCoder = new BitTreeDecoder[Base.kNumPosStatesMax];
-        BitTreeDecoder m_HighCoder = new BitTreeDecoder(Base.kNumHighLenBits);
-        int m_NumPosStates = 0;
-
-        public void Create(int numPosStates){
-            for(; m_NumPosStates < numPosStates; m_NumPosStates++){
-                m_LowCoder[m_NumPosStates] = new BitTreeDecoder(Base.kNumLowLenBits);
-                m_MidCoder[m_NumPosStates] = new BitTreeDecoder(Base.kNumMidLenBits);
-            }
-        }
-
-        public void Init(){
-            com.badlogic.gdx.utils.compression.rangecoder.Decoder.InitBitModels(m_Choice);
-            for(int posState = 0; posState < m_NumPosStates; posState++){
-                m_LowCoder[posState].Init();
-                m_MidCoder[posState].Init();
-            }
-            m_HighCoder.Init();
-        }
-
-        public int Decode(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder, int posState) throws IOException{
-            if(rangeDecoder.DecodeBit(m_Choice, 0) == 0) return m_LowCoder[posState].Decode(rangeDecoder);
-            int symbol = Base.kNumLowLenSymbols;
-            if(rangeDecoder.DecodeBit(m_Choice, 1) == 0)
-                symbol += m_MidCoder[posState].Decode(rangeDecoder);
-            else
-                symbol += Base.kNumMidLenSymbols + m_HighCoder.Decode(rangeDecoder);
-            return symbol;
-        }
-    }
-
-    class LiteralDecoder{
-        class Decoder2{
-            short[] m_Decoders = new short[0x300];
-
-            public void Init(){
-                com.badlogic.gdx.utils.compression.rangecoder.Decoder.InitBitModels(m_Decoders);
-            }
-
-            public byte DecodeNormal(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder) throws IOException{
-                int symbol = 1;
-                do
-                    symbol = (symbol << 1) | rangeDecoder.DecodeBit(m_Decoders, symbol);
-                while(symbol < 0x100);
-                return (byte) symbol;
-            }
-
-            public byte DecodeWithMatchByte(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder, byte matchByte)
-            throws IOException{
-                int symbol = 1;
-                do{
-                    int matchBit = (matchByte >> 7) & 1;
-                    matchByte <<= 1;
-                    int bit = rangeDecoder.DecodeBit(m_Decoders, ((1 + matchBit) << 8) + symbol);
-                    symbol = (symbol << 1) | bit;
-                    if(matchBit != bit){
-                        while(symbol < 0x100)
-                            symbol = (symbol << 1) | rangeDecoder.DecodeBit(m_Decoders, symbol);
-                        break;
-                    }
-                }while(symbol < 0x100);
-                return (byte) symbol;
-            }
-        }
-
-        Decoder2[] m_Coders;
-        int m_NumPrevBits;
-        int m_NumPosBits;
-        int m_PosMask;
-
-        public void Create(int numPosBits, int numPrevBits){
-            if(m_Coders != null && m_NumPrevBits == numPrevBits && m_NumPosBits == numPosBits) return;
-            m_NumPosBits = numPosBits;
-            m_PosMask = (1 << numPosBits) - 1;
-            m_NumPrevBits = numPrevBits;
-            int numStates = 1 << (m_NumPrevBits + m_NumPosBits);
-            m_Coders = new Decoder2[numStates];
-            for(int i = 0; i < numStates; i++)
-                m_Coders[i] = new Decoder2();
-        }
-
-        public void Init(){
-            int numStates = 1 << (m_NumPrevBits + m_NumPosBits);
-            for(int i = 0; i < numStates; i++)
-                m_Coders[i].Init();
-        }
-
-        Decoder2 GetDecoder(int pos, byte prevByte){
-            return m_Coders[((pos & m_PosMask) << m_NumPrevBits) + ((prevByte & 0xFF) >>> (8 - m_NumPrevBits))];
-        }
-    }
-
     OutWindow m_OutWindow = new OutWindow();
     com.badlogic.gdx.utils.compression.rangecoder.Decoder m_RangeDecoder = new com.badlogic.gdx.utils.compression.rangecoder.Decoder();
-
     short[] m_IsMatchDecoders = new short[Base.kNumStates << Base.kNumPosStatesBitsMax];
     short[] m_IsRepDecoders = new short[Base.kNumStates];
     short[] m_IsRepG0Decoders = new short[Base.kNumStates];
     short[] m_IsRepG1Decoders = new short[Base.kNumStates];
     short[] m_IsRepG2Decoders = new short[Base.kNumStates];
     short[] m_IsRep0LongDecoders = new short[Base.kNumStates << Base.kNumPosStatesBitsMax];
-
     BitTreeDecoder[] m_PosSlotDecoder = new BitTreeDecoder[Base.kNumLenToPosStates];
     short[] m_PosDecoders = new short[Base.kNumFullDistances - Base.kEndPosModelIndex];
-
     BitTreeDecoder m_PosAlignDecoder = new BitTreeDecoder(Base.kNumAlignBits);
-
     LenDecoder m_LenDecoder = new LenDecoder();
     LenDecoder m_RepLenDecoder = new LenDecoder();
-
     LiteralDecoder m_LiteralDecoder = new LiteralDecoder();
-
     int m_DictionarySize = -1;
     int m_DictionarySizeCheck = -1;
-
     int m_PosStateMask;
-
     public Decoder(){
         for(int i = 0; i < Base.kNumLenToPosStates; i++)
             m_PosSlotDecoder[i] = new BitTreeDecoder(Base.kNumPosSlotBits);
@@ -199,9 +96,9 @@ public class Decoder{
         long nowPos64 = 0;
         byte prevByte = 0;
         while(outSize < 0 || nowPos64 < outSize){
-            int posState = (int) nowPos64 & m_PosStateMask;
+            int posState = (int)nowPos64 & m_PosStateMask;
             if(m_RangeDecoder.DecodeBit(m_IsMatchDecoders, (state << Base.kNumPosStatesBitsMax) + posState) == 0){
-                LiteralDecoder.Decoder2 decoder2 = m_LiteralDecoder.GetDecoder((int) nowPos64, prevByte);
+                LiteralDecoder.Decoder2 decoder2 = m_LiteralDecoder.GetDecoder((int)nowPos64, prevByte);
                 if(!Base.StateIsCharState(state))
                     prevByte = decoder2.DecodeWithMatchByte(m_RangeDecoder, m_OutWindow.GetByte(rep0));
                 else
@@ -285,8 +182,103 @@ public class Decoder{
         int pb = remainder / 5;
         int dictionarySize = 0;
         for(int i = 0; i < 4; i++)
-            dictionarySize += ((int) (properties[1 + i]) & 0xFF) << (i * 8);
+            dictionarySize += ((int)(properties[1 + i]) & 0xFF) << (i * 8);
         if(!SetLcLpPb(lc, lp, pb)) return false;
         return SetDictionarySize(dictionarySize);
+    }
+
+    class LenDecoder{
+        short[] m_Choice = new short[2];
+        BitTreeDecoder[] m_LowCoder = new BitTreeDecoder[Base.kNumPosStatesMax];
+        BitTreeDecoder[] m_MidCoder = new BitTreeDecoder[Base.kNumPosStatesMax];
+        BitTreeDecoder m_HighCoder = new BitTreeDecoder(Base.kNumHighLenBits);
+        int m_NumPosStates = 0;
+
+        public void Create(int numPosStates){
+            for(; m_NumPosStates < numPosStates; m_NumPosStates++){
+                m_LowCoder[m_NumPosStates] = new BitTreeDecoder(Base.kNumLowLenBits);
+                m_MidCoder[m_NumPosStates] = new BitTreeDecoder(Base.kNumMidLenBits);
+            }
+        }
+
+        public void Init(){
+            com.badlogic.gdx.utils.compression.rangecoder.Decoder.InitBitModels(m_Choice);
+            for(int posState = 0; posState < m_NumPosStates; posState++){
+                m_LowCoder[posState].Init();
+                m_MidCoder[posState].Init();
+            }
+            m_HighCoder.Init();
+        }
+
+        public int Decode(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder, int posState) throws IOException{
+            if(rangeDecoder.DecodeBit(m_Choice, 0) == 0) return m_LowCoder[posState].Decode(rangeDecoder);
+            int symbol = Base.kNumLowLenSymbols;
+            if(rangeDecoder.DecodeBit(m_Choice, 1) == 0)
+                symbol += m_MidCoder[posState].Decode(rangeDecoder);
+            else
+                symbol += Base.kNumMidLenSymbols + m_HighCoder.Decode(rangeDecoder);
+            return symbol;
+        }
+    }
+
+    class LiteralDecoder{
+        Decoder2[] m_Coders;
+        int m_NumPrevBits;
+        int m_NumPosBits;
+        int m_PosMask;
+
+        public void Create(int numPosBits, int numPrevBits){
+            if(m_Coders != null && m_NumPrevBits == numPrevBits && m_NumPosBits == numPosBits) return;
+            m_NumPosBits = numPosBits;
+            m_PosMask = (1 << numPosBits) - 1;
+            m_NumPrevBits = numPrevBits;
+            int numStates = 1 << (m_NumPrevBits + m_NumPosBits);
+            m_Coders = new Decoder2[numStates];
+            for(int i = 0; i < numStates; i++)
+                m_Coders[i] = new Decoder2();
+        }
+
+        public void Init(){
+            int numStates = 1 << (m_NumPrevBits + m_NumPosBits);
+            for(int i = 0; i < numStates; i++)
+                m_Coders[i].Init();
+        }
+
+        Decoder2 GetDecoder(int pos, byte prevByte){
+            return m_Coders[((pos & m_PosMask) << m_NumPrevBits) + ((prevByte & 0xFF) >>> (8 - m_NumPrevBits))];
+        }
+
+        class Decoder2{
+            short[] m_Decoders = new short[0x300];
+
+            public void Init(){
+                com.badlogic.gdx.utils.compression.rangecoder.Decoder.InitBitModels(m_Decoders);
+            }
+
+            public byte DecodeNormal(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder) throws IOException{
+                int symbol = 1;
+                do
+                    symbol = (symbol << 1) | rangeDecoder.DecodeBit(m_Decoders, symbol);
+                while(symbol < 0x100);
+                return (byte)symbol;
+            }
+
+            public byte DecodeWithMatchByte(com.badlogic.gdx.utils.compression.rangecoder.Decoder rangeDecoder, byte matchByte)
+            throws IOException{
+                int symbol = 1;
+                do{
+                    int matchBit = (matchByte >> 7) & 1;
+                    matchByte <<= 1;
+                    int bit = rangeDecoder.DecodeBit(m_Decoders, ((1 + matchBit) << 8) + symbol);
+                    symbol = (symbol << 1) | bit;
+                    if(matchBit != bit){
+                        while(symbol < 0x100)
+                            symbol = (symbol << 1) | rangeDecoder.DecodeBit(m_Decoders, symbol);
+                        break;
+                    }
+                }while(symbol < 0x100);
+                return (byte)symbol;
+            }
+        }
     }
 }

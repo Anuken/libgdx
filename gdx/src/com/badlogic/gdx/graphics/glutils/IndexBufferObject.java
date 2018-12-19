@@ -43,24 +43,21 @@ import java.nio.ShortBuffer;
  * <p>
  * VertexBufferObjects must be disposed via the {@link #dispose()} method when no longer needed
  * </p>
- *
  * @author mzechner, Thorsten Schleinzer
  */
 public class IndexBufferObject implements IndexData{
     final ShortBuffer buffer;
     final ByteBuffer byteBuffer;
-    int bufferHandle;
     final boolean isDirect;
-    boolean isDirty = true;
-    boolean isBound = false;
     final int usage;
-
     // used to work around bug: https://android-review.googlesource.com/#/c/73175/
     private final boolean empty;
+    int bufferHandle;
+    boolean isDirty = true;
+    boolean isBound = false;
 
     /**
      * Creates a new static IndexBufferObject to be used with vertex arrays.
-     *
      * @param maxIndices the maximum number of indices this buffer can hold
      */
     public IndexBufferObject(int maxIndices){
@@ -69,7 +66,6 @@ public class IndexBufferObject implements IndexData{
 
     /**
      * Creates a new IndexBufferObject.
-     *
      * @param isStatic whether the index buffer is static
      * @param maxIndices the maximum number of indices this buffer can hold
      */
@@ -109,7 +105,6 @@ public class IndexBufferObject implements IndexData{
      * <p>
      * This can be called in between calls to {@link #bind()} and {@link #unbind()}. The index data will be updated instantly.
      * </p>
-     *
      * @param indices the vertex data
      * @param offset the offset to start copying the data from
      * @param count the number of shorts to copy
@@ -164,7 +159,6 @@ public class IndexBufferObject implements IndexData{
      * Returns the underlying ShortBuffer. If you modify the buffer contents they wil be uploaded on the call to {@link #bind()}.
      * If you need immediate uploading use {@link #setIndices(short[], int, int)}.
      * </p>
-     *
      * @return the underlying short buffer.
      */
     public ShortBuffer getBuffer(){

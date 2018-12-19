@@ -59,123 +59,29 @@ public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewCon
     int fps;
     BufferFormat bufferFormat;
     String extensions;
-
-    private float ppiX;
-    private float ppiY;
-    private float ppcX;
-    private float ppcY;
-    private float density;
-
     volatile boolean appPaused;
-    private long frameId = -1;
-    private boolean isContinuous = true;
-    private boolean isFrameRequested = true;
-
     IOSApplicationConfiguration config;
     EAGLContext context;
     GLVersion glVersion;
     GLKView view;
     IOSUIViewController viewController;
-
-    static class IOSUIViewController extends GLKViewController{
-        final IOSApplication app;
-        final IOSGraphics graphics;
-        boolean created = false;
-
-        IOSUIViewController(IOSApplication app, IOSGraphics graphics){
-            this.app = app;
-            this.graphics = graphics;
-        }
-
-        @Override
-        public void viewWillAppear(boolean arg0){
-            super.viewWillAppear(arg0);
-            // start GLKViewController even though we may only draw a single frame
-            // (we may be in non-continuous mode)
-            setPaused(false);
-        }
-
-        @Override
-        public void viewDidAppear(boolean animated){
-            if(app.viewControllerListener != null) app.viewControllerListener.viewDidAppear(animated);
-        }
-
-        @Override
-        public UIInterfaceOrientationMask getSupportedInterfaceOrientations(){
-            long mask = 0;
-            if(app.config.orientationLandscape){
-                mask |= ((1 << UIInterfaceOrientation.LandscapeLeft.value()) | (1 << UIInterfaceOrientation.LandscapeRight.value()));
-            }
-            if(app.config.orientationPortrait){
-                mask |= ((1 << UIInterfaceOrientation.Portrait.value()) | (1 << UIInterfaceOrientation.PortraitUpsideDown.value()));
-            }
-            return new UIInterfaceOrientationMask(mask);
-        }
-
-        @Override
-        public boolean shouldAutorotate(){
-            return true;
-        }
-
-        public boolean shouldAutorotateToInterfaceOrientation(UIInterfaceOrientation orientation){
-            // we return "true" if we support the orientation
-            switch(orientation){
-                case LandscapeLeft:
-                case LandscapeRight:
-                    return app.config.orientationLandscape;
-                default:
-                    // assume portrait
-                    return app.config.orientationPortrait;
-            }
-        }
-
-        @Override
-        public UIRectEdge preferredScreenEdgesDeferringSystemGestures(){
-            return app.config.screenEdgesDeferringSystemGestures;
-        }
-
-        @Override
-        public void viewDidLayoutSubviews(){
-            super.viewDidLayoutSubviews();
-            // get the view size and update graphics
-            CGRect bounds = app.getBounds();
-            graphics.width = (int) bounds.getWidth();
-            graphics.height = (int) bounds.getHeight();
-            graphics.makeCurrent();
-            if(graphics.created){
-                for(ApplicationListener list : app.listeners){
-                    list.resize(graphics.width, graphics.height);
-                }
-            }
-        }
-
-        @Override
-        public boolean prefersHomeIndicatorAutoHidden(){
-            return app.config.hideHomeIndicator;
-        }
-
-        @Callback
-        @BindSelector("shouldAutorotateToInterfaceOrientation:")
-        private static boolean shouldAutorotateToInterfaceOrientation(IOSUIViewController self, Selector sel,
-                                                                      UIInterfaceOrientation orientation){
-            return self.shouldAutorotateToInterfaceOrientation(orientation);
-        }
-    }
-
-    static class IOSUIView extends GLKView{
-
-        public IOSUIView(CGRect frame, EAGLContext context){
-            super(frame, context);
-        }
-    }
+    boolean created = false;
+    private float ppiX;
+    private float ppiY;
+    private float ppcX;
+    private float ppcY;
+    private float density;
+    private long frameId = -1;
+    private boolean isContinuous = true;
+    private boolean isFrameRequested = true;
 
     public IOSGraphics(float scale, IOSApplication app, IOSApplicationConfiguration config, IOSInput input, boolean useGLES30){
         this.config = config;
 
         final CGRect bounds = app.getBounds();
         // setup view and OpenGL
-        width = (int) bounds.getWidth();
-        height = (int) bounds.getHeight();
+        width = (int)bounds.getWidth();
+        height = (int)bounds.getHeight();
 
         if(useGLES30){
             context = new EAGLContext(EAGLRenderingAPI.OpenGLES3);
@@ -298,8 +204,6 @@ public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewCon
         }
     }
 
-    boolean created = false;
-
     @Override
     public void draw(GLKView view, CGRect rect){
         makeCurrent();
@@ -398,7 +302,6 @@ public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewCon
             Core.gl30 = gl30;
         }
     }
-
 
     @Override
     public int getWidth(){
@@ -549,17 +452,17 @@ public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewCon
     }
 
     @Override
+    public boolean isContinuousRendering(){
+        return isContinuous;
+    }
+
+    @Override
     public void setContinuousRendering(boolean isContinuous){
         if(isContinuous != this.isContinuous){
             this.isContinuous = isContinuous;
             // start the GLKViewController if we go from non-continuous -> continuous
             if(isContinuous) viewController.setPaused(false);
         }
-    }
-
-    @Override
-    public boolean isContinuousRendering(){
-        return isContinuous;
     }
 
     @Override
@@ -591,6 +494,98 @@ public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewCon
 
     @Override
     public void setSystemCursor(SystemCursor systemCursor){
+    }
+
+    static class IOSUIViewController extends GLKViewController{
+        final IOSApplication app;
+        final IOSGraphics graphics;
+        boolean created = false;
+
+        IOSUIViewController(IOSApplication app, IOSGraphics graphics){
+            this.app = app;
+            this.graphics = graphics;
+        }
+
+        @Callback
+        @BindSelector("shouldAutorotateToInterfaceOrientation:")
+        private static boolean shouldAutorotateToInterfaceOrientation(IOSUIViewController self, Selector sel,
+                                                                      UIInterfaceOrientation orientation){
+            return self.shouldAutorotateToInterfaceOrientation(orientation);
+        }
+
+        @Override
+        public void viewWillAppear(boolean arg0){
+            super.viewWillAppear(arg0);
+            // start GLKViewController even though we may only draw a single frame
+            // (we may be in non-continuous mode)
+            setPaused(false);
+        }
+
+        @Override
+        public void viewDidAppear(boolean animated){
+            if(app.viewControllerListener != null) app.viewControllerListener.viewDidAppear(animated);
+        }
+
+        @Override
+        public UIInterfaceOrientationMask getSupportedInterfaceOrientations(){
+            long mask = 0;
+            if(app.config.orientationLandscape){
+                mask |= ((1 << UIInterfaceOrientation.LandscapeLeft.value()) | (1 << UIInterfaceOrientation.LandscapeRight.value()));
+            }
+            if(app.config.orientationPortrait){
+                mask |= ((1 << UIInterfaceOrientation.Portrait.value()) | (1 << UIInterfaceOrientation.PortraitUpsideDown.value()));
+            }
+            return new UIInterfaceOrientationMask(mask);
+        }
+
+        @Override
+        public boolean shouldAutorotate(){
+            return true;
+        }
+
+        public boolean shouldAutorotateToInterfaceOrientation(UIInterfaceOrientation orientation){
+            // we return "true" if we support the orientation
+            switch(orientation){
+                case LandscapeLeft:
+                case LandscapeRight:
+                    return app.config.orientationLandscape;
+                default:
+                    // assume portrait
+                    return app.config.orientationPortrait;
+            }
+        }
+
+        @Override
+        public UIRectEdge preferredScreenEdgesDeferringSystemGestures(){
+            return app.config.screenEdgesDeferringSystemGestures;
+        }
+
+        @Override
+        public void viewDidLayoutSubviews(){
+            super.viewDidLayoutSubviews();
+            // get the view size and update graphics
+            CGRect bounds = app.getBounds();
+            graphics.width = (int)bounds.getWidth();
+            graphics.height = (int)bounds.getHeight();
+            graphics.makeCurrent();
+            if(graphics.created){
+                for(ApplicationListener list : app.listeners){
+                    list.resize(graphics.width, graphics.height);
+                }
+            }
+        }
+
+        @Override
+        public boolean prefersHomeIndicatorAutoHidden(){
+            return app.config.hideHomeIndicator;
+        }
+    }
+
+    static class IOSUIView extends GLKView{
+
+        public IOSUIView(CGRect frame, EAGLContext context){
+            super(frame, context);
+        }
     }
 
     private class IOSDisplayMode extends DisplayMode{

@@ -21,11 +21,11 @@ import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.collection.ObjectMap;
-import com.badlogic.gdx.utils.io.StreamUtils;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.async.AsyncTask;
+import com.badlogic.gdx.utils.io.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,93 +39,13 @@ import java.util.Map;
 /**
  * Implements part of the {@link Net} API using {@link HttpURLConnection}, to be easily reused between the Android and Desktop
  * backends.
- *
  * @author acoppes
  */
 public class NetJavaImpl{
 
-    static class HttpClientResponse implements HttpResponse{
-        private final HttpURLConnection connection;
-        private HttpStatus status;
-
-        public HttpClientResponse(HttpURLConnection connection){
-            this.connection = connection;
-            try{
-                this.status = new HttpStatus(connection.getResponseCode());
-            }catch(IOException e){
-                this.status = new HttpStatus(-1);
-            }
-        }
-
-        @Override
-        public byte[] getResult(){
-            InputStream input = getInputStream();
-
-            // If the response does not contain any content, input will be null.
-            if(input == null){
-                return StreamUtils.EMPTY_BYTES;
-            }
-
-            try{
-                return StreamUtils.copyStreamToByteArray(input, connection.getContentLength());
-            }catch(IOException e){
-                return StreamUtils.EMPTY_BYTES;
-            }finally{
-                StreamUtils.closeQuietly(input);
-            }
-        }
-
-        @Override
-        public String getResultAsString(){
-            InputStream input = getInputStream();
-
-            // If the response does not contain any content, input will be null.
-            if(input == null){
-                return "";
-            }
-
-            try{
-                return StreamUtils.copyStreamToString(input, connection.getContentLength());
-            }catch(IOException e){
-                return "";
-            }finally{
-                StreamUtils.closeQuietly(input);
-            }
-        }
-
-        @Override
-        public InputStream getResultAsStream(){
-            return getInputStream();
-        }
-
-        @Override
-        public HttpStatus getStatus(){
-            return status;
-        }
-
-        @Override
-        public String getHeader(String name){
-            return connection.getHeaderField(name);
-        }
-
-        @Override
-        public Map<String, List<String>> getHeaders(){
-            return connection.getHeaderFields();
-        }
-
-        private InputStream getInputStream(){
-            try{
-                return connection.getInputStream();
-            }catch(IOException e){
-                return connection.getErrorStream();
-            }
-        }
-    }
-
-    private final AsyncExecutor asyncExecutor;
     final ObjectMap<HttpRequest, HttpURLConnection> connections;
     final ObjectMap<HttpRequest, HttpResponseListener> listeners;
-
+    private final AsyncExecutor asyncExecutor;
     public NetJavaImpl(){
         asyncExecutor = new AsyncExecutor(1);
         connections = new ObjectMap<HttpRequest, HttpURLConnection>();
@@ -151,7 +71,7 @@ public class NetJavaImpl{
                 url = new URL(httpRequest.getUrl());
             }
 
-            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             // should be enabled to upload data.
             final boolean doingOutPut = method.equalsIgnoreCase(HttpMethods.POST) || method.equalsIgnoreCase(HttpMethods.PUT);
             connection.setDoOutput(doingOutPut);
@@ -255,5 +175,83 @@ public class NetJavaImpl{
     synchronized HttpResponseListener getFromListeners(HttpRequest httpRequest){
         HttpResponseListener httpResponseListener = listeners.get(httpRequest);
         return httpResponseListener;
+    }
+
+    static class HttpClientResponse implements HttpResponse{
+        private final HttpURLConnection connection;
+        private HttpStatus status;
+
+        public HttpClientResponse(HttpURLConnection connection){
+            this.connection = connection;
+            try{
+                this.status = new HttpStatus(connection.getResponseCode());
+            }catch(IOException e){
+                this.status = new HttpStatus(-1);
+            }
+        }
+
+        @Override
+        public byte[] getResult(){
+            InputStream input = getInputStream();
+
+            // If the response does not contain any content, input will be null.
+            if(input == null){
+                return StreamUtils.EMPTY_BYTES;
+            }
+
+            try{
+                return StreamUtils.copyStreamToByteArray(input, connection.getContentLength());
+            }catch(IOException e){
+                return StreamUtils.EMPTY_BYTES;
+            }finally{
+                StreamUtils.closeQuietly(input);
+            }
+        }
+
+        @Override
+        public String getResultAsString(){
+            InputStream input = getInputStream();
+
+            // If the response does not contain any content, input will be null.
+            if(input == null){
+                return "";
+            }
+
+            try{
+                return StreamUtils.copyStreamToString(input, connection.getContentLength());
+            }catch(IOException e){
+                return "";
+            }finally{
+                StreamUtils.closeQuietly(input);
+            }
+        }
+
+        @Override
+        public InputStream getResultAsStream(){
+            return getInputStream();
+        }
+
+        @Override
+        public HttpStatus getStatus(){
+            return status;
+        }
+
+        @Override
+        public String getHeader(String name){
+            return connection.getHeaderField(name);
+        }
+
+        @Override
+        public Map<String, List<String>> getHeaders(){
+            return connection.getHeaderFields();
+        }
+
+        private InputStream getInputStream(){
+            try{
+                return connection.getInputStream();
+            }catch(IOException e){
+                return connection.getErrorStream();
+            }
+        }
     }
 }

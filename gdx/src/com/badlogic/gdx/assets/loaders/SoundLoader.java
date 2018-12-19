@@ -21,12 +21,11 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  * {@link AssetLoader} to load {@link Sound} instances.
- *
  * @author mzechner
  */
 public class SoundLoader extends AsynchronousAssetLoader<Sound, SoundLoader.SoundParameter>{
@@ -40,7 +39,6 @@ public class SoundLoader extends AsynchronousAssetLoader<Sound, SoundLoader.Soun
     /**
      * Returns the {@link Sound} instance currently loaded by this
      * {@link SoundLoader}.
-     *
      * @return the currently loaded {@link Sound}, otherwise {@code null} if
      * no {@link Sound} has been loaded yet.
      */

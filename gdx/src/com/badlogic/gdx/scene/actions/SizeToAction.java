@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Moves an actor from its current size to a specific size.
- *
  * @author Nathan Sweet
  */
 public class SizeToAction extends TemporalAction{

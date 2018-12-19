@@ -44,7 +44,6 @@ import static com.badlogic.gdx.Core.graphics;
  * <p>
  * For a horizontal progress bar, its preferred height is determined by the larger of the knob and background, and the preferred width
  * is 140, a relatively arbitrary size. These parameters are reversed for a vertical progress bar.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -75,7 +74,6 @@ public class ProgressBar extends Element implements Disableable{
      * between individual values.
      * <p>
      * E.g. min could be 4, max could be 10 and stepSize could be 0.2, giving you a total of 30 values, 4.0 4.2, 4.4 and so on.
-     *
      * @param min the minimum value
      * @param max the maximum value
      * @param stepSize the step size between values
@@ -169,18 +167,18 @@ public class ProgressBar extends Element implements Disableable{
                 if(bg != null) offset = bgTopHeight;
                 if(round)
                     knobBefore.draw(Math.round(x + (width - knobBefore.getMinWidth()) * 0.5f), Math.round(y + offset), Math.round(knobBefore.getMinWidth()),
-                            Math.round(position + knobHeightHalf));
+                    Math.round(position + knobHeightHalf));
                 else
                     knobBefore.draw(x + (width - knobBefore.getMinWidth()) * 0.5f, y + offset, knobBefore.getMinWidth(),
-                            position + knobHeightHalf);
+                    position + knobHeightHalf);
             }
             if(knobAfter != null){
                 if(round)
                     knobAfter.draw(Math.round(x + (width - knobAfter.getMinWidth()) * 0.5f), Math.round(y + position + knobHeightHalf),
-                            Math.round(knobAfter.getMinWidth()), Math.round(height - position - knobHeightHalf));
+                    Math.round(knobAfter.getMinWidth()), Math.round(height - position - knobHeightHalf));
                 else
                     knobAfter.draw(x + (width - knobAfter.getMinWidth()) * 0.5f, y + position + knobHeightHalf,
-                            knobAfter.getMinWidth(), height - position - knobHeightHalf);
+                    knobAfter.getMinWidth(), height - position - knobHeightHalf);
             }
             if(knob != null){
                 if(round)
@@ -220,18 +218,18 @@ public class ProgressBar extends Element implements Disableable{
                 if(bg != null) offset = bgLeftWidth;
                 if(round)
                     knobBefore.draw(Math.round(x + offset), Math.round(y + (height - knobBefore.getMinHeight()) * 0.5f),
-                            Math.round(position + knobWidthHalf), Math.round(knobBefore.getMinHeight()));
+                    Math.round(position + knobWidthHalf), Math.round(knobBefore.getMinHeight()));
                 else
                     knobBefore.draw(x + offset, y + (height - knobBefore.getMinHeight()) * 0.5f,
-                            position + knobWidthHalf, knobBefore.getMinHeight());
+                    position + knobWidthHalf, knobBefore.getMinHeight());
             }
             if(knobAfter != null){
                 if(round)
                     knobAfter.draw(Math.round(x + position + knobWidthHalf), Math.round(y + (height - knobAfter.getMinHeight()) * 0.5f),
-                            Math.round(width - position - knobWidthHalf), Math.round(knobAfter.getMinHeight()));
+                    Math.round(width - position - knobWidthHalf), Math.round(knobAfter.getMinHeight()));
                 else
                     knobAfter.draw(x + position + knobWidthHalf, y + (height - knobAfter.getMinHeight()) * 0.5f,
-                            width - position - knobWidthHalf, knobAfter.getMinHeight());
+                    width - position - knobWidthHalf, knobAfter.getMinHeight());
             }
             if(knob != null){
                 if(round)
@@ -273,7 +271,6 @@ public class ProgressBar extends Element implements Disableable{
     /**
      * Sets the progress bar position, rounded to the nearest step size and clamped to the minimum and maximum values.
      * {@link #clamp(float)} can be overridden to allow values outside of the progress bar's min/max range.
-     *
      * @return false if the value was not changed because the progress bar already had the value or it was canceled by a
      * listener.
      */
@@ -385,7 +382,6 @@ public class ProgressBar extends Element implements Disableable{
 
     /**
      * The style for a progress bar, see {@link ProgressBar}.
-     *
      * @author mzechner
      * @author Nathan Sweet
      */

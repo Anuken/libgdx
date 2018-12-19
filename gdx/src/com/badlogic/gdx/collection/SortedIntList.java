@@ -20,15 +20,12 @@ import com.badlogic.gdx.utils.pooling.Pool;
 
 /**
  * A sorted double linked list which uses ints for indexing
- *
- * @param <E>
  */
 public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
+    int size = 0;
+    Node<E> first;
     private NodePool<E> nodePool = new NodePool<E>(); // avoid allocating nodes
     private Iterator iterator;
-    int size = 0;
-
-    Node<E> first;
 
     /** Creates an ascending list */
     public SortedIntList(){
@@ -36,7 +33,6 @@ public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
 
     /**
      * Inserts an element into the list at the given index
-     *
      * @param index Index of the element
      * @param value Element to insert
      * @return Element replaced by newly inserted element, null if nothing was replaced
@@ -76,7 +72,6 @@ public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
 
     /**
      * Retrieves an element at a given index
-     *
      * @param index Index of the element to retrieve
      * @return Matching element, null otherwise
      */
@@ -115,7 +110,6 @@ public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
     /**
      * Returns an iterator to traverse the list.<br/>
      * Only one iterator can be active per list at any given time.
-     *
      * @return Iterator to traverse list
      */
     public java.util.Iterator<Node<E>> iterator(){
@@ -123,6 +117,33 @@ public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
             iterator = new Iterator();
         }
         return iterator.reset();
+    }
+
+    public static class Node<E>{
+        /** Value held */
+        public E value;
+        /** Index value in list */
+        public int index;
+        /** Node previous to this */
+        protected Node<E> p;
+        /** Node next to this */
+        protected Node<E> n;
+    }
+
+    static class NodePool<E> extends Pool<Node<E>>{
+        @Override
+        protected Node<E> newObject(){
+            return new Node<E>();
+        }
+
+        public Node<E> obtain(Node<E> p, Node<E> n, E value, int index){
+            Node<E> newNode = super.obtain();
+            newNode.p = p;
+            newNode.n = n;
+            newNode.value = value;
+            newNode.index = index;
+            return newNode;
+        }
     }
 
     class Iterator implements java.util.Iterator<Node<E>>{
@@ -164,33 +185,6 @@ public class SortedIntList<E> implements Iterable<SortedIntList.Node<E>>{
             position = first;
             previousPosition = null;
             return this;
-        }
-    }
-
-    public static class Node<E>{
-        /** Node previous to this */
-        protected Node<E> p;
-        /** Node next to this */
-        protected Node<E> n;
-        /** Value held */
-        public E value;
-        /** Index value in list */
-        public int index;
-    }
-
-    static class NodePool<E> extends Pool<Node<E>>{
-        @Override
-        protected Node<E> newObject(){
-            return new Node<E>();
-        }
-
-        public Node<E> obtain(Node<E> p, Node<E> n, E value, int index){
-            Node<E> newNode = super.obtain();
-            newNode.p = p;
-            newNode.n = n;
-            newNode.value = value;
-            newNode.index = index;
-            return newNode;
         }
     }
 }

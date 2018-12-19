@@ -21,7 +21,6 @@ import com.badlogic.gdx.net.*;
 
 /**
  * Headless implementation of the {@link com.badlogic.gdx.Net} API, based on LWJGL implementation
- *
  * @author acoppes
  * @author Jon Renner
  */

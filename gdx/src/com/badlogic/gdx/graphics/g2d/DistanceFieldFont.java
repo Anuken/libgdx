@@ -22,10 +22,10 @@
 
 package com.badlogic.gdx.graphics.g2d;
 
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.collection.Array;
 
 import static com.badlogic.gdx.Core.graphics;
 
@@ -35,7 +35,6 @@ import static com.badlogic.gdx.Core.graphics;
  * the SpriteBatch with the {@link #createDistanceFieldShader()} shader.
  * <p>
  * Attention: The batch is flushed before and after each string is rendered.
- *
  * @author Florian Falkner
  */
 public class DistanceFieldFont extends BitmapFont{
@@ -71,33 +70,6 @@ public class DistanceFieldFont extends BitmapFont{
 
     public DistanceFieldFont(FileHandle fontFile){
         super(fontFile);
-    }
-
-    protected void load(BitmapFontData data){
-        super.load(data);
-
-        // Distance field font rendering requires font texture to be filtered linear.
-        final Array<TextureRegion> regions = getRegions();
-        for(TextureRegion region : regions)
-            region.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-    }
-
-    @Override
-    public BitmapFontCache newFontCache(){
-        return new DistanceFieldFontCache(this, integer);
-    }
-
-    /** @return The distance field smoothing factor for this font. */
-    public float getDistanceFieldSmoothing(){
-        return distanceFieldSmoothing;
-    }
-
-    /**
-     * @param distanceFieldSmoothing Set the distance field smoothing factor for this font. SpriteBatch needs to have this shader
-     * set for rendering distance field fonts.
-     */
-    public void setDistanceFieldSmoothing(float distanceFieldSmoothing){
-        this.distanceFieldSmoothing = distanceFieldSmoothing;
     }
 
     /**
@@ -146,10 +118,36 @@ public class DistanceFieldFont extends BitmapFont{
         return shader;
     }
 
+    protected void load(BitmapFontData data){
+        super.load(data);
+
+        // Distance field font rendering requires font texture to be filtered linear.
+        final Array<TextureRegion> regions = getRegions();
+        for(TextureRegion region : regions)
+            region.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+    }
+
+    @Override
+    public BitmapFontCache newFontCache(){
+        return new DistanceFieldFontCache(this, integer);
+    }
+
+    /** @return The distance field smoothing factor for this font. */
+    public float getDistanceFieldSmoothing(){
+        return distanceFieldSmoothing;
+    }
+
+    /**
+     * @param distanceFieldSmoothing Set the distance field smoothing factor for this font. SpriteBatch needs to have this shader
+     * set for rendering distance field fonts.
+     */
+    public void setDistanceFieldSmoothing(float distanceFieldSmoothing){
+        this.distanceFieldSmoothing = distanceFieldSmoothing;
+    }
+
     /**
      * Provides a font cache that uses distance field shader for rendering fonts. Attention: breaks batching because uniform is
      * needed for smoothing factor, so a flush is performed before and after every font rendering.
-     *
      * @author Florian Falkner
      */
     static private class DistanceFieldFontCache extends BitmapFontCache{
@@ -162,7 +160,7 @@ public class DistanceFieldFont extends BitmapFont{
         }
 
         private float getSmoothingFactor(){
-            final DistanceFieldFont font = (DistanceFieldFont) super.getFont();
+            final DistanceFieldFont font = (DistanceFieldFont)super.getFont();
             return font.getDistanceFieldSmoothing() * font.getScaleX();
         }
 

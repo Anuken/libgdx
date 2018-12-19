@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-subprojects {
+subprojects{
     apply plugin: "java"
 
     sourceCompatibility = 1.8
@@ -23,7 +23,7 @@ subprojects {
     sourceSets.main.resources.srcDirs = ["src"]
 
 
-    dependencies {
+    dependencies{
         compile project(":gdx")
     }
 }

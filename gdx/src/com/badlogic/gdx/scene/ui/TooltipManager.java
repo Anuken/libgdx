@@ -18,18 +18,17 @@ package com.badlogic.gdx.scene.ui;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scene.Scene;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.badlogic.gdx.scene.Scene;
 
 import static com.badlogic.gdx.math.Interpolation.fade;
 import static com.badlogic.gdx.scene.actions.Actions.*;
 
 /**
  * Keeps track of an application's tooltips.
- *
  * @author Nathan Sweet
  */
 public class TooltipManager{
@@ -141,7 +140,7 @@ public class TooltipManager{
      */
     protected void hideAction(Tooltip tooltip){
         tooltip.container
-                .addAction(sequence(parallel(alpha(0.2f, 0.2f, fade), scaleTo(0.05f, 0.05f, 0.2f, Interpolation.fade)), removeActor()));
+        .addAction(sequence(parallel(alpha(0.2f, 0.2f, fade), scaleTo(0.05f, 0.05f, 0.2f, Interpolation.fade)), removeActor()));
     }
 
     public void hideAll(){

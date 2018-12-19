@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils.reflect;
 
 /**
  * Utilities for Array reflection.
- *
  * @author nexsoftware
  */
 public final class ArrayReflection{

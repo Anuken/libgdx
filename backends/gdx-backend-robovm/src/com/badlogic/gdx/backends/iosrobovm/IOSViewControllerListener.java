@@ -21,7 +21,6 @@ package com.badlogic.gdx.backends.iosrobovm;
  * {@link IOSApplication#addViewControllerListener(IOSViewControllerListener)}. It will receive notification of view events.</p>
  * <p>
  * The methods will be invoked on the UI thread.
- *
  * @author mzechner
  */
 public interface IOSViewControllerListener{

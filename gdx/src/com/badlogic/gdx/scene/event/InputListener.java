@@ -29,7 +29,7 @@ public class InputListener implements EventListener{
 
     public boolean handle(Event e){
         if(!(e instanceof InputEvent)) return false;
-        InputEvent event = (InputEvent) e;
+        InputEvent event = (InputEvent)e;
 
         switch(event.type){
             case keyDown:
@@ -69,7 +69,6 @@ public class InputListener implements EventListener{
      * Called when a mouse button or a finger touch goes down on the element. If true is returned, this listener will receive all
      * touchDragged and touchUp events, even those not over this element, until touchUp is received. Also when true is returned, the
      * event is {@link Event#handle() handled}.
-     *
      * @see InputEvent
      */
     public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
@@ -79,7 +78,6 @@ public class InputListener implements EventListener{
     /**
      * Called when a mouse button or a finger touch goes up anywhere, but only if touchDown previously returned true for the mouse
      * button or touch. The touchUp event is always {@link Event#handle() handled}.
-     *
      * @see InputEvent
      */
     public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
@@ -88,7 +86,6 @@ public class InputListener implements EventListener{
     /**
      * Called when a mouse button or a finger touch is moved anywhere, but only if touchDown previously returned true for the mouse
      * button or touch. The touchDragged event is always {@link Event#handle() handled}.
-     *
      * @see InputEvent
      */
     public void touchDragged(InputEvent event, float x, float y, int pointer){
@@ -97,7 +94,6 @@ public class InputListener implements EventListener{
     /**
      * Called any time the mouse is moved when a button is not down. This event only occurs on the desktop. When true is returned,
      * the event is {@link Event#handle() handled}.
-     *
      * @see InputEvent
      */
     public boolean mouseMoved(InputEvent event, float x, float y){
@@ -107,7 +103,6 @@ public class InputListener implements EventListener{
     /**
      * Called any time the mouse cursor or a finger touch is moved over an element. On the desktop, this event occurs even when no
      * mouse buttons are pressed (pointer will be -1).
-     *
      * @param fromActor May be null.
      * @see InputEvent
      */
@@ -117,7 +112,6 @@ public class InputListener implements EventListener{
     /**
      * Called any time the mouse cursor or a finger touch is moved out of an element. On the desktop, this event occurs even when no
      * mouse buttons are pressed (pointer will be -1).
-     *
      * @param toActor May be null.
      * @see InputEvent
      */

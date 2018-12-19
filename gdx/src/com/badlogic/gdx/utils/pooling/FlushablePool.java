@@ -21,7 +21,6 @@ import com.badlogic.gdx.collection.Array;
 /**
  * A {@link Pool} which keeps track of the obtained items (see {@link #obtain()}), which can be free'd all at once using the
  * {@link #flush()} method.
- *
  * @author Xoppa
  */
 public abstract class FlushablePool<T> extends Pool<T>{

@@ -5,10 +5,10 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.collection.Array;
 
 /**
  * Creates {@link BitmapFont} instances from FreeType font files. Requires a {@link FreeTypeFontLoaderParameter} to be
@@ -18,13 +18,6 @@ import com.badlogic.gdx.collection.Array;
 public class FreetypeFontLoader extends AsynchronousAssetLoader<BitmapFont, FreetypeFontLoader.FreeTypeFontLoaderParameter>{
     public FreetypeFontLoader(FileHandleResolver resolver){
         super(resolver);
-    }
-
-    public static class FreeTypeFontLoaderParameter extends AssetLoaderParameters<BitmapFont>{
-        /** the name of the TTF file to be used to load the font **/
-        public String fontFileName;
-        /** the parameters used to generate the font, e.g. size, characters, etc. **/
-        public FreeTypeFontParameter fontParameters = new FreeTypeFontParameter();
     }
 
     @Override
@@ -45,7 +38,14 @@ public class FreetypeFontLoader extends AsynchronousAssetLoader<BitmapFont, Free
     @Override
     public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, FreeTypeFontLoaderParameter parameter){
         Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
-        deps.add(new AssetDescriptor<FreeTypeFontGenerator>(parameter.fontFileName + ".gen", FreeTypeFontGenerator.class));
+        deps.add(new AssetDescriptor<>(parameter.fontFileName + ".gen", FreeTypeFontGenerator.class));
         return deps;
+    }
+
+    public static class FreeTypeFontLoaderParameter extends AssetLoaderParameters<BitmapFont>{
+        /** the name of the TTF file to be used to load the font **/
+        public String fontFileName;
+        /** the parameters used to generate the font, e.g. size, characters, etc. **/
+        public FreeTypeFontParameter fontParameters = new FreeTypeFontParameter();
     }
 }

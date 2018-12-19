@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.collection;
 
-import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.collection.ObjectMap.Entry;
+import com.badlogic.gdx.math.Mathf;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.reflect.ArrayReflection;
@@ -31,7 +31,6 @@ import java.util.NoSuchElementException;
  * implementation, but may be acceptable for small maps and has the benefits that keys and values can be accessed by index, which
  * makes iteration fast. Like {@link Array}, if ordered is false, this class avoids a memory copy when removing elements (the last
  * element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
@@ -61,21 +60,20 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
      */
     public ArrayMap(boolean ordered, int capacity){
         this.ordered = ordered;
-        keys = (K[]) new Object[capacity];
-        values = (V[]) new Object[capacity];
+        keys = (K[])new Object[capacity];
+        values = (V[])new Object[capacity];
     }
 
     /**
      * Creates a new map with {@link #keys} and {@link #values} of the specified type.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the arrays, which avoids a
      * memory copy.
      * @param capacity Any elements added beyond this will cause the backing arrays to be grown.
      */
     public ArrayMap(boolean ordered, int capacity, Class keyArrayType, Class valueArrayType){
         this.ordered = ordered;
-        keys = (K[]) ArrayReflection.newInstance(keyArrayType, capacity);
-        values = (V[]) ArrayReflection.newInstance(valueArrayType, capacity);
+        keys = (K[])ArrayReflection.newInstance(keyArrayType, capacity);
+        values = (V[])ArrayReflection.newInstance(valueArrayType, capacity);
     }
 
     /** Creates an ordered map with {@link #keys} and {@link #values} of the specified type and a capacity of 16. */
@@ -98,7 +96,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     public int put(K key, V value){
         int index = indexOfKey(key);
         if(index == -1){
-            if(size == keys.length) resize(Math.max(8, (int) (size * 1.75f)));
+            if(size == keys.length) resize(Math.max(8, (int)(size * 1.75f)));
             index = size++;
         }
         keys[index] = key;
@@ -111,7 +109,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         if(existingIndex != -1)
             removeIndex(existingIndex);
         else if(size == keys.length) //
-            resize(Math.max(8, (int) (size * 1.75f)));
+            resize(Math.max(8, (int)(size * 1.75f)));
         System.arraycopy(keys, index, keys, index + 1, size - index);
         System.arraycopy(values, index, values, index + 1, size - index);
         keys[index] = key;
@@ -128,7 +126,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         if(offset + length > map.size)
             throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + map.size);
         int sizeNeeded = size + length - offset;
-        if(sizeNeeded >= keys.length) resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded >= keys.length) resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(map.keys, offset, keys, size, length);
         System.arraycopy(map.values, offset, values, size, length);
         size += length;
@@ -154,7 +152,6 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     /**
      * Returns the key for the specified value. Note this does a comparison of each value in reverse order until the specified
      * value is found.
-     *
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      */
     public K getKey(V value, boolean identity){
@@ -202,7 +199,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
     public void insert(int index, K key, V value){
         if(index > size) throw new IndexOutOfBoundsException(String.valueOf(index));
-        if(size == keys.length) resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == keys.length) resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered){
             System.arraycopy(keys, index, keys, index + 1, size - index);
             System.arraycopy(values, index, values, index + 1, size - index);
@@ -380,11 +377,11 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     }
 
     protected void resize(int newSize){
-        K[] newKeys = (K[]) ArrayReflection.newInstance(keys.getClass().getComponentType(), newSize);
+        K[] newKeys = (K[])ArrayReflection.newInstance(keys.getClass().getComponentType(), newSize);
         System.arraycopy(keys, 0, newKeys, 0, Math.min(size, newKeys.length));
         this.keys = newKeys;
 
-        V[] newValues = (V[]) ArrayReflection.newInstance(values.getClass().getComponentType(), newSize);
+        V[] newValues = (V[])ArrayReflection.newInstance(values.getClass().getComponentType(), newSize);
         System.arraycopy(values, 0, newValues, 0, Math.min(size, newValues.length));
         this.values = newValues;
     }
@@ -444,7 +441,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     public boolean equals(Object obj){
         if(obj == this) return true;
         if(!(obj instanceof ArrayMap)) return false;
-        ArrayMap<K, V> other = (ArrayMap) obj;
+        ArrayMap<K, V> other = (ArrayMap)obj;
         if(other.size != size) return false;
         K[] keys = this.keys;
         V[] values = this.values;

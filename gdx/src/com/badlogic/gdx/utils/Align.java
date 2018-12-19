@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils;
 
 /**
  * Provides bit flag constants for alignment.
- *
  * @author Nathan Sweet
  */
 public class Align{

@@ -37,19 +37,9 @@ import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
  * texture.</p>
  * <p>
  * Look at {@link FileTextureData} and {@link ETC1TextureData} for example implementations of this interface.
- *
  * @author mzechner
  */
 public interface TextureData{
-    /**
-     * The type of this {@link TextureData}.
-     *
-     * @author mzechner
-     */
-    enum TextureDataType{
-        Pixmap, Custom
-    }
-
     /** @return the {@link TextureDataType} */
     TextureDataType getType();
 
@@ -65,7 +55,6 @@ public interface TextureData{
     /**
      * Returns the {@link Pixmap} for upload by Texture. A call to {@link #prepare()} must precede a call to this method. Any
      * internal data structures created in {@link #prepare()} should be disposed of here.
-     *
      * @return the pixmap.
      */
     Pixmap consumePixmap();
@@ -95,8 +84,15 @@ public interface TextureData{
     boolean isManaged();
 
     /**
+     * The type of this {@link TextureData}.
+     * @author mzechner
+     */
+    enum TextureDataType{
+        Pixmap, Custom
+    }
+
+    /**
      * Provides static method to instantiate the right implementation (Pixmap, ETC1, KTX).
-     *
      * @author Vincent Bousquet
      */
     class Factory{

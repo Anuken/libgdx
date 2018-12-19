@@ -29,11 +29,11 @@ import java.util.zip.ZipFile;
 /**
  * Loads shared libraries from a natives jar file (desktop) or arm folders (Android). For desktop projects, have the natives jar
  * in the classpath, for Android projects put the shared libraries in the libs/armeabi and libs/armeabi-v7a folders.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
 public class SharedLibraryLoader{
+    static private final HashSet<String> loadedLibraries = new HashSet();
     static public boolean isWindows = System.getProperty("os.name").contains("Windows");
     static public boolean isLinux = System.getProperty("os.name").contains("Linux");
     static public boolean isMac = System.getProperty("os.name").contains("Mac");
@@ -42,7 +42,6 @@ public class SharedLibraryLoader{
     static public boolean isARM = System.getProperty("os.arch").startsWith("arm");
     static public boolean is64Bit = System.getProperty("os.arch").equals("amd64")
     || System.getProperty("os.arch").equals("x86_64");
-
     // JDK 8 only.
     static public String abi = (System.getProperty("sun.arch.abi") != null ? System.getProperty("sun.arch.abi") : "");
 
@@ -66,8 +65,6 @@ public class SharedLibraryLoader{
         }
     }
 
-    static private final HashSet<String> loadedLibraries = new HashSet();
-
     private String nativesJar;
 
     public SharedLibraryLoader(){
@@ -75,11 +72,18 @@ public class SharedLibraryLoader{
 
     /**
      * Fetches the natives from the given natives jar file. Used for testing a shared lib on the fly.
-     *
-     * @param nativesJar
      */
     public SharedLibraryLoader(String nativesJar){
         this.nativesJar = nativesJar;
+    }
+
+    /** Sets the library as loaded, for when application code wants to handle libary loading itself. */
+    static public synchronized void setLoaded(String libraryName){
+        loadedLibraries.add(libraryName);
+    }
+
+    static public synchronized boolean isLoaded(String libraryName){
+        return loadedLibraries.contains(libraryName);
     }
 
     /** Returns a CRC of the remaining bytes in the stream. */
@@ -110,7 +114,6 @@ public class SharedLibraryLoader{
 
     /**
      * Loads a shared library for the platform the application is running on.
-     *
      * @param libraryName The platform independent library name. If not contain a prefix (eg lib) or suffix (eg .dll).
      */
     public void load(String libraryName){
@@ -154,7 +157,6 @@ public class SharedLibraryLoader{
     /**
      * Extracts the specified file to the specified directory if it does not already exist or the CRC does not match. If file
      * extraction fails and the file exists at java.library.path, that file is returned.
-     *
      * @param sourcePath The file to extract from the classpath or JAR.
      * @param dirName The name of the subdirectory where the file will be extracted. If null, the file's CRC will be used.
      * @return The extracted file.
@@ -182,7 +184,6 @@ public class SharedLibraryLoader{
     /**
      * Extracts the specified file into the temp directory if it does not already exist or the CRC does not match. If file
      * extraction fails and the file exists at java.library.path, that file is returned.
-     *
      * @param sourcePath The file to extract from the classpath or JAR.
      * @param dir The location where the extracted file will be written.
      */
@@ -192,7 +193,6 @@ public class SharedLibraryLoader{
 
     /**
      * Returns a path to a file that can be written. Tries multiple locations and verifies writing succeeds.
-     *
      * @return null if a writable path could not be found.
      */
     private File getExtractedFile(String dirName, String fileName){
@@ -251,12 +251,12 @@ public class SharedLibraryLoader{
     private boolean canExecute(File file){
         try{
             Method canExecute = File.class.getMethod("canExecute");
-            if((Boolean) canExecute.invoke(file)) return true;
+            if((Boolean)canExecute.invoke(file)) return true;
 
             Method setExecutable = File.class.getMethod("setExecutable", boolean.class, boolean.class);
             setExecutable.invoke(file, true, false);
 
-            return (Boolean) canExecute.invoke(file);
+            return (Boolean)canExecute.invoke(file);
         }catch(Exception ignored){
         }
         return false;
@@ -345,14 +345,5 @@ public class SharedLibraryLoader{
         }catch(Throwable ex){
             return ex;
         }
-    }
-
-    /** Sets the library as loaded, for when application code wants to handle libary loading itself. */
-    static public synchronized void setLoaded(String libraryName){
-        loadedLibraries.add(libraryName);
-    }
-
-    static public synchronized boolean isLoaded(String libraryName){
-        return loadedLibraries.contains(libraryName);
     }
 }

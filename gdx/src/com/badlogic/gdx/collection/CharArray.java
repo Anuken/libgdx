@@ -24,7 +24,6 @@ import java.util.Arrays;
 /**
  * A resizable, ordered or unordered char array. Avoids the boxing that occurs with ArrayList<Character>. If unordered, this
  * class avoids a memory copy when removing elements (the last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class CharArray{
@@ -75,7 +74,6 @@ public class CharArray{
     /**
      * Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
      * subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -85,15 +83,20 @@ public class CharArray{
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
+    /** @see #CharArray(char[]) */
+    static public CharArray with(char... array){
+        return new CharArray(array);
+    }
+
     public void add(char value){
         char[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(char value1, char value2){
         char[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -101,7 +104,7 @@ public class CharArray{
 
     public void add(char value1, char value2, char value3){
         char[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -110,7 +113,7 @@ public class CharArray{
 
     public void add(char value1, char value2, char value3, char value4){
         char[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -135,7 +138,7 @@ public class CharArray{
     public void addAll(char[] array, int offset, int length){
         char[] items = this.items;
         int sizeNeeded = size + length;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, offset, items, size, length);
         size += length;
     }
@@ -163,7 +166,7 @@ public class CharArray{
     public void insert(int index, char value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         char[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -245,7 +248,6 @@ public class CharArray{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @return true if this array was modified.
      */
     public boolean removeAll(CharArray array){
@@ -293,7 +295,6 @@ public class CharArray{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public char[] shrink(){
@@ -304,7 +305,6 @@ public class CharArray{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public char[] ensureCapacity(int additionalCapacity){
@@ -317,7 +317,6 @@ public class CharArray{
 
     /**
      * Sets the array size, leaving any values beyond the current size undefined.
-     *
      * @return {@link #items}
      */
     public char[] setSize(int newSize){
@@ -392,7 +391,7 @@ public class CharArray{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof CharArray)) return false;
-        CharArray array = (CharArray) object;
+        CharArray array = (CharArray)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -427,10 +426,5 @@ public class CharArray{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #CharArray(char[]) */
-    static public CharArray with(char... array){
-        return new CharArray(array);
     }
 }

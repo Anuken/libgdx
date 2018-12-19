@@ -21,7 +21,6 @@ import com.badlogic.gdx.collection.ObjectMap;
 /**
  * A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the
  * {@code BitmapFontCache} class uses this class to retrieve colors. Custom colors can be defined here.
- *
  * @author davebaol
  */
 public final class Colors{
@@ -32,6 +31,9 @@ public final class Colors{
         reset();
     }
 
+    private Colors(){
+    }
+
     /** Returns the color map. */
     public static ObjectMap<String, Color> getColors(){
         return map;
@@ -40,7 +42,6 @@ public final class Colors{
     /**
      * Convenience method to lookup a color by {@code name}. The invocation of this method is equivalent to the expression
      * {@code Colors.getColors().get(name)}
-     *
      * @param name the name of the color
      * @return the color to which the specified {@code name} is mapped, or {@code null} if there was no mapping for {@code name}
      * .
@@ -52,7 +53,6 @@ public final class Colors{
     /**
      * Convenience method to add a {@code color} with its {@code name}. The invocation of this method is equivalent to the
      * expression {@code Colors.getColors().put(name, color)}
-     *
      * @param name the name of the color
      * @param color the color
      * @return the previous {@code color} associated with {@code name}, or {@code null} if there was no mapping for {@code name}
@@ -106,9 +106,6 @@ public final class Colors{
         map.put("PURPLE", Color.PURPLE);
         map.put("VIOLET", Color.VIOLET);
         map.put("MAROON", Color.MAROON);
-    }
-
-    private Colors(){
     }
 
 }

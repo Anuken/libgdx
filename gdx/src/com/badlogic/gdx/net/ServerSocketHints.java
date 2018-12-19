@@ -18,7 +18,6 @@ package com.badlogic.gdx.net;
 
 /**
  * Options for {@link ServerSocket} instances.
- *
  * @author mzechner
  * @author noblemaster
  */

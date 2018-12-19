@@ -35,7 +35,6 @@ import static com.badlogic.gdx.Core.graphics;
  * <p>
  * Actors have a z-order equal to the order they were inserted into the group. Actors inserted later will be drawn on top of
  * actors added earlier. Touch events that hit more than one actor are distributed to topmost actors first.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -197,7 +196,6 @@ public class Group extends Element implements Cullable{
     /**
      * Children completely outside of this rectangle will not be drawn. This is only valid for use with unrotated and unscaled
      * actors.
-     *
      * @param cullingArea May be null.
      */
     @Override
@@ -229,17 +227,17 @@ public class Group extends Element implements Cullable{
         for(Element e : getChildren()){
             cons.accept(e);
             if(e instanceof Group){
-                ((Group) e).forEach(cons);
+                ((Group)e).forEach(cons);
             }
         }
     }
 
-    /** Adds and returns a table. This table will fill the whole scene.*/
+    /** Adds and returns a table. This table will fill the whole scene. */
     public void fill(Consumer<Table> cons){
         fill(null, cons);
     }
 
-    /** Adds and returns a table. This table will fill the whole scene.*/
+    /** Adds and returns a table. This table will fill the whole scene. */
     public void fill(String background, Consumer<Table> cons){
         Table table = background == null ? new Table() : new Table(background);
         table.setFillParent(true);
@@ -265,7 +263,6 @@ public class Group extends Element implements Cullable{
     /**
      * Adds an actor as a child of this group at a specific index, removing it from its previous parent. If the actor is already a
      * child of this group, no changes are made.
-     *
      * @param index May be greater than the number of children.
      */
     public void addChildAt(int index, Element actor){
@@ -326,7 +323,6 @@ public class Group extends Element implements Cullable{
      * Removes an actor from this group. If the actor will not be used again and has actions, they should be
      * {@link Element#clearActions() cleared} so the actions will be returned to their
      * {@link Action#setPool(com.badlogic.gdx.utils.pooling.Pool) pool}, if any. This is not done automatically.
-     *
      * @param unfocus If true, {@link Scene#unfocus(Element)} is called.
      * @return true if the actor was removed from this group.
      */
@@ -368,12 +364,12 @@ public class Group extends Element implements Cullable{
     public <T extends Element> T find(String name){
         Array<Element> children = this.children;
         for(int i = 0, n = children.size; i < n; i++)
-            if(name.equals(children.get(i).getName())) return (T) children.get(i);
+            if(name.equals(children.get(i).getName())) return (T)children.get(i);
         for(int i = 0, n = children.size; i < n; i++){
             Element child = children.get(i);
             if(child instanceof Group){
-                Element actor = ((Group) child).find(name);
-                if(actor != null) return (T) actor;
+                Element actor = ((Group)child).find(name);
+                if(actor != null) return (T)actor;
             }
         }
         return null;
@@ -383,13 +379,13 @@ public class Group extends Element implements Cullable{
     public <T extends Element> T find(Predicate<Element> pred){
         Array<Element> children = this.children;
         for(int i = 0, n = children.size; i < n; i++)
-            if(pred.test(children.get(i))) return (T) children.get(i);
+            if(pred.test(children.get(i))) return (T)children.get(i);
 
         for(int i = 0, n = children.size; i < n; i++){
             Element child = children.get(i);
             if(child instanceof Group){
-                Element actor = ((Group) child).find(pred);
-                if(actor != null) return (T) actor;
+                Element actor = ((Group)child).find(pred);
+                if(actor != null) return (T)actor;
             }
         }
         return null;
@@ -444,7 +440,7 @@ public class Group extends Element implements Cullable{
         this.transform = transform;
     }
 
-    /**Converts coordinates for this group to those of a descendant actor. The descendant does not need to be a direct child.*/
+    /** Converts coordinates for this group to those of a descendant actor. The descendant does not need to be a direct child. */
     public Vector2 localToDescendantCoordinates(Element descendant, Vector2 localCoords){
         Group parent = descendant.parent;
         if(parent == null) throw new IllegalArgumentException("Child is not a descendant: " + descendant);
@@ -474,7 +470,7 @@ public class Group extends Element implements Cullable{
                 buffer.append("|  ");
             Element actor = actors[i];
             if(actor instanceof Group)
-                ((Group) actor).toString(buffer, indent + 1);
+                ((Group)actor).toString(buffer, indent + 1);
             else{
                 buffer.append(actor);
                 buffer.append('\n');

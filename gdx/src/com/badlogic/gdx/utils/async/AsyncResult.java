@@ -23,7 +23,6 @@ import java.util.concurrent.Future;
 
 /**
  * Returned by {@link AsyncExecutor#submit(AsyncTask)}, allows to poll for the result of the asynch workload.
- *
  * @author badlogic
  */
 public class AsyncResult<T>{

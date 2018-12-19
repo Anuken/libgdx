@@ -38,7 +38,6 @@ import static com.badlogic.gdx.Core.scene;
  * The preferred size of the tree is determined by the preferred size of the elements for the expanded nodes.
  * <p>
  * {@link ChangeEvent} is fired when the selected node changes.
- *
  * @author Nathan Sweet
  */
 public class Tree extends WidgetGroup{
@@ -295,7 +294,7 @@ public class Tree extends WidgetGroup{
                 float iconY = element.getY() + Math.round((node.height - node.icon.getMinHeight()) / 2);
                 graphics.batch().setColor(element.getColor());
                 node.icon.draw(x + node.element.getX() - iconSpacingRight - node.icon.getMinWidth(), y + iconY,
-                        node.icon.getMinWidth(), node.icon.getMinHeight());
+                node.icon.getMinWidth(), node.icon.getMinHeight());
                 graphics.batch().setColor(Color.WHITE);
             }
 
@@ -473,7 +472,7 @@ public class Tree extends WidgetGroup{
             if(!expanded) return;
             Object[] children = this.children.items;
             for(int i = 0, n = this.children.size; i < n; i++)
-                ((Node) children[i]).removeFromTree(tree);
+                ((Node)children[i]).removeFromTree(tree);
         }
 
         public void add(Node node){
@@ -521,7 +520,7 @@ public class Tree extends WidgetGroup{
         public Tree getTree(){
             Group parent = element.getParent();
             if(!(parent instanceof Tree)) return null;
-            return (Tree) parent;
+            return (Tree)parent;
         }
 
         public Element getActor(){
@@ -655,7 +654,6 @@ public class Tree extends WidgetGroup{
 
     /**
      * The style for a {@link Tree}.
-     *
      * @author Nathan Sweet
      */
     static public class TreeStyle{

@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * A convenient 2D circle class.
- *
  * @author mzechner
  */
 public class Circle implements Serializable, Shape2D{
@@ -34,7 +33,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Constructs a new circle with the given X and Y coordinates and the given radius.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param radius The radius of the circle
@@ -47,7 +45,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Constructs a new circle using a given {@link Vector2} that contains the desired X and Y coordinates, and a given radius.
-     *
      * @param position The position {@link Vector2}.
      * @param radius The radius
      */
@@ -59,7 +56,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Copy constructor
-     *
      * @param circle The circle to construct a copy of.
      */
     public Circle(Circle circle){
@@ -70,7 +66,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Creates a new {@link Circle} in terms of its center and a point on its edge.
-     *
      * @param center The center of the new circle
      * @param edge Any point on the edge of the given circle
      */
@@ -82,7 +77,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets a new location and radius for this circle.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param radius Circle radius
@@ -95,7 +89,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets a new location and radius for this circle.
-     *
      * @param position Position {@link Vector2} for this circle.
      * @param radius Circle radius
      */
@@ -107,7 +100,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets a new location and radius for this circle, based upon another circle.
-     *
      * @param circle The circle to copy the position and radius of.
      */
     public void set(Circle circle){
@@ -118,7 +110,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets this {@link Circle}'s values in terms of its center and a point on its edge.
-     *
      * @param center The new center of the circle
      * @param edge Any point on the edge of the given circle
      */
@@ -130,7 +121,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of circle center from vector
-     *
      * @param position The position vector
      */
     public void setPosition(Vector2 position){
@@ -140,7 +130,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of circle center
-     *
      * @param x The x-coordinate
      * @param y The y-coordinate
      */
@@ -151,7 +140,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets the x-coordinate of circle center
-     *
      * @param x The x-coordinate
      */
     public void setX(float x){
@@ -160,7 +148,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets the y-coordinate of circle center
-     *
      * @param y The y-coordinate
      */
     public void setY(float y){
@@ -169,7 +156,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Sets the radius of circle
-     *
      * @param radius The radius
      */
     public void setRadius(float radius){
@@ -178,7 +164,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Checks whether or not this circle contains a given point.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @return true if this circle contains the given point.
@@ -191,7 +176,6 @@ public class Circle implements Serializable, Shape2D{
 
     /**
      * Checks whether or not this circle contains a given point.
-     *
      * @param point The {@link Vector2} that contains the point coordinates.
      * @return true if this circle contains this point; false otherwise.
      */
@@ -247,7 +231,7 @@ public class Circle implements Serializable, Shape2D{
     public boolean equals(Object o){
         if(o == this) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        Circle c = (Circle) o;
+        Circle c = (Circle)o;
         return this.x == c.x && this.y == c.y && this.radius == c.radius;
     }
 

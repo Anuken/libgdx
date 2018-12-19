@@ -18,10 +18,11 @@ package com.badlogic.gdx.utils;
 
 /**
  * Wrapper around System.nanoTime() and System.currentTimeMillis(). Use this if you want to be compatible across all platforms!
- *
  * @author mzechner
  */
 public final class TimeUtils{
+    private static final long nanosPerMilli = 1000000;
+
     /** @return The current value of the system timer, in nanoseconds. */
     public static long nanoTime(){
         return System.nanoTime();
@@ -32,11 +33,8 @@ public final class TimeUtils{
         return System.currentTimeMillis();
     }
 
-    private static final long nanosPerMilli = 1000000;
-
     /**
      * Convert nanoseconds time to milliseconds
-     *
      * @param nanos must be nanoseconds
      * @return time value in milliseconds
      */
@@ -46,7 +44,6 @@ public final class TimeUtils{
 
     /**
      * Convert milliseconds time to nanoseconds
-     *
      * @param millis must be milliseconds
      * @return time value in nanoseconds
      */
@@ -56,7 +53,6 @@ public final class TimeUtils{
 
     /**
      * Get the time in nanos passed since a previous time
-     *
      * @param prevTime - must be nanoseconds
      * @return - time passed since prevTime in nanoseconds
      */
@@ -66,7 +62,6 @@ public final class TimeUtils{
 
     /**
      * Get the time in millis passed since a previous time
-     *
      * @param prevTime - must be milliseconds
      * @return - time passed since prevTime in milliseconds
      */

@@ -61,7 +61,6 @@ import java.util.MissingResourceException;
  * It's also possible to create variants for languages or countries. This can be done by just skipping the country or language
  * abbreviation: BaseName_us__POSIX or BaseName__DE_PREEURO. But it's not allowed to circumvent both language and country:
  * BaseName___VARIANT is illegal.
- *
  * @author davebaol
  * @see PropertiesUtils
  */
@@ -95,7 +94,7 @@ public class I18NBundle{
         simpleFormatter = enabled;
     }
 
-    /**Returns an empty bundle with no keys.*/
+    /** Returns an empty bundle with no keys. */
     public static I18NBundle createEmptyBundle(){
         I18NBundle bundle = new I18NBundle();
         bundle.locale = ROOT_LOCALE;
@@ -105,7 +104,6 @@ public class I18NBundle{
 
     /**
      * Creates a new bundle using the specified <code>baseFileHandle</code>, the default locale and the default encoding "UTF-8".
-     *
      * @param baseFileHandle the file handle to the base of the bundle
      * @return a bundle for the given base file handle and the default locale
      * @throws NullPointerException if <code>baseFileHandle</code> is <code>null</code>
@@ -118,7 +116,6 @@ public class I18NBundle{
     /**
      * Creates a new bundle using the specified <code>baseFileHandle</code> and <code>locale</code>; the default encoding "UTF-8"
      * is used.
-     *
      * @param baseFileHandle the file handle to the base of the bundle
      * @param locale the locale for which a bundle is desired
      * @return a bundle for the given base file handle and locale
@@ -131,7 +128,6 @@ public class I18NBundle{
 
     /**
      * Creates a new bundle using the specified <code>baseFileHandle</code> and <code>encoding</code>; the default locale is used.
-     *
      * @param baseFileHandle the file handle to the base of the bundle
      * @param encoding the charter encoding
      * @return a bundle for the given base file handle and locale
@@ -144,7 +140,6 @@ public class I18NBundle{
 
     /**
      * Creates a new bundle using the specified <code>baseFileHandle</code>, <code>locale</code> and <code>encoding</code>.
-     *
      * @param baseFileHandle the file handle to the base of the bundle
      * @param locale the locale for which a bundle is desired
      * @param encoding the charter encoding
@@ -252,7 +247,6 @@ public class I18NBundle{
      * <pre>
      *     Messages_ja -> Messages
      * </pre>
-     *
      * @param locale the locale for which a resource bundle is desired
      * @return a <code>List</code> of candidate <code>Locale</code>s for the given <code>locale</code>
      * @throws NullPointerException if <code>locale</code> is <code>null</code>
@@ -285,7 +279,6 @@ public class I18NBundle{
      * <p>
      * This method returns the {@linkplain Locale#getDefault() default <code>Locale</code>} if the given <code>locale</code> isn't
      * the default one. Otherwise, <code>null</code> is returned.
-     *
      * @param locale the <code>Locale</code> for which <code>createBundle</code> has been unable to find any resource bundles
      * (except for the base bundle)
      * @return a <code>Locale</code> for the fallback search, or <code>null</code> if no further fallback search is needed.
@@ -355,19 +348,6 @@ public class I18NBundle{
     }
 
     /**
-     * Load the properties from the specified reader.
-     *
-     * @param reader the reader
-     * @throws IOException if an error occurred when reading from the input stream.
-     */
-    // NOTE:
-    // This method can't be private otherwise GWT can't access it from loadBundle()
-    protected void load(Reader reader) throws IOException{
-        properties = new ObjectMap<String, String>();
-        PropertiesUtils.load(properties, reader);
-    }
-
-    /**
      * Converts the given <code>baseFileHandle</code> and <code>locale</code> to the corresponding file handle.
      *
      * <p>
@@ -380,7 +360,6 @@ public class I18NBundle{
      * where <code>language</code>, <code>country</code> and <code>variant</code> are the language, country and variant values of
      * <code>locale</code>, respectively. Final component values that are empty Strings are omitted along with the preceding '_'.
      * If all of the values are empty strings, then <code>baseFileHandle.name()</code> is returned with ".properties" appended.
-     *
      * @param baseFileHandle the file handle to the base of the bundle
      * @param locale the locale for which a resource bundle should be loaded
      * @return the file handle for the bundle
@@ -411,9 +390,20 @@ public class I18NBundle{
     }
 
     /**
+     * Load the properties from the specified reader.
+     * @param reader the reader
+     * @throws IOException if an error occurred when reading from the input stream.
+     */
+    // NOTE:
+    // This method can't be private otherwise GWT can't access it from loadBundle()
+    protected void load(Reader reader) throws IOException{
+        properties = new ObjectMap<String, String>();
+        PropertiesUtils.load(properties, reader);
+    }
+
+    /**
      * Returns the locale of this bundle. This method can be used after a call to <code>createBundle()</code> to determine whether
      * the resource bundle returned really corresponds to the requested locale or is a fallback.
-     *
      * @return the locale of this bundle
      */
     public Locale getLocale(){
@@ -422,8 +412,6 @@ public class I18NBundle{
 
     /**
      * Sets the bundle locale. This method is private because a bundle can't change the locale during its life.
-     *
-     * @param locale
      */
     private void setLocale(Locale locale){
         this.locale = locale;
@@ -432,7 +420,6 @@ public class I18NBundle{
 
     /**
      * Gets a string for the given key from this bundle or one of its parents.
-     *
      * @param key the key for the desired string
      * @return the string for the given key or the key surrounded by {@code ???} if it cannot be found
      * @throws NullPointerException if <code>key</code> is <code>null</code>
@@ -448,7 +435,7 @@ public class I18NBundle{
         return result;
     }
 
-    /**Returns the string for this given key, or def.*/
+    /** Returns the string for this given key, or def. */
     public String get(String key, String def){
         return has(key) ? get(key) : def;
     }
@@ -465,7 +452,7 @@ public class I18NBundle{
         return s;
     }
 
-    /**Checks whether a specified key is present in this bundle.*/
+    /** Checks whether a specified key is present in this bundle. */
     public boolean has(String key){
         if(properties.containsKey(key)){
             return true;
@@ -480,7 +467,6 @@ public class I18NBundle{
     /**
      * Gets the string with the specified key from this bundle or one of its parent after replacing the given arguments if they
      * occur.
-     *
      * @param key the key for the desired string
      * @param args the arguments to be replaced in the string associated to the given key.
      * @return the string for the given key formatted with the given arguments
@@ -494,8 +480,6 @@ public class I18NBundle{
     /**
      * Sets the value of all localized strings to String placeholder so hardcoded, unlocalized values can be easily spotted.
      * The I18NBundle won't be able to reset values after calling debug and should only be using during testing.
-     *
-     * @param placeholder
      */
     public void debug(String placeholder){
         ObjectMap.Keys<String> keys = properties.keys();

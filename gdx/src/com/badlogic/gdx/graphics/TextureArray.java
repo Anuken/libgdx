@@ -18,8 +18,8 @@ package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.HashMap;
@@ -27,7 +27,6 @@ import java.util.Map;
 
 /**
  * Open GLES wrapper for TextureArray
- *
  * @author Tomski
  */
 public class TextureArray extends GLTexture{
@@ -72,6 +71,45 @@ public class TextureArray extends GLTexture{
         return handles;
     }
 
+    private static void addManagedTexture(Application app, TextureArray texture){
+        Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
+        if(managedTextureArray == null) managedTextureArray = new Array<TextureArray>();
+        managedTextureArray.add(texture);
+        managedTextureArrays.put(app, managedTextureArray);
+    }
+
+    /** Clears all managed TextureArrays. This is an internal method. Do not use it! */
+    public static void clearAllTextureArrays(Application app){
+        managedTextureArrays.remove(app);
+    }
+
+    /** Invalidate all managed TextureArrays. This is an internal method. Do not use it! */
+    public static void invalidateAllTextureArrays(Application app){
+        Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
+        if(managedTextureArray == null) return;
+
+        for(int i = 0; i < managedTextureArray.size; i++){
+            TextureArray textureArray = managedTextureArray.get(i);
+            textureArray.reload();
+        }
+    }
+
+    public static String getManagedStatus(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Managed TextureArrays/app: { ");
+        for(Application app : managedTextureArrays.keySet()){
+            builder.append(managedTextureArrays.get(app).size);
+            builder.append(" ");
+        }
+        builder.append("}");
+        return builder.toString();
+    }
+
+    /** @return the number of managed TextureArrays currently loaded */
+    public static int getNumManagedTextureArrays(){
+        return managedTextureArrays.get(Core.app).size;
+    }
+
     private void load(TextureArrayData data){
         if(this.data != null && data.isManaged() != this.data.isManaged())
             throw new GdxRuntimeException("New data must have the same managed status as the old data");
@@ -114,46 +152,6 @@ public class TextureArray extends GLTexture{
         if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged TextureArray");
         glHandle = Core.gl.glGenTexture();
         load(data);
-    }
-
-    private static void addManagedTexture(Application app, TextureArray texture){
-        Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
-        if(managedTextureArray == null) managedTextureArray = new Array<TextureArray>();
-        managedTextureArray.add(texture);
-        managedTextureArrays.put(app, managedTextureArray);
-    }
-
-
-    /** Clears all managed TextureArrays. This is an internal method. Do not use it! */
-    public static void clearAllTextureArrays(Application app){
-        managedTextureArrays.remove(app);
-    }
-
-    /** Invalidate all managed TextureArrays. This is an internal method. Do not use it! */
-    public static void invalidateAllTextureArrays(Application app){
-        Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
-        if(managedTextureArray == null) return;
-
-        for(int i = 0; i < managedTextureArray.size; i++){
-            TextureArray textureArray = managedTextureArray.get(i);
-            textureArray.reload();
-        }
-    }
-
-    public static String getManagedStatus(){
-        StringBuilder builder = new StringBuilder();
-        builder.append("Managed TextureArrays/app: { ");
-        for(Application app : managedTextureArrays.keySet()){
-            builder.append(managedTextureArrays.get(app).size);
-            builder.append(" ");
-        }
-        builder.append("}");
-        return builder.toString();
-    }
-
-    /** @return the number of managed TextureArrays currently loaded */
-    public static int getNumManagedTextureArrays(){
-        return managedTextureArrays.get(Core.app).size;
     }
 
 }

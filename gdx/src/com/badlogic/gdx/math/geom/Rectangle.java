@@ -21,7 +21,6 @@ import java.io.Serializable;
 
 /**
  * Encapsulates a 2D rectangle defined by its corner point in the bottom left and its extents in x (width) and y (height).
- *
  * @author badlogicgames@gmail.com
  */
 public class Rectangle implements Serializable, Shape2D{
@@ -42,7 +41,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Constructs a new rectangle with the given corner point in the bottom left and dimensions.
-     *
      * @param x The corner point x-coordinate
      * @param y The corner point y-coordinate
      * @param width The width
@@ -57,7 +55,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Constructs a rectangle based on the given rectangle
-     *
      * @param rect The rectangle
      */
     public Rectangle(Rectangle rect){
@@ -90,7 +87,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the x-coordinate of the bottom left corner
-     *
      * @param x The x-coordinate
      * @return this rectangle for chaining
      */
@@ -107,7 +103,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the y-coordinate of the bottom left corner
-     *
      * @param y The y-coordinate
      * @return this rectangle for chaining
      */
@@ -124,7 +119,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the width of this rectangle
-     *
      * @param width The width
      * @return this rectangle for chaining
      */
@@ -141,7 +135,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the height of this rectangle
-     *
      * @param height The height
      * @return this rectangle for chaining
      */
@@ -153,7 +146,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * return the Vector2 with coordinates of this rectangle
-     *
      * @param position The Vector2
      */
     public Vector2 getPosition(Vector2 position){
@@ -162,7 +154,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of the bottom left corner from vector
-     *
      * @param position The position vector
      * @return this rectangle for chaining
      */
@@ -175,7 +166,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of the bottom left corner
-     *
      * @param x The x-coordinate
      * @param y The y-coordinate
      * @return this rectangle for chaining
@@ -189,7 +179,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the width and height of this rectangle
-     *
      * @param width The width
      * @param height The height
      * @return this rectangle for chaining
@@ -203,7 +192,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the squared size of this rectangle
-     *
      * @param sizeXY The size
      * @return this rectangle for chaining
      */
@@ -273,7 +261,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Sets the values of the given rectangle to this rectangle.
-     *
      * @param rect the other rectangle
      * @return this rectangle for chaining
      */
@@ -288,7 +275,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Merges this rectangle with the other rectangle. The rectangle should not have negative width or negative height.
-     *
      * @param rect the other rectangle
      * @return this rectangle for chaining
      */
@@ -308,7 +294,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Merges this rectangle with a point. The rectangle should not have negative width or negative height.
-     *
      * @param x the x coordinate of the point
      * @param y the y coordinate of the point
      * @return this rectangle for chaining
@@ -329,7 +314,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Merges this rectangle with a point. The rectangle should not have negative width or negative height.
-     *
      * @param vec the vector describing the point
      * @return this rectangle for chaining
      */
@@ -339,7 +323,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Merges this rectangle with a list of points. The rectangle should not have negative width or negative height.
-     *
      * @param vecs the vectors describing the points
      * @return this rectangle for chaining
      */
@@ -364,7 +347,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Calculates the aspect ratio ( width / height ) of this rectangle
-     *
      * @return the aspect ratio of this rectangle. Returns Float.NaN if height is 0 to avoid ArithmeticException
      */
     public float getAspectRatio(){
@@ -373,7 +355,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Calculates the center of the rectangle. Results are located in the given Vector2
-     *
      * @param vector the Vector2 to use
      * @return the given vector with results stored inside
      */
@@ -385,7 +366,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Moves this rectangle so that its center point is located at a given position
-     *
      * @param x the position's x
      * @param y the position's y
      * @return this for chaining
@@ -397,7 +377,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Moves this rectangle so that its center point is located at a given position
-     *
      * @param position the position
      * @return this for chaining
      */
@@ -409,7 +388,6 @@ public class Rectangle implements Serializable, Shape2D{
     /**
      * Fits this rectangle around another rectangle while maintaining aspect ratio. This scales and centers the rectangle to the
      * other rectangle (e.g. Having a camera translate and scale to show a given area)
-     *
      * @param rect the other rectangle to fit this rectangle around
      * @return this rectangle for chaining
      * @see Scaling
@@ -432,7 +410,6 @@ public class Rectangle implements Serializable, Shape2D{
     /**
      * Fits this rectangle into another rectangle while maintaining aspect ratio. This scales and centers the rectangle to the
      * other rectangle (e.g. Scaling a texture within a arbitrary cell without squeezing)
-     *
      * @param rect the other rectangle to fit this rectangle inside
      * @return this rectangle for chaining
      * @see Scaling
@@ -454,7 +431,6 @@ public class Rectangle implements Serializable, Shape2D{
 
     /**
      * Converts this {@code Rectangle} to a string in the format {@code [x,y,width,height]}.
-     *
      * @return a string representation of this object.
      */
     public String toString(){
@@ -464,7 +440,6 @@ public class Rectangle implements Serializable, Shape2D{
     /**
      * Sets this {@code Rectangle} to the value represented by the specified string according to the format of {@link #toString()}
      * .
-     *
      * @param v the string.
      * @return this rectangle for chaining
      */
@@ -508,7 +483,7 @@ public class Rectangle implements Serializable, Shape2D{
         if(this == obj) return true;
         if(obj == null) return false;
         if(getClass() != obj.getClass()) return false;
-        Rectangle other = (Rectangle) obj;
+        Rectangle other = (Rectangle)obj;
         if(NumberUtils.floatToRawIntBits(height) != NumberUtils.floatToRawIntBits(other.height)) return false;
         if(NumberUtils.floatToRawIntBits(width) != NumberUtils.floatToRawIntBits(other.width)) return false;
         if(NumberUtils.floatToRawIntBits(x) != NumberUtils.floatToRawIntBits(other.x)) return false;

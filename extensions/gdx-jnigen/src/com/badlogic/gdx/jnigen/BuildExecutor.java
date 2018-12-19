@@ -25,15 +25,11 @@ import java.util.regex.Pattern;
 
 /**
  * Executes an ant script and its targets or an Android NDK build. See {@link AntScriptGenerator}.
- *
  * @author mzechner
  */
 public class BuildExecutor{
     /**
      * Execute the Ant script file with the given parameters.
-     *
-     * @param buildFile
-     * @param params
      * @return whether the Ant succeeded
      */
     public static boolean executeAnt(String buildFile, String params){
@@ -46,8 +42,6 @@ public class BuildExecutor{
 
     /**
      * Execute ndk-build in the given directory
-     *
-     * @param directory
      */
     public static void executeNdk(String directory){
         FileDescriptor build = new FileDescriptor(directory);

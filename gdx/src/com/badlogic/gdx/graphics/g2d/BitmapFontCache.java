@@ -23,7 +23,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.Glyph;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout.GlyphRun;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.NumberUtils;
 import com.badlogic.gdx.utils.pooling.Pools;
 
 import static com.badlogic.gdx.Core.graphics;
@@ -31,7 +32,6 @@ import static com.badlogic.gdx.Core.graphics;
 /**
  * Caches glyph geometry for a BitmapFont, providing a fast way to render static text. This saves needing to compute the glyph
  * geometry each frame.
- *
  * @author Nathan Sweet
  * @author davebaol
  * @author Alexander Dorokhov
@@ -40,12 +40,12 @@ public class BitmapFontCache{
     static private final Color tempColor = new Color(1, 1, 1, 1);
 
     private final BitmapFont font;
-    private boolean integer;
     private final Array<GlyphLayout> layouts = new Array();
     private final Array<GlyphLayout> pooledLayouts = new Array();
+    private final Color color = new Color(1, 1, 1, 1);
+    private boolean integer;
     private int glyphCount;
     private float x, y;
-    private final Color color = new Color(1, 1, 1, 1);
     private float currentTint;
 
     /** Vertex data per page. */
@@ -86,7 +86,6 @@ public class BitmapFontCache{
 
     /**
      * Sets the position of the text, relative to the position when the cached text was created.
-     *
      * @param x The x coordinate
      * @param y The y coordinate
      */
@@ -96,7 +95,6 @@ public class BitmapFontCache{
 
     /**
      * Sets the position of the text, relative to its current position.
-     *
      * @param xAmount The amount in x to move the text
      * @param yAmount The amount in y to move the text
      */
@@ -150,7 +148,7 @@ public class BitmapFontCache{
 
     /** Sets the alpha component of all text currently in the cache. Does not affect subsequently added text. */
     public void setAlphas(float alpha){
-        int alphaBits = ((int) (254 * alpha)) << 24;
+        int alphaBits = ((int)(254 * alpha)) << 24;
         float prev = 0, newColor = 0;
         for(int j = 0, length = pageVertices.length; j < length; j++){
             float[] vertices = pageVertices[j];
@@ -185,7 +183,7 @@ public class BitmapFontCache{
 
     /** Sets the color of all text currently in the cache. Does not affect subsequently added text. */
     public void setColors(float r, float g, float b, float a){
-        int intBits = ((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r));
+        int intBits = ((int)(255 * a) << 24) | ((int)(255 * b) << 16) | ((int)(255 * g) << 8) | ((int)(255 * r));
         setColors(NumberUtils.intToFloatColor(intBits));
     }
 
@@ -451,7 +449,6 @@ public class BitmapFontCache{
 
     /**
      * Clears any cached glyphs and adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout setText(CharSequence str, float x, float y){
@@ -461,7 +458,6 @@ public class BitmapFontCache{
 
     /**
      * Clears any cached glyphs and adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout setText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap){
@@ -471,7 +467,6 @@ public class BitmapFontCache{
 
     /**
      * Clears any cached glyphs and adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
@@ -482,7 +477,6 @@ public class BitmapFontCache{
 
     /**
      * Clears any cached glyphs and adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
@@ -493,7 +487,6 @@ public class BitmapFontCache{
 
     /**
      * Clears any cached glyphs and adds the specified glyphs.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public void setText(GlyphLayout layout, float x, float y){
@@ -503,7 +496,6 @@ public class BitmapFontCache{
 
     /**
      * Adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout addText(CharSequence str, float x, float y){
@@ -512,7 +504,6 @@ public class BitmapFontCache{
 
     /**
      * Adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout addText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap){
@@ -521,7 +512,6 @@ public class BitmapFontCache{
 
     /**
      * Adds glyphs for the specified text.
-     *
      * @see #addText(CharSequence, float, float, int, int, float, int, boolean, String)
      */
     public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
@@ -531,7 +521,6 @@ public class BitmapFontCache{
 
     /**
      * Adds glyphs for the the specified text.
-     *
      * @param x The x position for the left most character.
      * @param y The y position for the top of most capital letters in the font (the {@link BitmapFontData#capHeight cap height}).
      * @param start The first character of the string to draw.
@@ -571,7 +560,7 @@ public class BitmapFontCache{
         return font;
     }
 
-    /**Specifies whether to use integer positions or not. Default is to use them so filtering doesn't kick in as badly.*/
+    /** Specifies whether to use integer positions or not. Default is to use them so filtering doesn't kick in as badly. */
     public void setUseIntegerPositions(boolean use){
         this.integer = use;
     }

@@ -29,13 +29,12 @@ import com.badlogic.gdx.math.geom.Vector2;
  * A stack of {@link Rectangle} objects to be used for clipping via {@link GL20#glScissor(int, int, int, int)}. When a new
  * Rectangle is pushed onto the stack, it will be merged with the current top of stack. The minimum area of overlap is then set as
  * the real top of the stack.
- *
  * @author mzechner
  */
 public class ScissorStack{
-    private static Array<Rectangle> scissors = new Array<Rectangle>();
-    static Vector2 tmp = new Vector2();
     static final Rectangle viewport = new Rectangle();
+    static Vector2 tmp = new Vector2();
+    private static Array<Rectangle> scissors = new Array<Rectangle>();
 
     /**
      * Pushes a new scissor {@link Rectangle} onto the stack, merging it with the current top of the stack. The minimal area of
@@ -44,7 +43,6 @@ public class ScissorStack{
      * this will also enable {@link GL20#GL_SCISSOR_TEST} automatically.
      * <p>
      * Any drawing should be flushed before pushing scissors.
-     *
      * @return true if the scissors were pushed. false if the scissor area was zero, in this case the scissors were not pushed and
      * no drawing should occur.
      */
@@ -71,7 +69,7 @@ public class ScissorStack{
             scissor.height = Math.max(1, maxY - minY);
         }
         scissors.add(scissor);
-        HdpiUtils.glScissor((int) scissor.x, (int) scissor.y, (int) scissor.width, (int) scissor.height);
+        HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
         return true;
     }
 
@@ -87,7 +85,7 @@ public class ScissorStack{
             Core.gl.glDisable(GL20.GL_SCISSOR_TEST);
         else{
             Rectangle scissor = scissors.peek();
-            HdpiUtils.glScissor((int) scissor.x, (int) scissor.y, (int) scissor.width, (int) scissor.height);
+            HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
         }
         return old;
     }
@@ -113,7 +111,6 @@ public class ScissorStack{
 
     /**
      * Calculates a scissor rectangle using 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight() as the viewport.
-     *
      * @see #calculateScissors(Camera, float, float, float, float, Matrix3, Rectangle, Rectangle)
      */
     public static void calculateScissors(Camera camera, Matrix3 batchTransform, Rectangle area, Rectangle scissor){
@@ -126,7 +123,6 @@ public class ScissorStack{
      * projected to screen coordinates. Note that only axis aligned rectangles will work with this method. If either the Camera or
      * the Matrix4 have rotational components, the output of this method will not be suitable for
      * {@link GL20#glScissor(int, int, int, int)}.
-     *
      * @param camera the {@link Camera}
      * @param batchTransform the transformation {@link Matrix3}
      * @param area the {@link Rectangle} to transform to window coordinates

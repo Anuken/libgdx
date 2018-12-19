@@ -168,7 +168,6 @@ import java.util.ArrayList;
  * <p>
  * To automatically compile and load the native code, see the classes {@link AntScriptGenerator}, {@link BuildExecutor} and
  * {@link JniGenSharedLibraryLoader} classes. </p>
- *
  * @author mzechner
  */
 public class NativeCodeGenerator{
@@ -189,8 +188,6 @@ public class NativeCodeGenerator{
     /**
      * Generates .h/.cpp files from the Java files found in "src/", with their .class files being in "bin/". The generated files
      * will be stored in "jni/". All paths are relative to the applications working directory.
-     *
-     * @throws Exception
      */
     public void generate() throws Exception{
         generate("src", "bin", "jni", null, null);
@@ -200,11 +197,9 @@ public class NativeCodeGenerator{
      * Generates .h/.cpp fiels from the Java files found in <code>sourceDir</code>, with their .class files being in
      * <code>classpath</code>. The generated files will be stored in <code>jniDir</code>. All paths are relative to the
      * applications working directory.
-     *
      * @param sourceDir the directory containing the Java files
      * @param classpath the directory containing the .class files
      * @param jniDir the output directory
-     * @throws Exception
      */
     public void generate(String sourceDir, String classpath, String jniDir) throws Exception{
         generate(sourceDir, classpath, jniDir, null, null);
@@ -215,13 +210,11 @@ public class NativeCodeGenerator{
      * <code>classpath</code>. The generated files will be stored in <code>jniDir</code>. The <code>includes</code> and
      * <code>excludes</code> parameters allow to specify directories and files that should be included/excluded from the
      * generation. These can be given in the Ant path format. All paths are relative to the applications working directory.
-     *
      * @param sourceDir the directory containing the Java files
      * @param classpath the directory containing the .class files
      * @param jniDir the output directory
      * @param includes files/directories to include, can be null (all files are used)
      * @param excludes files/directories to exclude, can be null (no files are excluded)
-     * @throws Exception
      */
     public void generate(String sourceDir, String classpath, String jniDir, String[] includes, String[] excludes)
     throws Exception{
@@ -300,7 +293,7 @@ public class NativeCodeGenerator{
             InputStream errorStream = process.getErrorStream();
             int c = 0;
             while((c = errorStream.read()) != -1){
-                System.out.print((char) c);
+                System.out.print((char)c);
             }
         }
     }
@@ -318,11 +311,11 @@ public class NativeCodeGenerator{
 
         for(JavaSegment segment : javaSegments){
             if(segment instanceof JniSection){
-                emitJniSection(buffer, (JniSection) segment);
+                emitJniSection(buffer, (JniSection)segment);
             }
 
             if(segment instanceof JavaMethod){
-                JavaMethod javaMethod = (JavaMethod) segment;
+                JavaMethod javaMethod = (JavaMethod)segment;
                 if(javaMethod.getNativeCode() == null){
                     throw new RuntimeException("Method '" + javaMethod.getName() + "' has no body");
                 }

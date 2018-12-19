@@ -32,9 +32,9 @@ public final class Noise{
         int bx0, bx1;
         double rx0, rx1, sx, t, u, v;
         t = x + N;
-        bx0 = ((int) t) & M;
+        bx0 = ((int)t) & M;
         bx1 = (bx0 + 1) & M;
-        rx0 = t - (int) t;
+        rx0 = t - (int)t;
         rx1 = rx0 - 1;
 
         sx = s_curve(rx0);
@@ -50,23 +50,23 @@ public final class Noise{
     }
 
     public static float snoise(int x, int y, float scale, float mag){
-        return (float) ((noise((x) / scale, y / scale) * mag));
+        return (float)((noise((x) / scale, y / scale) * mag));
     }
 
     public static float snoise3(int x, int y, int z, float scale, float mag){
-        return (float) ((noise((x) / scale, y / scale, z / scale) * mag));
+        return (float)((noise((x) / scale, y / scale, z / scale) * mag));
     }
 
     public static float nnoise(int x, int y, float scale, float mag){
-        return (float) (snoise(x, y, scale, mag) / 2.0);
+        return (float)(snoise(x, y, scale, mag) / 2.0);
     }
 
     public static float nnoise(int x, int y, float scale, float mag, float xp){
-        return (float) (snoise(x, y, scale, mag, xp) / 2.0);
+        return (float)(snoise(x, y, scale, mag, xp) / 2.0);
     }
 
     public static float fnoise(float x, float y, float scale, float mag){
-        return (float) (((noise((x) / scale, y / scale) * mag)));
+        return (float)(((noise((x) / scale, y / scale) * mag)));
     }
 
     public static double noise(double x, double y){
@@ -77,15 +77,15 @@ public final class Noise{
         int i, j;
 
         t = x + N;
-        bx0 = ((int) t) & M;
+        bx0 = ((int)t) & M;
         bx1 = (bx0 + 1) & M;
-        rx0 = t - (int) t;
+        rx0 = t - (int)t;
         rx1 = rx0 - 1;
 
         t = y + N;
-        by0 = ((int) t) & M;
+        by0 = ((int)t) & M;
         by1 = (by0 + 1) & M;
-        ry0 = t - (int) t;
+        ry0 = t - (int)t;
         ry1 = ry0 - 1;
 
         i = p[bx0];
@@ -119,21 +119,21 @@ public final class Noise{
         int bx, by, bz, b0, b1, b00, b10, b01, b11;
         double rx0, rx1, ry0, ry1, rz, sx, sy, sz, a, b, c, d, u, v, q[];
 
-        bx = (int) (Math.floor(x) % B);
+        bx = (int)(Math.floor(x) % B);
         if(bx < 0){
             bx += B;
         }
         rx0 = x - Math.floor(x);
         rx1 = rx0 - 1;
 
-        by = (int) (Math.floor(y) % B);
+        by = (int)(Math.floor(y) % B);
         if(by < 0){
             by += B;
         }
         ry0 = y - Math.floor(y);
         ry1 = ry0 - 1;
 
-        bz = (int) (Math.floor(z) % B);
+        bz = (int)(Math.floor(z) % B);
         if(bz < 0){
             bz += B;
         }
@@ -210,9 +210,9 @@ public final class Noise{
                 u = 2 * r.nextDouble() - 1;
                 v = 2 * r.nextDouble() - 1;
             }while(u * u + v * v > 1 ||
-                    Math.abs(u) > 2.5 * Math.abs(v) ||
-                    Math.abs(v) > 2.5 * Math.abs(u) ||
-                    Math.abs(Math.abs(u) - Math.abs(v)) < .4);
+            Math.abs(u) > 2.5 * Math.abs(v) ||
+            Math.abs(v) > 2.5 * Math.abs(u) ||
+            Math.abs(Math.abs(u) - Math.abs(v)) < .4);
             g2[i][0] = u;
             g2[i][1] = v;
             normalize2(g2[i]);
@@ -227,12 +227,12 @@ public final class Noise{
                 Lo = Math.min(U, Math.min(V, W));
                 Hi = Math.max(U, Math.max(V, W));
             }while(u * u + v * v + w * w > 1 || Hi > 4 * Lo ||
-                    Math.min(Math.abs(U - V), Math.min(Math.abs(U - W), Math.abs(V - W))) < .2);
+            Math.min(Math.abs(U - V), Math.min(Math.abs(U - W), Math.abs(V - W))) < .2);
         }
 
         while(--i > 0){
             k = p[i];
-            j = (int) (r.nextLong() & M);
+            j = (int)(r.nextLong() & M);
             p[i] = p[j];
             p[j] = k;
         }

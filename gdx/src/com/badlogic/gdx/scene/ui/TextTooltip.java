@@ -22,7 +22,6 @@ import com.badlogic.gdx.scene.ui.Label.LabelStyle;
 
 /**
  * A tooltip that shows a label.
- *
  * @author Nathan Sweet
  */
 public class TextTooltip extends Tooltip<Label>{
@@ -67,7 +66,6 @@ public class TextTooltip extends Tooltip<Label>{
 
     /**
      * The style for a text tooltip, see {@link TextTooltip}.
-     *
      * @author Nathan Sweet
      */
     static public class TextTooltipStyle{

@@ -30,21 +30,20 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * a headless implementation of a GDX Application primarily intended to be used in servers
- *
  * @author Jon Renner
  */
 public class HeadlessApplication implements Application{
-    protected Thread mainLoopThread;
     protected final HeadlessFiles files;
     protected final HeadlessNet net;
     protected final MockAudio audio;
     protected final MockInput input;
     protected final MockGraphics graphics;
-    protected boolean running = true;
     protected final Array<ApplicationListener> listeners = new Array<>();
     protected final Array<Runnable> runnables = new Array<>();
     protected final Array<Runnable> executedRunnables = new Array<>();
     private final long renderInterval;
+    protected Thread mainLoopThread;
+    protected boolean running = true;
 
     public HeadlessApplication(ApplicationListener listener){
         this(listener, null);
@@ -71,7 +70,7 @@ public class HeadlessApplication implements Application{
         Core.graphics = graphics;
         Core.input = input;
 
-        renderInterval = config.renderInterval > 0 ? (long) (config.renderInterval * 1000000000f) : (config.renderInterval < 0 ? -1 : 0);
+        renderInterval = config.renderInterval > 0 ? (long)(config.renderInterval * 1000000000f) : (config.renderInterval < 0 ? -1 : 0);
 
         initialize();
     }
@@ -84,7 +83,7 @@ public class HeadlessApplication implements Application{
                     HeadlessApplication.this.mainLoop();
                 }catch(Throwable t){
                     if(t instanceof RuntimeException)
-                        throw (RuntimeException) t;
+                        throw (RuntimeException)t;
                     else
                         throw new GdxRuntimeException(t);
                 }

@@ -33,7 +33,6 @@ import java.util.NoSuchElementException;
  * <br>
  * Iteration can be very slow for a map with a large capacity. {@link #clear(int)} and {@link #shrink(int)} can be used to reduce
  * the capacity. {@link OrderedMap} provides much faster iteration.
- *
  * @author Nathan Sweet
  */
 public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
@@ -63,7 +62,6 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
     /**
      * Creates a new map with a load factor of 0.8.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public ObjectMap(int initialCapacity){
@@ -73,12 +71,11 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     /**
      * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
      * growing the backing table.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public ObjectMap(int initialCapacity, float loadFactor){
         if(initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-        initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
+        initialCapacity = Mathf.nextPowerOfTwo((int)Math.ceil(initialCapacity / loadFactor));
         if(initialCapacity > 1 << 30)
             throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
         capacity = initialCapacity;
@@ -86,19 +83,19 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         if(loadFactor <= 0) throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
         this.loadFactor = loadFactor;
 
-        threshold = (int) (capacity * loadFactor);
+        threshold = (int)(capacity * loadFactor);
         mask = capacity - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-        pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(capacity)) * 2);
+        pushIterations = Math.max(Math.min(capacity, 8), (int)Math.sqrt(capacity) / 8);
 
-        keyTable = (K[]) new Object[capacity + stashCapacity];
-        valueTable = (V[]) new Object[keyTable.length];
+        keyTable = (K[])new Object[capacity + stashCapacity];
+        valueTable = (V[])new Object[keyTable.length];
     }
 
     /** Creates a new map identical to the specified map. */
     public ObjectMap(ObjectMap<? extends K, ? extends V> map){
-        this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
+        this((int)Math.floor(map.capacity * map.loadFactor), map.loadFactor);
         stashSize = map.stashSize;
         System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
         System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
@@ -441,7 +438,6 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     /**
      * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may
      * be an expensive operation.
-     *
      * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
      * {@link #equals(Object)}.
      */
@@ -484,7 +480,6 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     /**
      * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
      * every value, which may be an expensive operation.
-     *
      * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
      * {@link #equals(Object)}.
      */
@@ -512,24 +507,24 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         if(additionalCapacity < 0)
             throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
         int sizeNeeded = size + additionalCapacity;
-        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
+        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int)Math.ceil(sizeNeeded / loadFactor)));
     }
 
     private void resize(int newSize){
         int oldEndIndex = capacity + stashSize;
 
         capacity = newSize;
-        threshold = (int) (newSize * loadFactor);
+        threshold = (int)(newSize * loadFactor);
         mask = newSize - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-        pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(newSize)) * 2);
+        pushIterations = Math.max(Math.min(newSize, 8), (int)Math.sqrt(newSize) / 8);
 
         K[] oldKeyTable = keyTable;
         V[] oldValueTable = valueTable;
 
-        keyTable = (K[]) new Object[newSize + stashCapacity];
-        valueTable = (V[]) new Object[newSize + stashCapacity];
+        keyTable = (K[])new Object[newSize + stashCapacity];
+        valueTable = (V[])new Object[newSize + stashCapacity];
 
         int oldSize = size;
         size = 0;
@@ -573,7 +568,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     public boolean equals(Object obj){
         if(obj == this) return true;
         if(!(obj instanceof ObjectMap)) return false;
-        ObjectMap<K, V> other = (ObjectMap) obj;
+        ObjectMap<K, V> other = (ObjectMap)obj;
         if(other.size != size) return false;
         K[] keyTable = this.keyTable;
         V[] valueTable = this.valueTable;
@@ -703,9 +698,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     }
 
     static private abstract class MapIterator<K, V, I> implements Iterable<I>, Iterator<I>{
-        public boolean hasNext;
-
         final ObjectMap<K, V> map;
+        public boolean hasNext;
         int nextIndex, currentIndex;
         boolean valid = true;
 
@@ -777,7 +771,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
     static public class Values<V> extends MapIterator<Object, V, V>{
         public Values(ObjectMap<?, V> map){
-            super((ObjectMap<Object, V>) map);
+            super((ObjectMap<Object, V>)map);
         }
 
         public boolean hasNext(){
@@ -813,7 +807,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
     static public class Keys<K> extends MapIterator<K, Object, K>{
         public Keys(ObjectMap<K, ?> map){
-            super((ObjectMap<K, Object>) map);
+            super((ObjectMap<K, Object>)map);
         }
 
         public boolean hasNext(){

@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils;
 
 /**
  * Typed runtime exception used throughout libgdx
- *
  * @author mzechner
  */
 public class GdxRuntimeException extends RuntimeException{

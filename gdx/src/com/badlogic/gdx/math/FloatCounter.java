@@ -19,10 +19,11 @@ package com.badlogic.gdx.math;
 /**
  * Track properties of a stream of float values. The properties (total value, minimum, etc) are updated as values are
  * {@link #put(float)} into the stream.
- *
  * @author xoppa
  */
 public class FloatCounter{
+    /** Provides access to the WindowedMean if any (can be null) */
+    public final WindowedMean mean;
     /** The amount of values added */
     public int count;
     /** The sum of all values */
@@ -37,12 +38,9 @@ public class FloatCounter{
     public float latest;
     /** The current windowed mean value */
     public float value;
-    /** Provides access to the WindowedMean if any (can be null) */
-    public final WindowedMean mean;
 
     /**
      * Construct a new FloatCounter
-     *
      * @param windowSize The size of the mean window or 1 or below to not use a windowed mean.
      */
     public FloatCounter(int windowSize){
@@ -52,7 +50,6 @@ public class FloatCounter{
 
     /**
      * Add a value and update all fields.
-     *
      * @param value The value to add
      */
     public void put(float value){

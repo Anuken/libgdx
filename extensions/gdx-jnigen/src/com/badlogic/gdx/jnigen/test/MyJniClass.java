@@ -76,9 +76,9 @@ public class MyJniClass{
         // load the test-natives.jar and from it the shared library, then execute the test.
         new JniGenSharedLibraryLoader("libs/test-natives.jar").load("test");
         ByteBuffer buffer = ByteBuffer.allocateDirect(1);
-        buffer.put(0, (byte) 8);
+        buffer.put(0, (byte)8);
         MyJniClass.test(
-        true, (byte) 1, (char) 2, (short) 3, 4, 5, 6, 7,
+        true, (byte)1, (char)2, (short)3, 4, 5, 6, 7,
         buffer, new boolean[]{false}, new char[]{9},
         new short[]{10}, new int[]{11}, new long[]{12},
         new float[]{13}, new double[]{14},

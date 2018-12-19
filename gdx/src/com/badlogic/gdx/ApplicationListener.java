@@ -29,43 +29,49 @@ import com.badlogic.gdx.files.FileHandle;
  * The <code>ApplicationListener</code> interface follows the standard Android activity life-cycle and is emulated on the desktop
  * accordingly.
  * </p>
- *
  * @author mzechner
  */
 public interface ApplicationListener{
-    /** Called when the {@link Application} is first created.
-     * Only gets called if the application is created before the listener is added.*/
-    default void create(){}
+    /**
+     * Called when the {@link Application} is first created.
+     * Only gets called if the application is created before the listener is added.
+     */
+    default void create(){
+    }
 
     /**
      * Called when the {@link Application} is resized. This can happen at any point during a non-paused state but will never happen
      * before a call to {@link #create()}.
-     *
      * @param width the new width in pixels
      * @param height the new height in pixels
      */
-    default void resize(int width, int height){}
+    default void resize(int width, int height){
+    }
 
     /** Called when the {@link Application} should update itself. */
-    default void update(){}
+    default void update(){
+    }
 
     /**
      * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also
      * paused before it is destroyed.
      */
-    default void pause(){}
+    default void pause(){
+    }
 
     /** Called when the {@link Application} is resumed from a paused state, usually when it regains focus. */
-    default void resume(){}
+    default void resume(){
+    }
 
     /** Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}. */
-    default void dispose(){}
+    default void dispose(){
+    }
 
     /**
      * Called when external files are dropped into the window,
      * e.g from the Desktop.
-     *
      * @param files array with absolute paths to the files
      */
-    default void filesDropped(FileHandle[] files){}
+    default void filesDropped(FileHandle[] files){
+    }
 }

@@ -25,11 +25,11 @@ import java.io.IOException;
 
 public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
     private final AndroidAudio audio;
+    protected boolean wasPlaying = false;
+    protected OnCompletionListener onCompletionListener;
     private MediaPlayer player;
     private boolean isPrepared = true;
-    protected boolean wasPlaying = false;
     private float volume = 1f;
-    protected OnCompletionListener onCompletionListener;
 
     AndroidMusic(AndroidAudio audio, MediaPlayer player){
         this.audio = audio;
@@ -64,6 +64,12 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void setLooping(boolean isLooping){
+        if(player == null) return;
+        player.setLooping(isLooping);
     }
 
     @Override
@@ -117,9 +123,8 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
     }
 
     @Override
-    public void setLooping(boolean isLooping){
-        if(player == null) return;
-        player.setLooping(isLooping);
+    public float getVolume(){
+        return volume;
     }
 
     @Override
@@ -127,11 +132,6 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
         if(player == null) return;
         player.setVolume(volume, volume);
         this.volume = volume;
-    }
-
-    @Override
-    public float getVolume(){
-        return volume;
     }
 
     @Override
@@ -160,6 +160,12 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
         isPrepared = false;
     }
 
+    @Override
+    public float getPosition(){
+        if(player == null) return 0.0f;
+        return player.getCurrentPosition() / 1000f;
+    }
+
     public void setPosition(float position){
         if(player == null) return;
         try{
@@ -167,18 +173,12 @@ public class AndroidMusic implements Music, MediaPlayer.OnCompletionListener{
                 player.prepare();
                 isPrepared = true;
             }
-            player.seekTo((int) (position * 1000));
+            player.seekTo((int)(position * 1000));
         }catch(IllegalStateException e){
             e.printStackTrace();
         }catch(IOException e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public float getPosition(){
-        if(player == null) return 0.0f;
-        return player.getCurrentPosition() / 1000f;
     }
 
     public float getDuration(){

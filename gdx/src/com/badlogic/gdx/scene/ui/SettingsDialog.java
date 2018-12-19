@@ -19,6 +19,10 @@ public class SettingsDialog extends Dialog{
         content().add(main);
     }
 
+    public interface StringProcessor{
+        String get(int i);
+    }
+
     public static class SettingsTable extends Table{
         protected Array<Setting> list = new Array<>();
         protected Consumer<SettingsTable> rebuilt;
@@ -191,9 +195,9 @@ public class SettingsDialog extends Dialog{
 
                 Label label = new Label(title);
                 slider.changed(() -> {
-                    settings.put(name, (int) slider.getValue());
+                    settings.put(name, (int)slider.getValue());
                     settings.save();
-                    label.setText(title + ": " + sp.get((int) slider.getValue()));
+                    label.setText(title + ": " + sp.get((int)slider.getValue()));
                 });
 
                 slider.change();
@@ -204,9 +208,5 @@ public class SettingsDialog extends Dialog{
             }
         }
 
-    }
-
-    public interface StringProcessor{
-        String get(int i);
     }
 }

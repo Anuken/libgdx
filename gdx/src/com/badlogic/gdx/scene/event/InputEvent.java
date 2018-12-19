@@ -23,7 +23,6 @@ import com.badlogic.gdx.scene.Scene;
 
 /**
  * Event for actor input: touch, mouse, keyboard, and scroll.
- *
  * @see InputListener
  */
 public class InputEvent extends Event{
@@ -42,7 +41,6 @@ public class InputEvent extends Event{
 
     /**
      * Sets actorCoords to this event's coordinates relative to the specified actor.
-     *
      * @param actorCoords Output for resulting coordinates.
      */
     public Vector2 toCoordinates(Element actor, Vector2 actorCoords){

@@ -25,41 +25,37 @@ import com.badlogic.gdx.utils.Timer.Task;
 /**
  * {@link InputProcessor} implementation that detects gestures (tap, long press, fling, pan, zoom, pinch) and hands them to a
  * {@link GestureListener}.
- *
  * @author mzechner
  */
 public class GestureDetector implements InputProcessor{
     final GestureListener listener;
-    private float tapRectangleWidth;
-    private float tapRectangleHeight;
-    private long tapCountInterval;
-    private float longPressSeconds;
-    private long maxFlingDelay;
-
-    private boolean inTapRectangle;
-    private int tapCount;
-    private long lastTapTime;
-    private float lastTapX, lastTapY;
-    private int lastTapPointer;
-    private KeyCode lastTapButton;
-    boolean longPressFired;
-    private boolean pinching;
-    private boolean panning;
-
     private final VelocityTracker tracker = new VelocityTracker();
-    private float tapRectangleCenterX, tapRectangleCenterY;
-    private long gestureStartTime;
-    Vector2 pointer1 = new Vector2();
     private final Vector2 pointer2 = new Vector2();
     private final Vector2 initialPointer1 = new Vector2();
     private final Vector2 initialPointer2 = new Vector2();
-
+    boolean longPressFired;
+    Vector2 pointer1 = new Vector2();
     private final Task longPressTask = new Task(){
         @Override
         public void run(){
             if(!longPressFired) longPressFired = listener.longPress(pointer1.x, pointer1.y);
         }
     };
+    private float tapRectangleWidth;
+    private float tapRectangleHeight;
+    private long tapCountInterval;
+    private float longPressSeconds;
+    private long maxFlingDelay;
+    private boolean inTapRectangle;
+    private int tapCount;
+    private long lastTapTime;
+    private float lastTapX, lastTapY;
+    private int lastTapPointer;
+    private KeyCode lastTapButton;
+    private boolean pinching;
+    private boolean panning;
+    private float tapRectangleCenterX, tapRectangleCenterY;
+    private long gestureStartTime;
 
     /**
      * Creates a new GestureDetector with default values: halfTapSquareSize=20, tapCountInterval=0.4f, longPressDuration=1.1f,
@@ -95,15 +91,15 @@ public class GestureDetector implements InputProcessor{
                            GestureListener listener){
         this.tapRectangleWidth = halfTapRectangleWidth;
         this.tapRectangleHeight = halfTapRectangleHeight;
-        this.tapCountInterval = (long) (tapCountInterval * 1000000000l);
+        this.tapCountInterval = (long)(tapCountInterval * 1000000000l);
         this.longPressSeconds = longPressDuration;
-        this.maxFlingDelay = (long) (maxFlingDelay * 1000000000l);
+        this.maxFlingDelay = (long)(maxFlingDelay * 1000000000l);
         this.listener = listener;
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, KeyCode button){
-        return touchDown((float) x, (float) y, pointer, button);
+        return touchDown((float)x, (float)y, pointer, button);
     }
 
     public boolean touchDown(float x, float y, int pointer, KeyCode button){
@@ -143,7 +139,7 @@ public class GestureDetector implements InputProcessor{
 
     @Override
     public boolean touchDragged(int x, int y, int pointer){
-        return touchDragged((float) x, (float) y, pointer);
+        return touchDragged((float)x, (float)y, pointer);
     }
 
     public boolean touchDragged(float x, float y, int pointer){
@@ -184,7 +180,7 @@ public class GestureDetector implements InputProcessor{
 
     @Override
     public boolean touchUp(int x, int y, int pointer, KeyCode button){
-        return touchUp((float) x, (float) y, pointer, button);
+        return touchUp((float)x, (float)y, pointer, button);
     }
 
     public boolean touchUp(float x, float y, int pointer, KeyCode button){
@@ -256,12 +252,11 @@ public class GestureDetector implements InputProcessor{
     }
 
     /**
-     * @param duration
      * @return whether the user touched the screen for as much or more than the given duration.
      */
     public boolean isLongPressed(float duration){
         if(gestureStartTime == 0) return false;
-        return TimeUtils.nanoTime() - gestureStartTime > (long) (duration * 1000000000l);
+        return TimeUtils.nanoTime() - gestureStartTime > (long)(duration * 1000000000l);
     }
 
     public boolean isPanning(){
@@ -295,7 +290,7 @@ public class GestureDetector implements InputProcessor{
 
     /** @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps. */
     public void setTapCountInterval(float tapCountInterval){
-        this.tapCountInterval = (long) (tapCountInterval * 1000000000l);
+        this.tapCountInterval = (long)(tapCountInterval * 1000000000l);
     }
 
     public void setLongPressSeconds(float longPressSeconds){
@@ -310,65 +305,72 @@ public class GestureDetector implements InputProcessor{
      * Register an instance of this class with a {@link GestureDetector} to receive gestures such as taps, long presses, flings,
      * panning or pinch zooming. Each method returns a boolean indicating if the event should be handed to the next listener (false
      * to hand it to the next listener, true otherwise).
-     *
      * @author mzechner
      */
     public interface GestureListener{
-        default boolean touchDown(float x, float y, int pointer, KeyCode button){ return false; }
+        default boolean touchDown(float x, float y, int pointer, KeyCode button){
+            return false;
+        }
 
         /**
          * Called when a tap occured. A tap happens if a touch went down on the screen and was lifted again without moving outside
          * of the tap square. The tap square is a rectangular area around the initial touch position as specified on construction
          * time of the {@link GestureDetector}.
-         *
          * @param count the number of taps.
          */
-        default boolean tap(float x, float y, int count, KeyCode button){ return false; }
+        default boolean tap(float x, float y, int count, KeyCode button){
+            return false;
+        }
 
-        default boolean longPress(float x, float y){ return false; }
+        default boolean longPress(float x, float y){
+            return false;
+        }
 
         /**
          * Called when the user dragged a finger over the screen and lifted it. Reports the last known velocity of the finger in
          * pixels per second.
-         *
          * @param velocityX velocity on x in seconds
          * @param velocityY velocity on y in seconds
          */
-        default boolean fling(float velocityX, float velocityY, KeyCode button){ return false; }
+        default boolean fling(float velocityX, float velocityY, KeyCode button){
+            return false;
+        }
 
         /**
          * Called when the user drags a finger over the screen.
-         *
          * @param deltaX the difference in pixels to the last drag event on x.
          * @param deltaY the difference in pixels to the last drag event on y.
          */
-        default boolean pan(float x, float y, float deltaX, float deltaY){ return false; }
+        default boolean pan(float x, float y, float deltaX, float deltaY){
+            return false;
+        }
 
         /** Called when no longer panning. */
-        default boolean panStop(float x, float y, int pointer, KeyCode button){ return false; }
+        default boolean panStop(float x, float y, int pointer, KeyCode button){
+            return false;
+        }
 
         /**
          * Called when the user performs a pinch zoom gesture. The original distance is the distance in pixels when the gesture
          * started.
-         *
          * @param initialDistance distance between fingers when the gesture started.
          * @param distance current distance between fingers.
          */
-        default boolean zoom(float initialDistance, float distance){ return false; }
+        default boolean zoom(float initialDistance, float distance){
+            return false;
+        }
 
         /**
          * Called when a user performs a pinch zoom gesture. Reports the initial positions of the two involved fingers and their
          * current positions.
-         *
-         * @param initialPointer1
-         * @param initialPointer2
-         * @param pointer1
-         * @param pointer2
          */
-        default boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2){ return false; }
+        default boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2){
+            return false;
+        }
 
         /** Called when no longer pinching. */
-        default void pinchStop(){}
+        default void pinchStop(){
+        }
     }
 
     static class VelocityTracker{

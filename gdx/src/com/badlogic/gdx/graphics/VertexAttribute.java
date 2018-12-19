@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * for uniquely identifying the vertex attribute from among its {@linkplain VertexAttributes} siblings. The number of components
  * defines how many components the attribute has. The alias defines to which shader attribute this attribute should bind. The alias
  * is used by a {@link Mesh} when drawing with a {@link ShaderProgram}. The alias can be changed at any time.
- *
  * @author mzechner
  */
 public final class VertexAttribute{
@@ -36,17 +35,16 @@ public final class VertexAttribute{
     public final boolean normalized;
     /** the OpenGL type of each component, e.g. {@link GL20#GL_FLOAT} or {@link GL20#GL_UNSIGNED_BYTE} */
     public final int type;
+    private final int usageIndex;
     /** the offset of this attribute in bytes, don't change this! **/
     public int offset;
     /** the alias for the attribute used in a {@link ShaderProgram} **/
     public String alias;
     /** optional unit/index specifier, used for texture coordinates and bone weights **/
     public int unit;
-    private final int usageIndex;
 
     /**
      * Constructs a new VertexAttribute. The GL data type is automatically selected based on the usage.
-     *
      * @param usage The attribute {@link Usage}, used to select the {@link #type} and for identification.
      * @param numComponents the number of components of this attribute, must be between 1 and 4.
      * @param alias the alias used in a shader for this attribute. Can be changed after construction.
@@ -57,7 +55,6 @@ public final class VertexAttribute{
 
     /**
      * Constructs a new VertexAttribute. The GL data type is automatically selected based on the usage.
-     *
      * @param usage The attribute {@link Usage}, used to select the {@link #type} and for identification.
      * @param numComponents the number of components of this attribute, must be between 1 and 4.
      * @param alias the alias used in a shader for this attribute. Can be changed after construction.
@@ -70,7 +67,6 @@ public final class VertexAttribute{
 
     /**
      * Constructs a new VertexAttribute.
-     *
      * @param usage The attribute {@link Usage}, used for identification.
      * @param numComponents the number of components of this attribute, must be between 1 and 4.
      * @param type the OpenGL type of each component, e.g. {@link GL20#GL_FLOAT} or {@link GL20#GL_UNSIGNED_BYTE}. Since {@link Mesh}
@@ -85,7 +81,6 @@ public final class VertexAttribute{
 
     /**
      * Constructs a new VertexAttribute.
-     *
      * @param usage The attribute {@link Usage}, used for identification.
      * @param numComponents the number of components of this attribute, must be between 1 and 4.
      * @param type the OpenGL type of each component, e.g. {@link GL20#GL_FLOAT} or {@link GL20#GL_UNSIGNED_BYTE}. Since {@link Mesh}
@@ -103,14 +98,6 @@ public final class VertexAttribute{
         this.alias = alias;
         this.unit = unit;
         this.usageIndex = Integer.numberOfTrailingZeros(usage);
-    }
-
-    /**
-     * @return A copy of this VertexAttribute with the same parameters. The {@link #offset} is not copied and must
-     * be recalculated, as is typically done by the {@linkplain VertexAttributes} that owns the VertexAttribute.
-     */
-    public VertexAttribute copy(){
-        return new VertexAttribute(usage, numComponents, type, normalized, alias, unit);
     }
 
     public static VertexAttribute Position(){
@@ -145,13 +132,21 @@ public final class VertexAttribute{
         return new VertexAttribute(Usage.BoneWeight, 2, ShaderProgram.BONEWEIGHT_ATTRIBUTE + unit, unit);
     }
 
+    /**
+     * @return A copy of this VertexAttribute with the same parameters. The {@link #offset} is not copied and must
+     * be recalculated, as is typically done by the {@linkplain VertexAttributes} that owns the VertexAttribute.
+     */
+    public VertexAttribute copy(){
+        return new VertexAttribute(usage, numComponents, type, normalized, alias, unit);
+    }
+
     /** Tests to determine if the passed object was created with the same parameters */
     @Override
     public boolean equals(final Object obj){
         if(!(obj instanceof VertexAttribute)){
             return false;
         }
-        return equals((VertexAttribute) obj);
+        return equals((VertexAttribute)obj);
     }
 
     public boolean equals(final VertexAttribute other){

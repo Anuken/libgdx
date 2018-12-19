@@ -16,9 +16,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.geom.Polygon;
 import com.badlogic.gdx.math.geom.Polyline;
-import com.badlogic.gdx.utils.serialization.Base64Coder;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.io.StreamUtils;
+import com.badlogic.gdx.utils.serialization.Base64Coder;
 import com.badlogic.gdx.utils.serialization.XmlReader;
 import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
@@ -32,41 +32,96 @@ import java.util.zip.InflaterInputStream;
 
 public abstract class BaseTmxMapLoader<P extends AssetLoaderParameters<TiledMap>> extends AsynchronousAssetLoader<TiledMap, P>{
 
-    public static class Parameters extends AssetLoaderParameters<TiledMap>{
-        /** generate mipmaps? **/
-        public boolean generateMipMaps = false;
-        /** The TextureFilter to use for minification **/
-        public TextureFilter textureMinFilter = TextureFilter.Nearest;
-        /** The TextureFilter to use for magnification **/
-        public TextureFilter textureMagFilter = TextureFilter.Nearest;
-        /** Whether to convert the objects' pixel position and size to the equivalent in tile space. **/
-        public boolean convertObjectToTileSpace = false;
-        /**
-         * Whether to flip all Y coordinates so that Y positive is down. All LibGDX renderers require flipped Y coordinates, and
-         * thus flipY set to true. This parameter is included for non-rendering related purposes of TMX files, or custom renderers.
-         */
-        public boolean flipY = true;
-    }
-
     protected static final int FLAG_FLIP_HORIZONTALLY = 0x80000000;
     protected static final int FLAG_FLIP_VERTICALLY = 0x40000000;
     protected static final int FLAG_FLIP_DIAGONALLY = 0x20000000;
     protected static final int MASK_CLEAR = 0xE0000000;
-
     protected XmlReader xml = new XmlReader();
     protected Element root;
     protected boolean convertObjectToTileSpace;
     protected boolean flipY = true;
-
     protected int mapTileWidth;
     protected int mapTileHeight;
     protected int mapWidthInPixels;
     protected int mapHeightInPixels;
-
     protected TiledMap map;
 
     public BaseTmxMapLoader(FileHandleResolver resolver){
         super(resolver);
+    }
+
+    static public int[] getTileIds(Element element, int width, int height){
+        Element data = element.getChildByName("data");
+        String encoding = data.getAttribute("encoding", null);
+        if(encoding == null){ // no 'encoding' attribute means that the encoding is XML
+            throw new GdxRuntimeException("Unsupported encoding (XML) for TMX Layer Data");
+        }
+        int[] ids = new int[width * height];
+        if(encoding.equals("csv")){
+            String[] array = data.getText().split(",");
+            for(int i = 0; i < array.length; i++)
+                ids[i] = (int)Long.parseLong(array[i].trim());
+        }else{
+            if(true)
+                if(encoding.equals("base64")){
+                    InputStream is = null;
+                    try{
+                        String compression = data.getAttribute("compression", null);
+                        byte[] bytes = Base64Coder.decode(data.getText());
+                        if(compression == null)
+                            is = new ByteArrayInputStream(bytes);
+                        else if(compression.equals("gzip"))
+                            is = new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes), bytes.length));
+                        else if(compression.equals("zlib"))
+                            is = new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)));
+                        else
+                            throw new GdxRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
+
+                        byte[] temp = new byte[4];
+                        for(int y = 0; y < height; y++){
+                            for(int x = 0; x < width; x++){
+                                int read = is.read(temp);
+                                while(read < temp.length){
+                                    int curr = is.read(temp, read, temp.length - read);
+                                    if(curr == -1) break;
+                                    read += curr;
+                                }
+                                if(read != temp.length)
+                                    throw new GdxRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
+                                ids[y * width + x] = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8
+                                | unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
+                            }
+                        }
+                    }catch(IOException e){
+                        throw new GdxRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
+                    }finally{
+                        StreamUtils.closeQuietly(is);
+                    }
+                }else{
+                    // any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
+                    // or another editor
+                    throw new GdxRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
+                }
+        }
+        return ids;
+    }
+
+    protected static int unsignedByteToInt(byte b){
+        return b & 0xFF;
+    }
+
+    protected static FileHandle getRelativeFileHandle(FileHandle file, String path){
+        StringTokenizer tokenizer = new StringTokenizer(path, "\\/");
+        FileHandle result = file.parent();
+        while(tokenizer.hasMoreElements()){
+            String token = tokenizer.nextToken();
+            if(token.equals(".."))
+                result = result.parent();
+            else{
+                result = result.child(token);
+            }
+        }
+        return result;
     }
 
     protected void loadTileGroup(TiledMap map, MapLayers parentLayers, Element element, FileHandle tmxFile, ImageResolver imageResolver){
@@ -264,7 +319,7 @@ public abstract class BaseTmxMapLoader<P extends AssetLoaderParameters<TiledMap>
             if(object == null){
                 String gid = null;
                 if((gid = element.getAttribute("gid", null)) != null){
-                    int id = (int) Long.parseLong(gid);
+                    int id = (int)Long.parseLong(gid);
                     boolean flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);
                     boolean flipVertically = ((id & FLAG_FLIP_VERTICALLY) != 0);
 
@@ -372,78 +427,20 @@ public abstract class BaseTmxMapLoader<P extends AssetLoaderParameters<TiledMap>
         return cell;
     }
 
-    static public int[] getTileIds(Element element, int width, int height){
-        Element data = element.getChildByName("data");
-        String encoding = data.getAttribute("encoding", null);
-        if(encoding == null){ // no 'encoding' attribute means that the encoding is XML
-            throw new GdxRuntimeException("Unsupported encoding (XML) for TMX Layer Data");
-        }
-        int[] ids = new int[width * height];
-        if(encoding.equals("csv")){
-            String[] array = data.getText().split(",");
-            for(int i = 0; i < array.length; i++)
-                ids[i] = (int) Long.parseLong(array[i].trim());
-        }else{
-            if(true)
-                if(encoding.equals("base64")){
-                    InputStream is = null;
-                    try{
-                        String compression = data.getAttribute("compression", null);
-                        byte[] bytes = Base64Coder.decode(data.getText());
-                        if(compression == null)
-                            is = new ByteArrayInputStream(bytes);
-                        else if(compression.equals("gzip"))
-                            is = new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes), bytes.length));
-                        else if(compression.equals("zlib"))
-                            is = new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)));
-                        else
-                            throw new GdxRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
-
-                        byte[] temp = new byte[4];
-                        for(int y = 0; y < height; y++){
-                            for(int x = 0; x < width; x++){
-                                int read = is.read(temp);
-                                while(read < temp.length){
-                                    int curr = is.read(temp, read, temp.length - read);
-                                    if(curr == -1) break;
-                                    read += curr;
-                                }
-                                if(read != temp.length)
-                                    throw new GdxRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
-                                ids[y * width + x] = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8
-                                | unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
-                            }
-                        }
-                    }catch(IOException e){
-                        throw new GdxRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
-                    }finally{
-                        StreamUtils.closeQuietly(is);
-                    }
-                }else{
-                    // any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
-                    // or another editor
-                    throw new GdxRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
-                }
-        }
-        return ids;
-    }
-
-    protected static int unsignedByteToInt(byte b){
-        return b & 0xFF;
-    }
-
-    protected static FileHandle getRelativeFileHandle(FileHandle file, String path){
-        StringTokenizer tokenizer = new StringTokenizer(path, "\\/");
-        FileHandle result = file.parent();
-        while(tokenizer.hasMoreElements()){
-            String token = tokenizer.nextToken();
-            if(token.equals(".."))
-                result = result.parent();
-            else{
-                result = result.child(token);
-            }
-        }
-        return result;
+    public static class Parameters extends AssetLoaderParameters<TiledMap>{
+        /** generate mipmaps? **/
+        public boolean generateMipMaps = false;
+        /** The TextureFilter to use for minification **/
+        public TextureFilter textureMinFilter = TextureFilter.Nearest;
+        /** The TextureFilter to use for magnification **/
+        public TextureFilter textureMagFilter = TextureFilter.Nearest;
+        /** Whether to convert the objects' pixel position and size to the equivalent in tile space. **/
+        public boolean convertObjectToTileSpace = false;
+        /**
+         * Whether to flip all Y coordinates so that Y positive is down. All LibGDX renderers require flipped Y coordinates, and
+         * thus flipY set to true. This parameter is included for non-rendering related purposes of TMX files, or custom renderers.
+         */
+        public boolean flipY = true;
     }
 
 }

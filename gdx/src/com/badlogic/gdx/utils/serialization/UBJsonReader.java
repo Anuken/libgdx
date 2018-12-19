@@ -29,7 +29,6 @@ import java.io.InputStream;
  * <br>
  * The default behavior is to parse the JSON into a DOM containing {@link JsonValue} objects. Extend this class and override
  * methods to perform event driven parsing. When this is done, the parse methods will return null. <br>
- *
  * @author Xoppa
  */
 public class UBJsonReader implements BaseJsonReader{
@@ -81,15 +80,15 @@ public class UBJsonReader implements BaseJsonReader{
         else if(type == 'F')
             return new JsonValue(false);
         else if(type == 'B')
-            return new JsonValue((long) readUChar(din));
+            return new JsonValue((long)readUChar(din));
         else if(type == 'U')
-            return new JsonValue((long) readUChar(din));
+            return new JsonValue((long)readUChar(din));
         else if(type == 'i')
-            return new JsonValue(oldFormat ? (long) din.readShort() : (long) din.readByte());
+            return new JsonValue(oldFormat ? (long)din.readShort() : (long)din.readByte());
         else if(type == 'I')
-            return new JsonValue(oldFormat ? (long) din.readInt() : (long) din.readShort());
+            return new JsonValue(oldFormat ? (long)din.readInt() : (long)din.readShort());
         else if(type == 'l')
-            return new JsonValue((long) din.readInt());
+            return new JsonValue((long)din.readInt());
         else if(type == 'L')
             return new JsonValue(din.readLong());
         else if(type == 'd')
@@ -182,7 +181,7 @@ public class UBJsonReader implements BaseJsonReader{
         // FIXME: a/A is currently not following the specs because it lacks strong typed, fixed sized containers,
         // see: https://github.com/thebuzzmedia/universal-binary-json/issues/27
         final byte dataType = din.readByte();
-        final long size = blockType == 'A' ? readUInt(din) : (long) readUChar(din);
+        final long size = blockType == 'A' ? readUInt(din) : (long)readUChar(din);
         final JsonValue result = new JsonValue(JsonValue.ValueType.array);
         JsonValue prev = null;
         for(long i = 0; i < size; i++){
@@ -209,7 +208,7 @@ public class UBJsonReader implements BaseJsonReader{
         if(type == 'S'){
             size = parseSize(din, true, -1);
         }else if(type == 's')
-            size = (long) readUChar(din);
+            size = (long)readUChar(din);
         else if(sOptional) size = parseSize(din, type, false, -1);
         if(size < 0) throw new GdxRuntimeException("Unrecognized data type, string expected");
         return size > 0 ? readString(din, size) : "";
@@ -221,34 +220,34 @@ public class UBJsonReader implements BaseJsonReader{
 
     protected long parseSize(final DataInputStream din, final byte type, final boolean useIntOnError, final long defaultValue)
     throws IOException{
-        if(type == 'i') return (long) readUChar(din);
-        if(type == 'I') return (long) readUShort(din);
+        if(type == 'i') return (long)readUChar(din);
+        if(type == 'I') return (long)readUShort(din);
         if(type == 'l') return readUInt(din);
         if(type == 'L') return din.readLong();
         if(useIntOnError){
-            long result = (long) ((short) type & 0xFF) << 24;
-            result |= (long) ((short) din.readByte() & 0xFF) << 16;
-            result |= (long) ((short) din.readByte() & 0xFF) << 8;
-            result |= (long) ((short) din.readByte() & 0xFF);
+            long result = (long)((short)type & 0xFF) << 24;
+            result |= (long)((short)din.readByte() & 0xFF) << 16;
+            result |= (long)((short)din.readByte() & 0xFF) << 8;
+            result |= (long)((short)din.readByte() & 0xFF);
             return result;
         }
         return defaultValue;
     }
 
     protected short readUChar(final DataInputStream din) throws IOException{
-        return (short) ((short) din.readByte() & 0xFF);
+        return (short)((short)din.readByte() & 0xFF);
     }
 
     protected int readUShort(final DataInputStream din) throws IOException{
-        return ((int) din.readShort() & 0xFFFF);
+        return ((int)din.readShort() & 0xFFFF);
     }
 
     protected long readUInt(final DataInputStream din) throws IOException{
-        return ((long) din.readInt() & 0xFFFFFFFF);
+        return ((long)din.readInt() & 0xFFFFFFFF);
     }
 
     protected String readString(final DataInputStream din, final long size) throws IOException{
-        final byte data[] = new byte[(int) size];
+        final byte data[] = new byte[(int)size];
         din.readFully(data);
         return new String(data, "UTF-8");
     }

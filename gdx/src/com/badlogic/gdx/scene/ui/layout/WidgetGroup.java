@@ -32,7 +32,6 @@ import com.badlogic.gdx.scene.utils.Layout;
  * See {@link Layout} for details on how a widget group should participate in layout. A widget group's mutator methods should call
  * {@link #invalidate()} or {@link #invalidateHierarchy()} as needed. By default, invalidateHierarchy is called when child widgets
  * are added and removed.
- *
  * @author Nathan Sweet
  */
 public class WidgetGroup extends Group implements Layout{
@@ -78,7 +77,7 @@ public class WidgetGroup extends Group implements Layout{
             if(actor instanceof Layout)
                 actor.setLayoutEnabled(enabled);
             else if(actor instanceof Group) //
-                setLayoutEnabled((Group) actor, enabled);
+                setLayoutEnabled((Group)actor, enabled);
         }
     }
 

@@ -16,9 +16,9 @@
 
 package com.badlogic.gdx.graphics;
 
+import com.badlogic.gdx.collection.ByteArray;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.collection.ByteArray;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.io.StreamUtils;
@@ -29,7 +29,6 @@ import java.util.zip.*;
 
 /**
  * Writes Pixmaps to various formats.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -38,7 +37,6 @@ public class PixmapIO{
      * Writes the {@link Pixmap} to the given file using a custom compression scheme. First three integers define the width, height
      * and format, remaining bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture, use ".cim" as the file
      * suffix. Throws a GdxRuntimeException in case the Pixmap couldn't be written to the file.
-     *
      * @param file the file to write the Pixmap to
      */
     static public void writeCIM(FileHandle file, Pixmap pixmap){
@@ -48,7 +46,6 @@ public class PixmapIO{
     /**
      * Reads the {@link Pixmap} from the given file, assuming the Pixmap was written with the
      * {@link PixmapIO#writeCIM(FileHandle, Pixmap)} method. Throws a GdxRuntimeException in case the file couldn't be read.
-     *
      * @param file the file to read the Pixmap from
      */
     static public Pixmap readCIM(FileHandle file){
@@ -61,7 +58,7 @@ public class PixmapIO{
      */
     static public void writePNG(FileHandle file, Pixmap pixmap){
         try{
-            PNG writer = new PNG((int) (pixmap.getWidth() * pixmap.getHeight() * 1.5f)); // Guess at deflated size.
+            PNG writer = new PNG((int)(pixmap.getWidth() * pixmap.getHeight() * 1.5f)); // Guess at deflated size.
             try{
                 writer.setFlipY(false);
                 writer.write(file, pixmap);
@@ -172,12 +169,11 @@ public class PixmapIO{
      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
      * THE SOFTWARE.
      * </pre>
-     *
      * @author Matthias Mann
      * @author Nathan Sweet
      */
     static public class PNG implements Disposable{
-        static private final byte[] SIGNATURE = {(byte) 137, 80, 78, 71, 13, 10, 26, 10};
+        static private final byte[] SIGNATURE = {(byte)137, 80, 78, 71, 13, 10, 26, 10};
         static private final int IHDR = 0x49484452, IDAT = 0x49444154, IEND = 0x49454E44;
         static private final byte COLOR_ARGB = 6;
         static private final byte COMPRESSION_DEFLATE = 0;
@@ -264,17 +260,17 @@ public class PixmapIO{
                 }else{
                     for(int px = 0, x = 0; px < pixmap.getWidth(); px++){
                         int pixel = pixmap.getPixel(px, py);
-                        curLine[x++] = (byte) ((pixel >> 24) & 0xff);
-                        curLine[x++] = (byte) ((pixel >> 16) & 0xff);
-                        curLine[x++] = (byte) ((pixel >> 8) & 0xff);
-                        curLine[x++] = (byte) (pixel & 0xff);
+                        curLine[x++] = (byte)((pixel >> 24) & 0xff);
+                        curLine[x++] = (byte)((pixel >> 16) & 0xff);
+                        curLine[x++] = (byte)((pixel >> 8) & 0xff);
+                        curLine[x++] = (byte)(pixel & 0xff);
                     }
                 }
 
-                lineOut[0] = (byte) (curLine[0] - prevLine[0]);
-                lineOut[1] = (byte) (curLine[1] - prevLine[1]);
-                lineOut[2] = (byte) (curLine[2] - prevLine[2]);
-                lineOut[3] = (byte) (curLine[3] - prevLine[3]);
+                lineOut[0] = (byte)(curLine[0] - prevLine[0]);
+                lineOut[1] = (byte)(curLine[1] - prevLine[1]);
+                lineOut[2] = (byte)(curLine[2] - prevLine[2]);
+                lineOut[3] = (byte)(curLine[3] - prevLine[3]);
 
                 for(int x = 4; x < lineLen; x++){
                     int a = curLine[x - 4] & 0xff;
@@ -291,7 +287,7 @@ public class PixmapIO{
                         c = a;
                     else if(pb <= pc) //
                         c = b;
-                    lineOut[x] = (byte) (curLine[x] - c);
+                    lineOut[x] = (byte)(curLine[x] - c);
                 }
 
                 deflaterOutput.write(PAETH);
@@ -335,7 +331,7 @@ public class PixmapIO{
                 flush();
                 target.writeInt(buffer.size() - 4);
                 buffer.writeTo(target);
-                target.writeInt((int) crc.getValue());
+                target.writeInt((int)crc.getValue());
                 buffer.reset();
                 crc.reset();
             }

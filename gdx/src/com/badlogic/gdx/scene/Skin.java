@@ -21,8 +21,11 @@ import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scene.style.*;
 import com.badlogic.gdx.scene.style.SkinReader.ValueReader;
 import com.badlogic.gdx.utils.Disposable;
@@ -38,7 +41,6 @@ import com.badlogic.gdx.utils.serialization.SerializationException;
  * The new* methods return a copy of an instance in the skin.
  * <p>
  * See the <a href="https://github.com/libgdx/libgdx/wiki/Skin">documentation</a> for more.
- *
  * @author Nathan Sweet
  */
 @SuppressWarnings("unchecked")
@@ -156,7 +158,6 @@ public class Skin implements Disposable{
 
     /**
      * Returns a resource named "default" for the specified type.
-     *
      * @throws GdxRuntimeException if the resource was not found.
      */
     public <T> T get(Class<T> type){
@@ -165,28 +166,26 @@ public class Skin implements Disposable{
 
     /**
      * Returns a named resource of the specified type.
-     *
      * @throws GdxRuntimeException if the resource was not found.
      */
     public <T> T get(String name, Class<T> type){
         if(name == null) throw new IllegalArgumentException("name cannot be null.");
         if(type == null) throw new IllegalArgumentException("type cannot be null.");
 
-        if(type == Drawable.class) return (T) getDrawable(name);
-        if(type == TextureRegion.class) return (T) getRegion(name);
-        if(type == NinePatch.class) return (T) getPatch(name);
+        if(type == Drawable.class) return (T)getDrawable(name);
+        if(type == TextureRegion.class) return (T)getRegion(name);
+        if(type == NinePatch.class) return (T)getPatch(name);
 
         ObjectMap<String, Object> typeResources = resources.get(type);
         if(typeResources == null)
             throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
         Object resource = typeResources.get(name);
         if(resource == null) throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
-        return (T) resource;
+        return (T)resource;
     }
 
     /**
      * Returns a named resource of the specified type.
-     *
      * @return null if not found.
      */
     public <T> T optional(String name, Class<T> type){
@@ -194,7 +193,7 @@ public class Skin implements Disposable{
         if(type == null) throw new IllegalArgumentException("type cannot be null.");
         ObjectMap<String, Object> typeResources = resources.get(type);
         if(typeResources == null) return null;
-        return (T) typeResources.get(name);
+        return (T)typeResources.get(name);
     }
 
     public boolean has(String name, Class type){
@@ -204,7 +203,7 @@ public class Skin implements Disposable{
 
     /** Returns the name to resource mapping for the specified type, or null if no resources of that type exist. */
     public <T> ObjectMap<String, T> getAll(Class<T> type){
-        return (ObjectMap<String, T>) resources.get(type);
+        return (ObjectMap<String, T>)resources.get(type);
     }
 
     public Color getColor(String name){
@@ -271,10 +270,10 @@ public class Skin implements Disposable{
         try{
             TextureRegion region = getRegion(name);
             if(region instanceof AtlasRegion){
-                int[] splits = ((AtlasRegion) region).splits;
+                int[] splits = ((AtlasRegion)region).splits;
                 if(splits != null){
                     patch = new NinePatch(region, splits[0], splits[1], splits[2], splits[3]);
-                    int[] pads = ((AtlasRegion) region).pads;
+                    int[] pads = ((AtlasRegion)region).pads;
                     if(pads != null) patch.setPadding(pads[0], pads[1], pads[2], pads[3]);
                 }
             }
@@ -298,7 +297,7 @@ public class Skin implements Disposable{
         try{
             TextureRegion textureRegion = getRegion(name);
             if(textureRegion instanceof AtlasRegion){
-                AtlasRegion region = (AtlasRegion) textureRegion;
+                AtlasRegion region = (AtlasRegion)textureRegion;
                 if(region.splits != null){
                     drawable = (new ScaledNinePatchDrawable(getPatch(name)));
                 }
@@ -317,7 +316,7 @@ public class Skin implements Disposable{
             }
         }
 
-        ((BaseDrawable) drawable).setName(name);
+        ((BaseDrawable)drawable).setName(name);
 
         add(name, drawable, Drawable.class);
         return drawable;
@@ -351,10 +350,10 @@ public class Skin implements Disposable{
 
     /** Returns a copy of the specified drawable. */
     public Drawable newDrawable(Drawable drawable){
-        if(drawable instanceof TiledDrawable) return new TiledDrawable((TiledDrawable) drawable);
+        if(drawable instanceof TiledDrawable) return new TiledDrawable((TiledDrawable)drawable);
         if(drawable instanceof TextureRegionDrawable)
-            return new TextureRegionDrawable((TextureRegionDrawable) drawable);
-        if(drawable instanceof NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable) drawable);
+            return new TextureRegionDrawable((TextureRegionDrawable)drawable);
+        if(drawable instanceof NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable)drawable);
         throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
     }
 
@@ -367,16 +366,16 @@ public class Skin implements Disposable{
     public Drawable newDrawable(Drawable drawable, Color tint){
         Drawable newDrawable;
         if(drawable instanceof TextureRegionDrawable)
-            newDrawable = ((TextureRegionDrawable) drawable).tint(tint);
+            newDrawable = ((TextureRegionDrawable)drawable).tint(tint);
         else if(drawable instanceof NinePatchDrawable)
-            newDrawable = ((NinePatchDrawable) drawable).tint(tint);
+            newDrawable = ((NinePatchDrawable)drawable).tint(tint);
         else
             throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 
         if(newDrawable instanceof BaseDrawable){
-            BaseDrawable named = (BaseDrawable) newDrawable;
+            BaseDrawable named = (BaseDrawable)newDrawable;
             if(drawable instanceof BaseDrawable)
-                named.setName(((BaseDrawable) drawable).getName() + " (" + tint + ")");
+                named.setName(((BaseDrawable)drawable).getName() + " (" + tint + ")");
             else
                 named.setName(" (" + tint + ")");
         }
@@ -394,7 +393,7 @@ public class Skin implements Disposable{
         if(atlas != null) atlas.dispose();
         for(ObjectMap<String, Object> entry : resources.values()){
             for(Object resource : entry.values())
-                if(resource instanceof Disposable) ((Disposable) resource).dispose();
+                if(resource instanceof Disposable) ((Disposable)resource).dispose();
         }
     }
 }

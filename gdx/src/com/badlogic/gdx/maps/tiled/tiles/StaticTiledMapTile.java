@@ -38,6 +38,27 @@ public class StaticTiledMapTile implements TiledMapTile{
 
     private float offsetY;
 
+    /**
+     * Creates a static tile with the given region
+     * @param textureRegion the {@link TextureRegion} to use.
+     */
+    public StaticTiledMapTile(TextureRegion textureRegion){
+        this.textureRegion = textureRegion;
+    }
+
+    /**
+     * Copy constructor
+     * @param copy the StaticTiledMapTile to copy.
+     */
+    public StaticTiledMapTile(StaticTiledMapTile copy){
+        if(copy.properties != null){
+            getProperties().putAll(copy.properties);
+        }
+        this.objects = copy.objects;
+        this.textureRegion = copy.textureRegion;
+        this.id = copy.id;
+    }
+
     @Override
     public int getId(){
         return id;
@@ -102,29 +123,6 @@ public class StaticTiledMapTile implements TiledMapTile{
     @Override
     public void setOffsetY(float offsetY){
         this.offsetY = offsetY;
-    }
-
-    /**
-     * Creates a static tile with the given region
-     *
-     * @param textureRegion the {@link TextureRegion} to use.
-     */
-    public StaticTiledMapTile(TextureRegion textureRegion){
-        this.textureRegion = textureRegion;
-    }
-
-    /**
-     * Copy constructor
-     *
-     * @param copy the StaticTiledMapTile to copy.
-     */
-    public StaticTiledMapTile(StaticTiledMapTile copy){
-        if(copy.properties != null){
-            getProperties().putAll(copy.properties);
-        }
-        this.objects = copy.objects;
-        this.textureRegion = copy.textureRegion;
-        this.id = copy.id;
     }
 
 }

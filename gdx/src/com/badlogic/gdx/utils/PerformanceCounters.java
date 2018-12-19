@@ -21,9 +21,8 @@ import com.badlogic.gdx.collection.Array;
 /** @author xoppa */
 public class PerformanceCounters{
     private final static float nano2seconds = 1f / 1000000000.0f;
-
-    private long lastTick = 0L;
     public final Array<PerformanceCounter> counters = new Array<PerformanceCounter>();
+    private long lastTick = 0L;
 
     public PerformanceCounter add(final String name, final int windowSize){
         PerformanceCounter result = new PerformanceCounter(name, windowSize);

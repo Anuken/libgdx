@@ -30,7 +30,6 @@ public class IndexArray implements IndexData{
 
     /**
      * Creates a new IndexArray to be used with vertex arrays.
-     *
      * @param maxIndices the maximum number of indices this buffer can hold
      */
     public IndexArray(int maxIndices){
@@ -65,7 +64,6 @@ public class IndexArray implements IndexData{
      * <p>
      * This can be called in between calls to {@link #bind()} and {@link #unbind()}. The index data will be updated instantly.
      * </p>
-     *
      * @param indices the vertex data
      * @param offset the offset to start copying the data from
      * @param count the number of shorts to copy
@@ -102,7 +100,6 @@ public class IndexArray implements IndexData{
      * Returns the underlying ShortBuffer. If you modify the buffer contents they wil be uploaded on the call to {@link #bind()}.
      * If you need immediate uploading use {@link #setIndices(short[], int, int)}.
      * </p>
-     *
      * @return the underlying short buffer.
      */
     public ShortBuffer getBuffer(){

@@ -27,7 +27,6 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
  * A {@link MapObject} with a {@link TiledMapTile}. Can be both {@link StaticTiledMapTile} or {@link AnimatedTiledMapTile}. For
  * compatibility reasons, this extends {@link TextureMapObject}. Use {@link TiledMapTile#getTextureRegion()} instead of
  * {@link #getTextureRegion()}.
- *
  * @author Daniel Holderbaum
  */
 public class TiledMapTileMapObject extends TextureMapObject{

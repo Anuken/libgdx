@@ -97,8 +97,8 @@ public class Lines{
         float lasta;
 
         {
-            float x1 = points[length-2];
-            float y1 = points[length-1];
+            float x1 = points[length - 2];
+            float y1 = points[length - 1];
             float x2 = points[0];
             float y2 = points[1];
             float x3 = points[2];
@@ -111,18 +111,18 @@ public class Lines{
             }
         }
 
-        for(int i = 0; i < (wrap ? length : length - 2); i+= 2){
+        for(int i = 0; i < (wrap ? length : length - 2); i += 2){
             float x1 = points[i];
-            float y1 = points[i+1];
-            float x2 = points[(i+2)%length];
-            float y2 = points[(i+3)%length];
+            float y1 = points[i + 1];
+            float x2 = points[(i + 2) % length];
+            float y2 = points[(i + 3) % length];
 
             float avg;
             float ang1 = Mathf.angle(x1, y1, x2, y2);
 
             if(wrap){
-                float x3 = points[(i+4)%length];
-                float y3 = points[(i+5)%length];
+                float x3 = points[(i + 4) % length];
+                float y3 = points[(i + 5) % length];
                 float ang2 = Mathf.angle(x2, y2, x3, y3);
 
                 avg = Mathf.slerp(ang1, ang2, 0.5f);
@@ -130,7 +130,7 @@ public class Lines{
                 avg = ang1;
             }
 
-            float s = stroke/2f;
+            float s = stroke / 2f;
 
             float cos1 = Mathf.cosDeg(lasta - 90) * s;
             float sin1 = Mathf.sinDeg(lasta - 90) * s;
@@ -159,8 +159,8 @@ public class Lines{
 
         for(int i = 0; i < divisions; i++){
             if(i % 2 == 0){
-                line(x1 + ((float) i / divisions) * dx, y1 + ((float) i / divisions) * dy,
-                        x1 + ((i + 1f) / divisions) * dx, y1 + ((i + 1f) / divisions) * dy);
+                line(x1 + ((float)i / divisions) * dx, y1 + ((float)i / divisions) * dy,
+                x1 + ((i + 1f) / divisions) * dx, y1 + ((i + 1f) / divisions) * dy);
             }
         }
     }
@@ -171,7 +171,7 @@ public class Lines{
 
     public static void dashCircle(float x, float y, float radius){
         float scaleFactor = 0.6f;
-        int sides = 10 + (int) (radius * scaleFactor);
+        int sides = 10 + (int)(radius * scaleFactor);
         if(sides % 2 == 1) sides++;
 
         vector.set(0, 0);
@@ -215,7 +215,6 @@ public class Lines{
             float y1 = vector.y;
 
             vector.set(radius, 0).setAngle(360f / sides * (i + 1) + angle + 90);
-
 
 
             line(x1 + x, y1 + y, vector.x + x, vector.y + y);
@@ -286,7 +285,7 @@ public class Lines{
 
     public static void swirl(float x, float y, float radius, float finion, float angle){
         int sides = 50;
-        int max = (int) (sides * (finion + 0.001f));
+        int max = (int)(sides * (finion + 0.001f));
         vector.set(0, 0);
 
         for(int i = 0; i < max; i++){
@@ -303,7 +302,7 @@ public class Lines{
     public static void poly(float x, float y, int sides, float radius){
         floats.clear();
         for(int i = 0; i < sides; i++){
-            float rad = (float)i /sides * Mathf.PI2;
+            float rad = (float)i / sides * Mathf.PI2;
             floats.add(Mathf.cos(rad) * radius + x, Mathf.sin(rad) * radius + y);
         }
 

@@ -32,7 +32,6 @@ public class MapObjects implements Iterable<MapObject>{
     }
 
     /**
-     * @param index
      * @return the MapObject at the specified index
      */
     public MapObject get(int index){
@@ -40,7 +39,6 @@ public class MapObjects implements Iterable<MapObject>{
     }
 
     /**
-     * @param name
      * @return the first object having the specified name, if one exists, otherwise null
      */
     public MapObject get(String name){
@@ -101,7 +99,7 @@ public class MapObjects implements Iterable<MapObject>{
         for(int i = 0, n = objects.size; i < n; i++){
             MapObject object = objects.get(i);
             if(ClassReflection.isInstance(type, object)){
-                fill.add((T) object);
+                fill.add((T)object);
             }
         }
         return fill;

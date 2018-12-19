@@ -42,7 +42,7 @@ public class RefCountedContainer{
     }
 
     public <T> T getObject(Class<T> type){
-        return (T) object;
+        return (T)object;
     }
 
     public void setObject(Object asset){

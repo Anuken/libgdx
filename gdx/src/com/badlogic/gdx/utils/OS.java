@@ -11,7 +11,7 @@ public class OS{
     static public boolean isAndroid = false;
     static public boolean isARM = getPropertyNotNull("os.arch").startsWith("arm");
     static public boolean is64Bit = getPropertyNotNull("os.arch").equals("amd64")
-            || getPropertyNotNull("os.arch").equals("x86_64");
+    || getPropertyNotNull("os.arch").equals("x86_64");
 
     // JDK 8 only.
     static public String abi = (getPropertyNotNull("sun.arch.abi") != null ? getPropertyNotNull("sun.arch.abi") : "");

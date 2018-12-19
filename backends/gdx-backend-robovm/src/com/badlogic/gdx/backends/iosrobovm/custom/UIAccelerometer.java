@@ -41,9 +41,6 @@ import org.robovm.rt.bro.ptr.Ptr;
 extends /*<extends>*/NSObject/*</extends>*/
 /*<implements>*//*</implements>*/{
 
-    /*<ptr>*/public static class UIAccelerometerPtr extends Ptr<UIAccelerometer, UIAccelerometerPtr>{
-    }/*</ptr>*/
-
     /*<bind>*/static{
         ObjCRuntime.bind(UIAccelerometer.class);
     }/*</bind>*/
@@ -56,6 +53,12 @@ extends /*<extends>*/NSObject/*</extends>*/
     protected UIAccelerometer(SkipInit skipInit){
         super(skipInit);
     }
+
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "sharedAccelerometer")
+    public static native UIAccelerometer getSharedAccelerometer();
 
     /*</constructors>*/
     /*<properties>*/
@@ -71,10 +74,7 @@ extends /*<extends>*/NSObject/*</extends>*/
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIAccelerometerDelegate v);
 
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "sharedAccelerometer")
-    public static native UIAccelerometer getSharedAccelerometer();
+    /*<ptr>*/public static class UIAccelerometerPtr extends Ptr<UIAccelerometer, UIAccelerometerPtr>{
+    }/*</ptr>*/
     /*</methods>*/
 }

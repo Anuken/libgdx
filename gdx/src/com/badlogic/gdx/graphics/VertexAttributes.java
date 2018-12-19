@@ -24,36 +24,15 @@ import java.util.NoSuchElementException;
 /**
  * Instances of this class specify the vertex attributes of a mesh. VertexAttributes are used by {@link Mesh} instances to define
  * its vertex structure. Vertex attributes have an order. The order is specified by the order they are added to this class.
- *
  * @author mzechner, Xoppa
  */
 public final class VertexAttributes implements Iterable<VertexAttribute>, Comparable<VertexAttributes>{
-    /**
-     * The usage of a vertex attribute.
-     *
-     * @author mzechner
-     */
-    public static final class Usage{
-        public static final int Position = 1;
-        public static final int ColorUnpacked = 2;
-        public static final int ColorPacked = 4;
-        public static final int Normal = 8;
-        public static final int TextureCoordinates = 16;
-        public static final int Generic = 32;
-        public static final int BoneWeight = 64;
-        public static final int Tangent = 128;
-        public static final int BiNormal = 256;
-    }
-
-    /** the attributes in the order they were specified **/
-    private final VertexAttribute[] attributes;
-
     /** the size of a single vertex in bytes **/
     public final int vertexSize;
-
+    /** the attributes in the order they were specified **/
+    private final VertexAttribute[] attributes;
     /** cache of the value calculated by {@link #getMask()} **/
     private long mask = -1;
-
     private ReadonlyIterable<VertexAttribute> iterable;
 
     /** Constructor, sets the vertex attributes in a specific order */
@@ -70,7 +49,6 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
     /**
      * Returns the offset for the first VertexAttribute with the specified usage.
-     *
      * @param usage The usage of the VertexAttribute.
      */
     public int getOffset(int usage, int defaultIfNotFound){
@@ -81,7 +59,6 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
     /**
      * Returns the offset for the first VertexAttribute with the specified usage.
-     *
      * @param usage The usage of the VertexAttribute.
      */
     public int getOffset(int usage){
@@ -90,7 +67,6 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
     /**
      * Returns the first VertexAttribute for the given usage.
-     *
      * @param usage The usage of the VertexAttribute to find.
      */
     public VertexAttribute findByUsage(int usage){
@@ -147,7 +123,7 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
     public boolean equals(final Object obj){
         if(obj == this) return true;
         if(!(obj instanceof VertexAttributes)) return false;
-        VertexAttributes other = (VertexAttributes) obj;
+        VertexAttributes other = (VertexAttributes)obj;
         if(this.attributes.length != other.attributes.length) return false;
         for(int i = 0; i < attributes.length; i++){
             if(!attributes[i].equals(other.attributes[i])) return false;
@@ -160,13 +136,12 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
         long result = 61 * attributes.length;
         for(int i = 0; i < attributes.length; i++)
             result = result * 61 + attributes[i].hashCode();
-        return (int) (result ^ (result >> 32));
+        return (int)(result ^ (result >> 32));
     }
 
     /**
      * Calculates a mask based on the contained {@link VertexAttribute} instances. The mask is a bit-wise or of each attributes
      * {@link VertexAttribute#usage}.
-     *
      * @return the mask
      */
     public long getMask(){
@@ -182,11 +157,10 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
     /**
      * Calculates the mask based on {@link VertexAttributes#getMask()} and packs the attributes count into the last 32 bits.
-     *
      * @return the mask with attributes count packed into the last 32 bits.
      */
     public long getMaskWithSizePacked(){
-        return getMask() | ((long) attributes.length << 32);
+        return getMask() | ((long)attributes.length << 32);
     }
 
     @Override
@@ -211,6 +185,22 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
     public Iterator<VertexAttribute> iterator(){
         if(iterable == null) iterable = new ReadonlyIterable<VertexAttribute>(attributes);
         return iterable.iterator();
+    }
+
+    /**
+     * The usage of a vertex attribute.
+     * @author mzechner
+     */
+    public static final class Usage{
+        public static final int Position = 1;
+        public static final int ColorUnpacked = 2;
+        public static final int ColorPacked = 4;
+        public static final int Normal = 8;
+        public static final int TextureCoordinates = 16;
+        public static final int Generic = 32;
+        public static final int BoneWeight = 64;
+        public static final int Tangent = 128;
+        public static final int BiNormal = 256;
     }
 
     static private class ReadonlyIterator<T> implements Iterator<T>, Iterable<T>{

@@ -24,7 +24,6 @@ import java.util.Arrays;
 /**
  * A resizable, ordered or unordered long array. Avoids the boxing that occurs with ArrayList<Long>. If unordered, this class
  * avoids a memory copy when removing elements (the last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class LongArray{
@@ -75,7 +74,6 @@ public class LongArray{
     /**
      * Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
      * subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -85,15 +83,20 @@ public class LongArray{
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
+    /** @see #LongArray(long[]) */
+    static public LongArray with(long... array){
+        return new LongArray(array);
+    }
+
     public void add(long value){
         long[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(long value1, long value2){
         long[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -101,7 +104,7 @@ public class LongArray{
 
     public void add(long value1, long value2, long value3){
         long[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -110,7 +113,7 @@ public class LongArray{
 
     public void add(long value1, long value2, long value3, long value4){
         long[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -135,7 +138,7 @@ public class LongArray{
     public void addAll(long[] array, int offset, int length){
         long[] items = this.items;
         int sizeNeeded = size + length;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, offset, items, size, length);
         size += length;
     }
@@ -163,7 +166,7 @@ public class LongArray{
     public void insert(int index, long value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         long[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -245,7 +248,6 @@ public class LongArray{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @return true if this array was modified.
      */
     public boolean removeAll(LongArray array){
@@ -293,7 +295,6 @@ public class LongArray{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public long[] shrink(){
@@ -304,7 +305,6 @@ public class LongArray{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public long[] ensureCapacity(int additionalCapacity){
@@ -317,7 +317,6 @@ public class LongArray{
 
     /**
      * Sets the array size, leaving any values beyond the current size undefined.
-     *
      * @return {@link #items}
      */
     public long[] setSize(int newSize){
@@ -384,7 +383,7 @@ public class LongArray{
         long[] items = this.items;
         int h = 1;
         for(int i = 0, n = size; i < n; i++)
-            h = h * 31 + (int) (items[i] ^ (items[i] >>> 32));
+            h = h * 31 + (int)(items[i] ^ (items[i] >>> 32));
         return h;
     }
 
@@ -392,7 +391,7 @@ public class LongArray{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof LongArray)) return false;
-        LongArray array = (LongArray) object;
+        LongArray array = (LongArray)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -427,10 +426,5 @@ public class LongArray{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #LongArray(long[]) */
-    static public LongArray with(long... array){
-        return new LongArray(array);
     }
 }

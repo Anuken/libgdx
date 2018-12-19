@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
  * accessed and the order changed using {@link #orderedKeys()}. There is some additional overhead for put and remove. When used
  * for faster iteration versus ObjectMap and the order does not actually matter, copying during remove can be greatly reduced by
  * setting {@link Array#ordered} to false for {@link OrderedMap#orderedKeys()}.
- *
  * @author Nathan Sweet
  */
 public class OrderedMap<K, V> extends ObjectMap<K, V>{
@@ -222,7 +221,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
 
         public void remove(){
             if(currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-            ((OrderedMap) map).removeIndex(nextIndex - 1);
+            ((OrderedMap)map).removeIndex(nextIndex - 1);
             nextIndex = currentIndex;
             currentIndex = -1;
         }
@@ -253,7 +252,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
 
         public void remove(){
             if(currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-            ((OrderedMap) map).removeIndex(currentIndex);
+            ((OrderedMap)map).removeIndex(currentIndex);
             nextIndex = currentIndex;
             currentIndex = -1;
         }

@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
  * This set performs very fast contains and remove (typically O(1), worst case O(log(n))). Add may be a bit slower, depending on
  * hash collisions. Load factors greater than 0.91 greatly increase the chances the set will have to rehash to the next higher POT
  * size.
- *
  * @author Nathan Sweet
  */
 public class IntSet{
@@ -58,7 +57,6 @@ public class IntSet{
 
     /**
      * Creates a new set with a load factor of 0.8.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public IntSet(int initialCapacity){
@@ -68,12 +66,11 @@ public class IntSet{
     /**
      * Creates a new set with the specified initial capacity and load factor. This set will hold initialCapacity items before
      * growing the backing table.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public IntSet(int initialCapacity, float loadFactor){
         if(initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-        initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
+        initialCapacity = Mathf.nextPowerOfTwo((int)Math.ceil(initialCapacity / loadFactor));
         if(initialCapacity > 1 << 30)
             throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
         capacity = initialCapacity;
@@ -81,22 +78,28 @@ public class IntSet{
         if(loadFactor <= 0) throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
         this.loadFactor = loadFactor;
 
-        threshold = (int) (capacity * loadFactor);
+        threshold = (int)(capacity * loadFactor);
         mask = capacity - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-        pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(capacity)) * 2);
+        pushIterations = Math.max(Math.min(capacity, 8), (int)Math.sqrt(capacity) / 8);
 
         keyTable = new int[capacity + stashCapacity];
     }
 
     /** Creates a new set identical to the specified set. */
     public IntSet(IntSet set){
-        this((int) Math.floor(set.capacity * set.loadFactor), set.loadFactor);
+        this((int)Math.floor(set.capacity * set.loadFactor), set.loadFactor);
         stashSize = set.stashSize;
         System.arraycopy(set.keyTable, 0, keyTable, 0, set.keyTable.length);
         size = set.size;
         hasZeroValue = set.hasZeroValue;
+    }
+
+    static public IntSet with(int... array){
+        IntSet set = new IntSet();
+        set.addAll(array);
+        return set;
     }
 
     /** Returns true if the key was not already in the set. */
@@ -410,18 +413,18 @@ public class IntSet{
         if(additionalCapacity < 0)
             throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
         int sizeNeeded = size + additionalCapacity;
-        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
+        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int)Math.ceil(sizeNeeded / loadFactor)));
     }
 
     private void resize(int newSize){
         int oldEndIndex = capacity + stashSize;
 
         capacity = newSize;
-        threshold = (int) (newSize * loadFactor);
+        threshold = (int)(newSize * loadFactor);
         mask = newSize - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-        pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(newSize)) * 2);
+        pushIterations = Math.max(Math.min(newSize, 8), (int)Math.sqrt(newSize) / 8);
 
         int[] oldKeyTable = keyTable;
 
@@ -457,7 +460,7 @@ public class IntSet{
 
     public boolean equals(Object obj){
         if(!(obj instanceof IntSet)) return false;
-        IntSet other = (IntSet) obj;
+        IntSet other = (IntSet)obj;
         if(other.size != size) return false;
         if(other.hasZeroValue != hasZeroValue) return false;
         for(int i = 0, n = capacity + stashSize; i < n; i++)
@@ -512,19 +515,11 @@ public class IntSet{
         return iterator2;
     }
 
-    static public IntSet with(int... array){
-        IntSet set = new IntSet();
-        set.addAll(array);
-        return set;
-    }
-
     static public class IntSetIterator{
         static final int INDEX_ILLEGAL = -2;
         static final int INDEX_ZERO = -1;
-
-        public boolean hasNext;
-
         final IntSet set;
+        public boolean hasNext;
         int nextIndex, currentIndex;
         boolean valid = true;
 

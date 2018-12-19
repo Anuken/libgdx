@@ -45,9 +45,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
  * red/green/blue/alpha channels bit depths). Failure to do so would result in an EGL_BAD_MATCH error.
  */
 public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
-    static String TAG = "GL2JNIView";
     private static final boolean DEBUG = false;
-
+    static String TAG = "GL2JNIView";
     final ResolutionStrategy resolutionStrategy;
 
     public GLSurfaceView20API18(Context context, ResolutionStrategy resolutionStrategy){
@@ -61,6 +60,13 @@ public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
         this.resolutionStrategy = resolutionStrategy;
         init(translucent, depth, stencil);
 
+    }
+
+    static void checkEglError(String prompt, EGL10 egl){
+        int error;
+        while((error = egl.eglGetError()) != EGL10.EGL_SUCCESS){
+            Log.e(TAG, String.format("%s: EGL error: 0x%x", prompt, error));
+        }
     }
 
     @Override
@@ -149,23 +155,7 @@ public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
         }
     }
 
-    static void checkEglError(String prompt, EGL10 egl){
-        int error;
-        while((error = egl.eglGetError()) != EGL10.EGL_SUCCESS){
-            Log.e(TAG, String.format("%s: EGL error: 0x%x", prompt, error));
-        }
-    }
-
     private static class ConfigChooser implements GLSurfaceView.EGLConfigChooser{
-
-        public ConfigChooser(int r, int g, int b, int a, int depth, int stencil){
-            mRedSize = r;
-            mGreenSize = g;
-            mBlueSize = b;
-            mAlphaSize = a;
-            mDepthSize = depth;
-            mStencilSize = stencil;
-        }
 
         /*
          * This EGL config specification is used to specify 2.0 rendering. We use a minimum size of 4 bits for red/green/blue, but
@@ -174,6 +164,22 @@ public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
         private static int EGL_OPENGL_ES2_BIT = 4;
         private static int[] s_configAttribs2 = {EGL10.EGL_RED_SIZE, 4, EGL10.EGL_GREEN_SIZE, 4, EGL10.EGL_BLUE_SIZE, 4,
         EGL10.EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL10.EGL_NONE};
+        // Subclasses can adjust these values:
+        protected int mRedSize;
+        protected int mGreenSize;
+        protected int mBlueSize;
+        protected int mAlphaSize;
+        protected int mDepthSize;
+        protected int mStencilSize;
+        private int[] mValue = new int[1];
+        public ConfigChooser(int r, int g, int b, int a, int depth, int stencil){
+            mRedSize = r;
+            mGreenSize = g;
+            mBlueSize = b;
+            mAlphaSize = a;
+            mDepthSize = depth;
+            mStencilSize = stencil;
+        }
 
         public EGLConfig chooseConfig(EGL10 egl, EGLDisplay display){
 
@@ -273,14 +279,5 @@ public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
                 }
             }
         }
-
-        // Subclasses can adjust these values:
-        protected int mRedSize;
-        protected int mGreenSize;
-        protected int mBlueSize;
-        protected int mAlphaSize;
-        protected int mDepthSize;
-        protected int mStencilSize;
-        private int[] mValue = new int[1];
     }
 }

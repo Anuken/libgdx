@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
  * This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
  * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
  * next higher POT size.
- *
  * @author Nathan Sweet
  */
 public class IntIntMap implements Iterable<IntIntMap.Entry>{
@@ -62,7 +61,6 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
 
     /**
      * Creates a new map with a load factor of 0.8.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public IntIntMap(int initialCapacity){
@@ -72,12 +70,11 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
     /**
      * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
      * growing the backing table.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public IntIntMap(int initialCapacity, float loadFactor){
         if(initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-        initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
+        initialCapacity = Mathf.nextPowerOfTwo((int)Math.ceil(initialCapacity / loadFactor));
         if(initialCapacity > 1 << 30)
             throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
         capacity = initialCapacity;
@@ -85,11 +82,11 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
         if(loadFactor <= 0) throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
         this.loadFactor = loadFactor;
 
-        threshold = (int) (capacity * loadFactor);
+        threshold = (int)(capacity * loadFactor);
         mask = capacity - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-        pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(capacity)) * 2);
+        pushIterations = Math.max(Math.min(capacity, 8), (int)Math.sqrt(capacity) / 8);
 
         keyTable = new int[capacity + stashCapacity];
         valueTable = new int[keyTable.length];
@@ -97,7 +94,7 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
 
     /** Creates a new map identical to the specified map. */
     public IntIntMap(IntIntMap map){
-        this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
+        this((int)Math.floor(map.capacity * map.loadFactor), map.loadFactor);
         stashSize = map.stashSize;
         System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
         System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
@@ -515,18 +512,18 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
         if(additionalCapacity < 0)
             throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
         int sizeNeeded = size + additionalCapacity;
-        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
+        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int)Math.ceil(sizeNeeded / loadFactor)));
     }
 
     private void resize(int newSize){
         int oldEndIndex = capacity + stashSize;
 
         capacity = newSize;
-        threshold = (int) (newSize * loadFactor);
+        threshold = (int)(newSize * loadFactor);
         mask = newSize - 1;
         hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-        pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(newSize)) * 2);
+        pushIterations = Math.max(Math.min(newSize, 8), (int)Math.sqrt(newSize) / 8);
 
         int[] oldKeyTable = keyTable;
         int[] oldValueTable = valueTable;
@@ -577,7 +574,7 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
     public boolean equals(Object obj){
         if(obj == this) return true;
         if(!(obj instanceof IntIntMap)) return false;
-        IntIntMap other = (IntIntMap) obj;
+        IntIntMap other = (IntIntMap)obj;
         if(other.size != size) return false;
         if(other.hasZeroValue != hasZeroValue) return false;
         if(hasZeroValue && other.zeroValue != zeroValue){
@@ -708,10 +705,8 @@ public class IntIntMap implements Iterable<IntIntMap.Entry>{
     static private class MapIterator{
         static final int INDEX_ILLEGAL = -2;
         static final int INDEX_ZERO = -1;
-
-        public boolean hasNext;
-
         final IntIntMap map;
+        public boolean hasNext;
         int nextIndex, currentIndex;
         boolean valid = true;
 

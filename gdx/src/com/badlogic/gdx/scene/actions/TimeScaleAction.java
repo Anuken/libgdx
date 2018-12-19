@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Multiplies the delta of an action.
- *
  * @author Nathan Sweet
  */
 public class TimeScaleAction extends DelegateAction{

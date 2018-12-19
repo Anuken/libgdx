@@ -21,12 +21,11 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  * {@link AssetLoader} for {@link Music} instances. The Music instance is loaded synchronously.
- *
  * @author mzechner
  */
 public class MusicLoader extends AsynchronousAssetLoader<Music, MusicLoader.MusicParameter>{
@@ -40,7 +39,6 @@ public class MusicLoader extends AsynchronousAssetLoader<Music, MusicLoader.Musi
     /**
      * Returns the {@link Music} instance currently loaded by this
      * {@link MusicLoader}.
-     *
      * @return the currently loaded {@link Music}, otherwise {@code null} if
      * no {@link Music} has been loaded yet.
      */

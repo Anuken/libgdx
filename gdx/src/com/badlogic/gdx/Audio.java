@@ -36,14 +36,12 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * Note that all {@link Music} instances will be automatically paused when the {@link ApplicationListener#pause()} method is
  * called, and automatically resumed when the {@link ApplicationListener#resume()} method is called.
  * </p>
- *
  * @author mzechner
  */
 public interface Audio{
     /**
      * Creates a new {@link AudioDevice} either in mono or stereo mode. The AudioDevice has to be disposed via its
      * {@link AudioDevice#dispose()} method when it is no longer used.
-     *
      * @param samplingRate the sampling rate.
      * @param isMono whether the AudioDevice should be in mono or stereo mode
      * @return the AudioDevice
@@ -53,7 +51,6 @@ public interface Audio{
 
     /**
      * Creates a new {@link AudioRecorder}. The AudioRecorder has to be disposed after it is no longer used.
-     *
      * @param samplingRate the sampling rate in Hertz
      * @param isMono whether the recorder records in mono or stereo
      * @return the AudioRecorder
@@ -75,7 +72,6 @@ public interface Audio{
      * <p>
      * The Sound has to be disposed if it is no longer used via the {@link Sound#dispose()} method.
      * </p>
-     *
      * @return the new Sound
      * @throws GdxRuntimeException in case the sound could not be loaded
      */
@@ -86,7 +82,6 @@ public interface Audio{
      * WAV, MP3 and OGG. The Music instance has to be disposed if it is no longer used via the {@link Music#dispose()} method.
      * Music instances are automatically paused when {@link ApplicationListener#pause()} is called and resumed when
      * {@link ApplicationListener#resume()} is called.
-     *
      * @param file the FileHandle
      * @return the new Music or null if the Music could not be loaded
      * @throws GdxRuntimeException in case the music could not be loaded

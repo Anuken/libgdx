@@ -9,36 +9,36 @@ import com.badlogic.gdx.input.InputDevice.DeviceType;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.Mathf;
 
-import static com.badlogic.gdx.Core.*;
+import static com.badlogic.gdx.Core.input;
+import static com.badlogic.gdx.Core.settings;
 
 /**
  * Stores keybinds.
- *
+ * <p>
  * This is done by first splitting keybinds into separate sections by name.
  * Further, the keybinds are split by device type (keyboard, controller), and then by name.
- *
+ * <p>
  * Example hierarchy:
- *
+ * <p>
  * Section (default)
- *     Device (keyboard)
- *        jump = KeyCode.SPACE
- *        move = Axis(KeyCode.LEFT, KeyCode.RIGHT)
- *     Device (controller)
- *        jump = KeyCode.CONTROLLER_A
- *        move = Axis(CONTROLLER_L_STICK_HORIZONTAL_AXIS)
- *
+ * Device (keyboard)
+ * jump = KeyCode.SPACE
+ * move = Axis(KeyCode.LEFT, KeyCode.RIGHT)
+ * Device (controller)
+ * jump = KeyCode.CONTROLLER_A
+ * move = Axis(CONTROLLER_L_STICK_HORIZONTAL_AXIS)
+ * <p>
  * Section (player2)
- *      ...etc
- *
+ * ...etc
  */
 public class KeyBinds{
-    /**Default section used. Usually player 1.*/
+    /** Default section used. Usually player 1. */
     private Section defaultSection = new Section("default");
-    /**A cache for storing defaults for key definitions.*/
+    /** A cache for storing defaults for key definitions. */
     private ObjectMap<KeyBind, ObjectMap<DeviceType, Axis>> defaultCache = new ObjectMap<>();
-    /**All key definitions supplied.*/
+    /** All key definitions supplied. */
     private KeyBind[] definitions;
-    /**All sections supplied.*/
+    /** All sections supplied. */
     private Section[] sections;
 
     public void setDefaults(KeyBind[] defs, Section... sectionArr){
@@ -51,13 +51,13 @@ public class KeyBinds{
             defaultCache.put(def, new ObjectMap<>());
             for(DeviceType type : DeviceType.values()){
                 defaultCache.get(def).put(type,
-                    def.defaultValue(type) instanceof Axis ?
-                    (Axis)def.defaultValue(type) : new Axis((KeyCode) def.defaultValue(type)));
+                def.defaultValue(type) instanceof Axis ?
+                (Axis)def.defaultValue(type) : new Axis((KeyCode)def.defaultValue(type)));
             }
         }
     }
 
-    /**Saves the internal keybind data to settings' map. Does not call settings.save().*/
+    /** Saves the internal keybind data to settings' map. Does not call settings.save(). */
     void save(){
         for(Section sec : sections){
             for(DeviceType type : DeviceType.values()){
@@ -70,7 +70,7 @@ public class KeyBinds{
         }
     }
 
-    /**Loads the internal keybind data from settings' map. Does not call settings.load().*/
+    /** Loads the internal keybind data from settings' map. Does not call settings.load(). */
     void load(){
         for(Section sec : sections){
             for(DeviceType type : DeviceType.values()){
@@ -89,8 +89,10 @@ public class KeyBinds{
         }
     }
 
-    /**Resets all keybinds to their default values.
-     * Call Core.settings.save() to flush the changes afterwards.*/
+    /**
+     * Resets all keybinds to their default values.
+     * Call Core.settings.save() to flush the changes afterwards.
+     */
     public void resetToDefaults(){
         for(Section sec : sections){
             sec.binds.clear();
@@ -142,10 +144,36 @@ public class KeyBinds{
         return defaultCache.get(def).get(type);
     }
 
+    /** Represents an axis or a keycode. */
+    public interface KeybindValue{
+
+    }
+
+    /**
+     * An interface to store type-safe keybind definitions.
+     * This interface is supposed to be implemented by an enum.
+     */
+    public interface KeyBind{
+        /** The unique name of this keycode. Usually implemented automatically by the enum type. */
+        String name();
+
+        /** The default implementation returns can return the same default value for each device type. */
+        KeybindValue defaultValue(DeviceType type);
+
+        /**
+         * The 'new' category under which this keybind will be displayed in a keybind dialog.
+         * Implementation of this method is optional.
+         */
+        default String category(){
+            return null;
+        }
+    }
+
     /**
      * A section represents a set of input binds, like controls for a specific player.
      * Each section has a device, which may be a controller or keyboard, and a name (for example, "player2")
-     * The default section uses a keyboard and is named 'default'.*/
+     * The default section uses a keyboard and is named 'default'.
+     */
     public class Section{
         public final String name;
         public ObjectMap<DeviceType, OrderedMap<KeyBind, Axis>> binds = new ObjectMap<>();
@@ -171,25 +199,6 @@ public class KeyBinds{
             this.min = min;
             this.max = max;
             this.key = null;
-        }
-    }
-
-    /**Represents an axis or a keycode.*/
-    public interface KeybindValue{
-
-    }
-
-    /**An interface to store type-safe keybind definitions.
-     * This interface is supposed to be implemented by an enum.*/
-    public interface KeyBind{
-        /**The unique name of this keycode. Usually implemented automatically by the enum type.*/
-        String name();
-        /**The default implementation returns can return the same default value for each device type.*/
-        KeybindValue defaultValue(DeviceType type);
-        /**The 'new' category under which this keybind will be displayed in a keybind dialog.
-         * Implementation of this method is optional.*/
-        default String category(){
-            return null;
         }
     }
 

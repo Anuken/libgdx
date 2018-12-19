@@ -25,7 +25,6 @@ import java.util.Random;
  * href="http://xorshift.di.unimi.it/">here</a>.
  * <p>
  * Instances of RandomXS128 are not thread-safe.
- *
  * @author Inferno
  * @author davebaol
  */
@@ -51,7 +50,6 @@ public class RandomXS128 extends Random{
 
     /**
      * Creates a new random number generator using a single {@code long} seed.
-     *
      * @param seed the initial seed
      */
     public RandomXS128(long seed){
@@ -60,12 +58,21 @@ public class RandomXS128 extends Random{
 
     /**
      * Creates a new random number generator using two {@code long} seeds.
-     *
      * @param seed0 the first part of the initial seed
      * @param seed1 the second part of the initial seed
      */
     public RandomXS128(long seed0, long seed1){
         setState(seed0, seed1);
+    }
+
+    private final static long murmurHash3(long x){
+        x ^= x >>> 33;
+        x *= 0xff51afd7ed558ccdL;
+        x ^= x >>> 33;
+        x *= 0xc4ceb9fe1a85ec53L;
+        x ^= x >>> 33;
+
+        return x;
     }
 
     /**
@@ -85,7 +92,7 @@ public class RandomXS128 extends Random{
     /** This protected method is final because, contrary to the superclass, it's not used anymore by the other methods. */
     @Override
     protected final int next(int bits){
-        return (int) (nextLong() & ((1L << bits) - 1));
+        return (int)(nextLong() & ((1L << bits) - 1));
     }
 
     /**
@@ -95,7 +102,7 @@ public class RandomXS128 extends Random{
      */
     @Override
     public int nextInt(){
-        return (int) nextLong();
+        return (int)nextLong();
     }
 
     /**
@@ -103,13 +110,12 @@ public class RandomXS128 extends Random{
      * drawn from this random number generator's sequence.
      * <p>
      * This implementation uses {@link #nextLong()} internally.
-     *
      * @param n the positive bound on the random number to be returned.
      * @return the next pseudo-random {@code int} value between {@code 0} (inclusive) and {@code n} (exclusive).
      */
     @Override
     public int nextInt(final int n){
-        return (int) nextLong(n);
+        return (int)nextLong(n);
     }
 
     /**
@@ -118,7 +124,6 @@ public class RandomXS128 extends Random{
      * uniform, provided that the sequence of 64-bit values produced by this generator is.
      * <p>
      * This implementation uses {@link #nextLong()} internally.
-     *
      * @param n the positive bound on the random number to be returned.
      * @return the next pseudo-random {@code long} value between {@code 0} (inclusive) and {@code n} (exclusive).
      */
@@ -150,7 +155,7 @@ public class RandomXS128 extends Random{
      */
     @Override
     public float nextFloat(){
-        return (float) ((nextLong() >>> 40) * NORM_FLOAT);
+        return (float)((nextLong() >>> 40) * NORM_FLOAT);
     }
 
     /**
@@ -176,7 +181,7 @@ public class RandomXS128 extends Random{
         while(i != 0){
             n = i < 8 ? i : 8; // min(i, 8);
             for(long bits = nextLong(); n-- != 0; bits >>= 8)
-                bytes[--i] = (byte) bits;
+                bytes[--i] = (byte)bits;
         }
     }
 
@@ -185,7 +190,6 @@ public class RandomXS128 extends Random{
      * <p>
      * The given seed is passed twice through a hash function. This way, if the user passes a small value we avoid the short
      * irregular transient associated with states having a very small number of bits set.
-     *
      * @param seed a nonzero seed for this generator (if zero, the generator will be seeded with {@link Long#MIN_VALUE}).
      */
     @Override
@@ -196,7 +200,6 @@ public class RandomXS128 extends Random{
 
     /**
      * Sets the internal state of this generator.
-     *
      * @param seed0 the first part of the internal state
      * @param seed1 the second part of the internal state
      */
@@ -207,22 +210,11 @@ public class RandomXS128 extends Random{
 
     /**
      * Returns the internal seeds to allow state saving.
-     *
      * @param seed must be 0 or 1, designating which of the 2 long seeds to return
      * @return the internal seed that can be used in setState
      */
     public long getState(int seed){
         return seed == 0 ? seed0 : seed1;
-    }
-
-    private final static long murmurHash3(long x){
-        x ^= x >>> 33;
-        x *= 0xff51afd7ed558ccdL;
-        x ^= x >>> 33;
-        x *= 0xc4ceb9fe1a85ec53L;
-        x ^= x >>> 33;
-
-        return x;
     }
 
 }

@@ -21,7 +21,6 @@ import com.badlogic.gdx.graphics.Texture;
 /**
  * Defines a rectangular area of a texture. The coordinate system used has its origin in the upper left corner with the x-axis
  * pointing to the right and the y axis pointing downwards.
- *
  * @author mzechner
  * @author Nathan Sweet
  */
@@ -72,12 +71,25 @@ public class TextureRegion{
 
     /**
      * Constructs a region with the same texture as the specified region and sets the coordinates relative to the specified region.
-     *
      * @param width The width of the texture region. May be negative to flip the sprite when drawn.
      * @param height The height of the texture region. May be negative to flip the sprite when drawn.
      */
     public TextureRegion(TextureRegion region, int x, int y, int width, int height){
         set(region, x, y, width, height);
+    }
+
+    /**
+     * Helper function to create tiles out of the given {@link Texture} starting from the top left corner going to the right and
+     * ending at the bottom right corner. Only complete tiles will be returned so if the texture's width or height are not a
+     * multiple of the tile width and height not all of the texture will be used.
+     * @param texture the Texture
+     * @param tileWidth a tile's width in pixels
+     * @param tileHeight a tile's height in pixels
+     * @return a 2D array of TextureRegions indexed by [row][column].
+     */
+    public static TextureRegion[][] split(Texture texture, int tileWidth, int tileHeight){
+        TextureRegion region = new TextureRegion(texture);
+        return region.split(tileWidth, tileHeight);
     }
 
     /** Sets the texture and sets the coordinates to the size of the specified texture. */
@@ -180,7 +192,7 @@ public class TextureRegion{
     }
 
     public void setX(int x){
-        setU(x / (float) texture.getWidth());
+        setU(x / (float)texture.getWidth());
     }
 
     public int getY(){
@@ -188,7 +200,7 @@ public class TextureRegion{
     }
 
     public void setY(int y){
-        setV(y / (float) texture.getHeight());
+        setV(y / (float)texture.getHeight());
     }
 
     /** Returns the region's width. */
@@ -198,9 +210,9 @@ public class TextureRegion{
 
     public void setRegionWidth(int width){
         if(isFlipX()){
-            setU(u2 + width / (float) texture.getWidth());
+            setU(u2 + width / (float)texture.getWidth());
         }else{
-            setU2(u + width / (float) texture.getWidth());
+            setU2(u + width / (float)texture.getWidth());
         }
     }
 
@@ -211,9 +223,9 @@ public class TextureRegion{
 
     public void setRegionHeight(int height){
         if(isFlipY()){
-            setV(v2 + height / (float) texture.getHeight());
+            setV(v2 + height / (float)texture.getHeight());
         }else{
-            setV2(v + height / (float) texture.getHeight());
+            setV2(v + height / (float)texture.getHeight());
         }
     }
 
@@ -241,7 +253,6 @@ public class TextureRegion{
     /**
      * Offsets the region relative to the current region. Generally the region's size should be the entire size of the texture in
      * the direction(s) it is scrolled.
-     *
      * @param xAmount The percentage to offset horizontally.
      * @param yAmount The percentage to offset vertically. This is done in texture space, so up is negative.
      */
@@ -263,7 +274,6 @@ public class TextureRegion{
      * the bottom right corner. Only complete tiles will be returned so if the region's width or height are not a multiple of the
      * tile width and height not all of the region will be used. This will not work on texture regions returned form a TextureAtlas
      * that either have whitespace removed or where flipped before the region is split.
-     *
      * @param tileWidth a tile's width in pixels
      * @param tileHeight a tile's height in pixels
      * @return a 2D array of TextureRegions indexed by [row][column].
@@ -287,20 +297,5 @@ public class TextureRegion{
         }
 
         return tiles;
-    }
-
-    /**
-     * Helper function to create tiles out of the given {@link Texture} starting from the top left corner going to the right and
-     * ending at the bottom right corner. Only complete tiles will be returned so if the texture's width or height are not a
-     * multiple of the tile width and height not all of the texture will be used.
-     *
-     * @param texture the Texture
-     * @param tileWidth a tile's width in pixels
-     * @param tileHeight a tile's height in pixels
-     * @return a 2D array of TextureRegions indexed by [row][column].
-     */
-    public static TextureRegion[][] split(Texture texture, int tileWidth, int tileHeight){
-        TextureRegion region = new TextureRegion(texture);
-        return region.split(tileWidth, tileHeight);
     }
 }

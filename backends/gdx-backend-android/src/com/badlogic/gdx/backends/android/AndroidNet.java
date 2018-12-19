@@ -25,7 +25,6 @@ import com.badlogic.gdx.net.*;
 
 /**
  * Android implementation of the {@link Net} API.
- *
  * @author acoppes
  */
 public class AndroidNet implements Net{

@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.I18NBundle;
  * use Graphics in a thread that is not the rendering thread.
  * <p>
  * This is normally a design faux pas but in this case is better than the alternatives.
- *
  * @author mzechner
  */
 public class Core{

@@ -24,7 +24,6 @@ import java.util.Arrays;
 /**
  * A resizable, ordered or unordered float array. Avoids the boxing that occurs with ArrayList<Float>. If unordered, this class
  * avoids a memory copy when removing elements (the last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class FloatArray{
@@ -75,7 +74,6 @@ public class FloatArray{
     /**
      * Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
      * subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -85,15 +83,20 @@ public class FloatArray{
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
+    /** @see #FloatArray(float[]) */
+    static public FloatArray with(float... array){
+        return new FloatArray(array);
+    }
+
     public void add(float value){
         float[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(float value1, float value2){
         float[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -101,7 +104,7 @@ public class FloatArray{
 
     public void add(float value1, float value2, float value3){
         float[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -110,7 +113,7 @@ public class FloatArray{
 
     public void add(float value1, float value2, float value3, float value4){
         float[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -135,7 +138,7 @@ public class FloatArray{
     public void addAll(float[] array, int offset, int length){
         float[] items = this.items;
         int sizeNeeded = size + length;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, offset, items, size, length);
         size += length;
     }
@@ -163,7 +166,7 @@ public class FloatArray{
     public void insert(int index, float value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         float[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -245,7 +248,6 @@ public class FloatArray{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @return true if this array was modified.
      */
     public boolean removeAll(FloatArray array){
@@ -293,7 +295,6 @@ public class FloatArray{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public float[] shrink(){
@@ -304,7 +305,6 @@ public class FloatArray{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public float[] ensureCapacity(int additionalCapacity){
@@ -317,7 +317,6 @@ public class FloatArray{
 
     /**
      * Sets the array size, leaving any values beyond the current size undefined.
-     *
      * @return {@link #items}
      */
     public float[] setSize(int newSize){
@@ -392,7 +391,7 @@ public class FloatArray{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof FloatArray)) return false;
-        FloatArray array = (FloatArray) object;
+        FloatArray array = (FloatArray)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -406,7 +405,7 @@ public class FloatArray{
     public boolean equals(Object object, float epsilon){
         if(object == this) return true;
         if(!(object instanceof FloatArray)) return false;
-        FloatArray array = (FloatArray) object;
+        FloatArray array = (FloatArray)object;
         int n = size;
         if(n != array.size) return false;
         if(!ordered) return false;
@@ -442,10 +441,5 @@ public class FloatArray{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #FloatArray(float[]) */
-    static public FloatArray with(float... array){
-        return new FloatArray(array);
     }
 }

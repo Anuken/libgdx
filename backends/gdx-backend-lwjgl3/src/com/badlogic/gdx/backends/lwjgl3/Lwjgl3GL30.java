@@ -29,9 +29,9 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL30{
 
     @Override
     public void glDrawRangeElements(int mode, int start, int end, int count, int type, Buffer indices){
-        if(indices instanceof ByteBuffer) GL12.glDrawRangeElements(mode, start, end, (ByteBuffer) indices);
-        else if(indices instanceof ShortBuffer) GL12.glDrawRangeElements(mode, start, end, (ShortBuffer) indices);
-        else if(indices instanceof IntBuffer) GL12.glDrawRangeElements(mode, start, end, (IntBuffer) indices);
+        if(indices instanceof ByteBuffer) GL12.glDrawRangeElements(mode, start, end, (ByteBuffer)indices);
+        else if(indices instanceof ShortBuffer) GL12.glDrawRangeElements(mode, start, end, (ShortBuffer)indices);
+        else if(indices instanceof IntBuffer) GL12.glDrawRangeElements(mode, start, end, (IntBuffer)indices);
         else throw new GdxRuntimeException("indices must be byte, short or int buffer");
     }
 
@@ -44,17 +44,17 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL30{
     public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format,
                              int type, Buffer pixels){
         if(pixels == null)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ByteBuffer) null);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ByteBuffer)null);
         else if(pixels instanceof ByteBuffer)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ByteBuffer) pixels);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ByteBuffer)pixels);
         else if(pixels instanceof ShortBuffer)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ShortBuffer) pixels);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (ShortBuffer)pixels);
         else if(pixels instanceof IntBuffer)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (IntBuffer) pixels);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (IntBuffer)pixels);
         else if(pixels instanceof FloatBuffer)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (FloatBuffer) pixels);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (FloatBuffer)pixels);
         else if(pixels instanceof DoubleBuffer)
-            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (DoubleBuffer) pixels);
+            GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (DoubleBuffer)pixels);
         else
             throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
@@ -70,15 +70,15 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL30{
     public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
                                 int format, int type, Buffer pixels){
         if(pixels instanceof ByteBuffer)
-            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (ByteBuffer) pixels);
+            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (ByteBuffer)pixels);
         else if(pixels instanceof ShortBuffer)
-            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (ShortBuffer) pixels);
+            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (ShortBuffer)pixels);
         else if(pixels instanceof IntBuffer)
-            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (IntBuffer) pixels);
+            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (IntBuffer)pixels);
         else if(pixels instanceof FloatBuffer)
-            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (FloatBuffer) pixels);
+            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (FloatBuffer)pixels);
         else if(pixels instanceof DoubleBuffer)
-            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (DoubleBuffer) pixels);
+            GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (DoubleBuffer)pixels);
         else
             throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
@@ -469,7 +469,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements com.badlogic.gdx.graphics.GL30{
 
     @Override
     public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName){
-        GL31.glGetActiveUniformBlockName(program, uniformBlockIndex, (IntBuffer) length, (ByteBuffer) uniformBlockName);
+        GL31.glGetActiveUniformBlockName(program, uniformBlockIndex, (IntBuffer)length, (ByteBuffer)uniformBlockName);
     }
 
     @Override

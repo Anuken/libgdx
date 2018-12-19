@@ -20,7 +20,6 @@ package com.badlogic.gdx.math;
  * A simple class keeping track of the mean of a stream of values within a certain window. the WindowedMean will only return a
  * value in case enough data has been sampled. After enough data has been sampled the oldest sample will be replaced by the newest
  * in case a new sample is added.
- *
  * @author badlogicgames@gmail.com
  */
 public final class WindowedMean{
@@ -33,7 +32,6 @@ public final class WindowedMean{
     /**
      * constructor, window_size specifies the number of samples we will continuously get the mean and variance from. the class
      * will only return meaning full values if at least window_size values have been added.
-     *
      * @param window_size size of the sample window
      */
     public WindowedMean(int window_size){
@@ -56,7 +54,6 @@ public final class WindowedMean{
 
     /**
      * adds a new sample to this mean. In case the window is full the oldest value will be replaced by this new value.
-     *
      * @param value The value to add
      */
     public void addValue(float value){
@@ -69,7 +66,6 @@ public final class WindowedMean{
     /**
      * returns the mean of the samples added to this instance. Only returns meaningful results when at least window_size samples
      * as specified in the constructor have been added.
-     *
      * @return the mean
      */
     public float getMean(){
@@ -106,7 +102,7 @@ public final class WindowedMean{
             sum += (values[i] - mean) * (values[i] - mean);
         }
 
-        return (float) Math.sqrt(sum / values.length);
+        return (float)Math.sqrt(sum / values.length);
     }
 
     public float getLowest(){

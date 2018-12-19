@@ -21,7 +21,6 @@ import java.io.*;
 
 /**
  * Taken from http://www.javafaq.nu/java-example-code-1079.html
- *
  * @author mzechner
  */
 public class LittleEndianInputStream extends FilterInputStream implements DataInput{
@@ -60,7 +59,7 @@ public class LittleEndianInputStream extends FilterInputStream implements DataIn
     public short readShort() throws IOException{
         int low = din.read();
         int high = din.read();
-        return (short) ((high << 8) | (low & 0xff));
+        return (short)((high << 8) | (low & 0xff));
     }
 
     public int readUnsignedShort() throws IOException{
@@ -86,9 +85,9 @@ public class LittleEndianInputStream extends FilterInputStream implements DataIn
         for(int i = 7; i >= 0; i--)
             res[i] = din.read();
 
-        return (((long) (res[0] & 0xff) << 56) | ((long) (res[1] & 0xff) << 48) | ((long) (res[2] & 0xff) << 40)
-        | ((long) (res[3] & 0xff) << 32) | ((long) (res[4] & 0xff) << 24) | ((long) (res[5] & 0xff) << 16)
-        | ((long) (res[6] & 0xff) << 8) | ((long) (res[7] & 0xff)));
+        return (((long)(res[0] & 0xff) << 56) | ((long)(res[1] & 0xff) << 48) | ((long)(res[2] & 0xff) << 40)
+        | ((long)(res[3] & 0xff) << 32) | ((long)(res[4] & 0xff) << 24) | ((long)(res[5] & 0xff) << 16)
+        | ((long)(res[6] & 0xff) << 8) | ((long)(res[7] & 0xff)));
     }
 
     public float readFloat() throws IOException{

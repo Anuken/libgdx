@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.Scaling;
  * A viewport that keeps the world aspect ratio by extending the world in one direction. The world is first scaled to fit within
  * the viewport, then the shorter dimension is lengthened to fill the viewport. A maximum size can be specified to limit how much
  * the world is extended and black bars (letterboxing) are used for any remaining space.
- *
  * @author Nathan Sweet
  */
 public class ExtendViewport extends Viewport{
@@ -43,7 +42,6 @@ public class ExtendViewport extends Viewport{
 
     /**
      * Creates a new viewport using a new {@link Camera} and a maximum world size.
-     *
      * @see ExtendViewport#ExtendViewport(float, float, float, float, Camera)
      */
     public ExtendViewport(float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight){
@@ -52,7 +50,6 @@ public class ExtendViewport extends Viewport{
 
     /**
      * Creates a new viewport with a maximum world size.
-     *
      * @param maxWorldWidth User 0 for no maximum width.
      * @param maxWorldHeight User 0 for no maximum height.
      */

@@ -45,6 +45,12 @@ public class Polyline implements Shape2D{
         return localVertices;
     }
 
+    public void setVertices(float[] vertices){
+        if(vertices.length < 4) throw new IllegalArgumentException("polylines must contain at least 2 points.");
+        this.localVertices = vertices;
+        dirty = true;
+    }
+
     /** Returns vertices scaled, rotated, and offset by the polygon position. */
     public float[] getTransformedVertices(){
         if(!dirty) return worldVertices;
@@ -98,7 +104,7 @@ public class Polyline implements Shape2D{
         for(int i = 0, n = localVertices.length - 2; i < n; i += 2){
             float x = localVertices[i + 2] - localVertices[i];
             float y = localVertices[i + 1] - localVertices[i + 3];
-            length += (float) Math.sqrt(x * x + y * y);
+            length += (float)Math.sqrt(x * x + y * y);
         }
 
         return length;
@@ -113,7 +119,7 @@ public class Polyline implements Shape2D{
         for(int i = 0, n = localVertices.length - 2; i < n; i += 2){
             float x = localVertices[i + 2] * scaleX - localVertices[i] * scaleX;
             float y = localVertices[i + 1] * scaleY - localVertices[i + 3] * scaleY;
-            scaledLength += (float) Math.sqrt(x * x + y * y);
+            scaledLength += (float)Math.sqrt(x * x + y * y);
         }
 
         return scaledLength;
@@ -139,6 +145,11 @@ public class Polyline implements Shape2D{
         return rotation;
     }
 
+    public void setRotation(float degrees){
+        this.rotation = degrees;
+        dirty = true;
+    }
+
     public float getScaleX(){
         return scaleX;
     }
@@ -156,17 +167,6 @@ public class Polyline implements Shape2D{
     public void setPosition(float x, float y){
         this.x = x;
         this.y = y;
-        dirty = true;
-    }
-
-    public void setVertices(float[] vertices){
-        if(vertices.length < 4) throw new IllegalArgumentException("polylines must contain at least 2 points.");
-        this.localVertices = vertices;
-        dirty = true;
-    }
-
-    public void setRotation(float degrees){
-        this.rotation = degrees;
         dirty = true;
     }
 

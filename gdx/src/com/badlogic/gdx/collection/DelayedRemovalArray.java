@@ -26,7 +26,6 @@ import java.util.Comparator;
  * <p>
  * Code using this class must not rely on items being removed immediately. Consider using {@link SnapshotArray} if this is a
  * problem.
- *
  * @author Nathan Sweet
  */
 public class DelayedRemovalArray<T> extends Array<T>{
@@ -64,6 +63,11 @@ public class DelayedRemovalArray<T> extends Array<T>{
 
     public DelayedRemovalArray(T[] array){
         super(array);
+    }
+
+    /** @see #DelayedRemovalArray(Object[]) */
+    static public <T> DelayedRemovalArray<T> with(T... array){
+        return new DelayedRemovalArray(array);
     }
 
     public void begin(){
@@ -184,10 +188,5 @@ public class DelayedRemovalArray<T> extends Array<T>{
     public T[] setSize(int newSize){
         if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
         return super.setSize(newSize);
-    }
-
-    /** @see #DelayedRemovalArray(Object[]) */
-    static public <T> DelayedRemovalArray<T> with(T... array){
-        return new DelayedRemovalArray(array);
     }
 }

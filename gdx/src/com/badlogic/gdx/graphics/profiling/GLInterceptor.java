@@ -21,12 +21,11 @@ import com.badlogic.gdx.math.FloatCounter;
 
 public abstract class GLInterceptor implements GL20{
 
+    protected final FloatCounter vertexCount = new FloatCounter(0);
     protected int calls;
     protected int textureBindings;
     protected int drawCalls;
     protected int shaderSwitches;
-    protected final FloatCounter vertexCount = new FloatCounter(0);
-
     protected GLProfiler glProfiler;
 
     protected GLInterceptor(GLProfiler profiler){

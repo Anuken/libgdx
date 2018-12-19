@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
  * is some additional overhead for put and remove. When used for faster iteration versus ObjectSet and the order does not actually
  * matter, copying during remove can be greatly reduced by setting {@link Array#ordered} to false for
  * {@link OrderedSet#orderedItems()}.
- *
  * @author Nathan Sweet
  */
 public class OrderedSet<T> extends ObjectSet<T>{
@@ -156,7 +155,7 @@ public class OrderedSet<T> extends ObjectSet<T>{
         public void remove(){
             if(nextIndex < 0) throw new IllegalStateException("next must be called before remove.");
             nextIndex--;
-            ((OrderedSet) set).removeIndex(nextIndex);
+            ((OrderedSet)set).removeIndex(nextIndex);
         }
     }
 }

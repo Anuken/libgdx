@@ -11,22 +11,9 @@ import com.badlogic.gdx.collection.Array;
  * Another example could be point generation on a mesh surface: one could generate a cumulative distribution using
  * triangles areas as interval size, in this way triangles with a large area will be picked more often than triangles with a smaller one.
  * See <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">Wikipedia</a> for a detailed explanation.
- *
  * @author Inferno
  */
 public class CumulativeDistribution<T>{
-    public class CumulativeValue{
-        public T value;
-        public float frequency;
-        public float interval;
-
-        public CumulativeValue(T value, float frequency, float interval){
-            this.value = value;
-            this.frequency = frequency;
-            this.interval = interval;
-        }
-    }
-
     private Array<CumulativeValue> values;
 
     public CumulativeDistribution(){
@@ -75,12 +62,9 @@ public class CumulativeDistribution<T>{
         }
     }
 
-
     /**
      * Finds the value whose interval contains the given probability
      * Binary search algorithm is used to find the value.
-     *
-     * @param probability
      * @return the value whose interval contains the probability
      */
     public T value(float probability){
@@ -139,5 +123,17 @@ public class CumulativeDistribution<T>{
     /** Removes all the values from the distribution */
     public void clear(){
         values.clear();
+    }
+
+    public class CumulativeValue{
+        public T value;
+        public float frequency;
+        public float interval;
+
+        public CumulativeValue(T value, float frequency, float interval){
+            this.value = value;
+            this.frequency = frequency;
+            this.interval = interval;
+        }
     }
 }

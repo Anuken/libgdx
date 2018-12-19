@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 /**
  * A resizable, ordered or unordered array of objects. If unordered, this class avoids a memory copy when removing elements (the
  * last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 @SuppressWarnings("unchecked")
@@ -62,19 +61,18 @@ public class Array<T> implements Iterable<T>{
      */
     public Array(boolean ordered, int capacity){
         this.ordered = ordered;
-        items = (T[]) new Object[capacity];
+        items = (T[])new Object[capacity];
     }
 
     /**
      * Creates a new array with {@link #items} of the specified type.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      * @param capacity Any elements added beyond this will cause the backing array to be grown.
      */
     public Array(boolean ordered, int capacity, Class arrayType){
         this.ordered = ordered;
-        items = (T[]) ArrayReflection.newInstance(arrayType, capacity);
+        items = (T[])ArrayReflection.newInstance(arrayType, capacity);
     }
 
     /** Creates an ordered array with {@link #items} of the specified type and a capacity of 16. */
@@ -105,7 +103,6 @@ public class Array<T> implements Iterable<T>{
     /**
      * Creates a new array containing the elements in the specified array. The new array will have the same type of backing array.
      * The capacity is set to the number of elements, so any subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -115,15 +112,30 @@ public class Array<T> implements Iterable<T>{
         System.arraycopy(array, start, items, 0, size);
     }
 
+    /** @see #Array(Class) */
+    static public <T> Array<T> of(Class<T> arrayType){
+        return new Array<T>(arrayType);
+    }
+
+    /** @see #Array(boolean, int, Class) */
+    static public <T> Array<T> of(boolean ordered, int capacity, Class<T> arrayType){
+        return new Array<T>(ordered, capacity, arrayType);
+    }
+
+    /** @see #Array(Object[]) */
+    static public <T> Array<T> with(T... array){
+        return new Array(array);
+    }
+
     public void add(T value){
         T[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(T value1, T value2){
         T[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -131,7 +143,7 @@ public class Array<T> implements Iterable<T>{
 
     public void add(T value1, T value2, T value3){
         T[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -140,7 +152,7 @@ public class Array<T> implements Iterable<T>{
 
     public void add(T value1, T value2, T value3, T value4){
         T[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -165,7 +177,7 @@ public class Array<T> implements Iterable<T>{
     public void addAll(T[] array, int start, int count){
         T[] items = this.items;
         int sizeNeeded = size + count;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, start, items, size, count);
         size += count;
     }
@@ -183,7 +195,7 @@ public class Array<T> implements Iterable<T>{
     public void insert(int index, T value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         T[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -203,7 +215,6 @@ public class Array<T> implements Iterable<T>{
 
     /**
      * Returns if this array contains value.
-     *
      * @param value May be null.
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return true if array contains value, false if it doesn't
@@ -223,7 +234,6 @@ public class Array<T> implements Iterable<T>{
 
     /**
      * Returns the index of first occurrence of value in the array, or -1 if no such value exists.
-     *
      * @param value May be null.
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return An index of first occurrence of value in array or -1 if no such value exists
@@ -243,7 +253,6 @@ public class Array<T> implements Iterable<T>{
     /**
      * Returns an index of last occurrence of value in array or -1 if no such value exists. Search is started from the end of an
      * array.
-     *
      * @param value May be null.
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return An index of last occurrence of value in array or -1 if no such value exists
@@ -260,14 +269,13 @@ public class Array<T> implements Iterable<T>{
         return -1;
     }
 
-    /**Removes a value, without using identity.*/
+    /** Removes a value, without using identity. */
     public boolean remove(T value){
         return removeValue(value, false);
     }
 
     /**
      * Removes the first instance of the specified value in the array.
-     *
      * @param value May be null.
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return true if value was found and removed, false otherwise
@@ -324,7 +332,6 @@ public class Array<T> implements Iterable<T>{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @param identity True to use ==, false to use .equals().
      * @return true if this array was modified.
      */
@@ -394,7 +401,6 @@ public class Array<T> implements Iterable<T>{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public T[] shrink(){
@@ -405,7 +411,6 @@ public class Array<T> implements Iterable<T>{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public T[] ensureCapacity(int additionalCapacity){
@@ -418,7 +423,6 @@ public class Array<T> implements Iterable<T>{
 
     /**
      * Sets the array size, leaving any values beyond the current size null.
-     *
      * @return {@link #items}
      */
     public T[] setSize(int newSize){
@@ -431,7 +435,7 @@ public class Array<T> implements Iterable<T>{
     /** Creates a new backing array with the specified size containing the current items. */
     protected T[] resize(int newSize){
         T[] items = this.items;
-        T[] newItems = (T[]) ArrayReflection.newInstance(items.getClass().getComponentType(), newSize);
+        T[] newItems = (T[])ArrayReflection.newInstance(items.getClass().getComponentType(), newSize);
         System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
         this.items = newItems;
         return newItems;
@@ -453,7 +457,6 @@ public class Array<T> implements Iterable<T>{
     /**
      * Selects the nth-lowest element from the Array according to Comparator ranking. This might partially sort the Array. The
      * array must have a size greater than 0, or a {@link com.badlogic.gdx.utils.GdxRuntimeException} will be thrown.
-     *
      * @param comparator used for comparison
      * @param kthLowest rank of desired object according to comparison, n is based on ordinal numbers, not array indices. for min
      * value use 1, for max value use size of array, using 0 results in runtime exception.
@@ -534,11 +537,11 @@ public class Array<T> implements Iterable<T>{
      * Otherwise use {@link #toArray(Class)} to specify the array type.
      */
     public T[] toArray(){
-        return (T[]) toArray(items.getClass().getComponentType());
+        return (T[])toArray(items.getClass().getComponentType());
     }
 
     public <V> V[] toArray(Class type){
-        V[] result = (V[]) ArrayReflection.newInstance(type, size);
+        V[] result = (V[])ArrayReflection.newInstance(type, size);
         System.arraycopy(items, 0, result, 0, size);
         return result;
     }
@@ -559,7 +562,7 @@ public class Array<T> implements Iterable<T>{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof Array)) return false;
-        Array array = (Array) object;
+        Array array = (Array)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -597,21 +600,6 @@ public class Array<T> implements Iterable<T>{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #Array(Class) */
-    static public <T> Array<T> of(Class<T> arrayType){
-        return new Array<T>(arrayType);
-    }
-
-    /** @see #Array(boolean, int, Class) */
-    static public <T> Array<T> of(boolean ordered, int capacity, Class<T> arrayType){
-        return new Array<T>(ordered, capacity, arrayType);
-    }
-
-    /** @see #Array(Object[]) */
-    static public <T> Array<T> with(T... array){
-        return new Array(array);
     }
 
     static public class ArrayIterator<T> implements Iterator<T>, Iterable<T>{

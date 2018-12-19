@@ -20,10 +20,10 @@ public class Pixmaps{
         int numBytesPerLine = pixmap.getWidth() * 4;
         for(int i = 0; i < pixmap.getHeight(); i++){
             pixels.position((pixmap.getHeight() - i - 1) * numBytesPerLine);
-            ((ByteBuffer) pixels).get(lines, i * numBytesPerLine, numBytesPerLine);
+            ((ByteBuffer)pixels).get(lines, i * numBytesPerLine, numBytesPerLine);
         }
         pixels.clear();
-        ((ByteBuffer) pixels).put(lines);
+        ((ByteBuffer)pixels).put(lines);
     }
 
     public static Pixmap copy(Pixmap input){
@@ -37,10 +37,10 @@ public class Pixmaps{
     }
 
     public static Pixmap scale(Pixmap input, float scalex, float scaley){
-        Pixmap pixmap = new Pixmap((int) (input.getWidth() * scalex), (int) (input.getHeight() * scaley), Format.RGBA8888);
+        Pixmap pixmap = new Pixmap((int)(input.getWidth() * scalex), (int)(input.getHeight() * scaley), Format.RGBA8888);
         for(int x = 0; x < pixmap.getWidth(); x++){
             for(int y = 0; y < pixmap.getHeight(); y++){
-                pixmap.drawPixel(x, y, input.getPixel((int) (x / scalex), (int) (y / scaley)));
+                pixmap.drawPixel(x, y, input.getPixel((int)(x / scalex), (int)(y / scaley)));
             }
         }
         return pixmap;
@@ -53,7 +53,7 @@ public class Pixmaps{
         for(int x = 0; x < pixmap.getWidth(); x++){
             for(int y = 0; y < pixmap.getHeight(); y++){
                 if(empty(input.getPixel(x, y)) &&
-                        (!empty(input.getPixel(x, y + 1)) || !empty(input.getPixel(x, y - 1)) || !empty(input.getPixel(x - 1, y)) || !empty(input.getPixel(x + 1, y))))
+                (!empty(input.getPixel(x, y + 1)) || !empty(input.getPixel(x, y - 1)) || !empty(input.getPixel(x - 1, y)) || !empty(input.getPixel(x + 1, y))))
                     pixmap.drawPixel(x, y);
             }
         }
@@ -100,8 +100,8 @@ public class Pixmaps{
             for(int y = 0; y < input.getHeight(); y++){
                 vector.set(x - input.getWidth() / 2f + 0.5f, y - input.getHeight() / 2f);
                 vector.rotate(-angle);
-                int px = (int) (vector.x + input.getWidth() / 2f + 0.01f);
-                int py = (int) (vector.y + input.getHeight() / 2f + 0.01f);
+                int px = (int)(vector.x + input.getWidth() / 2f + 0.01f);
+                int py = (int)(vector.y + input.getHeight() / 2f + 0.01f);
                 pixmap.drawPixel(px - input.getWidth() / 2 + pixmap.getWidth() / 2, py - input.getHeight() / 2 + pixmap.getHeight() / 2, input.getPixel(x, y));
             }
         }
@@ -126,7 +126,7 @@ public class Pixmaps{
         Color color = new Color(1, 1, 1, 1);
 
         for(int x = 0; x < width; x++){
-            color.fromHsv(x / (float) width, 1f, 1);
+            color.fromHsv(x / (float)width, 1f, 1);
             pixmap.setColor(color);
             for(int y = 0; y < height; y++){
                 pixmap.drawPixel(x, y);

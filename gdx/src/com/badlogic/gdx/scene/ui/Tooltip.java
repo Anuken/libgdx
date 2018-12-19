@@ -27,7 +27,6 @@ import com.badlogic.gdx.scene.ui.layout.Container;
 
 /**
  * A listener that shows a tooltip element when another element is hovered over with the mouse.
- *
  * @author Nathan Sweet
  */
 public class Tooltip<T extends Element> extends InputListener{

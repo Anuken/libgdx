@@ -23,7 +23,6 @@ import java.net.InetSocketAddress;
 
 /**
  * Server socket implementation using java.net.ServerSocket.
- *
  * @author noblemaster
  */
 public class NetJavaServerSocketImpl implements ServerSocket{

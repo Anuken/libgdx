@@ -36,7 +36,6 @@ public class Polygon implements Shape2D{
 
     /**
      * Constructs a new polygon from a float array of parts of vertex points.
-     *
      * @param vertices an array where every even element represents the horizontal part of a point, and the following element
      * representing the vertical part
      * @throws IllegalArgumentException if less than 6 elements, representing 3 points, are provided
@@ -52,9 +51,20 @@ public class Polygon implements Shape2D{
     }
 
     /**
+     * Sets the polygon's local vertices relative to the origin point, without any scaling, rotating or translations being applied.
+     * @param vertices float array where every even element represents the x-coordinate of a vertex, and the proceeding element
+     * representing the y-coordinate.
+     * @throws IllegalArgumentException if less than 6 elements, representing 3 points, are provided
+     */
+    public void setVertices(float[] vertices){
+        if(vertices.length < 6) throw new IllegalArgumentException("polygons must contain at least 3 points.");
+        localVertices = vertices;
+        dirty = true;
+    }
+
+    /**
      * Calculates and returns the vertices of the polygon after scaling, rotation, and positional translations have been applied,
      * as they are position within the world.
-     *
      * @return vertices scaled, rotated, and offset by the polygon position.
      */
     public float[] getTransformedVertices(){
@@ -114,29 +124,10 @@ public class Polygon implements Shape2D{
         dirty = true;
     }
 
-    /**
-     * Sets the polygon's local vertices relative to the origin point, without any scaling, rotating or translations being applied.
-     *
-     * @param vertices float array where every even element represents the x-coordinate of a vertex, and the proceeding element
-     * representing the y-coordinate.
-     * @throws IllegalArgumentException if less than 6 elements, representing 3 points, are provided
-     */
-    public void setVertices(float[] vertices){
-        if(vertices.length < 6) throw new IllegalArgumentException("polygons must contain at least 3 points.");
-        localVertices = vertices;
-        dirty = true;
-    }
-
     /** Translates the polygon's position by the specified horizontal and vertical amounts. */
     public void translate(float x, float y){
         this.x += x;
         this.y += y;
-        dirty = true;
-    }
-
-    /** Sets the polygon to be rotated by the supplied degrees. */
-    public void setRotation(float degrees){
-        this.rotation = degrees;
         dirty = true;
     }
 
@@ -175,7 +166,6 @@ public class Polygon implements Shape2D{
      * Returns an axis-aligned bounding box of this polygon.
      * <p>
      * Note the returned Rectangle is cached in this polygon, and will be reused if this Polygon is changed.
-     *
      * @return this polygon's bounding box {@link Rectangle}
      */
     public Rectangle getBoundingRectangle(){
@@ -249,6 +239,12 @@ public class Polygon implements Shape2D{
     /** Returns the total rotation applied to the polygon. */
     public float getRotation(){
         return rotation;
+    }
+
+    /** Sets the polygon to be rotated by the supplied degrees. */
+    public void setRotation(float degrees){
+        this.rotation = degrees;
+        dirty = true;
     }
 
     /** Returns the total horizontal scaling applied to the polygon. */

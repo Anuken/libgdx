@@ -24,16 +24,6 @@ public class PolylineMapObject extends MapObject{
 
     private Polyline polyline;
 
-    /** @return polyline shape */
-    public Polyline getPolyline(){
-        return polyline;
-    }
-
-    /** @param polyline new object's polyline shape */
-    public void setPolyline(Polyline polyline){
-        this.polyline = polyline;
-    }
-
     /** Creates empty polyline */
     public PolylineMapObject(){
         this(new float[0]);
@@ -46,6 +36,16 @@ public class PolylineMapObject extends MapObject{
 
     /** @param polyline the polyline */
     public PolylineMapObject(Polyline polyline){
+        this.polyline = polyline;
+    }
+
+    /** @return polyline shape */
+    public Polyline getPolyline(){
+        return polyline;
+    }
+
+    /** @param polyline new object's polyline shape */
+    public void setPolyline(Polyline polyline){
         this.polyline = polyline;
     }
 

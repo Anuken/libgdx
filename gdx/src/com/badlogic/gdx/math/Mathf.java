@@ -22,68 +22,58 @@ import java.util.Random;
  * Utility and fast math functions.
  * <p>
  * Thanks to Riven on JavaGaming.org for the basis of sin/cos/floor/ceil.
- *
  * @author Nathan Sweet
  */
 public final class Mathf{
     static public final float nanoToSec = 1 / 1000000000f;
-    static public Random random = new RandomXS128();
-
     // ---
     static public final float FLOAT_ROUNDING_ERROR = 0.000001f; // 32 bits
     static public final float PI = 3.1415927f;
     static public final float PI2 = PI * 2;
-
     static public final float E = 2.7182818f;
-
-    static private final int SIN_BITS = 14; // 16KB. Adjust for accuracy.
-    static private final int SIN_MASK = ~(-1 << SIN_BITS);
-    static private final int SIN_COUNT = SIN_MASK + 1;
-
-    static private final float radFull = PI * 2;
-    static private final float degFull = 360;
-    static private final float radToIndex = SIN_COUNT / radFull;
-    static private final float degToIndex = SIN_COUNT / degFull;
-
     /** multiply by this to convert from radians to degrees */
     static public final float radiansToDegrees = 180f / PI;
     static public final float radDeg = radiansToDegrees;
     /** multiply by this to convert from degrees to radians */
     static public final float degreesToRadians = PI / 180;
     static public final float degRad = degreesToRadians;
+    static private final int SIN_BITS = 14; // 16KB. Adjust for accuracy.
+    static private final int SIN_MASK = ~(-1 << SIN_BITS);
+    static private final int SIN_COUNT = SIN_MASK + 1;
+    static private final float radFull = PI * 2;
+    static private final float degFull = 360;
+    static private final float radToIndex = SIN_COUNT / radFull;
+    static private final float degToIndex = SIN_COUNT / degFull;
+    static private final int BIG_ENOUGH_INT = 16 * 1024;
+    static private final double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
+    static private final double CEIL = 0.9999999;
+    static private final double BIG_ENOUGH_CEIL = 16384.999999999996;
+    static private final double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
+    static public Random random = new RandomXS128();
 
-    static private class Sin{
-        static final float[] table = new float[SIN_COUNT];
-
-        static{
-            for(int i = 0; i < SIN_COUNT; i++)
-                table[i] = (float) Math.sin((i + 0.5f) / SIN_COUNT * radFull);
-            for(int i = 0; i < 360; i += 90)
-                table[(int) (i * degToIndex) & SIN_MASK] = (float) Math.sin(i * degreesToRadians);
-        }
-    }
+    // ---
 
     /** Returns the sine in radians from a lookup table. */
     static public float sin(float radians){
-        return Sin.table[(int) (radians * radToIndex) & SIN_MASK];
+        return Sin.table[(int)(radians * radToIndex) & SIN_MASK];
     }
+
+    // ---
 
     /** Returns the cosine in radians from a lookup table. */
     static public float cos(float radians){
-        return Sin.table[(int) ((radians + PI / 2) * radToIndex) & SIN_MASK];
+        return Sin.table[(int)((radians + PI / 2) * radToIndex) & SIN_MASK];
     }
 
     /** Returns the sine in radians from a lookup table. */
     static public float sinDeg(float degrees){
-        return Sin.table[(int) (degrees * degToIndex) & SIN_MASK];
+        return Sin.table[(int)(degrees * degToIndex) & SIN_MASK];
     }
 
     /** Returns the cosine in radians from a lookup table. */
     static public float cosDeg(float degrees){
-        return Sin.table[(int) ((degrees + 90) * degToIndex) & SIN_MASK];
+        return Sin.table[(int)((degrees + 90) * degToIndex) & SIN_MASK];
     }
-
-    // ---
 
     /**
      * Returns atan2 in radians, faster but less accurate than Math.atan2. Average error of 0.00231 radians (0.1323 degrees),
@@ -104,8 +94,6 @@ public final class Mathf{
         atan = PI / 2 - z / (z * z + 0.28f);
         return y < 0f ? atan - PI : atan;
     }
-
-    // ---
 
     static public float trnsx(float angle, float len){
         return len * cos(degreesToRadians * angle);
@@ -131,12 +119,12 @@ public final class Mathf{
 
     /** Returns a random number between 0 (inclusive) and the specified value (inclusive). */
     static public long random(long range){
-        return (long) (random.nextDouble() * range);
+        return (long)(random.nextDouble() * range);
     }
 
     /** Returns a random number between start (inclusive) and end (inclusive). */
     static public long random(long start, long end){
-        return start + (long) (random.nextDouble() * (end - start));
+        return start + (long)(random.nextDouble() * (end - start));
     }
 
     /** Returns a random boolean value. */
@@ -169,6 +157,8 @@ public final class Mathf{
         return 1 | (random.nextInt() >> 31);
     }
 
+    // ---
+
     /**
      * Returns a triangularly distributed random number between -1.0 (exclusive) and 1.0 (exclusive), where values around zero are
      * more likely.
@@ -184,19 +174,19 @@ public final class Mathf{
      * around zero are more likely.
      * <p>
      * This is an optimized version of {@link #randomTriangular(float, float, float) randomTriangular(-max, max, 0)}
-     *
      * @param max the upper limit
      */
     public static float randomTriangular(float max){
         return (random.nextFloat() - random.nextFloat()) * max;
     }
 
+    // ---
+
     /**
      * Returns a triangularly distributed random number between {@code min} (inclusive) and {@code max} (exclusive), where the
      * {@code mode} argument defaults to the midpoint between the bounds, giving a symmetric distribution.
      * <p>
      * This method is equivalent of {@link #randomTriangular(float, float, float) randomTriangular(min, max, (min + max) * .5f)}
-     *
      * @param min the lower limit
      * @param max the upper limit
      */
@@ -207,7 +197,6 @@ public final class Mathf{
     /**
      * Returns a triangularly distributed random number between {@code min} (inclusive) and {@code max} (exclusive), where values
      * around {@code mode} are more likely.
-     *
      * @param min the lower limit
      * @param max the upper limit
      * @param mode the point around which the values are more likely
@@ -215,11 +204,9 @@ public final class Mathf{
     public static float randomTriangular(float min, float max, float mode){
         float u = random.nextFloat();
         float d = max - min;
-        if(u <= (mode - min) / d) return min + (float) Math.sqrt(u * d * (mode - min));
-        return max - (float) Math.sqrt((1 - u) * d * (max - mode));
+        if(u <= (mode - min) / d) return min + (float)Math.sqrt(u * d * (mode - min));
+        return max - (float)Math.sqrt((1 - u) * d * (max - mode));
     }
-
-    // ---
 
     /** Returns the next power of two. Returns the specified value if the value is already a power of two. */
     static public int nextPowerOfTwo(int value){
@@ -237,8 +224,6 @@ public final class Mathf{
         return value != 0 && (value & value - 1) == 0;
     }
 
-    // ---
-
     static public short clamp(short value, short min, short max){
         if(value < min) return min;
         if(value > max) return max;
@@ -250,6 +235,8 @@ public final class Mathf{
         if(value > max) return max;
         return value;
     }
+
+    // ---
 
     static public long clamp(long value, long min, long max){
         if(value < min) return min;
@@ -263,18 +250,18 @@ public final class Mathf{
         return value;
     }
 
-    /**Clamps to [0, 1].*/
+    /** Clamps to [0, 1]. */
     static public float clamp(float value){
         return clamp(value, 0f, 1f);
     }
+
+    // ---
 
     static public double clamp(double value, double min, double max){
         if(value < min) return min;
         if(value > max) return max;
         return value;
     }
-
-    // ---
 
     /** Linearly interpolates between fromValue to toValue on progress position. */
     static public float lerp(float fromValue, float toValue, float progress){
@@ -284,7 +271,6 @@ public final class Mathf{
     /**
      * Linearly interpolates between two angles in radians. Takes into account that angles wrap at two pi and always takes the
      * direction with the smallest delta angle.
-     *
      * @param fromRadians start angle in radians
      * @param toRadians target angle in radians
      * @param progress interpolation value in the range [0, 1]
@@ -298,7 +284,6 @@ public final class Mathf{
     /**
      * Linearly interpolates between two angles in degrees. Takes into account that angles wrap at 360 degrees and always takes
      * the direction with the smallest delta angle.
-     *
      * @param fromDegrees start angle in degrees
      * @param toDegrees target angle in degrees
      * @param progress interpolation value in the range [0, 1]
@@ -309,20 +294,12 @@ public final class Mathf{
         return (fromDegrees + delta * progress + 360) % 360;
     }
 
-    // ---
-
-    static private final int BIG_ENOUGH_INT = 16 * 1024;
-    static private final double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
-    static private final double CEIL = 0.9999999;
-    static private final double BIG_ENOUGH_CEIL = 16384.999999999996;
-    static private final double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
-
     /**
      * Returns the largest integer less than or equal to the specified float. This method will only properly floor floats from
      * -(2^14) to (Float.MAX_VALUE - 2^14).
      */
     static public int floor(float value){
-        return (int) (value + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
+        return (int)(value + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
     }
 
     /**
@@ -330,7 +307,7 @@ public final class Mathf{
      * positive. Note this method simply casts the float to int.
      */
     static public int floorPositive(float value){
-        return (int) value;
+        return (int)value;
     }
 
     /**
@@ -338,7 +315,7 @@ public final class Mathf{
      * -(2^14) to (Float.MAX_VALUE - 2^14).
      */
     static public int ceil(float value){
-        return BIG_ENOUGH_INT - (int) (BIG_ENOUGH_FLOOR - value);
+        return BIG_ENOUGH_INT - (int)(BIG_ENOUGH_FLOOR - value);
     }
 
     /**
@@ -346,7 +323,7 @@ public final class Mathf{
      * are positive.
      */
     static public int ceilPositive(float value){
-        return (int) (value + CEIL);
+        return (int)(value + CEIL);
     }
 
     /**
@@ -354,7 +331,7 @@ public final class Mathf{
      * (Float.MAX_VALUE - 2^14).
      */
     static public int round(float value){
-        return (int) (value + BIG_ENOUGH_ROUND) - BIG_ENOUGH_INT;
+        return (int)(value + BIG_ENOUGH_ROUND) - BIG_ENOUGH_INT;
     }
 
     static public float round(float value, float amount){
@@ -363,7 +340,7 @@ public final class Mathf{
 
     /** Returns the closest integer to the specified float. This method will only properly round floats that are positive. */
     static public int roundPositive(float value){
-        return (int) (value + 0.5f);
+        return (int)(value + 0.5f);
     }
 
     /** Returns true if the value is zero (using the default tolerance as upper bound) */
@@ -373,7 +350,6 @@ public final class Mathf{
 
     /**
      * Returns true if the value is zero.
-     *
      * @param tolerance represent an upper bound below which the value is considered zero.
      */
     static public boolean isZero(float value, float tolerance){
@@ -382,7 +358,6 @@ public final class Mathf{
 
     /**
      * Returns true if a is nearly equal to b. The function uses the default floating error tolerance.
-     *
      * @param a the first value.
      * @param b the second value.
      */
@@ -392,7 +367,6 @@ public final class Mathf{
 
     /**
      * Returns true if a is nearly equal to b.
-     *
      * @param a the first value.
      * @param b the second value.
      * @param tolerance represent an upper bound below which the two values are considered equal.
@@ -403,7 +377,7 @@ public final class Mathf{
 
     /** @return the logarithm of value with base a */
     static public float log(float a, float value){
-        return (float) (Math.log(value) / Math.log(a));
+        return (float)(Math.log(value) / Math.log(a));
     }
 
     /** @return the logarithm of value with base 2 */
@@ -426,6 +400,17 @@ public final class Mathf{
             return i % m;
         }else{
             return i % m + m;
+        }
+    }
+
+    static private class Sin{
+        static final float[] table = new float[SIN_COUNT];
+
+        static{
+            for(int i = 0; i < SIN_COUNT; i++)
+                table[i] = (float)Math.sin((i + 0.5f) / SIN_COUNT * radFull);
+            for(int i = 0; i < 360; i += 90)
+                table[(int)(i * degToIndex) & SIN_MASK] = (float)Math.sin(i * degreesToRadians);
         }
     }
 }

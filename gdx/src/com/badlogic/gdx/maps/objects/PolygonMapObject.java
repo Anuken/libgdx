@@ -12,16 +12,6 @@ public class PolygonMapObject extends MapObject{
 
     private Polygon polygon;
 
-    /** @return polygon shape */
-    public Polygon getPolygon(){
-        return polygon;
-    }
-
-    /** @param polygon new object's polygon shape */
-    public void setPolygon(Polygon polygon){
-        this.polygon = polygon;
-    }
-
     /** Creates empty polygon map object */
     public PolygonMapObject(){
         this(new float[0]);
@@ -34,6 +24,16 @@ public class PolygonMapObject extends MapObject{
 
     /** @param polygon the polygon */
     public PolygonMapObject(Polygon polygon){
+        this.polygon = polygon;
+    }
+
+    /** @return polygon shape */
+    public Polygon getPolygon(){
+        return polygon;
+    }
+
+    /** @param polygon new object's polygon shape */
+    public void setPolygon(Polygon polygon){
         this.polygon = polygon;
     }
 

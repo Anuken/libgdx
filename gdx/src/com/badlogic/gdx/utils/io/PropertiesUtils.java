@@ -45,10 +45,9 @@ public final class PropertiesUtils{
      * compatible with <code>java.util.Properties</code>.
      * <p>
      * The input stream remains open after this method returns.
-     *
      * @param properties the map to be filled.
      * @param reader the input character stream reader.
-     * @throws IOException  if an error occurred when reading from the input stream.
+     * @throws IOException if an error occurred when reading from the input stream.
      * @throws IllegalArgumentException if a malformed Unicode escape appears in the input.
      */
     @SuppressWarnings("deprecation")
@@ -67,7 +66,7 @@ public final class PropertiesUtils{
             if(intVal == -1){
                 break;
             }
-            nextChar = (char) intVal;
+            nextChar = (char)intVal;
 
             if(offset == buf.length){
                 char[] newBuf = new char[buf.length * 2];
@@ -85,7 +84,7 @@ public final class PropertiesUtils{
                     throw new IllegalArgumentException("Invalid Unicode sequence: illegal character");
                 }
                 mode = NONE;
-                buf[offset++] = (char) unicode;
+                buf[offset++] = (char)unicode;
                 if(nextChar != '\n'){
                     continue;
                 }
@@ -129,7 +128,7 @@ public final class PropertiesUtils{
                                 if(intVal == -1){
                                     break;
                                 }
-                                nextChar = (char) intVal;
+                                nextChar = (char)intVal;
                                 if(nextChar == '\r' || nextChar == '\n'){
                                     break;
                                 }
@@ -224,7 +223,6 @@ public final class PropertiesUtils{
      * <code>=</code>, and <code>:</code> are written with a preceding backslash to ensure that they are properly loaded.
      * <p>
      * After the entries have been written, the output stream is flushed. The output stream remains open after this method returns.
-     *
      * @param properties the {@code ObjectMap}.
      * @param writer an output character stream writer.
      * @param comment an optional comment to be written, or null.

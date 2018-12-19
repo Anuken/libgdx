@@ -33,7 +33,6 @@ import static com.badlogic.gdx.Core.scene;
 
 /**
  * Displays a dialog, which is a modal window containing a content table with a button table underneath it.
- *
  * @author Nathan Sweet
  */
 public class Dialog extends Window{
@@ -41,8 +40,8 @@ public class Dialog extends Window{
     public static float closePadT, closePadR;
 
     private static Supplier<Action>
-            defaultShowAction = () -> Actions.sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)),
-            defaultHideAction = () -> Actions.fadeOut(0.4f, Interpolation.fade);
+    defaultShowAction = () -> Actions.sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)),
+    defaultHideAction = () -> Actions.fadeOut(0.4f, Interpolation.fade);
     protected InputListener ignoreTouchDown = new InputListener(){
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
             event.cancel();
@@ -101,10 +100,10 @@ public class Dialog extends Window{
             private void focusChanged(FocusEvent event){
                 Scene stage = getScene();
                 if(isModal && stage != null && stage.root.getChildren().size > 0
-                        && stage.root.getChildren().peek() == Dialog.this){ // Dialog is top most actor.
+                && stage.root.getChildren().peek() == Dialog.this){ // Dialog is top most actor.
                     Element newFocusedActor = event.relatedActor;
                     if(newFocusedActor != null && !newFocusedActor.isDescendantOf(Dialog.this) &&
-                            !(newFocusedActor.equals(previousKeyboardFocus) || newFocusedActor.equals(previousScrollFocus)))
+                    !(newFocusedActor.equals(previousKeyboardFocus) || newFocusedActor.equals(previousScrollFocus)))
                         event.cancel();
                 }
             }
@@ -128,7 +127,7 @@ public class Dialog extends Window{
         float scl = Unit.dp.scl(1f);
 
         titleTable.add(closeButton).padRight(-getMarginRight() / scl)
-                .padTop(-10 + closePadT).size(40);
+        .padTop(-10 + closePadT).size(40);
 
         closeButton.changed(this::hide);
 

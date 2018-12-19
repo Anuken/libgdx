@@ -60,7 +60,7 @@ final class AndroidSound implements Sound{
 
     @Override
     public void stop(long soundId){
-        soundPool.stop((int) soundId);
+        soundPool.stop((int)soundId);
     }
 
     @Override
@@ -70,7 +70,7 @@ final class AndroidSound implements Sound{
 
     @Override
     public void pause(long soundId){
-        soundPool.pause((int) soundId);
+        soundPool.pause((int)soundId);
     }
 
     @Override
@@ -80,17 +80,17 @@ final class AndroidSound implements Sound{
 
     @Override
     public void resume(long soundId){
-        soundPool.resume((int) soundId);
+        soundPool.resume((int)soundId);
     }
 
     @Override
     public void setPitch(long soundId, float pitch){
-        soundPool.setRate((int) soundId, pitch);
+        soundPool.setRate((int)soundId, pitch);
     }
 
     @Override
     public void setVolume(long soundId, float volume){
-        soundPool.setVolume((int) soundId, volume, volume);
+        soundPool.setVolume((int)soundId, volume, volume);
     }
 
     @Override
@@ -110,7 +110,7 @@ final class AndroidSound implements Sound{
 
     @Override
     public void setLooping(long soundId, boolean looping){
-        soundPool.setLoop((int) soundId, looping ? -1 : 0);
+        soundPool.setLoop((int)soundId, looping ? -1 : 0);
     }
 
     @Override
@@ -124,7 +124,7 @@ final class AndroidSound implements Sound{
             leftVolume *= (1 - Math.abs(pan));
         }
 
-        soundPool.setVolume((int) soundId, leftVolume, rightVolume);
+        soundPool.setVolume((int)soundId, leftVolume, rightVolume);
     }
 
     @Override

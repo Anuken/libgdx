@@ -16,12 +16,11 @@
 
 package com.badlogic.gdx.scene.actions;
 
-import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.scene.Action;
+import com.badlogic.gdx.utils.pooling.Pool;
 
 /**
  * Executes a number of actions one at a time.
- *
  * @author Nathan Sweet
  */
 public class SequenceAction extends ParallelAction{

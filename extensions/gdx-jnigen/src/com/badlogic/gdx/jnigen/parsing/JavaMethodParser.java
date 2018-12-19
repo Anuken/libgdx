@@ -21,45 +21,6 @@ import java.util.ArrayList;
 public interface JavaMethodParser{
     ArrayList<JavaSegment> parse(String classFile) throws Exception;
 
-    interface JavaSegment{
-        int getStartIndex();
-
-        int getEndIndex();
-    }
-
-    class JniSection implements JavaSegment{
-        private String nativeCode;
-        private final int startIndex;
-        private final int endIndex;
-
-        public JniSection(String nativeCode, int startIndex, int endIndex){
-            this.nativeCode = nativeCode;
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
-        }
-
-        public String getNativeCode(){
-            return nativeCode;
-        }
-
-        public void setNativeCode(String nativeCode){
-            this.nativeCode = nativeCode;
-        }
-
-        public int getStartIndex(){
-            return startIndex;
-        }
-
-        public int getEndIndex(){
-            return endIndex;
-        }
-
-        @Override
-        public String toString(){
-            return "JniSection [nativeCode=" + nativeCode + ", startIndex=" + startIndex + ", endIndex=" + endIndex + "]";
-        }
-    }
-
     enum ArgumentType{
         Boolean("jboolean"), Byte("jbyte"), Char("jchar"), Short("jshort"), Integer("jint"), Long("jlong"), Float("jfloat"), Double(
         "jdouble"), Buffer("jobject"), ByteBuffer("jobject"), CharBuffer("jobject"), ShortBuffer("jobject"), IntBuffer("jobject"), LongBuffer(
@@ -124,6 +85,45 @@ public interface JavaMethodParser{
         }
     }
 
+    interface JavaSegment{
+        int getStartIndex();
+
+        int getEndIndex();
+    }
+
+    class JniSection implements JavaSegment{
+        private final int startIndex;
+        private final int endIndex;
+        private String nativeCode;
+
+        public JniSection(String nativeCode, int startIndex, int endIndex){
+            this.nativeCode = nativeCode;
+            this.startIndex = startIndex;
+            this.endIndex = endIndex;
+        }
+
+        public String getNativeCode(){
+            return nativeCode;
+        }
+
+        public void setNativeCode(String nativeCode){
+            this.nativeCode = nativeCode;
+        }
+
+        public int getStartIndex(){
+            return startIndex;
+        }
+
+        public int getEndIndex(){
+            return endIndex;
+        }
+
+        @Override
+        public String toString(){
+            return "JniSection [nativeCode=" + nativeCode + ", startIndex=" + startIndex + ", endIndex=" + endIndex + "]";
+        }
+    }
+
     class Argument{
         final ArgumentType type;
         private final String name;
@@ -152,13 +152,13 @@ public interface JavaMethodParser{
         private final String className;
         private final String name;
         private final boolean isStatic;
-        private boolean isManual;
         private final String returnType;
-        private String nativeCode;
         private final ArrayList<Argument> arguments;
         private final boolean hasDisposableArgument;
         private final int startIndex;
         private final int endIndex;
+        private boolean isManual;
+        private String nativeCode;
 
         public JavaMethod(String className, String name, boolean isStatic, String returnType, String nativeCode,
                           ArrayList<Argument> arguments, int startIndex, int endIndex){
@@ -187,12 +187,12 @@ public interface JavaMethodParser{
             return isStatic;
         }
 
-        public void setManual(boolean isManual){
-            this.isManual = isManual;
-        }
-
         public boolean isManual(){
             return this.isManual;
+        }
+
+        public void setManual(boolean isManual){
+            this.isManual = isManual;
         }
 
         public String getReturnType(){

@@ -37,22 +37,20 @@ import java.nio.FloatBuffer;
  * in the constructor.
  * <p>
  * VertexBufferObjects must be disposed via the {@link #dispose()} method when no longer needed
- *
  * @author mzechner, Dave Clayton <contact@redskyforge.com>
  */
 public class VertexBufferObject implements VertexData{
+    boolean isDirty = false;
+    boolean isBound = false;
     private VertexAttributes attributes;
     private FloatBuffer buffer;
     private ByteBuffer byteBuffer;
     private boolean ownsBuffer;
     private int bufferHandle;
     private int usage;
-    boolean isDirty = false;
-    boolean isBound = false;
 
     /**
      * Constructs a new interleaved VertexBufferObject.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttribute}s.
@@ -63,7 +61,6 @@ public class VertexBufferObject implements VertexData{
 
     /**
      * Constructs a new interleaved VertexBufferObject.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttributes}.
@@ -107,10 +104,6 @@ public class VertexBufferObject implements VertexData{
 
     /**
      * Low level method to reset the buffer and attributes to the specified values. Use with care!
-     *
-     * @param data
-     * @param ownsBuffer
-     * @param value
      */
     protected void setBuffer(Buffer data, boolean ownsBuffer, VertexAttributes value){
         if(isBound) throw new GdxRuntimeException("Cannot change attributes while VBO is bound");
@@ -118,7 +111,7 @@ public class VertexBufferObject implements VertexData{
             BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
         attributes = value;
         if(data instanceof ByteBuffer)
-            byteBuffer = (ByteBuffer) data;
+            byteBuffer = (ByteBuffer)data;
         else
             throw new GdxRuntimeException("Only ByteBuffer is currently supported");
         this.ownsBuffer = ownsBuffer;
@@ -176,7 +169,6 @@ public class VertexBufferObject implements VertexData{
 
     /**
      * Binds this VertexBufferObject for rendering via glDrawArrays or glDrawElements
-     *
      * @param shader the shader
      */
     @Override
@@ -223,7 +215,6 @@ public class VertexBufferObject implements VertexData{
 
     /**
      * Unbinds this VertexBufferObject.
-     *
      * @param shader the shader
      */
     @Override

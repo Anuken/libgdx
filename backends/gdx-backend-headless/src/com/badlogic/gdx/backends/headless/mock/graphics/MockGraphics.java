@@ -184,13 +184,13 @@ public class MockGraphics extends Graphics{
     }
 
     @Override
-    public void setContinuousRendering(boolean isContinuous){
-
+    public boolean isContinuousRendering(){
+        return false;
     }
 
     @Override
-    public boolean isContinuousRendering(){
-        return false;
+    public void setContinuousRendering(boolean isContinuous){
+
     }
 
     @Override

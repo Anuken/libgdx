@@ -1,12 +1,12 @@
 package com.badlogic.gdx.graphics.glutils;
 
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.collection.IntArray;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -30,7 +30,6 @@ import java.nio.IntBuffer;
  * </p>
  * <p>
  * Code adapted from {@link VertexBufferObject}.
- *
  * @author mzechner, Dave Clayton <contact@redskyforge.com>, Nate Austin <nate.austin gmail>
  */
 public class VertexBufferObjectWithVAO implements VertexData{
@@ -39,9 +38,9 @@ public class VertexBufferObjectWithVAO implements VertexData{
     final VertexAttributes attributes;
     final FloatBuffer buffer;
     final ByteBuffer byteBuffer;
-    int bufferHandle;
     final boolean isStatic;
     final int usage;
+    int bufferHandle;
     boolean isDirty = false;
     boolean isBound = false;
     int vaoHandle = -1;
@@ -50,7 +49,6 @@ public class VertexBufferObjectWithVAO implements VertexData{
 
     /**
      * Constructs a new interleaved VertexBufferObjectWithVAO.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link com.badlogic.gdx.graphics.VertexAttribute}s.
@@ -61,7 +59,6 @@ public class VertexBufferObjectWithVAO implements VertexData{
 
     /**
      * Constructs a new interleaved VertexBufferObjectWithVAO.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttributes}.
@@ -129,7 +126,6 @@ public class VertexBufferObjectWithVAO implements VertexData{
 
     /**
      * Binds this VertexBufferObject for rendering via glDrawArrays or glDrawElements
-     *
      * @param shader the shader
      */
     @Override
@@ -219,7 +215,6 @@ public class VertexBufferObjectWithVAO implements VertexData{
 
     /**
      * Unbinds this VertexBufferObject.
-     *
      * @param shader the shader
      */
     @Override

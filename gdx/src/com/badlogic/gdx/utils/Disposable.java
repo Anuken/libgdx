@@ -18,7 +18,6 @@ package com.badlogic.gdx.utils;
 
 /**
  * Interface for disposable resources.
- *
  * @author mzechner
  */
 public interface Disposable{

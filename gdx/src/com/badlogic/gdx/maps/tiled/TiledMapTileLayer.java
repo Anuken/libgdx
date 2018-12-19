@@ -29,6 +29,22 @@ public class TiledMapTileLayer extends MapLayer{
 
     private Cell[][] cells;
 
+    /**
+     * Creates TiledMap layer
+     * @param width layer width in tiles
+     * @param height layer height in tiles
+     * @param tileWidth tile width in pixels
+     * @param tileHeight tile height in pixels
+     */
+    public TiledMapTileLayer(int width, int height, int tileWidth, int tileHeight){
+        super();
+        this.width = width;
+        this.height = height;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.cells = new Cell[width][height];
+    }
+
     /** @return layer's width in tiles */
     public int getWidth(){
         return width;
@@ -50,23 +66,6 @@ public class TiledMapTileLayer extends MapLayer{
     }
 
     /**
-     * Creates TiledMap layer
-     *
-     * @param width layer width in tiles
-     * @param height layer height in tiles
-     * @param tileWidth tile width in pixels
-     * @param tileHeight tile height in pixels
-     */
-    public TiledMapTileLayer(int width, int height, int tileWidth, int tileHeight){
-        super();
-        this.width = width;
-        this.height = height;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        this.cells = new Cell[width][height];
-    }
-
-    /**
      * @param x X coordinate
      * @param y Y coordinate
      * @return {@link Cell} at (x, y)
@@ -79,7 +78,6 @@ public class TiledMapTileLayer extends MapLayer{
 
     /**
      * Sets the {@link Cell} at the given coordinates.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param cell the {@link Cell} to set at the given coordinates.
@@ -93,12 +91,13 @@ public class TiledMapTileLayer extends MapLayer{
     /** @brief represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties. */
     public static class Cell{
 
+        public static final int ROTATE_0 = 0;
+        public static final int ROTATE_90 = 1;
+        public static final int ROTATE_180 = 2;
+        public static final int ROTATE_270 = 3;
         private TiledMapTile tile;
-
         private boolean flipHorizontally;
-
         private boolean flipVertically;
-
         private int rotation;
 
         /** @return The tile currently assigned to this cell. */
@@ -108,7 +107,6 @@ public class TiledMapTileLayer extends MapLayer{
 
         /**
          * Sets the tile to be used for this cell.
-         *
          * @param tile the {@link TiledMapTile} to use for this cell.
          * @return this, for method chaining
          */
@@ -124,7 +122,6 @@ public class TiledMapTileLayer extends MapLayer{
 
         /**
          * Sets whether to flip the tile horizontally.
-         *
          * @param flipHorizontally whether or not to flip the tile horizontally.
          * @return this, for method chaining
          */
@@ -140,7 +137,6 @@ public class TiledMapTileLayer extends MapLayer{
 
         /**
          * Sets whether to flip the tile vertically.
-         *
          * @param flipVertically whether or not this tile should be flipped vertically.
          * @return this, for method chaining
          */
@@ -156,7 +152,6 @@ public class TiledMapTileLayer extends MapLayer{
 
         /**
          * Sets the rotation of this cell, in degrees.
-         *
          * @param rotation the rotation in degrees.
          * @return this, for method chaining
          */
@@ -164,10 +159,5 @@ public class TiledMapTileLayer extends MapLayer{
             this.rotation = rotation;
             return this;
         }
-
-        public static final int ROTATE_0 = 0;
-        public static final int ROTATE_90 = 1;
-        public static final int ROTATE_180 = 2;
-        public static final int ROTATE_270 = 3;
     }
 }

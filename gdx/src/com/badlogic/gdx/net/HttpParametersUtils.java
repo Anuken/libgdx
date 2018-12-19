@@ -32,7 +32,6 @@ public class HttpParametersUtils{
 
     /**
      * Useful method to convert a map of key,value pairs to a String to be used as part of a GET or POST content.
-     *
      * @param parameters A Map<String, String> with the parameters to encode.
      * @return The String with the parameters encoded.
      */

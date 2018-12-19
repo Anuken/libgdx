@@ -26,7 +26,6 @@ import com.badlogic.gdx.utils.Log;
 /**
  * Multitouch handler for devices running Android >= 2.0. If device is capable of (fake) multitouch this will report additional
  * pointers.
- *
  * @author badlogicgames@gmail.com
  */
 public class AndroidMultiTouchHandler implements AndroidTouchHandler{
@@ -47,8 +46,8 @@ public class AndroidMultiTouchHandler implements AndroidTouchHandler{
                     realPointerIndex = input.getFreePointerIndex(); // get a free pointer index as reported by Input.getX() etc.
                     if(realPointerIndex >= AndroidInput.NUM_TOUCHES) break;
                     input.realId[realPointerIndex] = pointerId;
-                    x = (int) event.getX(pointerIndex);
-                    y = (int) event.getY(pointerIndex);
+                    x = (int)event.getX(pointerIndex);
+                    y = (int)event.getY(pointerIndex);
                     if(android.os.Build.VERSION.SDK_INT >= 14) button = toGdxButton(event.getButtonState());
                     if(button != KeyCode.UNKNOWN)
                         postTouchEvent(input, TouchEvent.TOUCH_DOWN, x, y, realPointerIndex, button, timeStamp);
@@ -68,8 +67,8 @@ public class AndroidMultiTouchHandler implements AndroidTouchHandler{
                     if(realPointerIndex == -1) break;
                     if(realPointerIndex >= AndroidInput.NUM_TOUCHES) break;
                     input.realId[realPointerIndex] = -1;
-                    x = (int) event.getX(pointerIndex);
-                    y = (int) event.getY(pointerIndex);
+                    x = (int)event.getX(pointerIndex);
+                    y = (int)event.getY(pointerIndex);
                     button = KeyCode.byOrdinal(input.button[realPointerIndex]);
                     if(button != KeyCode.UNKNOWN)
                         postTouchEvent(input, TouchEvent.TOUCH_UP, x, y, realPointerIndex, button, timeStamp);
@@ -100,8 +99,8 @@ public class AndroidMultiTouchHandler implements AndroidTouchHandler{
                     for(int i = 0; i < pointerCount; i++){
                         pointerIndex = i;
                         pointerId = event.getPointerId(pointerIndex);
-                        x = (int) event.getX(pointerIndex);
-                        y = (int) event.getY(pointerIndex);
+                        x = (int)event.getX(pointerIndex);
+                        y = (int)event.getY(pointerIndex);
                         realPointerIndex = input.lookUpPointerIndex(pointerId);
                         if(realPointerIndex == -1) continue;
                         if(realPointerIndex >= AndroidInput.NUM_TOUCHES) break;

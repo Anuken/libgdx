@@ -36,6 +36,8 @@ import java.nio.IntBuffer;
 
 public class Lwjgl3Graphics extends Graphics implements Disposable{
     private final Lwjgl3Window window;
+    IntBuffer tmpBuffer = BufferUtils.createIntBuffer(1);
+    IntBuffer tmpBuffer2 = BufferUtils.createIntBuffer(1);
     private GL20 gl20;
     private GL30 gl30;
     private GLVersion glVersion;
@@ -54,10 +56,6 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
     private int windowPosXBeforeFullscreen;
     private int windowPosYBeforeFullscreen;
     private DisplayMode displayModeBeforeFullscreen = null;
-
-    IntBuffer tmpBuffer = BufferUtils.createIntBuffer(1);
-    IntBuffer tmpBuffer2 = BufferUtils.createIntBuffer(1);
-
     private GLFWFramebufferSizeCallback resizeCallback = new GLFWFramebufferSizeCallback(){
         @Override
         public void invoke(long windowHandle, final int width, final int height){
@@ -137,13 +135,13 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
     }
 
     @Override
-    public GL30 getGL30(){
-        return gl30;
+    public void setGL20(GL20 gl20){
+        this.gl20 = gl20;
     }
 
     @Override
-    public void setGL20(GL20 gl20){
-        this.gl20 = gl20;
+    public GL30 getGL30(){
+        return gl30;
     }
 
     @Override
@@ -229,20 +227,20 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
 
     @Override
     public float getPpcX(){
-        Lwjgl3Monitor monitor = (Lwjgl3Monitor) getMonitor();
+        Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
         GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, tmpBuffer, tmpBuffer2);
         int sizeX = tmpBuffer.get(0);
         DisplayMode mode = getDisplayMode();
-        return mode.width / (float) sizeX * 10;
+        return mode.width / (float)sizeX * 10;
     }
 
     @Override
     public float getPpcY(){
-        Lwjgl3Monitor monitor = (Lwjgl3Monitor) getMonitor();
+        Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
         GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, tmpBuffer, tmpBuffer2);
         int sizeY = tmpBuffer2.get(0);
         DisplayMode mode = getDisplayMode();
-        return mode.height / (float) sizeY * 10;
+        return mode.height / (float)sizeY * 10;
     }
 
     @Override
@@ -324,9 +322,9 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
     @Override
     public boolean setFullscreenMode(DisplayMode displayMode){
         window.getInput().resetPollingStates();
-        Lwjgl3DisplayMode newMode = (Lwjgl3DisplayMode) displayMode;
+        Lwjgl3DisplayMode newMode = (Lwjgl3DisplayMode)displayMode;
         if(isFullscreen()){
-            Lwjgl3DisplayMode currentMode = (Lwjgl3DisplayMode) getDisplayMode();
+            Lwjgl3DisplayMode currentMode = (Lwjgl3DisplayMode)getDisplayMode();
             if(currentMode.getMonitor() == newMode.getMonitor() && currentMode.refreshRate == newMode.refreshRate){
                 // same monitor and refresh rate
                 GLFW.glfwSetWindowSize(window.getWindowHandle(), newMode.width, newMode.height);
@@ -409,13 +407,13 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
     }
 
     @Override
-    public void setContinuousRendering(boolean isContinuous){
-        this.isContinuous = isContinuous;
+    public boolean isContinuousRendering(){
+        return isContinuous;
     }
 
     @Override
-    public boolean isContinuousRendering(){
-        return isContinuous;
+    public void setContinuousRendering(boolean isContinuous){
+        this.isContinuous = isContinuous;
     }
 
     @Override
@@ -435,7 +433,7 @@ public class Lwjgl3Graphics extends Graphics implements Disposable{
 
     @Override
     public void setCursor(Cursor cursor){
-        GLFW.glfwSetCursor(getWindow().getWindowHandle(), ((Lwjgl3Cursor) cursor).glfwCursor);
+        GLFW.glfwSetCursor(getWindow().getWindowHandle(), ((Lwjgl3Cursor)cursor).glfwCursor);
     }
 
     @Override

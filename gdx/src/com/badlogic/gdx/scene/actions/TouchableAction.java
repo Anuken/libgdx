@@ -21,7 +21,6 @@ import com.badlogic.gdx.scene.event.Touchable;
 
 /**
  * Sets the actor's {@link Element#touchable(Touchable) touchability}.
- *
  * @author Nathan Sweet
  */
 public class TouchableAction extends Action{

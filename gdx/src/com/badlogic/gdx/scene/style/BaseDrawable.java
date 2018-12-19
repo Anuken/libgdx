@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.style;
 
 /**
  * Drawable that stores the size information but doesn't draw anything.
- *
  * @author Nathan Sweet
  */
 public class BaseDrawable implements Drawable{
@@ -30,7 +29,7 @@ public class BaseDrawable implements Drawable{
 
     /** Creates a new empty drawable with the same sizing information as the specified drawable. */
     public BaseDrawable(Drawable drawable){
-        if(drawable instanceof BaseDrawable) name = ((BaseDrawable) drawable).getName();
+        if(drawable instanceof BaseDrawable) name = ((BaseDrawable)drawable).getName();
         leftWidth = drawable.getLeftWidth();
         rightWidth = drawable.getRightWidth();
         topHeight = drawable.getTopHeight();

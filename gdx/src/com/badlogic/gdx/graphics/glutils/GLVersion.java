@@ -24,16 +24,13 @@ import java.util.regex.Pattern;
 
 public class GLVersion{
 
+    private final String vendorString;
+    private final String rendererString;
+    private final Type type;
+    private final String TAG = "GLVersion";
     private int majorVersion;
     private int minorVersion;
     private int releaseVersion;
-
-    private final String vendorString;
-    private final String rendererString;
-
-    private final Type type;
-
-    private final String TAG = "GLVersion";
 
     public GLVersion(Application.ApplicationType appType, String versionString, String vendorString, String rendererString){
         if(appType == Application.ApplicationType.Android) this.type = Type.GLES;
@@ -126,7 +123,6 @@ public class GLVersion{
 
     /**
      * Checks to see if the current GL connection version is higher, or equal to the provided test versions.
-     *
      * @param testMajorVersion the major version to test against
      * @param testMinorVersion the minor version to test against
      * @return true if the current version is higher or equal to the test version

@@ -26,19 +26,18 @@ import java.util.ArrayList;
 
 /**
  * Subclass of AndroidInput, used on Android +3.x to get generic motion events for things like gamepads/joysticks and so on.
- *
  * @author mzechner
  */
 public class AndroidInputThreePlus extends AndroidInput implements OnGenericMotionListener{
-    ArrayList<OnGenericMotionListener> genericMotionListeners = new ArrayList<>();
     private final AndroidMouseHandler mouseHandler;
+    ArrayList<OnGenericMotionListener> genericMotionListeners = new ArrayList<>();
 
     public AndroidInputThreePlus(Application activity, Context context, Object view, AndroidApplicationConfiguration config){
         super(activity, context, view, config);
         // we hook into View, for LWPs we call onTouch below directly from
         // within the AndroidLivewallpaperEngine#onTouchEvent() method.
         if(view instanceof View){
-            View v = (View) view;
+            View v = (View)view;
             v.setOnGenericMotionListener(this);
         }
         mouseHandler = new AndroidMouseHandler();

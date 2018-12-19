@@ -25,11 +25,9 @@ import java.io.Serializable;
 /**
  * A 3x3 <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> matrix; useful for 2D
  * transforms.
- *
  * @author mzechner
  */
 public class Matrix3 implements Serializable{
-    private static final long serialVersionUID = 7907569533774959788L;
     public static final int M00 = 0;
     public static final int M01 = 3;
     public static final int M02 = 6;
@@ -39,6 +37,7 @@ public class Matrix3 implements Serializable{
     public static final int M20 = 2;
     public static final int M21 = 5;
     public static final int M22 = 8;
+    private static final long serialVersionUID = 7907569533774959788L;
     public float[] val = new float[9];
     private float[] tmp = new float[9];
 
@@ -52,7 +51,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Constructs a matrix from the given float array. The array must have at least 9 elements; the first 9 will be copied.
-     *
      * @param values The float array to copy. Remember that this matrix is in <a
      * href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> order. (The float array is
      * not modified.)
@@ -61,7 +59,40 @@ public class Matrix3 implements Serializable{
         this.set(values);
     }
 
-    /**Sets this matrix to an orthographic projection.*/
+    /**
+     * Multiplies matrix a with matrix b in the following manner:
+     *
+     * <pre>
+     * mul(A, B) => A := AB
+     * </pre>
+     * @param mata The float array representing the first matrix. Must have at least 9 elements.
+     * @param matb The float array representing the second matrix. Must have at least 9 elements.
+     */
+    private static void mul(float[] mata, float[] matb){
+        float v00 = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20];
+        float v01 = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21];
+        float v02 = mata[M00] * matb[M02] + mata[M01] * matb[M12] + mata[M02] * matb[M22];
+
+        float v10 = mata[M10] * matb[M00] + mata[M11] * matb[M10] + mata[M12] * matb[M20];
+        float v11 = mata[M10] * matb[M01] + mata[M11] * matb[M11] + mata[M12] * matb[M21];
+        float v12 = mata[M10] * matb[M02] + mata[M11] * matb[M12] + mata[M12] * matb[M22];
+
+        float v20 = mata[M20] * matb[M00] + mata[M21] * matb[M10] + mata[M22] * matb[M20];
+        float v21 = mata[M20] * matb[M01] + mata[M21] * matb[M11] + mata[M22] * matb[M21];
+        float v22 = mata[M20] * matb[M02] + mata[M21] * matb[M12] + mata[M22] * matb[M22];
+
+        mata[M00] = v00;
+        mata[M10] = v10;
+        mata[M20] = v20;
+        mata[M01] = v01;
+        mata[M11] = v11;
+        mata[M21] = v21;
+        mata[M02] = v02;
+        mata[M12] = v12;
+        mata[M22] = v22;
+    }
+
+    /** Sets this matrix to an orthographic projection. */
     public Matrix3 setOrtho(float x, float y, float width, float height){
         final float right = x + width, top = y + height;
 
@@ -83,7 +114,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to the identity matrix
-     *
      * @return This matrix for the purpose of chaining operations.
      */
     public Matrix3 idt(){
@@ -106,7 +136,6 @@ public class Matrix3 implements Serializable{
      * <pre>
      * A.mul(B) results in A := AB
      * </pre>
-     *
      * @param m Matrix to multiply by.
      * @return This matrix for the purpose of chaining operations together.
      */
@@ -144,7 +173,6 @@ public class Matrix3 implements Serializable{
      * <pre>
      * A.mulLeft(B) results in A := BA
      * </pre>
-     *
      * @param m The other Matrix to multiply by
      * @return This matrix for the purpose of chaining operations.
      */
@@ -178,7 +206,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a rotation matrix that will rotate any vector in counter-clockwise direction around the z-axis.
-     *
      * @param degrees the angle in degrees.
      * @return This matrix for the purpose of chaining operations.
      */
@@ -188,13 +215,12 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a rotation matrix that will rotate any vector in counter-clockwise direction around the z-axis.
-     *
      * @param radians the angle in radians.
      * @return This matrix for the purpose of chaining operations.
      */
     public Matrix3 setToRotationRad(float radians){
-        float cos = (float) Math.cos(radians);
-        float sin = (float) Math.sin(radians);
+        float cos = (float)Math.cos(radians);
+        float sin = (float)Math.sin(radians);
         float[] val = this.val;
 
         val[M00] = cos;
@@ -233,7 +259,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a translation matrix.
-     *
      * @param x the translation in x
      * @param y the translation in y
      * @return This matrix for the purpose of chaining operations.
@@ -258,7 +283,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a translation matrix.
-     *
      * @param translation The translation vector.
      * @return This matrix for the purpose of chaining operations.
      */
@@ -282,7 +306,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a scaling matrix.
-     *
      * @param scaleX the scale in x
      * @param scaleY the scale in y
      * @return This matrix for the purpose of chaining operations.
@@ -303,7 +326,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Sets this matrix to a scaling matrix.
-     *
      * @param scale The scale vector.
      * @return This matrix for the purpose of chaining operations.
      */
@@ -337,7 +359,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Inverts this matrix given that the determinant is != 0.
-     *
      * @return This matrix for the purpose of chaining operations.
      * @throws GdxRuntimeException if the matrix is singular (not invertible)
      */
@@ -373,7 +394,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Copies the values from the provided matrix to this matrix.
-     *
      * @param mat The matrix to copy.
      * @return This matrix for the purposes of chaining.
      */
@@ -384,7 +404,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Copies the values from the provided affine matrix to this matrix. The last row is set to (0, 0, 1).
-     *
      * @param affine The affine matrix to copy.
      * @return This matrix for the purposes of chaining.
      */
@@ -407,7 +426,6 @@ public class Matrix3 implements Serializable{
     /**
      * Sets the matrix to the given matrix as a float array. The float array must have at least 9 elements; the first 9 will be
      * copied.
-     *
      * @param values The matrix, in float form, that is to be copied. Remember that this matrix is in <a
      * href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">column major</a> order.
      * @return This matrix for the purpose of chaining methods together.
@@ -419,7 +437,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-     *
      * @param vector The translation vector.
      * @return This matrix for the purpose of chaining.
      */
@@ -431,7 +448,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-     *
      * @param x The x-component of the translation vector.
      * @param y The y-component of the translation vector.
      * @return This matrix for the purpose of chaining.
@@ -444,7 +460,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Adds a translational component to the matrix in the 3rd column. The other columns are untouched.
-     *
      * @param vector The translation vector. (The z-component of the vector is ignored because this is a 3x3 matrix)
      * @return This matrix for the purpose of chaining.
      */
@@ -457,7 +472,6 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param x The x-component of the translation vector.
      * @param y The y-component of the translation vector.
      * @return This matrix for the purpose of chaining.
@@ -482,7 +496,6 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix by a translation matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param translation The translation vector.
      * @return This matrix for the purpose of chaining.
      */
@@ -506,7 +519,6 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param degrees The angle in degrees
      * @return This matrix for the purpose of chaining.
      */
@@ -517,14 +529,13 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix with a (counter-clockwise) rotation matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param radians The angle in radians
      * @return This matrix for the purpose of chaining.
      */
     public Matrix3 rotateRad(float radians){
         if(radians == 0) return this;
-        float cos = (float) Math.cos(radians);
-        float sin = (float) Math.sin(radians);
+        float cos = (float)Math.cos(radians);
+        float sin = (float)Math.sin(radians);
         float[] tmp = this.tmp;
 
         tmp[M00] = cos;
@@ -545,7 +556,6 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix with a scale matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param scaleX The scale in the x-axis.
      * @param scaleY The scale in the y-axis.
      * @return This matrix for the purpose of chaining.
@@ -568,7 +578,6 @@ public class Matrix3 implements Serializable{
     /**
      * Postmultiplies this matrix with a scale matrix. Postmultiplication is also used by OpenGL ES' 1.x
      * glTranslate/glRotate/glScale.
-     *
      * @param scale The vector to scale the matrix by.
      * @return This matrix for the purpose of chaining.
      */
@@ -589,7 +598,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Get the values in this matrix.
-     *
      * @return The float values that make up this matrix in column-major order.
      */
     public float[] getValues(){
@@ -604,22 +612,21 @@ public class Matrix3 implements Serializable{
 
     public Vector2 getScale(Vector2 scale){
         float[] val = this.val;
-        scale.x = (float) Math.sqrt(val[M00] * val[M00] + val[M01] * val[M01]);
-        scale.y = (float) Math.sqrt(val[M10] * val[M10] + val[M11] * val[M11]);
+        scale.x = (float)Math.sqrt(val[M00] * val[M00] + val[M01] * val[M01]);
+        scale.y = (float)Math.sqrt(val[M10] * val[M10] + val[M11] * val[M11]);
         return scale;
     }
 
     public float getRotation(){
-        return Mathf.radiansToDegrees * (float) Math.atan2(val[M10], val[M00]);
+        return Mathf.radiansToDegrees * (float)Math.atan2(val[M10], val[M00]);
     }
 
     public float getRotationRad(){
-        return (float) Math.atan2(val[M10], val[M00]);
+        return (float)Math.atan2(val[M10], val[M00]);
     }
 
     /**
      * Scale the matrix in the both the x and y components by the scalar value.
-     *
      * @param scale The single value that will be used to scale both the x and y components.
      * @return This matrix for the purpose of chaining methods together.
      */
@@ -631,7 +638,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Scale this matrix using the x and y components of the vector but leave the rest of the matrix alone.
-     *
      * @param scale The {@link Vector3} to use to scale this matrix.
      * @return This matrix for the purpose of chaining methods together.
      */
@@ -643,7 +649,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Scale this matrix using the x and y components of the vector but leave the rest of the matrix alone.
-     *
      * @param scale The {@link Vector3} to use to scale this matrix. The z component will be ignored.
      * @return This matrix for the purpose of chaining methods together.
      */
@@ -655,7 +660,6 @@ public class Matrix3 implements Serializable{
 
     /**
      * Transposes the current matrix.
-     *
      * @return This matrix for the purpose of chaining methods together.
      */
     public Matrix3 transpose(){
@@ -674,39 +678,5 @@ public class Matrix3 implements Serializable{
         val[M20] = v20;
         val[M21] = v21;
         return this;
-    }
-
-    /**
-     * Multiplies matrix a with matrix b in the following manner:
-     *
-     * <pre>
-     * mul(A, B) => A := AB
-     * </pre>
-     *
-     * @param mata The float array representing the first matrix. Must have at least 9 elements.
-     * @param matb The float array representing the second matrix. Must have at least 9 elements.
-     */
-    private static void mul(float[] mata, float[] matb){
-        float v00 = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20];
-        float v01 = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21];
-        float v02 = mata[M00] * matb[M02] + mata[M01] * matb[M12] + mata[M02] * matb[M22];
-
-        float v10 = mata[M10] * matb[M00] + mata[M11] * matb[M10] + mata[M12] * matb[M20];
-        float v11 = mata[M10] * matb[M01] + mata[M11] * matb[M11] + mata[M12] * matb[M21];
-        float v12 = mata[M10] * matb[M02] + mata[M11] * matb[M12] + mata[M12] * matb[M22];
-
-        float v20 = mata[M20] * matb[M00] + mata[M21] * matb[M10] + mata[M22] * matb[M20];
-        float v21 = mata[M20] * matb[M01] + mata[M21] * matb[M11] + mata[M22] * matb[M21];
-        float v22 = mata[M20] * matb[M02] + mata[M21] * matb[M12] + mata[M22] * matb[M22];
-
-        mata[M00] = v00;
-        mata[M10] = v10;
-        mata[M20] = v20;
-        mata[M01] = v01;
-        mata[M11] = v11;
-        mata[M21] = v21;
-        mata[M02] = v02;
-        mata[M12] = v12;
-        mata[M22] = v22;
     }
 }

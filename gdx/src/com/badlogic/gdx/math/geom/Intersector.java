@@ -16,19 +16,18 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.math.geom.Plane.PlaneSide;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.FloatArray;
+import com.badlogic.gdx.math.Mathf;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.math.geom.Plane.PlaneSide;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Class offering various static methods for intersection testing between different geometric objects.
- *
  * @author badlogicgames@gmail.com
  * @author jan.stria
  * @author Nathan Sweet
@@ -39,6 +38,22 @@ public final class Intersector{
     private final static Vector3 v2 = new Vector3();
     private final static FloatArray floatArray = new FloatArray();
     private final static FloatArray floatArray2 = new FloatArray();
+    private final static Vector2 ip = new Vector2();
+    private final static Vector2 ep1 = new Vector2();
+    private final static Vector2 ep2 = new Vector2();
+    private final static Vector2 s = new Vector2();
+    private final static Vector2 e = new Vector2();
+    private static final Plane p = new Plane(new Vector3(), 0);
+    private static final Vector3 i = new Vector3();
+    private static final Vector3 dir = new Vector3();
+    private static final Vector3 start = new Vector3();
+    static Vector3 best = new Vector3();
+    static Vector3 tmp = new Vector3();
+    static Vector3 tmp1 = new Vector3();
+    static Vector3 tmp2 = new Vector3();
+    static Vector3 tmp3 = new Vector3();
+    static Vector2 v2tmp = new Vector2();
+    static Vector3 intersection = new Vector3();
 
     public static boolean intersectPolygons(float[] p1, float[] p2){
         // reusable points to trace edges around polygon
@@ -96,7 +111,6 @@ public final class Intersector{
     /**
      * Returns whether the given point is inside the triangle. This assumes that the point is on the plane of the triangle. No
      * check is performed that this is the case.
-     *
      * @param point the point
      * @param t1 the first vertex of the triangle
      * @param t2 the second vertex of the triangle
@@ -153,19 +167,18 @@ public final class Intersector{
      * which is linePoint1 to linePoint2.
      */
     public static int pointLineSide(Vector2 linePoint1, Vector2 linePoint2, Vector2 point){
-        return (int) Math.signum(
+        return (int)Math.signum(
         (linePoint2.x - linePoint1.x) * (point.y - linePoint1.y) - (linePoint2.y - linePoint1.y) * (point.x - linePoint1.x));
     }
 
     public static int pointLineSide(float linePoint1X, float linePoint1Y, float linePoint2X, float linePoint2Y, float pointX,
                                     float pointY){
-        return (int) Math
+        return (int)Math
         .signum((linePoint2X - linePoint1X) * (pointY - linePoint1Y) - (linePoint2Y - linePoint1Y) * (pointX - linePoint1X));
     }
 
     /**
      * Checks whether the given point is in the polygon.
-     *
      * @param polygon The polygon vertices passed as an array
      * @param point The point
      * @return true if the point is in the polygon
@@ -187,7 +200,6 @@ public final class Intersector{
 
     /**
      * Returns true if the specified point is in the polygon.
-     *
      * @param offset Starting polygon index.
      * @param count Number of array indices to use after offset.
      */
@@ -206,16 +218,9 @@ public final class Intersector{
         return oddNodes;
     }
 
-    private final static Vector2 ip = new Vector2();
-    private final static Vector2 ep1 = new Vector2();
-    private final static Vector2 ep2 = new Vector2();
-    private final static Vector2 s = new Vector2();
-    private final static Vector2 e = new Vector2();
-
     /**
      * Intersects two convex polygons with clockwise vertices and sets the overlap polygon resulting from the intersection.
      * Follows the Sutherland-Hodgman algorithm.
-     *
      * @param p1 The polygon that is being clipped
      * @param p2 The clip polygon
      * @param overlap The intersection of the two polygons (can be null, if an intersection polygon is not needed)
@@ -281,7 +286,7 @@ public final class Intersector{
 
     /** Returns the distance between the given line and point. Note the specified line is not a line segment. */
     public static float distanceLinePoint(float startX, float startY, float endX, float endY, float pointX, float pointY){
-        float normalLength = (float) Math.sqrt((endX - startX) * (endX - startX) + (endY - startY) * (endY - startY));
+        float normalLength = (float)Math.sqrt((endX - startX) * (endX - startX) + (endY - startY) * (endY - startY));
         return Math.abs((pointX - startX) * (endY - startY) - (pointY - startY) * (endX - startX)) / normalLength;
     }
 
@@ -320,7 +325,6 @@ public final class Intersector{
 
     /**
      * Returns whether the given line segment intersects the given circle.
-     *
      * @param start The start point of the line segment
      * @param end The end point of the line segment
      * @param center The center of the circle
@@ -350,7 +354,6 @@ public final class Intersector{
     /**
      * Checks whether the line segment and the circle intersect and returns by how much and in what direction the line has to move
      * away from the circle to not intersect.
-     *
      * @param start The line segment starting point
      * @param end The line segment end point
      * @param point The center of the circle
@@ -378,7 +381,6 @@ public final class Intersector{
      * Intersect two 2D Rays and return the scalar parameter of the first ray at the intersection point. You can get the
      * intersection point by: Vector2 point(direction1).scl(scalar).add(start1); For more information, check:
      * http://stackoverflow.com/a/565282/1091440
-     *
      * @param start1 Where the first ray start
      * @param direction1 The direction the first ray is pointing
      * @param start2 Where the second ray start
@@ -401,7 +403,6 @@ public final class Intersector{
     /**
      * Intersects a {@link Ray} and a {@link Plane}. The intersection point is stored in intersection in case an intersection is
      * present.
-     *
      * @param ray The ray
      * @param plane The plane
      * @param intersection The vector the intersection point is written to (optional)
@@ -426,14 +427,6 @@ public final class Intersector{
      * Intersects a line and a plane. The intersection is returned as the distance from the first point to the plane. In case an
      * intersection happened, the return value is in the range [0,1]. The intersection point can be recovered by point1 + t *
      * (point2 - point1) where t is the return value of this method.
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @param x2
-     * @param y2
-     * @param z2
-     * @param plane
      */
     public static float intersectLinePlane(float x, float y, float z, float x2, float y2, float z2, Plane plane,
                                            Vector3 intersection){
@@ -452,12 +445,8 @@ public final class Intersector{
         return -1;
     }
 
-    private static final Plane p = new Plane(new Vector3(), 0);
-    private static final Vector3 i = new Vector3();
-
     /**
      * Intersect a {@link Ray} and a triangle, returning the intersection point in intersection.
-     *
      * @param ray The ray
      * @param t1 The first vertex of the triangle
      * @param t2 The second vertex of the triangle
@@ -504,12 +493,8 @@ public final class Intersector{
         return true;
     }
 
-    private static final Vector3 dir = new Vector3();
-    private static final Vector3 start = new Vector3();
-
     /**
      * Intersects a {@link Ray} and a sphere, returning the intersection point in intersection.
-     *
      * @param ray The ray, the direction component must be normalized before calling this method
      * @param center The center of the sphere
      * @param radius The radius of the sphere
@@ -525,7 +510,7 @@ public final class Intersector{
         final float r2 = radius * radius;
         if(dst2 > r2) return false;
         if(intersection != null)
-            intersection.set(ray.direction).scl(len - (float) Math.sqrt(r2 - dst2)).add(ray.origin);
+            intersection.set(ray.direction).scl(len - (float)Math.sqrt(r2 - dst2)).add(ray.origin);
         return true;
     }
 
@@ -542,7 +527,6 @@ public final class Intersector{
      * If the origin of the ray is inside the box, this method returns true and the intersection point is set to the origin of the
      * ray, accordingly to the definition above.
      * </p>
-     *
      * @param ray The ray
      * @param box The box
      * @param intersection The intersection point (optional)
@@ -645,7 +629,6 @@ public final class Intersector{
 
     /**
      * Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
-     *
      * @param ray The ray
      * @param box The bounding box
      * @return Whether the ray and the bounding box intersect.
@@ -656,7 +639,6 @@ public final class Intersector{
 
     /**
      * Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
-     *
      * @param ray The ray
      * @param center The center of the bounding box
      * @param dimensions The dimensions (width, height and depth) of the bounding box
@@ -697,16 +679,8 @@ public final class Intersector{
         return max >= 0 && max >= min;
     }
 
-    static Vector3 best = new Vector3();
-    static Vector3 tmp = new Vector3();
-    static Vector3 tmp1 = new Vector3();
-    static Vector3 tmp2 = new Vector3();
-    static Vector3 tmp3 = new Vector3();
-    static Vector2 v2tmp = new Vector2();
-
     /**
      * Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
-     *
      * @param ray The ray
      * @param triangles The triangles, each successive 3 elements from a vertex
      * @param intersection The nearest intersection point (optional)
@@ -743,7 +717,6 @@ public final class Intersector{
 
     /**
      * Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
-     *
      * @param ray The ray
      * @param vertices the vertices
      * @param indices the indices, each successive 3 shorts index the 3 vertices of a triangle
@@ -787,7 +760,6 @@ public final class Intersector{
 
     /**
      * Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
-     *
      * @param ray The ray
      * @param triangles The triangles
      * @param intersection The nearest intersection point (optional)
@@ -822,7 +794,6 @@ public final class Intersector{
 
     /**
      * Intersects the two lines and returns the intersection point in intersection.
-     *
      * @param p1 The first point of the first line
      * @param p2 The second point of the first line
      * @param p3 The first point of the second line
@@ -845,7 +816,6 @@ public final class Intersector{
 
     /**
      * Intersects the two lines and returns the intersection point in intersection.
-     *
      * @param intersection The intersection point, or null.
      * @return Whether the two lines intersect
      */
@@ -863,7 +833,6 @@ public final class Intersector{
 
     /**
      * Check whether the given line and {@link Polygon} intersect.
-     *
      * @param p1 The first point of the line
      * @param p2 The second point of the line
      * @param polygon The polygon
@@ -894,7 +863,6 @@ public final class Intersector{
     /**
      * Determines whether the given rectangles intersect and, if they do, sets the supplied {@code intersection} rectangle to the
      * area of overlap.
-     *
      * @return Whether the rectangles intersect
      */
     static public boolean intersectRectangles(Rectangle rectangle1, Rectangle rectangle2, Rectangle intersection){
@@ -910,7 +878,6 @@ public final class Intersector{
 
     /**
      * Determines whether the given rectangle and segment intersect
-     *
      * @param startX x-coordinate start of line segment
      * @param startY y-coordinate start of line segment
      * @param endX y-coordinate end of line segment
@@ -946,7 +913,6 @@ public final class Intersector{
 
     /**
      * Check whether the given line segment and {@link Polygon} intersect.
-     *
      * @param p1 The first point of the segment
      * @param p2 The second point of the segment
      * @return Whether polygon and segment intersect
@@ -978,7 +944,6 @@ public final class Intersector{
 
     /**
      * Intersects the two line segments and returns the intersection point in intersection.
-     *
      * @param p1 The first point of the first line segment
      * @param p2 The second point of the first line segment
      * @param p3 The first point of the second line segment
@@ -1064,7 +1029,6 @@ public final class Intersector{
 
     /**
      * Check whether specified counter-clockwise wound convex polygons overlap.
-     *
      * @param p1 The first polygon.
      * @param p2 The second polygon.
      * @return Whether polygons overlap.
@@ -1076,7 +1040,6 @@ public final class Intersector{
     /**
      * Check whether specified counter-clockwise wound convex polygons overlap. If they do, optionally obtain a Minimum
      * Translation Vector indicating the minimum magnitude vector required to push the polygon p1 out of collision with polygon p2.
-     *
      * @param p1 The first polygon.
      * @param p2 The second polygon.
      * @param mtv A Minimum Translation Vector to fill in the case of a collision, or null (optional).
@@ -1095,7 +1058,6 @@ public final class Intersector{
      * Check whether polygons defined by the given counter-clockwise wound vertex arrays overlap. If they do, optionally obtain a
      * Minimum Translation Vector indicating the minimum magnitude vector required to push the polygon defined by verts1 out of the
      * collision with the polygon defined by verts2.
-     *
      * @param verts1 Vertices of the first polygon.
      * @param verts2 Vertices of the second polygon.
      * @param mtv A Minimum Translation Vector to fill in the case of a collision, or null (optional).
@@ -1121,7 +1083,7 @@ public final class Intersector{
             float axisX = y1 - y2;
             float axisY = -(x1 - x2);
 
-            final float length = (float) Math.sqrt(axisX * axisX + axisY * axisY);
+            final float length = (float)Math.sqrt(axisX * axisX + axisY * axisY);
             axisX /= length;
             axisY /= length;
 
@@ -1187,7 +1149,7 @@ public final class Intersector{
             float axisX = y1 - y2;
             float axisY = -(x1 - x2);
 
-            final float length = (float) Math.sqrt(axisX * axisX + axisY * axisY);
+            final float length = (float)Math.sqrt(axisX * axisX + axisY * axisY);
             axisX /= length;
             axisY /= length;
 
@@ -1267,9 +1229,6 @@ public final class Intersector{
      * The input triangle should have the form: x, y, z, x2, y2, z2, x3, y3, z3. One can add additional attributes per vertex which
      * will be interpolated if split, such as texture coordinates or normals. Note that these additional attributes won't be
      * normalized, as might be necessary in case of normals.
-     *
-     * @param triangle
-     * @param plane
      * @param split output SplitTriangle
      */
     public static void splitTriangle(float[] triangle, Plane plane, SplitTriangle split){
@@ -1371,8 +1330,6 @@ public final class Intersector{
         }
     }
 
-    static Vector3 intersection = new Vector3();
-
     private static void splitEdge(float[] vertices, int s, int e, int stride, Plane plane, float[] split, int offset){
         float t = Intersector.intersectLinePlane(vertices[s], vertices[s + 1], vertices[s + 2], vertices[e], vertices[e + 1],
         vertices[e + 2], plane, intersection);
@@ -1389,17 +1346,16 @@ public final class Intersector{
     public static class SplitTriangle{
         public float[] front;
         public float[] back;
-        float[] edgeSplit;
         public int numFront;
         public int numBack;
         public int total;
+        float[] edgeSplit;
         boolean frontCurrent = false;
         int frontOffset = 0;
         int backOffset = 0;
 
         /**
          * Creates a new instance, assuming numAttributes attributes per triangle vertex.
-         *
          * @param numAttributes must be >= 3
          */
         public SplitTriangle(int numAttributes){
@@ -1414,12 +1370,12 @@ public final class Intersector{
             + ", numBack=" + numBack + ", total=" + total + "]";
         }
 
-        void setSide(boolean front){
-            frontCurrent = front;
-        }
-
         boolean getSide(){
             return frontCurrent;
+        }
+
+        void setSide(boolean front){
+            frontCurrent = front;
         }
 
         void add(float[] vertex, int offset, int stride){

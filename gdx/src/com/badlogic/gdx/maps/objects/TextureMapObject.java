@@ -31,6 +31,20 @@ public class TextureMapObject extends MapObject{
     private float rotation = 0.0f;
     private TextureRegion textureRegion = null;
 
+    /** Creates an empty texture map object */
+    public TextureMapObject(){
+        this(null);
+    }
+
+    /**
+     * Creates texture map object with the given region
+     * @param textureRegion the {@link TextureRegion} to use.
+     */
+    public TextureMapObject(TextureRegion textureRegion){
+        super();
+        this.textureRegion = textureRegion;
+    }
+
     /** @return x axis coordinate */
     public float getX(){
         return x;
@@ -109,20 +123,5 @@ public class TextureMapObject extends MapObject{
     /** @param region new texture region */
     public void setTextureRegion(TextureRegion region){
         textureRegion = region;
-    }
-
-    /** Creates an empty texture map object */
-    public TextureMapObject(){
-        this(null);
-    }
-
-    /**
-     * Creates texture map object with the given region
-     *
-     * @param textureRegion the {@link TextureRegion} to use.
-     */
-    public TextureMapObject(TextureRegion textureRegion){
-        super();
-        this.textureRegion = textureRegion;
     }
 }

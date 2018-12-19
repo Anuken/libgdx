@@ -20,7 +20,6 @@ import com.badlogic.gdx.jnigen.BuildTarget.TargetOs;
 
 /**
  * Builds the JNI wrappers via gdx-jnigen.
- *
  * @author mzechner
  */
 public class GdxBuild{

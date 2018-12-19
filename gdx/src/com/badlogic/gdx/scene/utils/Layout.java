@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.utils;
 
 /**
  * Provides methods for an actor to participate in layout and to provide a minimum, preferred, and maximum size.
- *
  * @author Nathan Sweet
  */
 public interface Layout{

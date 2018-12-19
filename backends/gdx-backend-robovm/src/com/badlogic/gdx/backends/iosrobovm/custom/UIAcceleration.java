@@ -40,9 +40,6 @@ import org.robovm.rt.bro.ptr.Ptr;
 extends /*<extends>*/NSObject/*</extends>*/
 /*<implements>*//*</implements>*/{
 
-    /*<ptr>*/public static class UIAccelerationPtr extends Ptr<UIAcceleration, UIAccelerationPtr>{
-    }/*</ptr>*/
-
     /*<bind>*/static{
         ObjCRuntime.bind(UIAcceleration.class);
     }/*</bind>*/
@@ -69,6 +66,9 @@ extends /*<extends>*/NSObject/*</extends>*/
 
     @Property(selector = "z")
     public native double getZ();
+
+    /*<ptr>*/public static class UIAccelerationPtr extends Ptr<UIAcceleration, UIAccelerationPtr>{
+    }/*</ptr>*/
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

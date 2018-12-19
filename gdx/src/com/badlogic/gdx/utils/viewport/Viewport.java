@@ -27,16 +27,14 @@ import com.badlogic.gdx.utils.ScissorStack;
 
 /**
  * Manages a {@link Camera} and determines how world coordinates are mapped to and from the screen.
- *
  * @author Daniel Holderbaum
  * @author Nathan Sweet
  */
 public abstract class Viewport{
+    private final Vector2 tmp = new Vector2();
     private Camera camera;
     private float worldWidth, worldHeight;
     private int screenX, screenY, screenWidth, screenHeight;
-
-    private final Vector2 tmp = new Vector2();
 
     /** Calls {@link #apply(boolean)} with false. */
     public void apply(){
@@ -45,7 +43,6 @@ public abstract class Viewport{
 
     /**
      * Applies the viewport to the camera and sets the glViewport.
-     *
      * @param centerCamera If true, the camera position is set to the center of the world.
      */
     public void apply(boolean centerCamera){
@@ -73,7 +70,6 @@ public abstract class Viewport{
 
     /**
      * Transforms the specified screen coordinate to world coordinates.
-     *
      * @return The vector that was passed in, transformed to world coordinates.
      * @see Camera#unproject(Vector2)
      */
@@ -86,7 +82,6 @@ public abstract class Viewport{
 
     /**
      * Transforms the specified world coordinate to screen coordinates.
-     *
      * @return The vector that was passed in, transformed to screen coordinates.
      * @see Camera#project(Vector2)
      */

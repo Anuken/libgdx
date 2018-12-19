@@ -26,7 +26,6 @@ import com.badlogic.gdx.utils.pooling.Pools;
  * <p>
  * Instances of this class own the returned array of points and the points themselves to avoid garbage collection as much as
  * possible. Calling any of the methods will result in the reuse of the previously returned array and vectors.
- *
  * @author badlogic
  */
 public class Bresenham2{
@@ -35,7 +34,6 @@ public class Bresenham2{
 
     /**
      * Returns a list of {@link GridPoint2} instances along the given line, at integer coordinates.
-     *
      * @param start the start of the line
      * @param end the end of the line
      * @return the list of points on the line at integer coordinates
@@ -46,7 +44,6 @@ public class Bresenham2{
 
     /**
      * Returns a list of {@link GridPoint2} instances along the given line, at integer coordinates.
-     *
      * @param startX the start x coordinate of the line
      * @param startY the start y coordinate of the line
      * @param endX the end x coordinate of the line
@@ -61,7 +58,6 @@ public class Bresenham2{
 
     /**
      * Returns a list of {@link GridPoint2} instances along the given line, at integer coordinates.
-     *
      * @param startX the start x coordinate of the line
      * @param startY the start y coordinate of the line
      * @param endX the end x coordinate of the line

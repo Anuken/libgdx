@@ -31,7 +31,6 @@ import static com.badlogic.gdx.Core.scene;
 
 /**
  * Manages drag and drop operations through registered drag sources and drop targets.
- *
  * @author Nathan Sweet
  */
 public class DragAndDrop{
@@ -231,7 +230,6 @@ public class DragAndDrop{
 
     /**
      * A source where a payload can be dragged from.
-     *
      * @author Nathan Sweet
      */
     static abstract public class Source{
@@ -244,14 +242,12 @@ public class DragAndDrop{
 
         /**
          * Called when a drag is started on the source. The coordinates are in the source's local coordinate system.
-         *
          * @return If null the drag will not affect any targets.
          */
         abstract public Payload dragStart(InputEvent event, float x, float y, int pointer);
 
         /**
          * Called when a drag for the source is stopped. The coordinates are in the source's local coordinate system.
-         *
          * @param payload null if dragStart returned null.
          * @param target null if not dropped on a valid target.
          */
@@ -265,7 +261,6 @@ public class DragAndDrop{
 
     /**
      * A target where a payload can be dropped to.
-     *
      * @author Nathan Sweet
      */
     static abstract public class Target{
@@ -281,7 +276,6 @@ public class DragAndDrop{
 
         /**
          * Called when the payload is dragged over the target. The coordinates are in the target's local coordinate system.
-         *
          * @return true if this is a valid target for the payload.
          */
         abstract public boolean drag(Source source, Payload payload, float x, float y, int pointer);

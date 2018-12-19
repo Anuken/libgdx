@@ -22,7 +22,6 @@ import com.badlogic.gdx.collection.SnapshotArray;
 /**
  * An {@link InputProcessor} that delegates to an ordered list of other InputProcessors. Delegation for an event stops if a
  * processor returns true, which indicates that the event was handled.
- *
  * @author Nathan Sweet
  */
 public class InputMultiplexer implements InputProcessor{
@@ -62,6 +61,10 @@ public class InputMultiplexer implements InputProcessor{
         processors.clear();
     }
 
+    public SnapshotArray<InputProcessor> getProcessors(){
+        return processors;
+    }
+
     public void setProcessors(InputProcessor... processors){
         this.processors.clear();
         this.processors.addAll(processors);
@@ -72,16 +75,12 @@ public class InputMultiplexer implements InputProcessor{
         this.processors.addAll(processors);
     }
 
-    public SnapshotArray<InputProcessor> getProcessors(){
-        return processors;
-    }
-
     @Override
     public boolean keyDown(KeyCode keycode){
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).keyDown(keycode)) return true;
+                if(((InputProcessor)items[i]).keyDown(keycode)) return true;
         }finally{
             processors.end();
         }
@@ -93,7 +92,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).keyUp(keycode)) return true;
+                if(((InputProcessor)items[i]).keyUp(keycode)) return true;
         }finally{
             processors.end();
         }
@@ -105,7 +104,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).keyTyped(character)) return true;
+                if(((InputProcessor)items[i]).keyTyped(character)) return true;
         }finally{
             processors.end();
         }
@@ -117,7 +116,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).touchDown(screenX, screenY, pointer, button)) return true;
+                if(((InputProcessor)items[i]).touchDown(screenX, screenY, pointer, button)) return true;
         }finally{
             processors.end();
         }
@@ -129,7 +128,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).touchUp(screenX, screenY, pointer, button)) return true;
+                if(((InputProcessor)items[i]).touchUp(screenX, screenY, pointer, button)) return true;
         }finally{
             processors.end();
         }
@@ -141,7 +140,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).touchDragged(screenX, screenY, pointer)) return true;
+                if(((InputProcessor)items[i]).touchDragged(screenX, screenY, pointer)) return true;
         }finally{
             processors.end();
         }
@@ -153,7 +152,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).mouseMoved(screenX, screenY)) return true;
+                if(((InputProcessor)items[i]).mouseMoved(screenX, screenY)) return true;
         }finally{
             processors.end();
         }
@@ -165,7 +164,7 @@ public class InputMultiplexer implements InputProcessor{
         Object[] items = processors.begin();
         try{
             for(int i = 0, n = processors.size; i < n; i++)
-                if(((InputProcessor) items[i]).scrolled(amountX, amountY)) return true;
+                if(((InputProcessor)items[i]).scrolled(amountX, amountY)) return true;
         }finally{
             processors.end();
         }

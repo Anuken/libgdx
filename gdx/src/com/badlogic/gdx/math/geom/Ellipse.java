@@ -23,15 +23,13 @@ import java.io.Serializable;
 
 /**
  * A convenient 2D ellipse class, based on the circle class
- *
  * @author tonyp7
  */
 public class Ellipse implements Serializable, Shape2D{
 
+    private static final long serialVersionUID = 7381533206532032099L;
     public float x, y;
     public float width, height;
-
-    private static final long serialVersionUID = 7381533206532032099L;
 
     /** Construct a new ellipse with all values set to zero */
     public Ellipse(){
@@ -40,7 +38,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Copy constructor
-     *
      * @param ellipse Ellipse to construct a copy of.
      */
     public Ellipse(Ellipse ellipse){
@@ -52,7 +49,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Constructs a new ellipse
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param width the width of the ellipse
@@ -67,7 +63,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Costructs a new ellipse
-     *
      * @param position Position vector
      * @param width the width of the ellipse
      * @param height the height of the ellipse
@@ -89,7 +84,6 @@ public class Ellipse implements Serializable, Shape2D{
     /**
      * Constructs a new {@link Ellipse} from the position and radius of a {@link Circle} (since circles are special cases of
      * ellipses).
-     *
      * @param circle The circle to take the values of
      */
     public Ellipse(Circle circle){
@@ -101,7 +95,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Checks whether or not this ellipse contains the given point.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @return true if this ellipse contains the given point; false otherwise.
@@ -115,7 +108,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Checks whether or not this ellipse contains the given point.
-     *
      * @param point Position vector
      * @return true if this ellipse contains the given point; false otherwise.
      */
@@ -125,7 +117,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Sets a new position and size for this ellipse.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param width the width of the ellipse
@@ -140,7 +131,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Sets a new position and size for this ellipse based upon another ellipse.
-     *
      * @param ellipse The ellipse to copy the position and size of.
      */
     public void set(Ellipse ellipse){
@@ -166,7 +156,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of ellipse center from a {@link Vector2}.
-     *
      * @param position The position vector
      * @return this ellipse for chaining
      */
@@ -179,7 +168,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Sets the x and y-coordinates of ellipse center
-     *
      * @param x The x-coordinate
      * @param y The y-coordinate
      * @return this ellipse for chaining
@@ -193,7 +181,6 @@ public class Ellipse implements Serializable, Shape2D{
 
     /**
      * Sets the width and height of this ellipse
-     *
      * @param width The width
      * @param height The height
      * @return this ellipse for chaining
@@ -213,7 +200,6 @@ public class Ellipse implements Serializable, Shape2D{
     /**
      * Approximates the circumference of this {@link Ellipse}. Oddly enough, the circumference of an ellipse is actually difficult
      * to compute exactly.
-     *
      * @return The Ramanujan approximation to the circumference of an ellipse if one dimension is at least three times longer than
      * the other, else the simpler approximation
      */
@@ -222,10 +208,10 @@ public class Ellipse implements Serializable, Shape2D{
         float b = this.height / 2;
         if(a * 3 > b || b * 3 > a){
             // If one dimension is three times as long as the other...
-            return (float) (Mathf.PI * ((3 * (a + b)) - Math.sqrt((3 * a + b) * (a + 3 * b))));
+            return (float)(Mathf.PI * ((3 * (a + b)) - Math.sqrt((3 * a + b) * (a + 3 * b))));
         }else{
             // We can use the simpler approximation, then
-            return (float) (Mathf.PI2 * Math.sqrt((a * a + b * b) / 2));
+            return (float)(Mathf.PI2 * Math.sqrt((a * a + b * b) / 2));
         }
     }
 
@@ -233,7 +219,7 @@ public class Ellipse implements Serializable, Shape2D{
     public boolean equals(Object o){
         if(o == this) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        Ellipse e = (Ellipse) o;
+        Ellipse e = (Ellipse)o;
         return this.x == e.x && this.y == e.y && this.width == e.width && this.height == e.height;
     }
 

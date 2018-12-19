@@ -15,7 +15,6 @@ package com.badlogic.gdx.backends.android.surfaceview;
 
 /**
  * This {@link ResolutionStrategy} will place the GLSurfaceView with the given height and width in the center the screen.
- *
  * @author christoph widulle
  */
 public class FixedResolutionStrategy implements ResolutionStrategy{

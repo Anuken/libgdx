@@ -37,6 +37,48 @@ public class ZipResourceFile{
     //
     static final String LOG_TAG = "zipro";
     static final boolean LOGV = false;
+    /*
+     * Zip file constants.
+     */
+    static final int kEOCDSignature = 0x06054b50;
+    static final int kEOCDLen = 22;
+    static final int kEOCDNumEntries = 8; // offset to #of entries in file
+    static final int kEOCDSize = 12; // size of the central directory
+    static final int kEOCDFileOffset = 16; // offset to central directory
+    static final int kMaxCommentLen = 65535; // longest possible in ushort
+    static final int kMaxEOCDSearch = (kMaxCommentLen + kEOCDLen);
+    static final int kLFHSignature = 0x04034b50;
+    static final int kLFHLen = 30; // excluding variable-len fields
+    static final int kLFHNameLen = 26; // offset to filename length
+    static final int kLFHExtraLen = 28; // offset to extra length
+    static final int kCDESignature = 0x02014b50;
+    static final int kCDELen = 46; // excluding variable-len fields
+    static final int kCDEMethod = 10; // offset to compression method
+    static final int kCDEModWhen = 12; // offset to modification timestamp
+    static final int kCDECRC = 16; // offset to entry CRC
+    static final int kCDECompLen = 20; // offset to compressed length
+    static final int kCDEUncompLen = 24; // offset to uncompressed length
+    static final int kCDENameLen = 28; // offset to filename length
+    static final int kCDEExtraLen = 30; // offset to extra length
+    static final int kCDECommentLen = 32; // offset to comment length
+    static final int kCDELocalOffset = 42; // offset to local hdr
+    static final int kCompressStored = 0; // no compression
+    static final int kCompressDeflated = 8; // standard deflate
+    /*
+     * The values we return for ZipEntryRO use 0 as an invalid value, so we want
+     * to adjust the hash table index by a fixed amount. Using a large value
+     * helps insure that people don't mix & match arguments, e.g. to
+     * findEntryByIndex().
+     */
+    static final int kZipEntryAdj = 10000;
+    /* for reading compressed files */
+    public HashMap<File, ZipFile> mZipFiles = new HashMap<File, ZipFile>();
+    ByteBuffer mLEByteBuffer = ByteBuffer.allocate(4);
+    private HashMap<String, ZipEntryRO> mHashMap = new HashMap<String, ZipEntryRO>();
+
+    public ZipResourceFile(String zipFileName) throws IOException{
+        addPatchFile(zipFileName);
+    }
 
     // 4-byte number
     static private int swapEndian(int i){
@@ -49,139 +91,9 @@ public class ZipResourceFile{
         return ((i & 0x00FF) << 8 | (i & 0xFF00) >>> 8);
     }
 
-    /*
-     * Zip file constants.
-     */
-    static final int kEOCDSignature = 0x06054b50;
-    static final int kEOCDLen = 22;
-    static final int kEOCDNumEntries = 8; // offset to #of entries in file
-    static final int kEOCDSize = 12; // size of the central directory
-    static final int kEOCDFileOffset = 16; // offset to central directory
-
-    static final int kMaxCommentLen = 65535; // longest possible in ushort
-    static final int kMaxEOCDSearch = (kMaxCommentLen + kEOCDLen);
-
-    static final int kLFHSignature = 0x04034b50;
-    static final int kLFHLen = 30; // excluding variable-len fields
-    static final int kLFHNameLen = 26; // offset to filename length
-    static final int kLFHExtraLen = 28; // offset to extra length
-
-    static final int kCDESignature = 0x02014b50;
-    static final int kCDELen = 46; // excluding variable-len fields
-    static final int kCDEMethod = 10; // offset to compression method
-    static final int kCDEModWhen = 12; // offset to modification timestamp
-    static final int kCDECRC = 16; // offset to entry CRC
-    static final int kCDECompLen = 20; // offset to compressed length
-    static final int kCDEUncompLen = 24; // offset to uncompressed length
-    static final int kCDENameLen = 28; // offset to filename length
-    static final int kCDEExtraLen = 30; // offset to extra length
-    static final int kCDECommentLen = 32; // offset to comment length
-    static final int kCDELocalOffset = 42; // offset to local hdr
-
-    static final int kCompressStored = 0; // no compression
-    static final int kCompressDeflated = 8; // standard deflate
-
-    /*
-     * The values we return for ZipEntryRO use 0 as an invalid value, so we want
-     * to adjust the hash table index by a fixed amount. Using a large value
-     * helps insure that people don't mix & match arguments, e.g. to
-     * findEntryByIndex().
-     */
-    static final int kZipEntryAdj = 10000;
-
-    static public final class ZipEntryRO{
-        public ZipEntryRO(final String zipFileName, final File file,
-                          final String fileName){
-            mFileName = fileName;
-            mZipFileName = zipFileName;
-            mFile = file;
-        }
-
-        public final File mFile;
-        public final String mFileName;
-        public final String mZipFileName;
-        public long mLocalHdrOffset; // offset of local file header
-
-        /* useful stuff from the directory entry */
-        public int mMethod;
-        public long mWhenModified;
-        public long mCRC32;
-        public long mCompressedLength;
-        public long mUncompressedLength;
-
-        public long mOffset = -1;
-
-        public void setOffsetFromFile(RandomAccessFile f, ByteBuffer buf){
-            long localHdrOffset = mLocalHdrOffset;
-            try{
-                f.seek(localHdrOffset);
-                f.readFully(buf.array());
-                if(buf.getInt(0) != kLFHSignature){
-                    Log.w(LOG_TAG, "didn't find signature at start of lfh");
-                    throw new IOException();
-                }
-                int nameLen = buf.getShort(kLFHNameLen) & 0xFFFF;
-                int extraLen = buf.getShort(kLFHExtraLen) & 0xFFFF;
-                mOffset = localHdrOffset + kLFHLen + nameLen + extraLen;
-            }catch(FileNotFoundException e){
-                e.printStackTrace();
-            }catch(IOException ioe){
-                ioe.printStackTrace();
-            }
-        }
-
-        /**
-         * Calculates the offset of the start of the Zip file entry within the
-         * Zip file.
-         *
-         * @return the offset, in bytes from the start of the file of the entry
-         */
-        public long getOffset(){
-            return mOffset;
-        }
-
-        /**
-         * isUncompressed
-         *
-         * @return true if the file is stored in uncompressed form
-         */
-        public boolean isUncompressed(){
-            return mMethod == kCompressStored;
-        }
-
-        public AssetFileDescriptor getAssetFileDescriptor(){
-            if(mMethod == kCompressStored){
-                ParcelFileDescriptor pfd;
-                try{
-                    pfd = ParcelFileDescriptor.open(mFile,
-                    ParcelFileDescriptor.MODE_READ_ONLY);
-                    return new AssetFileDescriptor(pfd, getOffset(),
-                    mUncompressedLength);
-                }catch(FileNotFoundException e){
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        public String getZipFileName(){
-            return mZipFileName;
-        }
-
-        public File getZipFile(){
-            return mFile;
-        }
-
-    }
-
-    private HashMap<String, ZipEntryRO> mHashMap = new HashMap<String, ZipEntryRO>();
-
-    /* for reading compressed files */
-    public HashMap<File, ZipFile> mZipFiles = new HashMap<File, ZipFile>();
-
-    public ZipResourceFile(String zipFileName) throws IOException{
-        addPatchFile(zipFileName);
+    static private int read4LE(RandomAccessFile f) throws
+    IOException{
+        return swapEndian(f.readInt());
     }
 
     ZipEntryRO[] getEntriesAt(String path){
@@ -212,8 +124,6 @@ public class ZipResourceFile{
      * MediaPlayer. It also allows for the class to be used in a content
      * provider that can feed video players. The file must be stored
      * (non-compressed) in the Zip file for this to work.
-     *
-     * @param assetPath
      * @return the asset file descriptor for the file, or null if the file isn't
      * present or is stored compressed
      */
@@ -229,10 +139,7 @@ public class ZipResourceFile{
      * getInputStream returns an AssetFileDescriptor.AutoCloseInputStream
      * associated with the asset that is contained in the Zip file, or a
      * standard ZipInputStream if necessary to uncompress the file
-     *
-     * @param assetPath
      * @return an input stream for the named asset path, or null if not found
-     * @throws IOException
      */
     public InputStream getInputStream(String assetPath) throws IOException{
         ZipEntryRO entry = mHashMap.get(assetPath);
@@ -252,13 +159,6 @@ public class ZipResourceFile{
             }
         }
         return null;
-    }
-
-    ByteBuffer mLEByteBuffer = ByteBuffer.allocate(4);
-
-    static private int read4LE(RandomAccessFile f) throws
-    IOException{
-        return swapEndian(f.readInt());
     }
 
     /*
@@ -305,7 +205,7 @@ public class ZipResourceFile{
         long searchStart = fileLength - readAmount;
 
         f.seek(searchStart);
-        ByteBuffer bbuf = ByteBuffer.allocate((int) readAmount);
+        ByteBuffer bbuf = ByteBuffer.allocate((int)readAmount);
         byte[] buffer = bbuf.array();
         f.readFully(buffer);
         bbuf.order(ByteOrder.LITTLE_ENDIAN);
@@ -427,5 +327,87 @@ public class ZipResourceFile{
         if(LOGV){
             Log.v(LOG_TAG, "+++ zip good scan " + numEntries + " entries");
         }
+    }
+
+    static public final class ZipEntryRO{
+        public final File mFile;
+        public final String mFileName;
+        public final String mZipFileName;
+        public long mLocalHdrOffset; // offset of local file header
+        /* useful stuff from the directory entry */
+        public int mMethod;
+        public long mWhenModified;
+        public long mCRC32;
+        public long mCompressedLength;
+        public long mUncompressedLength;
+        public long mOffset = -1;
+
+        public ZipEntryRO(final String zipFileName, final File file,
+                          final String fileName){
+            mFileName = fileName;
+            mZipFileName = zipFileName;
+            mFile = file;
+        }
+
+        public void setOffsetFromFile(RandomAccessFile f, ByteBuffer buf){
+            long localHdrOffset = mLocalHdrOffset;
+            try{
+                f.seek(localHdrOffset);
+                f.readFully(buf.array());
+                if(buf.getInt(0) != kLFHSignature){
+                    Log.w(LOG_TAG, "didn't find signature at start of lfh");
+                    throw new IOException();
+                }
+                int nameLen = buf.getShort(kLFHNameLen) & 0xFFFF;
+                int extraLen = buf.getShort(kLFHExtraLen) & 0xFFFF;
+                mOffset = localHdrOffset + kLFHLen + nameLen + extraLen;
+            }catch(FileNotFoundException e){
+                e.printStackTrace();
+            }catch(IOException ioe){
+                ioe.printStackTrace();
+            }
+        }
+
+        /**
+         * Calculates the offset of the start of the Zip file entry within the
+         * Zip file.
+         * @return the offset, in bytes from the start of the file of the entry
+         */
+        public long getOffset(){
+            return mOffset;
+        }
+
+        /**
+         * isUncompressed
+         * @return true if the file is stored in uncompressed form
+         */
+        public boolean isUncompressed(){
+            return mMethod == kCompressStored;
+        }
+
+        public AssetFileDescriptor getAssetFileDescriptor(){
+            if(mMethod == kCompressStored){
+                ParcelFileDescriptor pfd;
+                try{
+                    pfd = ParcelFileDescriptor.open(mFile,
+                    ParcelFileDescriptor.MODE_READ_ONLY);
+                    return new AssetFileDescriptor(pfd, getOffset(),
+                    mUncompressedLength);
+                }catch(FileNotFoundException e){
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        public String getZipFileName(){
+            return mZipFileName;
+        }
+
+        public File getZipFile(){
+            return mFile;
+        }
+
     }
 }

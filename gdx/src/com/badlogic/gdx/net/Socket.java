@@ -32,7 +32,6 @@ import java.io.OutputStream;
  * receive data from the other end of the connection.</p>
  * <p>
  * A socket needs to be disposed if it is no longer used. Disposing also closes the connection.
- *
  * @author mzechner
  */
 public interface Socket extends Disposable{

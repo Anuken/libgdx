@@ -19,11 +19,11 @@ package com.badlogic.gdx.graphics.glutils;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.GLTexture;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -49,7 +49,6 @@ import java.util.Map;
  * <p>
  * A FrameBuffer must be disposed if it is no longer needed
  * </p>
- *
  * @author mzechner, realitix
  */
 public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
@@ -57,15 +56,12 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
     protected final static Map<Application, Array<GLFrameBuffer>> buffers = new HashMap<Application, Array<GLFrameBuffer>>();
 
     protected final static int GL_DEPTH24_STENCIL8_OES = 0x88F0;
-
-    /** the color buffer texture **/
-    protected Array<T> textureAttachments = new Array<T>();
-
     /** the default framebuffer handle, a.k.a screen. */
     protected static int defaultFramebufferHandle;
     /** true if we have polled for the default handle already. */
     protected static boolean defaultFramebufferHandleInitialized = false;
-
+    /** the color buffer texture **/
+    protected Array<T> textureAttachments = new Array<T>();
     /** the framebuffer handle **/
     protected int framebufferHandle;
     /** the depthbuffer render object handle **/
@@ -89,6 +85,50 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
     protected GLFrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder){
         this.bufferBuilder = bufferBuilder;
         build();
+    }
+
+    /** Unbinds the framebuffer, all drawing will be performed to the normal framebuffer from here on. */
+    public static void unbind(){
+        Core.gl20.glBindFramebuffer(GL20.GL_FRAMEBUFFER, defaultFramebufferHandle);
+    }
+
+    private static void addManagedFrameBuffer(Application app, GLFrameBuffer frameBuffer){
+        Array<GLFrameBuffer> managedResources = buffers.get(app);
+        if(managedResources == null) managedResources = new Array<GLFrameBuffer>();
+        managedResources.add(frameBuffer);
+        buffers.put(app, managedResources);
+    }
+
+    /**
+     * Invalidates all frame buffers. This can be used when the OpenGL context is lost to rebuild all managed frame buffers. This
+     * assumes that the texture attached to this buffer has already been rebuild! Use with care.
+     */
+    public static void invalidateAllFrameBuffers(Application app){
+        if(Core.gl20 == null) return;
+
+        Array<GLFrameBuffer> bufferArray = buffers.get(app);
+        if(bufferArray == null) return;
+        for(int i = 0; i < bufferArray.size; i++){
+            bufferArray.get(i).build();
+        }
+    }
+
+    public static void clearAllFrameBuffers(Application app){
+        buffers.remove(app);
+    }
+
+    public static StringBuilder getManagedStatus(final StringBuilder builder){
+        builder.append("Managed buffers/app: { ");
+        for(Application app : buffers.keySet()){
+            builder.append(buffers.get(app).size);
+            builder.append(" ");
+        }
+        builder.append("}");
+        return builder;
+    }
+
+    public static String getManagedStatus(){
+        return getManagedStatus(new StringBuilder()).toString();
     }
 
     /** Convenience method to return the first Texture attachment present in the fbo **/
@@ -316,11 +356,6 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
         Core.gl20.glBindFramebuffer(GL20.GL_FRAMEBUFFER, framebufferHandle);
     }
 
-    /** Unbinds the framebuffer, all drawing will be performed to the normal framebuffer from here on. */
-    public static void unbind(){
-        Core.gl20.glBindFramebuffer(GL20.GL_FRAMEBUFFER, defaultFramebufferHandle);
-    }
-
     /** Binds the frame buffer and sets the viewport accordingly, so everything gets drawn to it. */
     public void begin(){
         bind();
@@ -339,7 +374,6 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
 
     /**
      * Unbinds the framebuffer and sets viewport sizes, all drawing will be performed to the normal framebuffer from here on.
-     *
      * @param x the x-axis position of the viewport in pixels
      * @param y the y-asis position of the viewport in pixels
      * @param width the width of the viewport in pixels
@@ -384,45 +418,6 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
     /** @return the width of the framebuffer in pixels */
     public int getWidth(){
         return bufferBuilder.width;
-    }
-
-    private static void addManagedFrameBuffer(Application app, GLFrameBuffer frameBuffer){
-        Array<GLFrameBuffer> managedResources = buffers.get(app);
-        if(managedResources == null) managedResources = new Array<GLFrameBuffer>();
-        managedResources.add(frameBuffer);
-        buffers.put(app, managedResources);
-    }
-
-    /**
-     * Invalidates all frame buffers. This can be used when the OpenGL context is lost to rebuild all managed frame buffers. This
-     * assumes that the texture attached to this buffer has already been rebuild! Use with care.
-     */
-    public static void invalidateAllFrameBuffers(Application app){
-        if(Core.gl20 == null) return;
-
-        Array<GLFrameBuffer> bufferArray = buffers.get(app);
-        if(bufferArray == null) return;
-        for(int i = 0; i < bufferArray.size; i++){
-            bufferArray.get(i).build();
-        }
-    }
-
-    public static void clearAllFrameBuffers(Application app){
-        buffers.remove(app);
-    }
-
-    public static StringBuilder getManagedStatus(final StringBuilder builder){
-        builder.append("Managed buffers/app: { ");
-        for(Application app : buffers.keySet()){
-            builder.append(buffers.get(app).size);
-            builder.append(" ");
-        }
-        builder.append("}");
-        return builder;
-    }
-
-    public static String getManagedStatus(){
-        return getManagedStatus(new StringBuilder()).toString();
     }
 
     protected static class FrameBufferTextureAttachmentSpec{

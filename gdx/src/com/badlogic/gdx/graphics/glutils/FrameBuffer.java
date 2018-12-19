@@ -38,7 +38,6 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
  * <p>
  * A FrameBuffer must be disposed if it is no longer needed
  * </p>
- *
  * @author mzechner, realitix
  */
 public class FrameBuffer extends GLFrameBuffer<Texture>{
@@ -48,8 +47,6 @@ public class FrameBuffer extends GLFrameBuffer<Texture>{
 
     /**
      * Creates a GLFrameBuffer from the specifications provided by bufferBuilder
-     *
-     * @param bufferBuilder
      **/
     protected FrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder){
         super(bufferBuilder);
@@ -62,7 +59,6 @@ public class FrameBuffer extends GLFrameBuffer<Texture>{
 
     /**
      * Creates a new FrameBuffer having the given dimensions and potentially a depth and a stencil buffer attached.
-     *
      * @param format the format of the color buffer; according to the OpenGL ES 2.0 spec, only RGB565, RGBA4444 and RGB5_A1 are
      * color-renderable
      * @param width the width of the framebuffer in pixels
@@ -78,6 +74,11 @@ public class FrameBuffer extends GLFrameBuffer<Texture>{
         this.bufferBuilder = frameBufferBuilder;
 
         build();
+    }
+
+    /** See {@link GLFrameBuffer#unbind()} */
+    public static void unbind(){
+        GLFrameBuffer.unbind();
     }
 
     @Override
@@ -97,10 +98,5 @@ public class FrameBuffer extends GLFrameBuffer<Texture>{
     @Override
     protected void attachFrameBufferColorTexture(Texture texture){
         Core.gl20.glFramebufferTexture2D(GL20.GL_FRAMEBUFFER, GL20.GL_COLOR_ATTACHMENT0, GL20.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
-    }
-
-    /** See {@link GLFrameBuffer#unbind()} */
-    public static void unbind(){
-        GLFrameBuffer.unbind();
     }
 }

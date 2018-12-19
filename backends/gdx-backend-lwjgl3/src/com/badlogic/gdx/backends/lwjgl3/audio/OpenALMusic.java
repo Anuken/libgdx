@@ -17,9 +17,9 @@
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
@@ -37,10 +37,10 @@ public abstract class OpenALMusic implements Music{
     static private final int bytesPerSample = 2;
     static private final byte[] tempBytes = new byte[bufferSize];
     static private final ByteBuffer tempBuffer = BufferUtils.createByteBuffer(bufferSize);
-
-    private FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
-
+    protected final FileHandle file;
     private final OpenALAudio audio;
+    protected int bufferOverhead = 0;
+    private FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
     private IntBuffer buffers;
     private int sourceID = -1;
     private int format, sampleRate;
@@ -48,10 +48,6 @@ public abstract class OpenALMusic implements Music{
     private float volume = 1;
     private float pan = 0;
     private float renderedSeconds, maxSecondsPerBuffer;
-
-    protected final FileHandle file;
-    protected int bufferOverhead = 0;
-
     private OnCompletionListener onCompletionListener;
 
     public OpenALMusic(OpenALAudio audio, FileHandle file){
@@ -63,7 +59,7 @@ public abstract class OpenALMusic implements Music{
     protected void setup(int channels, int sampleRate){
         this.format = channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16;
         this.sampleRate = sampleRate;
-        maxSecondsPerBuffer = (float) (bufferSize - bufferOverhead) / (bytesPerSample * channels * sampleRate);
+        maxSecondsPerBuffer = (float)(bufferSize - bufferOverhead) / (bytesPerSample * channels * sampleRate);
     }
 
     public void play(){
@@ -130,22 +126,22 @@ public abstract class OpenALMusic implements Music{
         return isPlaying;
     }
 
+    public boolean isLooping(){
+        return isLooping;
+    }
+
     public void setLooping(boolean isLooping){
         this.isLooping = isLooping;
     }
 
-    public boolean isLooping(){
-        return isLooping;
+    public float getVolume(){
+        return this.volume;
     }
 
     public void setVolume(float volume){
         this.volume = volume;
         if(audio.noDevice) return;
         if(sourceID != -1) alSourcef(sourceID, AL_GAIN, volume);
-    }
-
-    public float getVolume(){
-        return this.volume;
     }
 
     public void setPan(float pan, float volume){
@@ -156,6 +152,12 @@ public abstract class OpenALMusic implements Music{
         alSource3f(sourceID, AL_POSITION, Mathf.cos((pan - 1) * Mathf.PI / 2), 0,
         Mathf.sin((pan + 1) * Mathf.PI / 2));
         alSourcef(sourceID, AL_GAIN, volume);
+    }
+
+    public float getPosition(){
+        if(audio.noDevice) return 0;
+        if(sourceID == -1) return 0;
+        return renderedSeconds + alGetSourcef(sourceID, AL11.AL_SEC_OFFSET);
     }
 
     public void setPosition(float position){
@@ -194,12 +196,6 @@ public abstract class OpenALMusic implements Music{
             alSourcePlay(sourceID);
             isPlaying = true;
         }
-    }
-
-    public float getPosition(){
-        if(audio.noDevice) return 0;
-        if(sourceID == -1) return 0;
-        return renderedSeconds + alGetSourcef(sourceID, AL11.AL_SEC_OFFSET);
     }
 
     /**
@@ -264,7 +260,7 @@ public abstract class OpenALMusic implements Music{
                 return false;
         }
         float previousLoadedSeconds = renderedSecondsQueue.size > 0 ? renderedSecondsQueue.first() : 0;
-        float currentBufferSeconds = maxSecondsPerBuffer * (float) length / (float) bufferSize;
+        float currentBufferSeconds = maxSecondsPerBuffer * (float)length / (float)bufferSize;
         renderedSecondsQueue.insert(0, previousLoadedSeconds + currentBufferSeconds);
 
         tempBuffer.put(tempBytes, 0, length).flip();

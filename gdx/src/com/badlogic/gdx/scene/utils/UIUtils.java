@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.OS;
 public class UIUtils{
 
     static public boolean isDisabled(Element element){
-        return element != null && ((element instanceof Disableable && ((Disableable) element).isDisabled()) || !element.isVisible());
+        return element != null && ((element instanceof Disableable && ((Disableable)element).isDisabled()) || !element.isVisible());
     }
 
     static public boolean portrait(){

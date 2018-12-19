@@ -36,7 +36,6 @@ import java.util.Comparator;
  * }
  * array.end();
  * </pre>
- *
  * @author Nathan Sweet
  */
 public class SnapshotArray<T> extends Array<T>{
@@ -73,6 +72,11 @@ public class SnapshotArray<T> extends Array<T>{
 
     public SnapshotArray(T[] array){
         super(array);
+    }
+
+    /** @see #SnapshotArray(Object[]) */
+    static public <T> SnapshotArray<T> with(T... array){
+        return new SnapshotArray(array);
     }
 
     /** Returns the backing array, which is guaranteed to not be modified before {@link #end()}. */
@@ -180,10 +184,5 @@ public class SnapshotArray<T> extends Array<T>{
     public T[] setSize(int newSize){
         modified();
         return super.setSize(newSize);
-    }
-
-    /** @see #SnapshotArray(Object[]) */
-    static public <T> SnapshotArray<T> with(T... array){
-        return new SnapshotArray(array);
     }
 }

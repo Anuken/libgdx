@@ -38,20 +38,17 @@ import com.badlogic.gdx.utils.Disposable;
  * <p>
  * <b>Note</b>: any values provided will not be clamped, it is the developer's responsibility to do so
  * </p>
- *
  * @author badlogicgames@gmail.com
  */
 public interface Sound extends Disposable{
     /**
      * Plays the sound. If the sound is already playing, it will be played again, concurrently.
-     *
      * @return the id of the sound instance if successful, or -1 on failure.
      */
     long play();
 
     /**
      * Plays the sound. If the sound is already playing, it will be played again, concurrently.
-     *
      * @param volume the volume in the range [0,1]
      * @return the id of the sound instance if successful, or -1 on failure.
      */
@@ -59,7 +56,6 @@ public interface Sound extends Disposable{
 
     /**
      * Plays the sound. If the sound is already playing, it will be played again, concurrently.
-     *
      * @param volume the volume in the range [0,1]
      * @param pitch the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
@@ -69,7 +65,6 @@ public interface Sound extends Disposable{
 
     /**
      * Plays the sound, looping. If the sound is already playing, it will be played again, concurrently.
-     *
      * @return the id of the sound instance if successful, or -1 on failure.
      */
     long loop();
@@ -77,7 +72,6 @@ public interface Sound extends Disposable{
     /**
      * Plays the sound, looping. If the sound is already playing, it will be played again, concurrently. You need to stop the sound
      * via a call to {@link #stop(long)} using the returned id.
-     *
      * @param volume the volume in the range [0, 1]
      * @return the id of the sound instance if successful, or -1 on failure.
      */
@@ -86,7 +80,6 @@ public interface Sound extends Disposable{
     /**
      * Plays the sound, looping. If the sound is already playing, it will be played again, concurrently. You need to stop the sound
      * via a call to {@link #stop(long)} using the returned id.
-     *
      * @param volume the volume in the range [0,1]
      * @param pitch the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
@@ -109,7 +102,6 @@ public interface Sound extends Disposable{
     /**
      * Stops the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}. If the sound is no longer
      * playing, this has no effect.
-     *
      * @param soundId the sound id
      */
     void stop(long soundId);
@@ -117,7 +109,6 @@ public interface Sound extends Disposable{
     /**
      * Pauses the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}. If the sound is no
      * longer playing, this has no effect.
-     *
      * @param soundId the sound id
      */
     void pause(long soundId);
@@ -125,14 +116,12 @@ public interface Sound extends Disposable{
     /**
      * Resumes the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}. If the sound is not
      * paused, this has no effect.
-     *
      * @param soundId the sound id
      */
     void resume(long soundId);
 
     /**
      * Sets the sound instance with the given id to be looping. If the sound is no longer playing this has no effect.s
-     *
      * @param soundId the sound id
      * @param looping whether to loop or not.
      */
@@ -141,7 +130,6 @@ public interface Sound extends Disposable{
     /**
      * Changes the pitch multiplier of the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}.
      * If the sound is no longer playing, this has no effect.
-     *
      * @param soundId the sound id
      * @param pitch the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      */
@@ -150,7 +138,6 @@ public interface Sound extends Disposable{
     /**
      * Changes the volume of the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}. If the
      * sound is no longer playing, this has no effect.
-     *
      * @param soundId the sound id
      * @param volume the volume in the range 0 (silent) to 1 (max volume).
      */
@@ -159,7 +146,6 @@ public interface Sound extends Disposable{
     /**
      * Sets the panning and volume of the sound instance with the given id as returned by {@link #play()} or {@link #play(float)}.
      * If the sound is no longer playing, this has no effect. Note that panning only works for mono sounds, not for stereo sounds!
-     *
      * @param soundId the sound id
      * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @param volume the volume in the range [0,1].

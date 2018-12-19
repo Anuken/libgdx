@@ -28,9 +28,12 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.view.*;
+import android.view.MotionEvent;
+import android.view.Surface;
+import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.badlogic.gdx.Application;
@@ -51,13 +54,28 @@ import java.util.List;
 
 /**
  * An implementation of the {@link Input} interface for Android.
- *
  * @author mzechner
  */
 
 /** @author jshapcot */
 public class AndroidInput extends Input implements OnKeyListener, OnTouchListener{
     public static final int NUM_TOUCHES = 20;
+    protected final float[] accelerometerValues = new float[3];
+    protected final float[] gyroscopeValues = new float[3];
+    protected final AndroidTouchHandler touchHandler;
+    protected final Vibrator vibrator;
+    protected final float[] magneticFieldValues = new float[3];
+    protected final float[] rotationVectorValues = new float[3];
+    protected final Orientation nativeOrientation;
+    final boolean hasMultitouch;
+    final Application app;
+    final Context context;
+    final float[] R = new float[9];
+    final float[] orientation = new float[3];
+    private final AndroidApplicationConfiguration config;
+    private final AndroidOnscreenKeyboard onscreenKeyboard;
+    public boolean accelerometerAvailable = false;
+    public boolean gyroscopeAvailable = false;
     ArrayList<OnKeyListener> keyListeners = new ArrayList<>();
     ArrayList<KeyEvent> keyEvents = new ArrayList<>();
     ArrayList<TouchEvent> touchEvents = new ArrayList<>();
@@ -69,88 +87,43 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
     int[] button = new int[NUM_TOUCHES];
     int[] realId = new int[NUM_TOUCHES];
     float[] pressure = new float[NUM_TOUCHES];
-    final boolean hasMultitouch;
-    private Bits keys = new Bits(KeyCode.values().length);
-    private Bits justPressedKeys = new Bits(KeyCode.values().length);
-    private SensorManager manager;
-    public boolean accelerometerAvailable = false;
-    protected final float[] accelerometerValues = new float[3];
-    public boolean gyroscopeAvailable = false;
-    protected final float[] gyroscopeValues = new float[3];
-    private String text = null;
-    private Handler handle;
-    final Application app;
-    final Context context;
-    protected final AndroidTouchHandler touchHandler;
-    private int sleepTime;
-    protected final Vibrator vibrator;
-    private boolean compassAvailable = false;
-    private boolean rotationVectorAvailable = false;
     boolean keyboardAvailable;
-    protected final float[] magneticFieldValues = new float[3];
-    protected final float[] rotationVectorValues = new float[3];
-    private float azimuth = 0;
-    private float pitch = 0;
-    private float roll = 0;
-    private boolean justTouched = false;
-    private InputProcessor processor;
-    private final AndroidApplicationConfiguration config;
-    protected final Orientation nativeOrientation;
-    private long currentEventTimeStamp = System.nanoTime();
-    private final AndroidOnscreenKeyboard onscreenKeyboard;
-
-    private Vector3 accel = new Vector3(), gyro = new Vector3(), orient = new Vector3();
-
-    private SensorEventListener accelerometerListener;
-    private SensorEventListener gyroscopeListener;
-    private SensorEventListener compassListener;
-    private SensorEventListener rotationVectorListener;
-
-    static class KeyEvent{
-        static final int KEY_DOWN = 0;
-        static final int KEY_UP = 1;
-        static final int KEY_TYPED = 2;
-
-        long timeStamp;
-        int type;
-        KeyCode keyCode;
-        char keyChar;
-    }
-
-    static class TouchEvent{
-        static final int TOUCH_DOWN = 0;
-        static final int TOUCH_UP = 1;
-        static final int TOUCH_DRAGGED = 2;
-        static final int TOUCH_SCROLLED = 3;
-        static final int TOUCH_MOVED = 4;
-
-        long timeStamp;
-        int type;
-        int x;
-        int y;
-        int scrollAmountX;
-        int scrollAmountY;
-        KeyCode button;
-        int pointer;
-    }
-
     Pool<KeyEvent> usedKeyEvents = new Pool<KeyEvent>(16, 1000){
         protected KeyEvent newObject(){
             return new KeyEvent();
         }
     };
-
     Pool<TouchEvent> usedTouchEvents = new Pool<TouchEvent>(16, 1000){
         protected TouchEvent newObject(){
             return new TouchEvent();
         }
     };
+    boolean requestFocus = true;
+    private Bits keys = new Bits(KeyCode.values().length);
+    private Bits justPressedKeys = new Bits(KeyCode.values().length);
+    private SensorManager manager;
+    private String text = null;
+    private Handler handle;
+    private int sleepTime;
+    private boolean compassAvailable = false;
+    private boolean rotationVectorAvailable = false;
+    private float azimuth = 0;
+    private float pitch = 0;
+    private float roll = 0;
+    private boolean justTouched = false;
+    private InputProcessor processor;
+    private long currentEventTimeStamp = System.nanoTime();
+    private Vector3 accel = new Vector3(), gyro = new Vector3(), orient = new Vector3();
+    private SensorEventListener accelerometerListener;
+    private SensorEventListener gyroscopeListener;
+    private SensorEventListener compassListener;
+    private SensorEventListener rotationVectorListener;
 
     public AndroidInput(Application activity, Context context, Object view, AndroidApplicationConfiguration config){
         // we hook into View, for LWPs we call onTouch below directly from
         // within the AndroidLivewallpaperEngine#onTouchEvent() method.
         if(view instanceof View){
-            View v = (View) view;
+            View v = (View)view;
             v.setOnKeyListener(this);
             v.setOnTouchListener(this);
             v.setFocusable(true);
@@ -169,7 +142,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         touchHandler = new AndroidMultiTouchHandler();
         hasMultitouch = touchHandler.supportsMultitouch(context);
 
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 
         int rotation = getRotation();
         DisplayMode mode = Core.graphics.getDisplayMode();
@@ -369,8 +342,6 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         }
     }
 
-    boolean requestFocus = true;
-
     @Override
     public boolean onTouch(View view, MotionEvent event){
         if(requestFocus && view != null){
@@ -447,7 +418,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
                 return false;
             }
 
-            char character = (char) e.getUnicodeChar();
+            char character = (char)e.getUnicodeChar();
             // Android doesn't report a unicode char for back space. hrm...
             if(keyCode == 67) character = '\b';
             if(e.getKeyCode() < 0){
@@ -520,14 +491,14 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
     public void setOnscreenKeyboardVisible(final boolean visible){
         handle.post(new Runnable(){
             public void run(){
-                InputMethodManager manager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager manager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(visible){
-                    View view = ((AndroidGraphics) Core.graphics).getView();
+                    View view = ((AndroidGraphics)Core.graphics).getView();
                     view.setFocusable(true);
                     view.setFocusableInTouchMode(true);
-                    manager.showSoftInput(((AndroidGraphics) Core.graphics).getView(), 0);
+                    manager.showSoftInput(((AndroidGraphics)Core.graphics).getView(), 0);
                 }else{
-                    manager.hideSoftInputFromWindow(((AndroidGraphics) Core.graphics).getView().getWindowToken(), 0);
+                    manager.hideSoftInputFromWindow(((AndroidGraphics)Core.graphics).getView().getWindowToken(), 0);
                 }
             }
         });
@@ -553,9 +524,6 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         return justTouched;
     }
 
-    final float[] R = new float[9];
-    final float[] orientation = new float[3];
-
     private void updateOrientation(){
         if(rotationVectorAvailable){
             SensorManager.getRotationMatrixFromVector(R, rotationVectorValues);
@@ -563,9 +531,9 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
             return; // compass + accelerometer in free fall
         }
         SensorManager.getOrientation(R, orientation);
-        azimuth = (float) Math.toDegrees(orientation[0]);
-        pitch = (float) Math.toDegrees(orientation[1]);
-        roll = (float) Math.toDegrees(orientation[2]);
+        azimuth = (float)Math.toDegrees(orientation[0]);
+        pitch = (float)Math.toDegrees(orientation[1]);
+        roll = (float)Math.toDegrees(orientation[2]);
     }
 
     /** Returns the rotation matrix describing the devices rotation as per <a href=
@@ -583,7 +551,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
 
     void registerSensorListeners(){
         if(config.useAccelerometer){
-            manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            manager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
             if(manager.getSensorList(Sensor.TYPE_ACCELEROMETER).isEmpty()){
                 accelerometerAvailable = false;
             }else{
@@ -596,7 +564,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
             accelerometerAvailable = false;
 
         if(config.useGyroscope){
-            manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            manager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
             if(manager.getSensorList(Sensor.TYPE_GYROSCOPE).isEmpty()){
                 gyroscopeAvailable = false;
             }else{
@@ -610,7 +578,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
 
         rotationVectorAvailable = false;
         if(config.useRotationVectorSensor){
-            if(manager == null) manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            if(manager == null) manager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
             List<Sensor> rotationVectorSensors = manager.getSensorList(Sensor.TYPE_ROTATION_VECTOR);
             if(!rotationVectorSensors.isEmpty()){
                 rotationVectorListener = new SensorListener();
@@ -628,7 +596,7 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         }
 
         if(config.useCompass && !rotationVectorAvailable){
-            if(manager == null) manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            if(manager == null) manager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
             Sensor sensor = manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
             if(sensor != null){
                 compassAvailable = accelerometerAvailable;
@@ -729,9 +697,9 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         int orientation = 0;
 
         if(context instanceof Activity){
-            orientation = ((Activity) context).getWindowManager().getDefaultDisplay().getRotation();
+            orientation = ((Activity)context).getWindowManager().getDefaultDisplay().getRotation();
         }else{
-            orientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            orientation = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         }
 
         switch(orientation){
@@ -754,12 +722,12 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
     }
 
     @Override
-    public void setCursorCatched(boolean catched){
+    public boolean isCursorCatched(){
+        return false;
     }
 
     @Override
-    public boolean isCursorCatched(){
-        return false;
+    public void setCursorCatched(boolean catched){
     }
 
     @Override
@@ -807,6 +775,34 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
 
     public void onResume(){
         registerSensorListeners();
+    }
+
+    static class KeyEvent{
+        static final int KEY_DOWN = 0;
+        static final int KEY_UP = 1;
+        static final int KEY_TYPED = 2;
+
+        long timeStamp;
+        int type;
+        KeyCode keyCode;
+        char keyChar;
+    }
+
+    static class TouchEvent{
+        static final int TOUCH_DOWN = 0;
+        static final int TOUCH_UP = 1;
+        static final int TOUCH_DRAGGED = 2;
+        static final int TOUCH_SCROLLED = 3;
+        static final int TOUCH_MOVED = 4;
+
+        long timeStamp;
+        int type;
+        int x;
+        int y;
+        int scrollAmountX;
+        int scrollAmountY;
+        KeyCode button;
+        int pointer;
     }
 
     /** Our implementation of SensorEventListener. Because Android doesn't like it when we register more than one Sensor to a single

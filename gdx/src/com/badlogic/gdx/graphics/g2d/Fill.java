@@ -50,27 +50,27 @@ public class Fill{
     }
 
     public static void poly(float x, float y, int sides, float radius, float rotation){
-        float space = 360f/sides;
+        float space = 360f / sides;
 
-        for(int i = 0; i < sides-2; i += 3){
-            float px = Mathf.trnsx(space * i+rotation, radius);
-            float py = Mathf.trnsy(space * i+rotation, radius);
-            float px2 = Mathf.trnsx(space * (i+1)+rotation, radius);
-            float py2 = Mathf.trnsy(space * (i+1)+rotation, radius);
-            float px3 = Mathf.trnsx(space * (i+2)+rotation, radius);
-            float py3 = Mathf.trnsy(space * (i+2)+rotation, radius);
-            float px4 = Mathf.trnsx(space * (i+3)+rotation, radius);
-            float py4 = Mathf.trnsy(space * (i+3)+rotation, radius);
-            quad(x+px, y+py, x+px2, y+py2, x+px3, y+py3, x+px4, y + py4);
+        for(int i = 0; i < sides - 2; i += 3){
+            float px = Mathf.trnsx(space * i + rotation, radius);
+            float py = Mathf.trnsy(space * i + rotation, radius);
+            float px2 = Mathf.trnsx(space * (i + 1) + rotation, radius);
+            float py2 = Mathf.trnsy(space * (i + 1) + rotation, radius);
+            float px3 = Mathf.trnsx(space * (i + 2) + rotation, radius);
+            float py3 = Mathf.trnsy(space * (i + 2) + rotation, radius);
+            float px4 = Mathf.trnsx(space * (i + 3) + rotation, radius);
+            float py4 = Mathf.trnsy(space * (i + 3) + rotation, radius);
+            quad(x + px, y + py, x + px2, y + py2, x + px3, y + py3, x + px4, y + py4);
         }
 
         int mod = sides % 3;
 
         for(int i = sides - mod - 1; i < sides; i++){
-            float px = Mathf.trnsx(space * i+rotation, radius);
-            float py = Mathf.trnsy(space * i+rotation, radius);
-            float px2 = Mathf.trnsx(space * (i+1)+rotation, radius);
-            float py2 = Mathf.trnsy(space * (i+1)+rotation, radius);
+            float px = Mathf.trnsx(space * i + rotation, radius);
+            float py = Mathf.trnsy(space * i + rotation, radius);
+            float px2 = Mathf.trnsx(space * (i + 1) + rotation, radius);
+            float py2 = Mathf.trnsy(space * (i + 1) + rotation, radius);
             tri(x, y, x + px, y + py, x + px2, y + py2);
         }
     }

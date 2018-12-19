@@ -20,7 +20,6 @@ import com.badlogic.gdx.scene.Action;
 
 /**
  * Removes an actor from the stage.
- *
  * @author Nathan Sweet
  */
 public class RemoveActorAction extends Action{

@@ -24,7 +24,6 @@ import java.util.Arrays;
 /**
  * A resizable, ordered or unordered byte array. Avoids the boxing that occurs with ArrayList<Byte>. If unordered, this class
  * avoids a memory copy when removing elements (the last element is moved to the removed element's position).
- *
  * @author Nathan Sweet
  */
 public class ByteArray{
@@ -75,7 +74,6 @@ public class ByteArray{
     /**
      * Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
      * subsequent elements added will cause the backing array to be grown.
-     *
      * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
      * memory copy.
      */
@@ -85,15 +83,20 @@ public class ByteArray{
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
+    /** @see #ByteArray(byte[]) */
+    static public ByteArray with(byte... array){
+        return new ByteArray(array);
+    }
+
     public void add(byte value){
         byte[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size++] = value;
     }
 
     public void add(byte value1, byte value2){
         byte[] items = this.items;
-        if(size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 1 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         size += 2;
@@ -101,7 +104,7 @@ public class ByteArray{
 
     public void add(byte value1, byte value2, byte value3){
         byte[] items = this.items;
-        if(size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size + 2 >= items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -110,7 +113,7 @@ public class ByteArray{
 
     public void add(byte value1, byte value2, byte value3, byte value4){
         byte[] items = this.items;
-        if(size + 3 >= items.length) items = resize(Math.max(8, (int) (size * 1.8f))); // 1.75 isn't enough when size=5.
+        if(size + 3 >= items.length) items = resize(Math.max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
         items[size] = value1;
         items[size + 1] = value2;
         items[size + 2] = value3;
@@ -135,7 +138,7 @@ public class ByteArray{
     public void addAll(byte[] array, int offset, int length){
         byte[] items = this.items;
         int sizeNeeded = size + length;
-        if(sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+        if(sizeNeeded > items.length) items = resize(Math.max(8, (int)(sizeNeeded * 1.75f)));
         System.arraycopy(array, offset, items, size, length);
         size += length;
     }
@@ -163,7 +166,7 @@ public class ByteArray{
     public void insert(int index, byte value){
         if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
         byte[] items = this.items;
-        if(size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
         if(ordered)
             System.arraycopy(items, index, items, index + 1, size - index);
         else
@@ -245,7 +248,6 @@ public class ByteArray{
 
     /**
      * Removes from this array all of elements contained in the specified array.
-     *
      * @return true if this array was modified.
      */
     public boolean removeAll(ByteArray array){
@@ -293,7 +295,6 @@ public class ByteArray{
     /**
      * Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
      * have been removed, or if it is known that more items will not be added.
-     *
      * @return {@link #items}
      */
     public byte[] shrink(){
@@ -304,7 +305,6 @@ public class ByteArray{
     /**
      * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
      * items to avoid multiple backing array resizes.
-     *
      * @return {@link #items}
      */
     public byte[] ensureCapacity(int additionalCapacity){
@@ -317,7 +317,6 @@ public class ByteArray{
 
     /**
      * Sets the array size, leaving any values beyond the current size undefined.
-     *
      * @return {@link #items}
      */
     public byte[] setSize(int newSize){
@@ -392,7 +391,7 @@ public class ByteArray{
         if(object == this) return true;
         if(!ordered) return false;
         if(!(object instanceof ByteArray)) return false;
-        ByteArray array = (ByteArray) object;
+        ByteArray array = (ByteArray)object;
         if(!array.ordered) return false;
         int n = size;
         if(n != array.size) return false;
@@ -427,10 +426,5 @@ public class ByteArray{
             buffer.append(items[i]);
         }
         return buffer.toString();
-    }
-
-    /** @see #ByteArray(byte[]) */
-    static public ByteArray with(byte... array){
-        return new ByteArray(array);
     }
 }

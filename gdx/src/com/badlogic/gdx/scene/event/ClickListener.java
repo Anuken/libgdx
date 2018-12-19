@@ -27,7 +27,6 @@ import com.badlogic.gdx.utils.TimeUtils;
  * makes it easier to press buttons on a touch interface when the initial touch happens near the edge of the element. Double clicks
  * can be detected using {@link #getTapCount()}. Any touch (not just the first) will trigger this listener. While pressed, other
  * touch downs are ignored.
- *
  * @author Nathan Sweet
  */
 public class ClickListener extends InputListener{
@@ -40,12 +39,12 @@ public class ClickListener extends InputListener{
     private KeyCode button = KeyCode.MOUSE_LEFT;
     private boolean pressed, over, overAny, cancelled;
     private long visualPressedTime;
-    private long tapCountInterval = (long) (0.4f * 1000000000L);
+    private long tapCountInterval = (long)(0.4f * 1000000000L);
     private int tapCount;
     private long lastTapTime;
     private boolean stop = false;
 
-    /**Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks.*/
+    /** Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks. */
     public ClickListener(){
     }
 
@@ -62,7 +61,7 @@ public class ClickListener extends InputListener{
         pressedButton = button;
         touchDownX = x;
         touchDownY = y;
-        visualPressedTime = TimeUtils.millis() + (long) (visualPressedDuration * 1000);
+        visualPressedTime = TimeUtils.millis() + (long)(visualPressedDuration * 1000);
         return true;
     }
 
@@ -175,7 +174,7 @@ public class ClickListener extends InputListener{
 
     /** @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps. */
     public void setTapCountInterval(float tapCountInterval){
-        this.tapCountInterval = (long) (tapCountInterval * 1000000000L);
+        this.tapCountInterval = (long)(tapCountInterval * 1000000000L);
     }
 
     /** Returns the number of taps within the tap count interval for the most recent click event. */

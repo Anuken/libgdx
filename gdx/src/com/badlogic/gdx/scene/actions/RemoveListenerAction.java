@@ -21,7 +21,6 @@ import com.badlogic.gdx.scene.event.EventListener;
 
 /**
  * Removes a listener from an actor.
- *
  * @author Nathan Sweet
  */
 public class RemoveListenerAction extends Action{

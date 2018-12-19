@@ -44,17 +44,12 @@ public class MockMusic implements Music{
     }
 
     @Override
-    public void setLooping(boolean isLooping){
-
-    }
-
-    @Override
     public boolean isLooping(){
         return false;
     }
 
     @Override
-    public void setVolume(float volume){
+    public void setLooping(boolean isLooping){
 
     }
 
@@ -64,18 +59,23 @@ public class MockMusic implements Music{
     }
 
     @Override
-    public void setPan(float pan, float volume){
+    public void setVolume(float volume){
 
     }
 
     @Override
-    public void setPosition(float position){
+    public void setPan(float pan, float volume){
 
     }
 
     @Override
     public float getPosition(){
         return 0;
+    }
+
+    @Override
+    public void setPosition(float position){
+
     }
 
     @Override

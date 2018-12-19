@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 /**
  * Builder style API for emitting JSON.
- *
  * @author Nathan Sweet
  */
 public class JsonWriter extends Writer{
@@ -88,7 +87,7 @@ public class JsonWriter extends Writer{
         && (value instanceof Long || value instanceof Double || value instanceof BigDecimal || value instanceof BigInteger)){
             value = value.toString();
         }else if(value instanceof Number){
-            Number number = (Number) value;
+            Number number = (Number)value;
             long longValue = number.longValue();
             if(number.doubleValue() == longValue) value = longValue;
         }
@@ -155,20 +154,6 @@ public class JsonWriter extends Writer{
         writer.close();
     }
 
-    private class JsonObject{
-        final boolean array;
-        boolean needsComma;
-
-        JsonObject(boolean array) throws IOException{
-            this.array = array;
-            writer.write(array ? '[' : '{');
-        }
-
-        void close() throws IOException{
-            writer.write(array ? ']' : '}');
-        }
-    }
-
     public enum OutputType{
         /** Normal JSON, with all its double quotes. */
         json,
@@ -218,6 +203,20 @@ public class JsonWriter extends Writer{
                     if(javascriptPattern.matcher(buffer).matches()) return buffer.toString();
             }
             return '"' + buffer.replace('"', "\\\"").toString() + '"';
+        }
+    }
+
+    private class JsonObject{
+        final boolean array;
+        boolean needsComma;
+
+        JsonObject(boolean array) throws IOException{
+            this.array = array;
+            writer.write(array ? '[' : '{');
+        }
+
+        void close() throws IOException{
+            writer.write(array ? ']' : '}');
         }
     }
 }

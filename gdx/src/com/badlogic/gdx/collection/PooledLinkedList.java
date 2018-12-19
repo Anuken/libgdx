@@ -20,23 +20,15 @@ import com.badlogic.gdx.utils.pooling.Pool;
 
 /**
  * A simple linked list that pools its nodes.
- *
  * @author mzechner
  */
 public class PooledLinkedList<T>{
-    static final class Item<T>{
-        public T payload;
-        public Item<T> next;
-        public Item<T> prev;
-    }
-
+    private final Pool<Item<T>> pool;
     private Item<T> head;
     private Item<T> tail;
     private Item<T> iter;
     private Item<T> curr;
     private int size = 0;
-
-    private final Pool<Item<T>> pool;
 
     public PooledLinkedList(int maxPoolSize){
         this.pool = new Pool<Item<T>>(16, maxPoolSize){
@@ -84,7 +76,6 @@ public class PooledLinkedList<T>{
 
     /**
      * Gets the next item in the list
-     *
      * @return the next item in the list or null if there are no more items
      */
     public T next(){
@@ -98,7 +89,6 @@ public class PooledLinkedList<T>{
 
     /**
      * Gets the previous item in the list
-     *
      * @return the previous item in the list or null if there are no more items
      */
     public T previous(){
@@ -149,6 +139,12 @@ public class PooledLinkedList<T>{
         T v = null;
         while((v = next()) != null)
             remove();
+    }
+
+    static final class Item<T>{
+        public T payload;
+        public Item<T> next;
+        public Item<T> prev;
     }
 
 }

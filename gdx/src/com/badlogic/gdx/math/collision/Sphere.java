@@ -24,21 +24,18 @@ import java.io.Serializable;
 
 /**
  * Encapsulates a 3D sphere with a center and a radius
- *
  * @author badlogicgames@gmail.com
  */
 public class Sphere implements Serializable{
     private static final long serialVersionUID = -6487336868908521596L;
-    /** the radius of the sphere **/
-    public float radius;
+    private static final float PI_4_3 = Mathf.PI * 4f / 3f;
     /** the center of the sphere **/
     public final Vector3 center;
-
-    private static final float PI_4_3 = Mathf.PI * 4f / 3f;
+    /** the radius of the sphere **/
+    public float radius;
 
     /**
      * Constructs a sphere with the given center and radius
-     *
      * @param center The center
      * @param radius The radius
      */
@@ -68,7 +65,7 @@ public class Sphere implements Serializable{
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        Sphere s = (Sphere) o;
+        Sphere s = (Sphere)o;
         return this.radius == s.radius && this.center.equals(s.center);
     }
 

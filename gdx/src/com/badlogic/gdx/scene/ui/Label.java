@@ -35,7 +35,6 @@ import static com.badlogic.gdx.Core.*;
  * A text label, with optional word wrapping.
  * <p>
  * The preferred size of the label is determined by the actual text bounds, unless {@link #setWrap(boolean) word wrap} is enabled.
- *
  * @author Nathan Sweet
  */
 public class Label extends Element{
@@ -60,7 +59,8 @@ public class Label extends Element{
         update(() -> setText(sup.get()));
         try{
             setText(sup.get());
-        }catch(Exception ignored){}
+        }catch(Exception ignored){
+        }
     }
 
     public Label(CharSequence text){
@@ -114,7 +114,7 @@ public class Label extends Element{
         if(newText instanceof StringBuilder){
             if(text.equals(newText)) return;
             text.setLength(0);
-            text.append((StringBuilder) newText);
+            text.append((StringBuilder)newText);
         }else{
             if(textEquals(newText)) return;
             text.setLength(0);
@@ -136,8 +136,10 @@ public class Label extends Element{
         return text;
     }
 
-    /** @param newText May be null, "" will be used.
-     * If this text starts with '$', this label will look in {@link com.badlogic.gdx.Core#bundle} for matching text.*/
+    /**
+     * @param newText May be null, "" will be used.
+     * If this text starts with '$', this label will look in {@link com.badlogic.gdx.Core#bundle} for matching text.
+     */
     public void setText(CharSequence newText){
         if(bundle != null && newText != null && newText.length() > 0 && newText.charAt(0) == '$'){
             String out = newText.toString().substring(1);
@@ -380,7 +382,6 @@ public class Label extends Element{
 
     /**
      * The style for a label, see {@link Label}.
-     *
      * @author Nathan Sweet
      */
     static public class LabelStyle extends Style{

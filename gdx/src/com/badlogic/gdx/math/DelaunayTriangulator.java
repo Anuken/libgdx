@@ -16,17 +16,16 @@
 
 package com.badlogic.gdx.math;
 
-import com.badlogic.gdx.math.geom.Geometry;
-import com.badlogic.gdx.math.geom.Intersector;
-import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.collection.BooleanArray;
 import com.badlogic.gdx.collection.FloatArray;
 import com.badlogic.gdx.collection.IntArray;
 import com.badlogic.gdx.collection.ShortArray;
+import com.badlogic.gdx.math.geom.Geometry;
+import com.badlogic.gdx.math.geom.Intersector;
+import com.badlogic.gdx.math.geom.Vector2;
 
 /**
  * Delaunay triangulation. Adapted from Paul Bourke's triangulate: http://paulbourke.net/papers/triangulate/
- *
  * @author Nathan Sweet
  */
 public class DelaunayTriangulator{
@@ -36,13 +35,13 @@ public class DelaunayTriangulator{
     static private final int INCOMPLETE = 2;
 
     private final IntArray quicksortStack = new IntArray();
-    private float[] sortedPoints;
     private final ShortArray triangles = new ShortArray(false, 16);
     private final ShortArray originalIndices = new ShortArray(false, 0);
     private final IntArray edges = new IntArray();
     private final BooleanArray complete = new BooleanArray(false, 16);
     private final float[] superTriangle = new float[6];
     private final Vector2 centroid = new Vector2();
+    private float[] sortedPoints;
 
     /** @see #computeTriangles(float[], int, int, boolean) */
     public ShortArray computeTriangles(FloatArray points, boolean sorted){
@@ -56,7 +55,6 @@ public class DelaunayTriangulator{
 
     /**
      * Triangulates the given point cloud to a list of triangle indices that make up the Delaunay triangulation.
-     *
      * @param points x,y pairs describing points. Duplicate points will result in undefined behavior.
      * @param sorted If false, the points will be sorted by the x coordinate, which is required by the triangulation algorithm. If
      * sorting is done the input array is not modified, the returned indices are for the input array, and count*2
@@ -214,16 +212,16 @@ public class DelaunayTriangulator{
         if(!sorted){
             short[] originalIndicesArray = originalIndices.items;
             for(int i = 0, n = triangles.size; i < n; i++)
-                trianglesArray[i] = (short) (originalIndicesArray[trianglesArray[i] / 2] * 2);
+                trianglesArray[i] = (short)(originalIndicesArray[trianglesArray[i] / 2] * 2);
         }
 
         // Adjust triangles to start from zero and count by 1, not by vertex x,y coordinate pairs.
         if(offset == 0){
             for(int i = 0, n = triangles.size; i < n; i++)
-                trianglesArray[i] = (short) (trianglesArray[i] / 2);
+                trianglesArray[i] = (short)(trianglesArray[i] / 2);
         }else{
             for(int i = 0, n = triangles.size; i < n; i++)
-                trianglesArray[i] = (short) ((trianglesArray[i] - offset) / 2);
+                trianglesArray[i] = (short)((trianglesArray[i] - offset) / 2);
         }
 
         return triangles;
@@ -274,7 +272,6 @@ public class DelaunayTriangulator{
 
     /**
      * Sorts x,y pairs of values by the x value.
-     *
      * @param count Number of indices, must be even.
      */
     private void sort(float[] values, int count){

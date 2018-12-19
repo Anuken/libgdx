@@ -33,7 +33,6 @@ import java.nio.FloatBuffer;
  * <p>
  * This class is not compatible with OpenGL 3+ core profiles. For this {@link VertexBufferObject}s are needed.
  * </p>
- *
  * @author mzechner, Dave Clayton <contact@redskyforge.com>
  */
 public class VertexArray implements VertexData{
@@ -44,7 +43,6 @@ public class VertexArray implements VertexData{
 
     /**
      * Constructs a new interleaved VertexArray
-     *
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttribute}s
      */
@@ -54,7 +52,6 @@ public class VertexArray implements VertexData{
 
     /**
      * Constructs a new interleaved VertexArray
-     *
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttributes}
      */
@@ -149,7 +146,6 @@ public class VertexArray implements VertexData{
 
     /**
      * Unbinds this VertexBufferObject.
-     *
      * @param shader the shader
      */
     @Override

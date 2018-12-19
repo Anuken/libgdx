@@ -21,7 +21,6 @@ import java.util.Locale;
 
 /**
  * {@code TextFormatter} is used by {@link I18NBundle} to perform argument replacement.
- *
  * @author davebaol
  */
 class TextFormatter{
@@ -54,7 +53,6 @@ class TextFormatter{
      * very reason we decided to offer the simpler escaping rule above without limiting the expressive power of message format
      * patterns. So, if you're used to MessageFormat's syntax, remember that with {@code TextFormatter} single quotes never need to
      * be escaped!
-     *
      * @param pattern the pattern
      * @param args the arguments
      * @return the formatted pattern
@@ -112,7 +110,6 @@ class TextFormatter{
      * placeholder are only made up of an index; neither the type nor the style are supported.
      * <p>
      * If nothing has been replaced this implementation returns the pattern itself.
-     *
      * @param pattern the pattern
      * @param args the arguments
      * @return the formatted pattern

@@ -25,26 +25,26 @@ import com.badlogic.gdx.math.Mathf;
 public final class Geometry{
     /** Points repesenting cardinal directions, starting at the left and going counter-clockwise. */
     public final static GridPoint2[] d4 = {
-        new GridPoint2(1, 0),
-        new GridPoint2(0, 1),
-        new GridPoint2(-1, 0),
-        new GridPoint2(0, -1)
+    new GridPoint2(1, 0),
+    new GridPoint2(0, 1),
+    new GridPoint2(-1, 0),
+    new GridPoint2(0, -1)
     };
     public final static GridPoint2[] d8 = {
-        new GridPoint2(1, 0),
-        new GridPoint2(1, 1),
-        new GridPoint2(0, 1),
-        new GridPoint2(-1, 1),
-        new GridPoint2(-1, 0),
-        new GridPoint2(-1, -1),
-        new GridPoint2(0, -1),
-        new GridPoint2(1, -1),
+    new GridPoint2(1, 0),
+    new GridPoint2(1, 1),
+    new GridPoint2(0, 1),
+    new GridPoint2(-1, 1),
+    new GridPoint2(-1, 0),
+    new GridPoint2(-1, -1),
+    new GridPoint2(0, -1),
+    new GridPoint2(1, -1),
     };
     public final static GridPoint2[] d8edge = {
-        new GridPoint2(1, 1),
-        new GridPoint2(-1, 1),
-        new GridPoint2(-1, -1),
-        new GridPoint2(1, -1)
+    new GridPoint2(1, 1),
+    new GridPoint2(-1, 1),
+    new GridPoint2(-1, -1),
+    new GridPoint2(1, -1)
     };
     static private final Vector2 tmp1 = new Vector2(), tmp2 = new Vector2(), tmp3 = new Vector2();
 
@@ -105,7 +105,7 @@ public final class Geometry{
     }
 
     public static Vector2[] pixelCircle(float index, SolidChecker checker){
-        int size = (int) (index * 2);
+        int size = (int)(index * 2);
         IntArray ints = new IntArray();
 
         //add edges (bottom left corner)
@@ -158,7 +158,7 @@ public final class Geometry{
 
     public static float iterateLine(float start, float x1, float y1, float x2, float y2, float segment, PositionConsumer pos){
         float len = Vector2.dst(x1, y1, x2, y2);
-        int steps = (int) (len / segment);
+        int steps = (int)(len / segment);
         float step = 1f / steps;
 
         float offset = len;
@@ -211,10 +211,6 @@ public final class Geometry{
         return d8edge;
     }
 
-    public interface SolidChecker{
-        boolean solid(float index, int x, int y);
-    }
-
     /**
      * Computes the barycentric coordinates v,w for the specified point in the triangle.
      * <p>
@@ -228,7 +224,6 @@ public final class Geometry{
      * float x = u * aa.x + barycentric.x * bb.x + barycentric.y * cc.x;
      * float y = u * aa.y + barycentric.x * bb.y + barycentric.y * cc.y;
      * </pre>
-     *
      * @return barycentricOut
      */
     static public Vector2 toBarycoord(Vector2 p, Vector2 a, Vector2 b, Vector2 c, Vector2 barycentricOut){
@@ -253,7 +248,6 @@ public final class Geometry{
 
     /**
      * Returns interpolated values given the barycentric coordinates of a point in a triangle and the values at each vertex.
-     *
      * @return interpolatedOut
      */
     static public Vector2 fromBarycoord(Vector2 barycentric, Vector2 a, Vector2 b, Vector2 c, Vector2 interpolatedOut){
@@ -265,7 +259,6 @@ public final class Geometry{
 
     /**
      * Returns an interpolated value given the barycentric coordinates of a point in a triangle and the values at each vertex.
-     *
      * @return interpolatedOut
      */
     static public float fromBarycoord(Vector2 barycentric, float a, float b, float c){
@@ -276,7 +269,6 @@ public final class Geometry{
     /**
      * Returns the lowest positive root of the quadric equation given by a* x * x + b * x + c = 0. If no solution is given
      * Float.Nan is returned.
-     *
      * @param a the first coefficient of the quadric equation
      * @param b the second coefficient of the quadric equation
      * @param c the third coefficient of the quadric equation
@@ -286,7 +278,7 @@ public final class Geometry{
         float det = b * b - 4 * a * c;
         if(det < 0) return Float.NaN;
 
-        float sqrtD = (float) Math.sqrt(det);
+        float sqrtD = (float)Math.sqrt(det);
         float invA = 1 / (2 * a);
         float r1 = (-b - sqrtD) * invA;
         float r2 = (-b + sqrtD) * invA;
@@ -354,7 +346,7 @@ public final class Geometry{
             y = m1 * (x - mx1) + my1;
         }
         float dx = x1 - x, dy = y1 - y;
-        return (float) Math.sqrt(dx * dx + dy * dy);
+        return (float)Math.sqrt(dx * dx + dy * dy);
     }
 
     /**
@@ -364,9 +356,9 @@ public final class Geometry{
      * Generation, Formulation, and Partition.
      */
     static public float triangleQuality(float x1, float y1, float x2, float y2, float x3, float y3){
-        float length1 = (float) Math.sqrt(x1 * x1 + y1 * y1);
-        float length2 = (float) Math.sqrt(x2 * x2 + y2 * y2);
-        float length3 = (float) Math.sqrt(x3 * x3 + y3 * y3);
+        float length1 = (float)Math.sqrt(x1 * x1 + y1 * y1);
+        float length2 = (float)Math.sqrt(x2 * x2 + y2 * y2);
+        float length3 = (float)Math.sqrt(x3 * x3 + y3 * y3);
         return Math.min(length1, Math.min(length2, length3)) / triangleCircumradius(x1, y1, x2, y2, x3, y3);
     }
 
@@ -473,5 +465,9 @@ public final class Geometry{
         p2x = polygon[offset];
         p2y = polygon[offset + 1];
         return area + p1x * p2y - p2x * p1y < 0;
+    }
+
+    public interface SolidChecker{
+        boolean solid(float index, int x, int y);
     }
 }

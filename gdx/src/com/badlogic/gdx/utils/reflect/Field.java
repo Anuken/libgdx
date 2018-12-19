@@ -23,7 +23,6 @@ import java.lang.reflect.Type;
 
 /**
  * Provides information about, and access to, a single field of a class or interface.
- *
  * @author nexsoftware
  */
 public final class Field{
@@ -109,17 +108,17 @@ public final class Field{
     public Class getElementType(int index){
         Type genericType = field.getGenericType();
         if(genericType instanceof ParameterizedType){
-            Type[] actualTypes = ((ParameterizedType) genericType).getActualTypeArguments();
+            Type[] actualTypes = ((ParameterizedType)genericType).getActualTypeArguments();
             if(actualTypes.length - 1 >= index){
                 Type actualType = actualTypes[index];
                 if(actualType instanceof Class)
-                    return (Class) actualType;
+                    return (Class)actualType;
                 else if(actualType instanceof ParameterizedType)
-                    return (Class) ((ParameterizedType) actualType).getRawType();
+                    return (Class)((ParameterizedType)actualType).getRawType();
                 else if(actualType instanceof GenericArrayType){
-                    Type componentType = ((GenericArrayType) actualType).getGenericComponentType();
+                    Type componentType = ((GenericArrayType)actualType).getGenericComponentType();
                     if(componentType instanceof Class)
-                        return ArrayReflection.newInstance((Class) componentType, 0).getClass();
+                        return ArrayReflection.newInstance((Class)componentType, 0).getClass();
                 }
             }
         }

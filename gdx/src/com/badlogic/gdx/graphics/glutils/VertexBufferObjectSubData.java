@@ -36,23 +36,21 @@ import java.nio.FloatBuffer;
  * in the constructor.
  * <p>
  * VertexBufferObjects must be disposed via the {@link #dispose()} method when no longer needed
- *
  * @author mzechner
  */
 public class VertexBufferObjectSubData implements VertexData{
     final VertexAttributes attributes;
     final FloatBuffer buffer;
     final ByteBuffer byteBuffer;
-    int bufferHandle;
     final boolean isDirect;
     final boolean isStatic;
     final int usage;
+    int bufferHandle;
     boolean isDirty = false;
     boolean isBound = false;
 
     /**
      * Constructs a new interleaved VertexBufferObject.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttributes}.
@@ -63,7 +61,6 @@ public class VertexBufferObjectSubData implements VertexData{
 
     /**
      * Constructs a new interleaved VertexBufferObject.
-     *
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
      * @param attributes the {@link VertexAttribute}s.
@@ -151,7 +148,6 @@ public class VertexBufferObjectSubData implements VertexData{
 
     /**
      * Binds this VertexBufferObject for rendering via glDrawArrays or glDrawElements
-     *
      * @param shader the shader
      */
     @Override
@@ -197,7 +193,6 @@ public class VertexBufferObjectSubData implements VertexData{
 
     /**
      * Unbinds this VertexBufferObject.
-     *
      * @param shader the shader
      */
     @Override
@@ -240,7 +235,6 @@ public class VertexBufferObjectSubData implements VertexData{
 
     /**
      * Returns the VBO handle
-     *
      * @return the VBO handle
      */
     public int getBufferHandle(){

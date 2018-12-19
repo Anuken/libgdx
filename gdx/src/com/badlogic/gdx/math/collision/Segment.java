@@ -22,7 +22,6 @@ import java.io.Serializable;
 
 /**
  * A Segment is a line in 3-space having a staring and an ending position.
- *
  * @author mzechner
  */
 public class Segment implements Serializable{
@@ -36,7 +35,6 @@ public class Segment implements Serializable{
 
     /**
      * Constructs a new Segment from the two points given.
-     *
      * @param a the first point
      * @param b the second point
      */
@@ -47,7 +45,6 @@ public class Segment implements Serializable{
 
     /**
      * Constructs a new Segment from the two points given.
-     *
      * @param aX the x-coordinate of the first point
      * @param aY the y-coordinate of the first point
      * @param aZ the z-coordinate of the first point
@@ -72,7 +69,7 @@ public class Segment implements Serializable{
     public boolean equals(Object o){
         if(o == this) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        Segment s = (Segment) o;
+        Segment s = (Segment)o;
         return this.a.equals(s.a) && this.b.equals(s.b);
     }
 

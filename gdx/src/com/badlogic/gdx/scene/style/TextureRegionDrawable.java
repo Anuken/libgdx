@@ -24,7 +24,6 @@ import static com.badlogic.gdx.Core.graphics;
 
 /**
  * Drawable for a {@link TextureRegion}.
- *
  * @author Nathan Sweet
  */
 public class TextureRegionDrawable extends BaseDrawable implements TransformDrawable{
@@ -52,7 +51,7 @@ public class TextureRegionDrawable extends BaseDrawable implements TransformDraw
     @Override
     public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation){
         graphics.batch().draw().tex(region).pos(x, y).size(width, height)
-            .origin(originX, originY).scl(scaleX, scaleY).rot(rotation).color(tint);
+        .origin(originX, originY).scl(scaleX, scaleY).rot(rotation).color(tint);
     }
 
     public TextureRegion getRegion(){

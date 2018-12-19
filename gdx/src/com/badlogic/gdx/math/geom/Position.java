@@ -2,13 +2,14 @@ package com.badlogic.gdx.math.geom;
 
 import com.badlogic.gdx.math.Mathf;
 
-/**Represents a point in 2-D space.*/
+/** Represents a point in 2-D space. */
 public interface Position{
     Position x = new FixedPosition(1, 0);
     Position y = new FixedPosition(0, 1);
     Position zero = new FixedPosition(0, 0);
 
     float getX();
+
     float getY();
 
     default float angleTo(Position other){
@@ -22,6 +23,6 @@ public interface Position{
     default float dst(float x, float y){
         final float xd = getX() - x;
         final float yd = getX() - y;
-        return (float) Math.sqrt(xd * xd + yd * yd);
+        return (float)Math.sqrt(xd * xd + yd * yd);
     }
 }

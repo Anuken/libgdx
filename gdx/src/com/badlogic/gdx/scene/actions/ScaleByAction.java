@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Scales an actor's scale to a relative size.
- *
  * @author Nathan Sweet
  */
 public class ScaleByAction extends RelativeTemporalAction{

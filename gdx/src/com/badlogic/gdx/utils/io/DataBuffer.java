@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.io.StreamUtils.OptimizedByteArrayOutputStream;
 
 /**
  * Extends {@link DataOutput} that writes bytes to a byte array.
- *
  * @author Nathan Sweet
  */
 public class DataBuffer extends DataOutput{
@@ -16,7 +15,7 @@ public class DataBuffer extends DataOutput{
 
     public DataBuffer(int initialSize){
         super(new OptimizedByteArrayOutputStream(initialSize));
-        outStream = (OptimizedByteArrayOutputStream) out;
+        outStream = (OptimizedByteArrayOutputStream)out;
     }
 
     /** Returns the backing array, which has 0 to {@link #size()} items. */

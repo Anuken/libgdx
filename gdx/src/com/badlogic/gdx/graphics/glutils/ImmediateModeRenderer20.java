@@ -26,19 +26,11 @@ import com.badlogic.gdx.math.Matrix3;
 /**
  * Immediate mode rendering class for GLES 2.0. The renderer will allow you to specify vertices on the fly and provides a default
  * shader for (unlit) rendering.</p> *
- *
  * @author mzechner
  */
 public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
-    private int primitiveType;
-    private int vertexIdx;
-    private int numSetTexCoords;
     private final int maxVertices;
-    private int numVertices;
-
     private final Mesh mesh;
-    private ShaderProgram shader;
-    private boolean ownsShader;
     private final int numTexCoords;
     private final int vertexSize;
     private final int normalOffset;
@@ -47,6 +39,12 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
     private final Matrix3 projModelView = new Matrix3();
     private final float[] vertices;
     private final String[] shaderUniformNames;
+    private int primitiveType;
+    private int vertexIdx;
+    private int numSetTexCoords;
+    private int numVertices;
+    private ShaderProgram shader;
+    private boolean ownsShader;
 
     public ImmediateModeRenderer20(boolean hasNormals, boolean hasColors, int numTexCoords){
         this(5000, hasNormals, hasColors, numTexCoords, createDefaultShader(hasNormals, hasColors, numTexCoords));
@@ -78,6 +76,66 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
         for(int i = 0; i < numTexCoords; i++){
             shaderUniformNames[i] = "u_sampler" + i;
         }
+    }
+
+    static private String createVertexShader(boolean hasNormals, boolean hasColors, int numTexCoords){
+        String shader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n"
+        + (hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "")
+        + (hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "");
+
+        for(int i = 0; i < numTexCoords; i++){
+            shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
+        }
+
+        shader += "uniform mat4 u_projModelView;\n";
+        shader += (hasColors ? "varying vec4 v_col;\n" : "");
+
+        for(int i = 0; i < numTexCoords; i++){
+            shader += "varying vec2 v_tex" + i + ";\n";
+        }
+
+        shader += "void main() {\n" + "   gl_Position = u_projModelView * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n"
+        + (hasColors ? "   v_col = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "");
+
+        for(int i = 0; i < numTexCoords; i++){
+            shader += "   v_tex" + i + " = " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
+        }
+        shader += "   gl_PointSize = 1.0;\n";
+        shader += "}\n";
+        return shader;
+    }
+
+    static private String createFragmentShader(boolean hasNormals, boolean hasColors, int numTexCoords){
+        String shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
+
+        if(hasColors) shader += "varying vec4 v_col;\n";
+        for(int i = 0; i < numTexCoords; i++){
+            shader += "varying vec2 v_tex" + i + ";\n";
+            shader += "uniform sampler2D u_sampler" + i + ";\n";
+        }
+
+        shader += "void main() {\n" + "   gl_FragColor = " + (hasColors ? "v_col" : "vec4(1, 1, 1, 1)");
+
+        if(numTexCoords > 0) shader += " * ";
+
+        for(int i = 0; i < numTexCoords; i++){
+            if(i == numTexCoords - 1){
+                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ")";
+            }else{
+                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ") *";
+            }
+        }
+
+        shader += ";\n}";
+        return shader;
+    }
+
+    /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
+    static public ShaderProgram createDefaultShader(boolean hasNormals, boolean hasColors, int numTexCoords){
+        String vertexShader = createVertexShader(hasNormals, hasColors, numTexCoords);
+        String fragmentShader = createFragmentShader(hasNormals, hasColors, numTexCoords);
+        ShaderProgram program = new ShaderProgram(vertexShader, fragmentShader);
+        return program;
     }
 
     private VertexAttribute[] buildVertexAttributes(boolean hasNormals, boolean hasColor, int numTexCoords){
@@ -173,65 +231,5 @@ public class ImmediateModeRenderer20 implements ImmediateModeRenderer{
     public void dispose(){
         if(ownsShader && shader != null) shader.dispose();
         mesh.dispose();
-    }
-
-    static private String createVertexShader(boolean hasNormals, boolean hasColors, int numTexCoords){
-        String shader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n"
-        + (hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "")
-        + (hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "");
-
-        for(int i = 0; i < numTexCoords; i++){
-            shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
-        }
-
-        shader += "uniform mat4 u_projModelView;\n";
-        shader += (hasColors ? "varying vec4 v_col;\n" : "");
-
-        for(int i = 0; i < numTexCoords; i++){
-            shader += "varying vec2 v_tex" + i + ";\n";
-        }
-
-        shader += "void main() {\n" + "   gl_Position = u_projModelView * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n"
-        + (hasColors ? "   v_col = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "");
-
-        for(int i = 0; i < numTexCoords; i++){
-            shader += "   v_tex" + i + " = " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
-        }
-        shader += "   gl_PointSize = 1.0;\n";
-        shader += "}\n";
-        return shader;
-    }
-
-    static private String createFragmentShader(boolean hasNormals, boolean hasColors, int numTexCoords){
-        String shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
-
-        if(hasColors) shader += "varying vec4 v_col;\n";
-        for(int i = 0; i < numTexCoords; i++){
-            shader += "varying vec2 v_tex" + i + ";\n";
-            shader += "uniform sampler2D u_sampler" + i + ";\n";
-        }
-
-        shader += "void main() {\n" + "   gl_FragColor = " + (hasColors ? "v_col" : "vec4(1, 1, 1, 1)");
-
-        if(numTexCoords > 0) shader += " * ";
-
-        for(int i = 0; i < numTexCoords; i++){
-            if(i == numTexCoords - 1){
-                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ")";
-            }else{
-                shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ") *";
-            }
-        }
-
-        shader += ";\n}";
-        return shader;
-    }
-
-    /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
-    static public ShaderProgram createDefaultShader(boolean hasNormals, boolean hasColors, int numTexCoords){
-        String vertexShader = createVertexShader(hasNormals, hasColors, numTexCoords);
-        String fragmentShader = createFragmentShader(hasNormals, hasColors, numTexCoords);
-        ShaderProgram program = new ShaderProgram(vertexShader, fragmentShader);
-        return program;
     }
 }

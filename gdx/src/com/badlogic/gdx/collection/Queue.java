@@ -29,21 +29,17 @@ import java.util.NoSuchElementException;
  * adding). Deque functionality is provided via {@link #removeLast()} and {@link #addFirst(Object)}.
  */
 public class Queue<T> implements Iterable<T>{
+    /** Number of elements in the queue. */
+    public int size = 0;
     /** Contains the values in the queue. Head and tail indices go in a circle around this array, wrapping at the end. */
     protected T[] values;
-
     /** Index of first element. Logically smaller than tail. Unless empty, it points to a valid element inside queue. */
     protected int head = 0;
-
     /**
      * Index of last element. Logically bigger than head. Usually points to an empty position, but points to the head when full
      * (size == values.length).
      */
     protected int tail = 0;
-
-    /** Number of elements in the queue. */
-    public int size = 0;
-
     private QueueIterable iterable;
 
     /** Creates a new Queue which can hold 16 values without needing to resize backing array. */
@@ -54,7 +50,7 @@ public class Queue<T> implements Iterable<T>{
     /** Creates a new Queue which can hold the specified number of values without needing to resize backing array. */
     public Queue(int initialSize){
         // noinspection unchecked
-        this.values = (T[]) new Object[initialSize];
+        this.values = (T[])new Object[initialSize];
     }
 
     /**
@@ -63,12 +59,11 @@ public class Queue<T> implements Iterable<T>{
      */
     public Queue(int initialSize, Class<T> type){
         // noinspection unchecked
-        this.values = (T[]) ArrayReflection.newInstance(type, initialSize);
+        this.values = (T[])ArrayReflection.newInstance(type, initialSize);
     }
 
     /**
      * Append given object to the tail. (enqueue to tail) Unless backing array needs resizing, operates in O(1) time.
-     *
      * @param object can be null
      */
     public void addLast(T object){
@@ -88,7 +83,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Prepend given object to the head. (enqueue to head) Unless backing array needs resizing, operates in O(1) time.
-     *
      * @param object can be null
      * @see #addLast(Object)
      */
@@ -128,7 +122,7 @@ public class Queue<T> implements Iterable<T>{
         final int head = this.head;
         final int tail = this.tail;
 
-        @SuppressWarnings("unchecked") final T[] newArray = (T[]) ArrayReflection.newInstance(values.getClass().getComponentType(), newSize);
+        @SuppressWarnings("unchecked") final T[] newArray = (T[])ArrayReflection.newInstance(values.getClass().getComponentType(), newSize);
         if(head < tail){
             // Continuous
             System.arraycopy(values, head, newArray, 0, tail - head);
@@ -145,7 +139,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Remove the first item from the queue. (dequeue from head) Always O(1).
-     *
      * @return removed object
      * @throws NoSuchElementException when queue is empty
      */
@@ -170,7 +163,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Remove the last item from the queue. (dequeue from tail) Always O(1).
-     *
      * @return removed object
      * @throws NoSuchElementException when queue is empty
      * @see #removeFirst()
@@ -196,7 +188,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Returns the index of first occurrence of value in the queue, or -1 if no such value exists.
-     *
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return An index of first occurrence of value in queue or -1 if no such value exists
      */
@@ -230,7 +221,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Removes the first instance of the specified value in the queue.
-     *
      * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
      * @return true if value was found and removed, false otherwise
      */
@@ -280,7 +270,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Returns the first (head) item in the queue (without removing it).
-     *
      * @throws NoSuchElementException when queue is empty
      * @see #addFirst(Object)
      * @see #removeFirst()
@@ -295,7 +284,6 @@ public class Queue<T> implements Iterable<T>{
 
     /**
      * Returns the last (tail) item in the queue (without removing it).
-     *
      * @throws NoSuchElementException when queue is empty
      * @see #addLast(Object)
      * @see #removeLast()
@@ -317,7 +305,6 @@ public class Queue<T> implements Iterable<T>{
     /**
      * Retrieves the value in queue without removing it. Indexing is from the front to back, zero based. Therefore get(0) is the
      * same as {@link #first()}.
-     *
      * @throws IndexOutOfBoundsException when the index is negative or >= size
      */
     public T get(int index){
@@ -412,7 +399,7 @@ public class Queue<T> implements Iterable<T>{
         if(this == o) return true;
         if(!(o instanceof Queue)) return false;
 
-        Queue<?> q = (Queue<?>) o;
+        Queue<?> q = (Queue<?>)o;
         final int size = this.size;
 
         if(q.size != size) return false;

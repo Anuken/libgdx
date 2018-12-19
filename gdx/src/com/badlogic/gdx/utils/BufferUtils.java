@@ -23,7 +23,6 @@ import java.nio.*;
 
 /**
  * Class with static helper methods to increase the speed of array/direct buffer and direct buffer/direct buffer transfers
- *
  * @author mzechner, xoppa
  */
 public final class BufferUtils{
@@ -36,7 +35,6 @@ public final class BufferUtils{
      * buffer. After the copying process the position of the buffer is set to 0 and its limit is set to numFloats * 4 if it is a
      * ByteBuffer and numFloats if it is a FloatBuffer. In case the Buffer is neither a ByteBuffer nor a FloatBuffer the limit is
      * not set. This is an expert method, use at your own risk.
-     *
      * @param src the source array
      * @param dst the destination buffer, has to be a direct Buffer
      * @param numFloats the number of floats to copy
@@ -56,7 +54,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -72,7 +69,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -87,7 +83,6 @@ public final class BufferUtils{
      * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer}
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay
      * the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param numElements the number of elements to copy.
@@ -101,7 +96,6 @@ public final class BufferUtils{
      * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer}
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay
      * the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param numElements the number of elements to copy.
@@ -115,7 +109,6 @@ public final class BufferUtils{
      * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer}
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay
      * the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param numElements the number of elements to copy.
@@ -129,7 +122,6 @@ public final class BufferUtils{
      * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer}
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay
      * the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param numElements the number of elements to copy.
@@ -143,7 +135,6 @@ public final class BufferUtils{
      * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer}
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay
      * the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param numElements the number of elements to copy.
@@ -158,7 +149,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -174,7 +164,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -190,7 +179,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -206,7 +194,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -222,7 +209,6 @@ public final class BufferUtils{
      * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
      * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
      * checking is performed</b>.
-     *
      * @param src the source array.
      * @param srcOffset the offset into the source array.
      * @param dst the destination Buffer, its position is used as an offset.
@@ -239,7 +225,6 @@ public final class BufferUtils{
      * of both Buffers will stay the same. The limit of the src Buffer will stay the same. The limit of the dst Buffer will be set
      * to dst.position() + numElements, where numElements are translated to the number of elements appropriate for the dst Buffer
      * data type. <b>The Buffers must be direct Buffers with native byte order. No error checking is performed</b>.
-     *
      * @param src the source Buffer.
      * @param dst the destination Buffer.
      * @param numElements the number of elements to copy.
@@ -253,7 +238,6 @@ public final class BufferUtils{
     /**
      * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
      * offset.
-     *
      * @param data The buffer to transform.
      * @param dimensions The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
      * @param strideInBytes The offset between the first and the second vector to transform
@@ -267,7 +251,6 @@ public final class BufferUtils{
     /**
      * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as the
      * offset.
-     *
      * @param data The buffer to transform.
      * @param dimensions The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
      * @param strideInBytes The offset between the first and the second vector to transform
@@ -281,7 +264,6 @@ public final class BufferUtils{
     /**
      * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
      * {@link Buffer#position()} and used as the offset.
-     *
      * @param data The buffer to transform.
      * @param dimensions The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
      * @param strideInBytes The offset between the first and the second vector to transform
@@ -305,7 +287,6 @@ public final class BufferUtils{
     /**
      * Multiply float vector components within the buffer with the specified matrix. The specified offset value is added to the
      * {@link Buffer#position()} and used as the offset.
-     *
      * @param data The buffer to transform.
      * @param dimensions The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
      * @param strideInBytes The offset between the first and the second vector to transform
@@ -489,7 +470,6 @@ public final class BufferUtils{
 
     /**
      * Returns the address of the Buffer, it assumes it is an unsafe buffer.
-     *
      * @param buffer The Buffer to ask the address for.
      * @return the address of the Buffer.
      */
@@ -500,7 +480,6 @@ public final class BufferUtils{
     /**
      * Registers the given ByteBuffer as an unsafe ByteBuffer. The ByteBuffer must have been allocated in native code, pointing to
      * a memory region allocated via malloc. Needs to be disposed with {@link #disposeUnsafeByteBuffer(ByteBuffer)}.
-     *
      * @param buffer the {@link ByteBuffer} to register
      * @return the ByteBuffer passed to the method
      */

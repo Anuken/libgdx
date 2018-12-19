@@ -22,11 +22,11 @@ import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.HashMap;
@@ -45,76 +45,11 @@ import java.util.Map;
  * course not extremely fast so use it with care. It also only works with unmanaged textures.
  * <p>
  * A Texture must be disposed when it is no longer used
- *
  * @author badlogicgames@gmail.com
  */
 public class Texture extends GLTexture{
-    private static AssetManager assetManager;
     final static Map<Application, Array<Texture>> managedTextures = new HashMap<Application, Array<Texture>>();
-
-    public enum TextureFilter{
-        /** Fetch the nearest texel that best maps to the pixel on screen. */
-        Nearest(GL20.GL_NEAREST),
-
-        /** Fetch four nearest texels that best maps to the pixel on screen. */
-        Linear(GL20.GL_LINEAR),
-
-        /** @see TextureFilter#MipMapLinearLinear */
-        MipMap(GL20.GL_LINEAR_MIPMAP_LINEAR),
-
-        /**
-         * Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
-         * nearest filter.
-         */
-        MipMapNearestNearest(GL20.GL_NEAREST_MIPMAP_NEAREST),
-
-        /**
-         * Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
-         * linear filter.
-         */
-        MipMapLinearNearest(GL20.GL_LINEAR_MIPMAP_NEAREST),
-
-        /**
-         * Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two images,
-         * combining them to the final output pixel.
-         */
-        MipMapNearestLinear(GL20.GL_NEAREST_MIPMAP_LINEAR),
-
-        /**
-         * Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the two
-         * images, combining them to the final output pixel.
-         */
-        MipMapLinearLinear(GL20.GL_LINEAR_MIPMAP_LINEAR);
-
-        final int glEnum;
-
-        TextureFilter(int glEnum){
-            this.glEnum = glEnum;
-        }
-
-        public boolean isMipMap(){
-            return glEnum != GL20.GL_NEAREST && glEnum != GL20.GL_LINEAR;
-        }
-
-        public int getGLEnum(){
-            return glEnum;
-        }
-    }
-
-    public enum TextureWrap{
-        MirroredRepeat(GL20.GL_MIRRORED_REPEAT), ClampToEdge(GL20.GL_CLAMP_TO_EDGE), Repeat(GL20.GL_REPEAT);
-
-        final int glEnum;
-
-        TextureWrap(int glEnum){
-            this.glEnum = glEnum;
-        }
-
-        public int getGLEnum(){
-            return glEnum;
-        }
-    }
-
+    private static AssetManager assetManager;
     TextureData data;
 
     public Texture(String internalPath){
@@ -157,89 +92,6 @@ public class Texture extends GLTexture{
         super(glTarget, glHandle);
         load(data);
         if(data.isManaged()) addManagedTexture(Core.app, this);
-    }
-
-    public void load(TextureData data){
-        if(this.data != null && data.isManaged() != this.data.isManaged())
-            throw new GdxRuntimeException("New data must have the same managed status as the old data");
-        this.data = data;
-
-        if(!data.isPrepared()) data.prepare();
-
-        bind();
-        uploadImageData(GL20.GL_TEXTURE_2D, data);
-
-        unsafeSetFilter(minFilter, magFilter, true);
-        unsafeSetWrap(uWrap, vWrap, true);
-        Core.gl.glBindTexture(glTarget, 0);
-    }
-
-    /**
-     * Used internally to reload after context loss. Creates a new GL handle then calls {@link #load(TextureData)}. Use this only
-     * if you know what you do!
-     */
-    @Override
-    protected void reload(){
-        if(!isManaged()) throw new GdxRuntimeException("Tried to reload unmanaged Texture");
-        glHandle = Core.gl.glGenTexture();
-        load(data);
-    }
-
-    /**
-     * Draws the given {@link Pixmap} to the texture at position x, y. No clipping is performed so you have to make sure that you
-     * draw only inside the texture region. Note that this will only draw to mipmap level 0!
-     *
-     * @param pixmap The Pixmap
-     * @param x The x coordinate in pixels
-     * @param y The y coordinate in pixels
-     */
-    public void draw(Pixmap pixmap, int x, int y){
-        if(data.isManaged()) throw new GdxRuntimeException("can't draw to a managed texture");
-
-        bind();
-        Core.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),
-        pixmap.getPixels());
-    }
-
-    @Override
-    public int getWidth(){
-        return data.getWidth();
-    }
-
-    @Override
-    public int getHeight(){
-        return data.getHeight();
-    }
-
-    @Override
-    public int getDepth(){
-        return 0;
-    }
-
-    public TextureData getTextureData(){
-        return data;
-    }
-
-    /** @return whether this texture is managed or not. */
-    public boolean isManaged(){
-        return data.isManaged();
-    }
-
-    /** Disposes all resources associated with the texture */
-    public void dispose(){
-        // this is a hack. reason: we have to set the glHandle to 0 for textures that are
-        // reloaded through the asset manager as we first remove (and thus dispose) the texture
-        // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-        // removal from the asset manager.
-        if(glHandle == 0) return;
-        delete();
-        if(data.isManaged())
-            if(managedTextures.get(Core.app) != null) managedTextures.get(Core.app).removeValue(this, true);
-    }
-
-    public String toString(){
-        if(data instanceof FileTextureData) return data.toString();
-        return super.toString();
     }
 
     private static void addManagedTexture(Application app, Texture texture){
@@ -318,7 +170,6 @@ public class Texture extends GLTexture{
      * Sets the {@link AssetManager}. When the context is lost, textures managed by the asset manager are reloaded by the manager
      * on a separate thread (provided that a suitable {@link AssetLoader} is registered with the manager). Textures not managed by
      * the AssetManager are reloaded via the usual means on the rendering thread.
-     *
      * @param manager the asset manager.
      */
     public static void setAssetManager(AssetManager manager){
@@ -339,5 +190,150 @@ public class Texture extends GLTexture{
     /** @return the number of managed textures currently loaded */
     public static int getNumManagedTextures(){
         return managedTextures.get(Core.app).size;
+    }
+
+    public void load(TextureData data){
+        if(this.data != null && data.isManaged() != this.data.isManaged())
+            throw new GdxRuntimeException("New data must have the same managed status as the old data");
+        this.data = data;
+
+        if(!data.isPrepared()) data.prepare();
+
+        bind();
+        uploadImageData(GL20.GL_TEXTURE_2D, data);
+
+        unsafeSetFilter(minFilter, magFilter, true);
+        unsafeSetWrap(uWrap, vWrap, true);
+        Core.gl.glBindTexture(glTarget, 0);
+    }
+
+    /**
+     * Used internally to reload after context loss. Creates a new GL handle then calls {@link #load(TextureData)}. Use this only
+     * if you know what you do!
+     */
+    @Override
+    protected void reload(){
+        if(!isManaged()) throw new GdxRuntimeException("Tried to reload unmanaged Texture");
+        glHandle = Core.gl.glGenTexture();
+        load(data);
+    }
+
+    /**
+     * Draws the given {@link Pixmap} to the texture at position x, y. No clipping is performed so you have to make sure that you
+     * draw only inside the texture region. Note that this will only draw to mipmap level 0!
+     * @param pixmap The Pixmap
+     * @param x The x coordinate in pixels
+     * @param y The y coordinate in pixels
+     */
+    public void draw(Pixmap pixmap, int x, int y){
+        if(data.isManaged()) throw new GdxRuntimeException("can't draw to a managed texture");
+
+        bind();
+        Core.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),
+        pixmap.getPixels());
+    }
+
+    @Override
+    public int getWidth(){
+        return data.getWidth();
+    }
+
+    @Override
+    public int getHeight(){
+        return data.getHeight();
+    }
+
+    @Override
+    public int getDepth(){
+        return 0;
+    }
+
+    public TextureData getTextureData(){
+        return data;
+    }
+
+    /** @return whether this texture is managed or not. */
+    public boolean isManaged(){
+        return data.isManaged();
+    }
+
+    /** Disposes all resources associated with the texture */
+    public void dispose(){
+        // this is a hack. reason: we have to set the glHandle to 0 for textures that are
+        // reloaded through the asset manager as we first remove (and thus dispose) the texture
+        // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
+        // removal from the asset manager.
+        if(glHandle == 0) return;
+        delete();
+        if(data.isManaged())
+            if(managedTextures.get(Core.app) != null) managedTextures.get(Core.app).removeValue(this, true);
+    }
+
+    public String toString(){
+        if(data instanceof FileTextureData) return data.toString();
+        return super.toString();
+    }
+
+    public enum TextureFilter{
+        /** Fetch the nearest texel that best maps to the pixel on screen. */
+        Nearest(GL20.GL_NEAREST),
+
+        /** Fetch four nearest texels that best maps to the pixel on screen. */
+        Linear(GL20.GL_LINEAR),
+
+        /** @see TextureFilter#MipMapLinearLinear */
+        MipMap(GL20.GL_LINEAR_MIPMAP_LINEAR),
+
+        /**
+         * Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
+         * nearest filter.
+         */
+        MipMapNearestNearest(GL20.GL_NEAREST_MIPMAP_NEAREST),
+
+        /**
+         * Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with a
+         * linear filter.
+         */
+        MipMapLinearNearest(GL20.GL_LINEAR_MIPMAP_NEAREST),
+
+        /**
+         * Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two images,
+         * combining them to the final output pixel.
+         */
+        MipMapNearestLinear(GL20.GL_NEAREST_MIPMAP_LINEAR),
+
+        /**
+         * Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the two
+         * images, combining them to the final output pixel.
+         */
+        MipMapLinearLinear(GL20.GL_LINEAR_MIPMAP_LINEAR);
+
+        final int glEnum;
+
+        TextureFilter(int glEnum){
+            this.glEnum = glEnum;
+        }
+
+        public boolean isMipMap(){
+            return glEnum != GL20.GL_NEAREST && glEnum != GL20.GL_LINEAR;
+        }
+
+        public int getGLEnum(){
+            return glEnum;
+        }
+    }
+
+    public enum TextureWrap{
+        MirroredRepeat(GL20.GL_MIRRORED_REPEAT), ClampToEdge(GL20.GL_CLAMP_TO_EDGE), Repeat(GL20.GL_REPEAT);
+
+        final int glEnum;
+
+        TextureWrap(int glEnum){
+            this.glEnum = glEnum;
+        }
+
+        public int getGLEnum(){
+            return glEnum;
+        }
     }
 }

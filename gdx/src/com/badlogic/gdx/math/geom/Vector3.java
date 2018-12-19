@@ -16,7 +16,10 @@
 
 package com.badlogic.gdx.math.geom;
 
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Mathf;
+import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.NumberUtils;
 
@@ -24,12 +27,15 @@ import java.io.Serializable;
 
 /**
  * Encapsulates a 3D vector. Allows chaining operations by returning a reference to itself in all modification methods.
- *
  * @author badlogicgames@gmail.com
  */
 public class Vector3 implements Serializable, Vector<Vector3>{
+    public final static Vector3 X = new Vector3(1, 0, 0);
+    public final static Vector3 Y = new Vector3(0, 1, 0);
+    public final static Vector3 Z = new Vector3(0, 0, 1);
+    public final static Vector3 Zero = new Vector3(0, 0, 0);
     private static final long serialVersionUID = 3840054589595372522L;
-
+    private final static Matrix3 tmpMat = new Matrix3();
     /** the x-component of this vector **/
     public float x;
     /** the y-component of this vector **/
@@ -37,20 +43,12 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     /** the z-component of this vector **/
     public float z;
 
-    public final static Vector3 X = new Vector3(1, 0, 0);
-    public final static Vector3 Y = new Vector3(0, 1, 0);
-    public final static Vector3 Z = new Vector3(0, 0, 1);
-    public final static Vector3 Zero = new Vector3(0, 0, 0);
-
-    private final static Matrix3 tmpMat = new Matrix3();
-
     /** Constructs a vector at (0,0,0) */
     public Vector3(){
     }
 
     /**
      * Creates a vector with the given components
-     *
      * @param x The x-component
      * @param y The y-component
      * @param z The z-component
@@ -61,7 +59,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Creates a vector from the given vector
-     *
      * @param vector The vector
      */
     public Vector3(final Vector3 vector){
@@ -70,7 +67,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Creates a vector from the given array. The array must have at least 3 elements.
-     *
      * @param values The array
      */
     public Vector3(final float[] values){
@@ -79,7 +75,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Creates a vector from the given vector and z-component
-     *
      * @param vector The vector
      * @param z The z-component
      */
@@ -87,9 +82,39 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         this.set(vector.x, vector.y, z);
     }
 
+    /** @return The euclidean length */
+    public static float len(final float x, final float y, final float z){
+        return (float)Math.sqrt(x * x + y * y + z * z);
+    }
+
+    /** @return The squared euclidean length */
+    public static float len2(final float x, final float y, final float z){
+        return x * x + y * y + z * z;
+    }
+
+    /** @return The euclidean distance between the two specified vectors */
+    public static float dst(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
+        final float a = x2 - x1;
+        final float b = y2 - y1;
+        final float c = z2 - z1;
+        return (float)Math.sqrt(a * a + b * b + c * c);
+    }
+
+    /** @return the squared distance between the given points */
+    public static float dst2(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
+        final float a = x2 - x1;
+        final float b = y2 - y1;
+        final float c = z2 - z1;
+        return a * a + b * b + c * c;
+    }
+
+    /** @return The dot product between the two vectors */
+    public static float dot(float x1, float y1, float z1, float x2, float y2, float z2){
+        return x1 * x2 + y1 * y2 + z1 * z2;
+    }
+
     /**
      * Sets the vector to the given components
-     *
      * @param x The x-component
      * @param y The y-component
      * @param z The z-component
@@ -109,7 +134,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets the components from the array. The array must have at least 3 elements
-     *
      * @param values The array
      * @return this vector for chaining
      */
@@ -119,7 +143,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets the components of the given vector and z-component
-     *
      * @param vector The vector
      * @param z The z-component
      * @return This vector for chaining
@@ -130,7 +153,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets the components from the given spherical coordinate
-     *
      * @param azimuthalAngle The angle between x-axis in radians [0, 2pi]
      * @param polarAngle The angle between z-axis in radians [0, pi]
      * @return This vector for chaining
@@ -151,7 +173,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         float v = Mathf.random();
 
         float theta = Mathf.PI2 * u; // azimuthal angle
-        float phi = (float) Math.acos(2f * v - 1f); // polar angle
+        float phi = (float)Math.acos(2f * v - 1f); // polar angle
 
         return this.setFromSpherical(theta, phi);
     }
@@ -168,7 +190,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Adds the given vector to this component
-     *
      * @param x The x-component of the other vector
      * @param y The y-component of the other vector
      * @param z The z-component of the other vector
@@ -180,7 +201,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Adds the given value to all three components of the vector.
-     *
      * @param values The value
      * @return This vector for chaining
      */
@@ -195,7 +215,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Subtracts the other vector from this vector.
-     *
      * @param x The x-component of the other vector
      * @param y The y-component of the other vector
      * @param z The z-component of the other vector
@@ -207,7 +226,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Subtracts the given value from all components of this vector
-     *
      * @param value The value
      * @return This vector for chaining
      */
@@ -227,7 +245,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Scales this vector by the given values
-     *
      * @param vx X value
      * @param vy Y value
      * @param vz Z value
@@ -253,19 +270,9 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         return this;
     }
 
-    /** @return The euclidean length */
-    public static float len(final float x, final float y, final float z){
-        return (float) Math.sqrt(x * x + y * y + z * z);
-    }
-
     @Override
     public float len(){
-        return (float) Math.sqrt(x * x + y * y + z * z);
-    }
-
-    /** @return The squared euclidean length */
-    public static float len2(final float x, final float y, final float z){
-        return x * x + y * y + z * z;
+        return (float)Math.sqrt(x * x + y * y + z * z);
     }
 
     @Override
@@ -281,20 +288,12 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         return x == vector.x && y == vector.y && z == vector.z;
     }
 
-    /** @return The euclidean distance between the two specified vectors */
-    public static float dst(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
-        final float a = x2 - x1;
-        final float b = y2 - y1;
-        final float c = z2 - z1;
-        return (float) Math.sqrt(a * a + b * b + c * c);
-    }
-
     @Override
     public float dst(final Vector3 vector){
         final float a = vector.x - x;
         final float b = vector.y - y;
         final float c = vector.z - z;
-        return (float) Math.sqrt(a * a + b * b + c * c);
+        return (float)Math.sqrt(a * a + b * b + c * c);
     }
 
     /** @return the distance between this point and the given point */
@@ -302,15 +301,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         final float a = x - this.x;
         final float b = y - this.y;
         final float c = z - this.z;
-        return (float) Math.sqrt(a * a + b * b + c * c);
-    }
-
-    /** @return the squared distance between the given points */
-    public static float dst2(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
-        final float a = x2 - x1;
-        final float b = y2 - y1;
-        final float c = z2 - z1;
-        return a * a + b * b + c * c;
+        return (float)Math.sqrt(a * a + b * b + c * c);
     }
 
     @Override
@@ -323,7 +314,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Returns the squared distance between this point and the given point
-     *
      * @param x The x-component of the other point
      * @param y The y-component of the other point
      * @param z The z-component of the other point
@@ -340,12 +330,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     public Vector3 nor(){
         final float len2 = this.len2();
         if(len2 == 0f || len2 == 1f) return this;
-        return this.scl(1f / (float) Math.sqrt(len2));
-    }
-
-    /** @return The dot product between the two vectors */
-    public static float dot(float x1, float y1, float z1, float x2, float y2, float z2){
-        return x1 * x2 + y1 * y2 + z1 * z2;
+        return this.scl(1f / (float)Math.sqrt(len2));
     }
 
     @Override
@@ -355,7 +340,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Returns the dot product between this and the given vector.
-     *
      * @param x The x-component of the other vector
      * @param y The y-component of the other vector
      * @param z The z-component of the other vector
@@ -367,7 +351,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets this vector to the cross product between it and the other vector.
-     *
      * @param vector The other vector
      * @return This vector for chaining
      */
@@ -377,7 +360,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets this vector to the cross product between it and the other vector.
-     *
      * @param x The x-component of the other vector
      * @param y The y-component of the other vector
      * @param z The z-component of the other vector
@@ -390,7 +372,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     /**
      * Left-multiplies the vector by the given 4x3 column major matrix. The matrix should be composed by a 3x3 matrix representing
      * rotation and scale plus a 1x3 matrix representing the translation.
-     *
      * @param matrix The matrix
      * @return This vector for chaining
      */
@@ -401,7 +382,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Left-multiplies the vector by the given matrix.
-     *
      * @param matrix The matrix
      * @return This vector for chaining
      */
@@ -413,7 +393,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Multiplies the vector by the transpose of the given matrix.
-     *
      * @param matrix The matrix
      * @return This vector for chaining
      */
@@ -425,7 +404,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Multiplies the vector by the given {@link Quaternion}.
-     *
      * @return This vector for chaining
      */
     public Vector3 mul(final Quaternion quat){
@@ -434,7 +412,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Rotates this vector by the given angle in degrees around the given axis.
-     *
      * @param axis the axis
      * @param degrees the angle in degrees
      * @return This vector for chaining
@@ -530,7 +507,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     /**
      * Spherically interpolates between this vector and the target vector by alpha which is in the range [0,1]. The result is
      * stored in this vector.
-     *
      * @param target The target vector
      * @param alpha The interpolation coefficient
      * @return This vector for chaining.
@@ -541,23 +517,22 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         if(dot > 0.9995 || dot < -0.9995) return lerp(target, alpha);
 
         // theta0 = angle between input vectors
-        final float theta0 = (float) Math.acos(dot);
+        final float theta0 = (float)Math.acos(dot);
         // theta = angle between this vector and result
         final float theta = theta0 * alpha;
 
-        final float st = (float) Math.sin(theta);
+        final float st = (float)Math.sin(theta);
         final float tx = target.x - x * dot;
         final float ty = target.y - y * dot;
         final float tz = target.z - z * dot;
         final float l2 = tx * tx + ty * ty + tz * tz;
-        final float dl = st * ((l2 < 0.0001f) ? 1f : 1f / (float) Math.sqrt(l2));
+        final float dl = st * ((l2 < 0.0001f) ? 1f : 1f / (float)Math.sqrt(l2));
 
-        return scl((float) Math.cos(theta)).add(tx * dl, ty * dl, tz * dl).nor();
+        return scl((float)Math.cos(theta)).add(tx * dl, ty * dl, tz * dl).nor();
     }
 
     /**
      * Converts this {@code Vector3} to a string in the format {@code (x,y,z)}.
-     *
      * @return a string representation of this object.
      */
     @Override
@@ -567,7 +542,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Sets this {@code Vector3} to the value represented by the specified string according to the format of {@link #toString()}.
-     *
      * @param v the string.
      * @return this vector for chaining
      */
@@ -596,7 +570,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     public Vector3 limit2(float limit2){
         float len2 = len2();
         if(len2 > limit2){
-            scl((float) Math.sqrt(limit2 / len2));
+            scl((float)Math.sqrt(limit2 / len2));
         }
         return this;
     }
@@ -609,7 +583,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
     @Override
     public Vector3 setLength2(float len2){
         float oldLen2 = len2();
-        return (oldLen2 == 0 || oldLen2 == len2) ? this : scl((float) Math.sqrt(len2 / oldLen2));
+        return (oldLen2 == 0 || oldLen2 == len2) ? this : scl((float)Math.sqrt(len2 / oldLen2));
     }
 
     @Override
@@ -617,9 +591,9 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         final float len2 = len2();
         if(len2 == 0f) return this;
         float max2 = max * max;
-        if(len2 > max2) return scl((float) Math.sqrt(max2 / len2));
+        if(len2 > max2) return scl((float)Math.sqrt(max2 / len2));
         float min2 = min * min;
-        if(len2 < min2) return scl((float) Math.sqrt(min2 / len2));
+        if(len2 < min2) return scl((float)Math.sqrt(min2 / len2));
         return this;
     }
 
@@ -638,7 +612,7 @@ public class Vector3 implements Serializable, Vector<Vector3>{
         if(this == obj) return true;
         if(obj == null) return false;
         if(getClass() != obj.getClass()) return false;
-        Vector3 other = (Vector3) obj;
+        Vector3 other = (Vector3)obj;
         if(NumberUtils.floatToIntBits(x) != NumberUtils.floatToIntBits(other.x)) return false;
         if(NumberUtils.floatToIntBits(y) != NumberUtils.floatToIntBits(other.y)) return false;
         return NumberUtils.floatToIntBits(z) == NumberUtils.floatToIntBits(other.z);
@@ -654,7 +628,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Compares this vector with the other vector, using the supplied epsilon for fuzzy equality testing.
-     *
      * @return whether the vectors are the same.
      */
     public boolean epsilonEquals(float x, float y, float z, float epsilon){
@@ -665,7 +638,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
-     *
      * @param other other vector to compare
      * @return true if vector are equal, otherwise false
      */
@@ -675,7 +647,6 @@ public class Vector3 implements Serializable, Vector<Vector3>{
 
     /**
      * Compares this vector with the other vector using Mathf.FLOAT_ROUNDING_ERROR for fuzzy equality testing
-     *
      * @param x x component of the other vector to compare
      * @param y y component of the other vector to compare
      * @param z z component of the other vector to compare

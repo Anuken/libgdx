@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * An action that has an int, whose value is transitioned over time.
- *
  * @author Nathan Sweet
  */
 public class IntAction extends TemporalAction{
@@ -42,7 +41,7 @@ public class IntAction extends TemporalAction{
     }
 
     protected void update(float percent){
-        value = (int) (start + (end - start) * percent);
+        value = (int)(start + (end - start) * percent);
     }
 
     /** Gets the current int value. */

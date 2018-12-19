@@ -16,9 +16,9 @@
 
 package com.badlogic.gdx.backends.lwjgl3;
 
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
@@ -31,9 +31,9 @@ public class Lwjgl3Cursor implements Cursor{
     static final Map<SystemCursor, Long> systemCursors = new HashMap<>();
 
     final Lwjgl3Window window;
+    final long glfwCursor;
     Pixmap pixmapCopy;
     GLFWImage glfwImage;
-    final long glfwCursor;
 
     Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot){
         this.window = window;
@@ -70,18 +70,6 @@ public class Lwjgl3Cursor implements Cursor{
         glfwImage.pixels(pixmapCopy.getPixels());
         glfwCursor = GLFW.glfwCreateCursor(glfwImage, xHotspot, yHotspot);
         cursors.add(this);
-    }
-
-    @Override
-    public void dispose(){
-        if(pixmapCopy == null){
-            throw new GdxRuntimeException("Cursor already disposed");
-        }
-        cursors.removeValue(this, true);
-        pixmapCopy.dispose();
-        pixmapCopy = null;
-        glfwImage.free();
-        GLFW.glfwDestroyCursor(glfwCursor);
     }
 
     static void dispose(Lwjgl3Window window){
@@ -127,5 +115,17 @@ public class Lwjgl3Cursor implements Cursor{
             systemCursors.put(systemCursor, glfwCursor);
         }
         GLFW.glfwSetCursor(windowHandle, glfwCursor);
+    }
+
+    @Override
+    public void dispose(){
+        if(pixmapCopy == null){
+            throw new GdxRuntimeException("Cursor already disposed");
+        }
+        cursors.removeValue(this, true);
+        pixmapCopy.dispose();
+        pixmapCopy = null;
+        glfwImage.free();
+        GLFW.glfwDestroyCursor(glfwCursor);
     }
 }

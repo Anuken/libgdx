@@ -22,14 +22,16 @@ import java.util.zip.GZIPInputStream;
  * like texture compression, cubemapping, mipmapping, etc.
  * <p>
  * For example, KTXTextureData can be used for {@link Texture} or {@link Cubemap}.
- *
  * @author Vincent Bousquet
  */
 public class KTXTextureData implements TextureData, CubemapData{
 
+    private static final int GL_TEXTURE_1D = 0x1234;
+    private static final int GL_TEXTURE_3D = 0x1234;
+    private static final int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
+    private static final int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
     // The file we are loading
     private FileHandle file;
-
     // KTX header (only available after preparing)
     private int glType;
     private int glTypeSize;
@@ -43,10 +45,8 @@ public class KTXTextureData implements TextureData, CubemapData{
     private int numberOfFaces;
     private int numberOfMipmapLevels;
     private int imagePos;
-
     // KTX image data (only available after preparing and before consuming)
     private ByteBuffer compressedData;
-
     // Whether to generate mipmaps if they are not included in the file
     private boolean useMipMaps;
 
@@ -90,18 +90,18 @@ public class KTXTextureData implements TextureData, CubemapData{
         }else{
             compressedData = ByteBuffer.wrap(file.readBytes());
         }
-        if(compressedData.get() != (byte) 0x0AB) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x04B) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x054) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x058) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x020) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x031) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x031) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x0BB) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x00D) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x00A) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x01A) throw new GdxRuntimeException("Invalid KTX Header");
-        if(compressedData.get() != (byte) 0x00A) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x0AB) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x04B) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x054) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x058) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x020) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x031) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x031) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x0BB) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x00D) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x00A) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x01A) throw new GdxRuntimeException("Invalid KTX Header");
+        if(compressedData.get() != (byte)0x00A) throw new GdxRuntimeException("Invalid KTX Header");
         int endianTag = compressedData.getInt();
         if(endianTag != 0x04030201 && endianTag != 0x01020304) throw new GdxRuntimeException("Invalid KTX Header");
         if(endianTag != 0x04030201)
@@ -138,11 +138,6 @@ public class KTXTextureData implements TextureData, CubemapData{
             compressedData = directBuffer;
         }
     }
-
-    private static final int GL_TEXTURE_1D = 0x1234;
-    private static final int GL_TEXTURE_3D = 0x1234;
-    private static final int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
-    private static final int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
 
     @Override
     public void consumeCubemapData(){

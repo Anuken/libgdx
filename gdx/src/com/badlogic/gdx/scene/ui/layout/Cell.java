@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
 /**
  * A cell for a {@link Table}.
- *
  * @author Nathan Sweet
  */
 public class Cell<T extends Element> implements Poolable{
@@ -90,7 +89,7 @@ public class Cell<T extends Element> implements Poolable{
             element = newActor;
             if(newActor != null) table.addChild(newActor);
         }
-        return (Cell<A>) this;
+        return (Cell<A>)this;
     }
 
     /** Removes the current element for the cell, if any. */
@@ -101,7 +100,7 @@ public class Cell<T extends Element> implements Poolable{
 
     /** Returns the element for this cell, or null. */
     public T getElement(){
-        return (T) element;
+        return (T)element;
     }
 
     /** getElement shortcut */
@@ -147,14 +146,14 @@ public class Cell<T extends Element> implements Poolable{
 
     public Cell<T> disabled(Predicate<T> vis){
         if(getElement() instanceof Button){
-            ((Button) getElement()).setDisabled(() -> vis.test(getElement()));
+            ((Button)getElement()).setDisabled(() -> vis.test(getElement()));
         }
         return this;
     }
 
     public Cell<T> disabled(boolean disabled){
         if(getElement() instanceof Button){
-            ((Button) getElement()).setDisabled(disabled);
+            ((Button)getElement()).setDisabled(disabled);
         }
         return this;
     }
@@ -181,23 +180,23 @@ public class Cell<T extends Element> implements Poolable{
 
     public Cell<T> wrap(){
         if(getElement() instanceof Label){
-            ((Label) getElement()).setWrap(true);
+            ((Label)getElement()).setWrap(true);
         }else if(getElement() instanceof TextButton){
-            ((TextButton) getElement()).getLabel().setWrap(true);
+            ((TextButton)getElement()).getLabel().setWrap(true);
         }
         return this;
     }
 
     public <N extends Button> Cell<T> group(ButtonGroup<N> group){
         if(getElement() instanceof Button){
-            group.add((N) getElement());
+            group.add((N)getElement());
         }
         return this;
     }
 
     public Cell<T> checked(boolean toggle){
         if(getElement() instanceof Button){
-            ((Button) (getElement())).setChecked(toggle);
+            ((Button)(getElement())).setChecked(toggle);
         }
         return this;
     }
@@ -209,35 +208,35 @@ public class Cell<T extends Element> implements Poolable{
 
     public Cell<T> margin(float margin){
         if(getElement() instanceof Table){
-            ((Table) getElement()).margin(margin);
+            ((Table)getElement()).margin(margin);
         }
         return this;
     }
 
     public Cell<T> marginTop(float margin){
         if(getElement() instanceof Table){
-            ((Table) getElement()).marginTop(margin);
+            ((Table)getElement()).marginTop(margin);
         }
         return this;
     }
 
     public Cell<T> marginBottom(float margin){
         if(getElement() instanceof Table){
-            ((Table) getElement()).marginBottom(margin);
+            ((Table)getElement()).marginBottom(margin);
         }
         return this;
     }
 
     public Cell<T> marginLeft(float margin){
         if(getElement() instanceof Table){
-            ((Table) getElement()).marginLeft(margin);
+            ((Table)getElement()).marginLeft(margin);
         }
         return this;
     }
 
     public Cell<T> marginRight(float margin){
         if(getElement() instanceof Table){
-            ((Table) getElement()).marginRight(margin);
+            ((Table)getElement()).marginRight(margin);
         }
         return this;
     }

@@ -22,7 +22,7 @@ import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.collection.*;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
@@ -40,6 +40,10 @@ import static org.lwjgl.openal.ALC10.*;
 public class OpenALAudio implements Audio{
     private final int deviceBufferSize;
     private final int deviceBufferCount;
+    Array<OpenALMusic> music = new Array<>(false, 1, OpenALMusic.class);
+    long device;
+    long context;
+    boolean noDevice = false;
     private IntArray idleSources, allSources;
     private LongMap<Integer> soundIdToSource;
     private IntMap<Long> sourceToSoundId;
@@ -48,11 +52,6 @@ public class OpenALAudio implements Audio{
     private ObjectMap<String, Class<? extends OpenALMusic>> extensionToMusicClass = new ObjectMap<>();
     private OpenALSound[] recentSounds;
     private int mostRecetSound = -1;
-
-    Array<OpenALMusic> music = new Array<>(false, 1, OpenALMusic.class);
-    long device;
-    long context;
-    boolean noDevice = false;
 
     public OpenALAudio(){
         this(16, 9, 512);
@@ -69,13 +68,13 @@ public class OpenALAudio implements Audio{
         registerSound("mp3", Mp3.Sound.class);
         registerMusic("mp3", Mp3.Music.class);
 
-        device = alcOpenDevice((ByteBuffer) null);
+        device = alcOpenDevice((ByteBuffer)null);
         if(device == 0L){
             noDevice = true;
             return;
         }
         ALCCapabilities deviceCapabilities = ALC.createCapabilities(device);
-        context = alcCreateContext(device, (IntBuffer) null);
+        context = alcCreateContext(device, (IntBuffer)null);
         if(context == 0L){
             alcCloseDevice(device);
             noDevice = true;
@@ -97,12 +96,12 @@ public class OpenALAudio implements Audio{
         soundIdToSource = new LongMap<Integer>();
         sourceToSoundId = new IntMap<Long>();
 
-        FloatBuffer orientation = (FloatBuffer) BufferUtils.createFloatBuffer(6)
+        FloatBuffer orientation = (FloatBuffer)BufferUtils.createFloatBuffer(6)
         .put(new float[]{0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f}).flip();
         alListenerfv(AL_ORIENTATION, orientation);
-        FloatBuffer velocity = (FloatBuffer) BufferUtils.createFloatBuffer(3).put(new float[]{0.0f, 0.0f, 0.0f}).flip();
+        FloatBuffer velocity = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[]{0.0f, 0.0f, 0.0f}).flip();
         alListenerfv(AL_VELOCITY, velocity);
-        FloatBuffer position = (FloatBuffer) BufferUtils.createFloatBuffer(3).put(new float[]{0.0f, 0.0f, 0.0f}).flip();
+        FloatBuffer position = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[]{0.0f, 0.0f, 0.0f}).flip();
         alListenerfv(AL_POSITION, position);
 
         recentSounds = new OpenALSound[simultaneousSources];
@@ -120,6 +119,7 @@ public class OpenALAudio implements Audio{
         extensionToMusicClass.put(extension, musicClass);
     }
 
+    @Override
     public OpenALSound newSound(FileHandle file){
         if(file == null) throw new IllegalArgumentException("file cannot be null.");
         Class<? extends OpenALSound> soundClass = extensionToSoundClass.get(file.extension().toLowerCase());
@@ -131,6 +131,7 @@ public class OpenALAudio implements Audio{
         }
     }
 
+    @Override
     public OpenALMusic newMusic(FileHandle file){
         if(file == null) throw new IllegalArgumentException("file cannot be null.");
         Class<? extends OpenALMusic> musicClass = extensionToMusicClass.get(file.extension().toLowerCase());

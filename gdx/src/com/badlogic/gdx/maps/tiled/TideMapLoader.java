@@ -22,6 +22,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,9 +34,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.utils.serialization.XmlReader;
 import com.badlogic.gdx.utils.serialization.XmlReader.Element;
 
@@ -43,19 +43,28 @@ import java.util.StringTokenizer;
 
 public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoader.Parameters>{
 
-    public static class Parameters extends AssetLoaderParameters<TiledMap>{
-
-    }
-
     private XmlReader xml = new XmlReader();
     private Element root;
-
     public TideMapLoader(){
         super(new InternalFileHandleResolver());
     }
 
     public TideMapLoader(FileHandleResolver resolver){
         super(resolver);
+    }
+
+    private static FileHandle getRelativeFileHandle(FileHandle file, String path){
+        StringTokenizer tokenizer = new StringTokenizer(path, "\\/");
+        FileHandle result = file.parent();
+        while(tokenizer.hasMoreElements()){
+            String token = tokenizer.nextToken();
+            if(token.equals(".."))
+                result = result.parent();
+            else{
+                result = result.child(token);
+            }
+        }
+        return result;
     }
 
     public TiledMap load(String fileName){
@@ -101,7 +110,6 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 
     /**
      * Loads the map data, given the XML root element and an {@link ImageResolver} used to return the tileset Textures
-     *
      * @param root the XML root element
      * @param tmxFile the Filehandle of the tmx file
      * @param imageResolver the {@link ImageResolver}
@@ -126,10 +134,8 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
 
     /**
      * Loads the tilesets
-     *
      * @param root the root XML element
      * @return a list of filenames for images containing tiles
-     * @throws IOException
      */
     private Array<FileHandle> loadTileSheets(Element root, FileHandle tideFile) throws IOException{
         Array<FileHandle> images = new Array<FileHandle>();
@@ -258,7 +264,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
                                 currentTileSet = tilesets.getTileSet(frame.getAttribute("Ref"));
                                 firstgid = currentTileSet.getProperties().get("firstgid", Integer.class);
                             }else if(frameName.equals("Static")){
-                                frameTiles.add((StaticTiledMapTile) currentTileSet.getTile(firstgid + frame.getIntAttribute("Index")));
+                                frameTiles.add((StaticTiledMapTile)currentTileSet.getTile(firstgid + frame.getIntAttribute("Index")));
                             }
                         }
                         Cell cell = new Cell();
@@ -297,18 +303,8 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
         }
     }
 
-    private static FileHandle getRelativeFileHandle(FileHandle file, String path){
-        StringTokenizer tokenizer = new StringTokenizer(path, "\\/");
-        FileHandle result = file.parent();
-        while(tokenizer.hasMoreElements()){
-            String token = tokenizer.nextToken();
-            if(token.equals(".."))
-                result = result.parent();
-            else{
-                result = result.child(token);
-            }
-        }
-        return result;
+    public static class Parameters extends AssetLoaderParameters<TiledMap>{
+
     }
 
 }

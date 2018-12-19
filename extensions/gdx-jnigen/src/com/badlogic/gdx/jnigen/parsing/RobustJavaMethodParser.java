@@ -21,7 +21,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.*;
 
 import java.io.ByteArrayInputStream;
-import java.util.*;
 
 public class RobustJavaMethodParser implements JavaMethodParser{
     private static final String JNI_MANUAL = "MANUAL";
@@ -115,11 +114,11 @@ public class RobustJavaMethodParser implements JavaMethodParser{
         if(type.getMembers() != null){
             for(BodyDeclaration member : type.getMembers()){
                 if(member instanceof ClassOrInterfaceDeclaration || member instanceof EnumDeclaration){
-                    getJavaMethods(methods, (TypeDeclaration) member);
+                    getJavaMethods(methods, (TypeDeclaration)member);
                 }else{
                     if(member instanceof MethodDeclaration){
-                        MethodDeclaration method = (MethodDeclaration) member;
-                        if(!ModifierSet.hasModifier(((MethodDeclaration) member).getModifiers(), ModifierSet.NATIVE))
+                        MethodDeclaration method = (MethodDeclaration)member;
+                        if(!ModifierSet.hasModifier(((MethodDeclaration)member).getModifiers(), ModifierSet.NATIVE))
                             continue;
                         methods.add(createMethod(method));
                     }

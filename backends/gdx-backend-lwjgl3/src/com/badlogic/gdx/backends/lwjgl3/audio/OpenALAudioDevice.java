@@ -33,6 +33,9 @@ public class OpenALAudioDevice implements AudioDevice{
 
     private final OpenALAudio audio;
     private final int channels;
+    private final int bufferSize;
+    private final int bufferCount;
+    private final ByteBuffer tempBuffer;
     private IntBuffer buffers;
     private int sourceID = -1;
     private int format, sampleRate;
@@ -40,9 +43,6 @@ public class OpenALAudioDevice implements AudioDevice{
     private float volume = 1;
     private float renderedSeconds, secondsPerBuffer;
     private byte[] bytes;
-    private final int bufferSize;
-    private final int bufferCount;
-    private final ByteBuffer tempBuffer;
 
     public OpenALAudioDevice(OpenALAudio audio, int sampleRate, boolean isMono, int bufferSize, int bufferCount){
         this.audio = audio;
@@ -51,7 +51,7 @@ public class OpenALAudioDevice implements AudioDevice{
         this.bufferCount = bufferCount;
         this.format = channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16;
         this.sampleRate = sampleRate;
-        secondsPerBuffer = (float) bufferSize / bytesPerSample / channels / sampleRate;
+        secondsPerBuffer = (float)bufferSize / bytesPerSample / channels / sampleRate;
         tempBuffer = BufferUtils.createByteBuffer(bufferSize);
     }
 
@@ -60,8 +60,8 @@ public class OpenALAudioDevice implements AudioDevice{
         int end = Math.min(offset + numSamples, samples.length);
         for(int i = offset, ii = 0; i < end; i++){
             short sample = samples[i];
-            bytes[ii++] = (byte) (sample & 0xFF);
-            bytes[ii++] = (byte) ((sample >> 8) & 0xFF);
+            bytes[ii++] = (byte)(sample & 0xFF);
+            bytes[ii++] = (byte)((sample >> 8) & 0xFF);
         }
         writeSamples(bytes, 0, numSamples * 2);
     }
@@ -72,9 +72,9 @@ public class OpenALAudioDevice implements AudioDevice{
         for(int i = offset, ii = 0; i < end; i++){
             float floatSample = samples[i];
             floatSample = Mathf.clamp(floatSample, -1f, 1f);
-            int intSample = (int) (floatSample * 32767);
-            bytes[ii++] = (byte) (intSample & 0xFF);
-            bytes[ii++] = (byte) ((intSample >> 8) & 0xFF);
+            int intSample = (int)(floatSample * 32767);
+            bytes[ii++] = (byte)(intSample & 0xFF);
+            bytes[ii++] = (byte)((intSample >> 8) & 0xFF);
         }
         writeSamples(bytes, 0, numSamples * 2);
     }
@@ -144,7 +144,7 @@ public class OpenALAudioDevice implements AudioDevice{
             }
             // Wait for buffer to be free.
             try{
-                Thread.sleep((long) (1000 * secondsPerBuffer));
+                Thread.sleep((long)(1000 * secondsPerBuffer));
             }catch(InterruptedException ignored){
             }
         }
@@ -208,6 +208,6 @@ public class OpenALAudioDevice implements AudioDevice{
     }
 
     public int getLatency(){
-        return (int) (secondsPerBuffer * bufferCount * 1000);
+        return (int)(secondsPerBuffer * bufferCount * 1000);
     }
 }

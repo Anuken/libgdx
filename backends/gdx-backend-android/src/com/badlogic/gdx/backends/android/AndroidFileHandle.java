@@ -18,8 +18,8 @@ package com.badlogic.gdx.backends.android;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.io.StreamUtils;

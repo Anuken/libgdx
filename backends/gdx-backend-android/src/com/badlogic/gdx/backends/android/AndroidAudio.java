@@ -40,13 +40,12 @@ import java.util.List;
 
 /**
  * An implementation of the {@link Audio} interface for Android.
- *
  * @author mzechner
  */
 public final class AndroidAudio implements Audio{
+    protected final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
     private final SoundPool soundPool;
     private final AudioManager manager;
-    protected final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
 
     public AndroidAudio(Context context, AndroidApplicationConfiguration config){
         if(!config.disableAudio){
@@ -59,9 +58,9 @@ public final class AndroidAudio implements Audio{
             }else{
                 soundPool = new SoundPool(config.maxSimultaneousSounds, AudioManager.STREAM_MUSIC, 0);// srcQuality: the sample-rate converter quality. Currently has no effect. Use 0 for the default.
             }
-            manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
             if(context instanceof Activity){
-                ((Activity) context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
+                ((Activity)context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
             }
         }else{
             soundPool = null;
@@ -112,7 +111,7 @@ public final class AndroidAudio implements Audio{
         if(soundPool == null){
             throw new GdxRuntimeException("Android audio is not enabled by the application config.");
         }
-        AndroidFileHandle aHandle = (AndroidFileHandle) file;
+        AndroidFileHandle aHandle = (AndroidFileHandle)file;
 
         MediaPlayer mediaPlayer = new MediaPlayer();
 
@@ -150,7 +149,6 @@ public final class AndroidAudio implements Audio{
     /**
      * Creates a new Music instance from the provided FileDescriptor. It is the caller's responsibility to close the file
      * descriptor. It is safe to do so as soon as this call returns.
-     *
      * @param fd the FileDescriptor from which to create the Music
      * @see Audio#newMusic(FileHandle)
      */
@@ -181,7 +179,7 @@ public final class AndroidAudio implements Audio{
         if(soundPool == null){
             throw new GdxRuntimeException("Android audio is not enabled by the application config.");
         }
-        AndroidFileHandle aHandle = (AndroidFileHandle) file;
+        AndroidFileHandle aHandle = (AndroidFileHandle)file;
         if(aHandle.type() == FileType.Internal){
             try{
                 AssetFileDescriptor descriptor = aHandle.getAssetFileDescriptor();

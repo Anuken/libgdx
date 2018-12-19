@@ -17,12 +17,11 @@
 package com.badlogic.gdx.scene.actions;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.scene.Action;
+import com.badlogic.gdx.utils.pooling.Pool;
 
 /**
  * Base class for actions that transition over time using the percent complete.
- *
  * @author Nathan Sweet
  */
 abstract public class TemporalAction extends Action{
@@ -81,7 +80,6 @@ abstract public class TemporalAction extends Action{
 
     /**
      * Called each frame.
-     *
      * @param percent The percentage of completion for this action, growing from 0 to 1 over the duration. If
      * {@link #setReverse(boolean) reversed}, this will shrink from 1 to 0.
      */

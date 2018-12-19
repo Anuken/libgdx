@@ -16,14 +16,13 @@
 
 package com.badlogic.gdx.scene;
 
-import com.badlogic.gdx.utils.pooling.Pool;
-import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.scene.actions.DelayAction;
 import com.badlogic.gdx.scene.actions.TemporalAction;
+import com.badlogic.gdx.utils.pooling.Pool;
+import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 
 /**
  * Actions attach to an {@link Element} and perform some task, often over time.
- *
  * @author Nathan Sweet
  */
 abstract public class Action implements Poolable{
@@ -37,7 +36,6 @@ abstract public class Action implements Poolable{
 
     /**
      * Updates the action based on time. Typically this is called each frame by {@link Element#act(float)}.
-     *
      * @param delta Time in seconds since the last frame.
      * @return true if the action is done. This method may continue to be called after the action is done.
      */
@@ -110,7 +108,6 @@ abstract public class Action implements Poolable{
 
     /**
      * Sets the pool that the action will be returned to when removed from the actor.
-     *
      * @param pool May be null.
      * @see #setActor(Element)
      */

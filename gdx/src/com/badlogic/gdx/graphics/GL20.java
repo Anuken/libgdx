@@ -22,7 +22,6 @@ import java.nio.IntBuffer;
 
 /**
  * Interface wrapping all the methods of OpenGL ES 2.0
- *
  * @author mzechner
  */
 public interface GL20{

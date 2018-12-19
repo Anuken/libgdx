@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Delays execution of an action or inserts a pause in a {@link SequenceAction}.
- *
  * @author Nathan Sweet
  */
 public class DelayAction extends DelegateAction{

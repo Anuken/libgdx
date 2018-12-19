@@ -31,7 +31,6 @@ import com.badlogic.gdx.collection.ShortArray;
  * </ul>
  * If the input polygon is not simple (self-intersects), there will be output but it is of unspecified quality (garbage in,
  * garbage out).
- *
  * @author badlogicgames@gmail.com
  * @author Nicolas Gramlich (optimizations, collinear edge support)
  * @author Eric Spitz
@@ -43,11 +42,35 @@ public class EarClippingTriangulator{
     static private final int CONVEX = 1;
 
     private final ShortArray indicesArray = new ShortArray();
+    private final IntArray vertexTypes = new IntArray();
+    private final ShortArray triangles = new ShortArray();
     private short[] indices;
     private float[] vertices;
     private int vertexCount;
-    private final IntArray vertexTypes = new IntArray();
-    private final ShortArray triangles = new ShortArray();
+
+    static private boolean areVerticesClockwise(float[] vertices, int offset, int count){
+        if(count <= 2) return false;
+        float area = 0, p1x, p1y, p2x, p2y;
+        for(int i = offset, n = offset + count - 3; i < n; i += 2){
+            p1x = vertices[i];
+            p1y = vertices[i + 1];
+            p2x = vertices[i + 2];
+            p2y = vertices[i + 3];
+            area += p1x * p2y - p2x * p1y;
+        }
+        p1x = vertices[offset + count - 2];
+        p1y = vertices[offset + count - 1];
+        p2x = vertices[offset];
+        p2y = vertices[offset + 1];
+        return area + p1x * p2y - p2x * p1y < 0;
+    }
+
+    static private int computeSpannedAreaSign(float p1x, float p1y, float p2x, float p2y, float p3x, float p3y){
+        float area = p1x * (p3y - p2y);
+        area += p2x * (p1y - p3y);
+        area += p3x * (p2y - p1y);
+        return (int)Math.signum(area);
+    }
 
     /** @see #computeTriangles(float[], int, int) */
     public ShortArray computeTriangles(FloatArray vertices){
@@ -61,7 +84,6 @@ public class EarClippingTriangulator{
 
     /**
      * Triangulates the given (convex or concave) simple polygon to a list of triangle vertices.
-     *
      * @param vertices pairs describing vertices of the polygon, in either clockwise or counterclockwise order.
      * @return triples of triangle indices in clockwise order. Note the returned array is reused for later calls to the same
      * method.
@@ -78,10 +100,10 @@ public class EarClippingTriangulator{
         short[] indices = this.indices = indicesArray.items;
         if(areVerticesClockwise(vertices, offset, count)){
             for(short i = 0; i < vertexCount; i++)
-                indices[i] = (short) (vertexOffset + i);
+                indices[i] = (short)(vertexOffset + i);
         }else{
             for(int i = 0, n = vertexCount - 1; i < vertexCount; i++)
-                indices[i] = (short) (vertexOffset + n - i); // Reversed.
+                indices[i] = (short)(vertexOffset + n - i); // Reversed.
         }
 
         IntArray vertexTypes = this.vertexTypes;
@@ -206,29 +228,5 @@ public class EarClippingTriangulator{
 
     private int nextIndex(int index){
         return (index + 1) % vertexCount;
-    }
-
-    static private boolean areVerticesClockwise(float[] vertices, int offset, int count){
-        if(count <= 2) return false;
-        float area = 0, p1x, p1y, p2x, p2y;
-        for(int i = offset, n = offset + count - 3; i < n; i += 2){
-            p1x = vertices[i];
-            p1y = vertices[i + 1];
-            p2x = vertices[i + 2];
-            p2y = vertices[i + 3];
-            area += p1x * p2y - p2x * p1y;
-        }
-        p1x = vertices[offset + count - 2];
-        p1y = vertices[offset + count - 1];
-        p2x = vertices[offset];
-        p2y = vertices[offset + 1];
-        return area + p1x * p2y - p2x * p1y < 0;
-    }
-
-    static private int computeSpannedAreaSign(float p1x, float p1y, float p2x, float p2y, float p3x, float p3y){
-        float area = p1x * (p3y - p2y);
-        area += p2x * (p1y - p3y);
-        area += p3x * (p2y - p1y);
-        return (int) Math.signum(area);
     }
 }

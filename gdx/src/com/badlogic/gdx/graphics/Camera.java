@@ -24,23 +24,23 @@ import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
 
 public class Camera{
-    /**temporary vector which is returned.*/
+    /** temporary vector which is returned. */
     private static final Vector2 tmpVector = new Vector2();
     /** the position of the camera **/
     public final Vector2 position = new Vector2();
-    /** the viewport width and height **/
-    public float width, height;
     /** the combined projection and view matrix **/
     private final Matrix3 combined = new Matrix3();
     /** the inverse combined projection and view matrix **/
     private final Matrix3 invProjectionView = new Matrix3();
+    /** the viewport width and height **/
+    public float width, height;
 
     /**
      * Recalculates the projection and view matrix of this camera. Use this after you've manipulated
      * any of the attributes of the camera.
      */
     public void update(){
-        combined.setOrtho(position.x - width/2f, position.y - height/2f, width, height);
+        combined.setOrtho(position.x - width / 2f, position.y - height / 2f, width, height);
         invProjectionView.set(combined).inv();
     }
 
@@ -61,7 +61,6 @@ public class Camera{
      * point on the near plane, a z-coordinate of 1 will return a point on the far plane. This method allows you to specify the
      * viewport position and dimensions in the coordinate system expected by {@link GL20#glViewport(int, int, int, int)}, with the
      * origin in the bottom left corner of the screen.
-     *
      * @param screenCoords the point in screen coordinates (origin top left)
      * @param viewportX the coordinate of the bottom left corner of the viewport in glViewport coordinates.
      * @param viewportY the coordinate of the bottom left corner of the viewport in glViewport coordinates.
@@ -85,7 +84,6 @@ public class Camera{
      * {@link Graphics#getHeight()}. The x- and y-coordinate of vec are assumed to be in screen coordinates (origin is the top left
      * corner, y pointing down, x pointing to the right) as reported by the touch methods in {@link Input}. A z-coordinate of 0
      * will return a point on the near plane, a z-coordinate of 1 will return a point on the far plane.
-     *
      * @param screenCoords the point in screen coordinates
      * @return the mutated and unprojected screenCoords {@link Vector3}
      */
@@ -94,7 +92,7 @@ public class Camera{
         return screenCoords;
     }
 
-    /**See {@link #unproject(Vector2)}. Returns the same Vector2 each time.*/
+    /** See {@link #unproject(Vector2)}. Returns the same Vector2 each time. */
     public Vector2 unproject(float screenX, float screenY){
         unproject(tmpVector.set(screenX, screenY), 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
         return tmpVector;
@@ -104,7 +102,6 @@ public class Camera{
      * Projects the {@link Vector3} given in world space to screen coordinates. It's the same as GLU gluProject with one small
      * deviation: The viewport is assumed to span the whole screen. The screen coordinate system has its origin in the
      * <b>bottom</b> left, with the y-axis pointing <b>upwards</b> and the x-axis pointing to the right.
-     *
      * @return the mutated and projected worldCoords {@link Vector3}
      */
     public Vector2 project(Vector2 worldCoords){
@@ -112,7 +109,7 @@ public class Camera{
         return worldCoords;
     }
 
-    /**See {@link #project(Vector2)}. Returns the same Vector2 each time.*/
+    /** See {@link #project(Vector2)}. Returns the same Vector2 each time. */
     public Vector2 project(float screenX, float screenY){
         project(tmpVector.set(screenX, screenY), 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
         return tmpVector;
@@ -125,7 +122,6 @@ public class Camera{
      * This method allows you to specify the viewport position and
      * dimensions in the coordinate system expected by {@link GL20#glViewport(int, int, int, int)}, with the origin in the bottom
      * left corner of the screen.
-     *
      * @param viewportX the coordinate of the bottom left corner of the viewport in glViewport coordinates.
      * @param viewportY the coordinate of the bottom left corner of the viewport in glViewport coordinates.
      * @param viewportWidth the width of the viewport in pixels

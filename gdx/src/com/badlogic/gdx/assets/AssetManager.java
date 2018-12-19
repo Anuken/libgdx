@@ -27,7 +27,8 @@ import com.badlogic.gdx.collection.ObjectSet;
 import com.badlogic.gdx.graphics.Cubemap;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -41,7 +42,6 @@ import java.util.Stack;
 
 /**
  * Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
- *
  * @author mzechner
  */
 @SuppressWarnings("unchecked")
@@ -56,12 +56,11 @@ public class AssetManager implements Disposable{
     final AsyncExecutor executor;
 
     final Stack<AssetLoadingTask> tasks = new Stack<>();
+    final FileHandleResolver resolver;
     AssetErrorListener listener = null;
     int loaded = 0;
     int toLoad = 0;
     int peakTasks = 0;
-
-    final FileHandleResolver resolver;
 
     /** Creates a new AssetManager with all default loaders. */
     public AssetManager(){
@@ -76,7 +75,6 @@ public class AssetManager implements Disposable{
     /**
      * Creates a new AssetManager with optionally all default loaders. If you don't add the default loaders then you do have to
      * manually add the loaders you need, including any loaders they might depend on.
-     *
      * @param defaultLoaders whether to add the default loaders
      */
     public AssetManager(FileHandleResolver resolver, boolean defaultLoaders){
@@ -97,7 +95,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Returns the {@link FileHandleResolver} for which this AssetManager was loaded with.
-     *
      * @return the file handle resolver which this AssetManager uses
      */
     public FileHandleResolver getFileHandleResolver(){
@@ -184,7 +181,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Removes the asset and all its dependencies, if they are not used by other assets.
-     *
      * @param fileName the file name
      */
     public synchronized void unload(String fileName){
@@ -224,7 +220,7 @@ public class AssetManager implements Disposable{
 
             // if it is disposable dispose it
             if(assetRef.getObject(Object.class) instanceof Disposable)
-                ((Disposable) assetRef.getObject(Object.class)).dispose();
+                ((Disposable)assetRef.getObject(Object.class)).dispose();
 
             // remove the asset from the manager.
             assetTypes.remove(fileName);
@@ -252,7 +248,7 @@ public class AssetManager implements Disposable{
         ObjectMap<String, RefCountedContainer> assetsByType = assets.get(asset.getClass());
         if(assetsByType == null) return false;
         for(String fileName : assetsByType.keys()){
-            T otherAsset = (T) assetsByType.get(fileName).getObject(Object.class);
+            T otherAsset = (T)assetsByType.get(fileName).getObject(Object.class);
             if(otherAsset == asset || asset.equals(otherAsset)) return true;
         }
         return false;
@@ -266,7 +262,7 @@ public class AssetManager implements Disposable{
         for(Class assetType : assets.keys()){
             ObjectMap<String, RefCountedContainer> assetsByType = assets.get(assetType);
             for(String fileName : assetsByType.keys()){
-                T otherAsset = (T) assetsByType.get(fileName).getObject(Object.class);
+                T otherAsset = (T)assetsByType.get(fileName).getObject(Object.class);
                 if(otherAsset == asset || asset.equals(otherAsset)) return fileName;
             }
         }
@@ -304,7 +300,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Returns the default loader for the given type
-     *
      * @param type The type of the loader to get
      * @return The loader capable of loading the type, or null if none exists
      */
@@ -315,7 +310,6 @@ public class AssetManager implements Disposable{
     /**
      * Returns the loader for the given type and the specified filename. If no loader exists for the specific filename, the
      * default loader for that type is returned.
-     *
      * @param type The type of the loader to get
      * @param fileName The filename of the asset to get a loader for, or null to get the default loader
      * @return The loader capable of loading the type and filename, or null if none exists
@@ -337,7 +331,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Adds the given asset to the loading queue of the AssetManager.
-     *
      * @param fileName the file name (interpretation depends on {@link AssetLoader})
      * @param type the type of the asset.
      */
@@ -347,7 +340,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Adds the given asset to the loading queue of the AssetManager.
-     *
      * @param fileName the file name (interpretation depends on {@link AssetLoader})
      * @param type the type of the asset.
      * @param parameter parameters for the AssetLoader.
@@ -394,7 +386,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Adds the given asset to the loading queue of the AssetManager.
-     *
      * @param desc the {@link AssetDescriptor}
      */
     public synchronized void load(AssetDescriptor desc){
@@ -403,7 +394,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Updates the AssetManager, keeping it loading any assets in the preload queue.
-     *
      * @return true if all loading is finished.
      */
     public synchronized boolean update(){
@@ -427,7 +417,6 @@ public class AssetManager implements Disposable{
      * Updates the AssetManager continuously for the specified number of milliseconds, yielding the CPU to the loading thread
      * between updates. This may block for less time if all loading tasks are complete. This may block for more time if the portion
      * of a single task that happens in the GL thread takes a long time.
-     *
      * @return true if all loading is finished.
      */
     public boolean update(int millis){
@@ -452,7 +441,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Blocks until the specified asset is loaded.
-     *
      * @param assetDesc the AssetDescriptor of the asset
      */
     public void finishLoadingAsset(AssetDescriptor assetDesc){
@@ -461,7 +449,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Blocks until the specified asset is loaded.
-     *
      * @param fileName the file name (interpretation depends on {@link AssetLoader})
      */
     public void finishLoadingAsset(String fileName){
@@ -528,8 +515,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Adds a {@link AssetLoadingTask} to the task stack for the given asset.
-     *
-     * @param assetDesc
      */
     private void addTask(AssetDescriptor assetDesc){
         AssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
@@ -555,7 +540,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Updates the current task on the top of the task stack.
-     *
      * @return true if the asset is loaded or the task was cancelled.
      */
     private boolean updateTask(){
@@ -616,8 +600,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Handles a runtime/loading error in {@link #update()} by optionally invoking the {@link AssetErrorListener}.
-     *
-     * @param t
      */
     private void handleTaskError(Throwable t){
 
@@ -647,7 +629,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Sets a new {@link AssetLoader} for the given type.
-     *
      * @param type the type of the asset
      * @param loader the loader
      */
@@ -657,7 +638,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Sets a new {@link AssetLoader} for the given type.
-     *
      * @param type the type of the asset
      * @param suffix the suffix the filename must have for this loader to be used or null to specify the default loader.
      * @param loader the loader
@@ -684,16 +664,15 @@ public class AssetManager implements Disposable{
     /** @return the progress in percent of completion. */
     public synchronized float getProgress(){
         if(toLoad == 0) return 1;
-        float fractionalLoaded = (float) loaded;
+        float fractionalLoaded = (float)loaded;
         if(peakTasks > 0){
-            fractionalLoaded += ((peakTasks - tasks.size()) / (float) peakTasks);
+            fractionalLoaded += ((peakTasks - tasks.size()) / (float)peakTasks);
         }
-        return Math.min(1, fractionalLoaded / (float) toLoad);
+        return Math.min(1, fractionalLoaded / (float)toLoad);
     }
 
     /**
      * Sets an {@link AssetErrorListener} to be invoked in case loading an asset failed.
-     *
      * @param listener the listener or null
      */
     public synchronized void setErrorListener(AssetErrorListener listener){
@@ -752,8 +731,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Returns the reference count of an asset.
-     *
-     * @param fileName
      */
     public synchronized int getReferenceCount(String fileName){
         Class type = assetTypes.get(fileName);
@@ -763,8 +740,6 @@ public class AssetManager implements Disposable{
 
     /**
      * Sets the reference count of an asset.
-     *
-     * @param fileName
      */
     public synchronized void setReferenceCount(String fileName, int refCount){
         Class type = assetTypes.get(fileName);

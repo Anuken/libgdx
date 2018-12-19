@@ -156,7 +156,7 @@ public class KeybindDialog extends Dialog{
             if(section.device.type() == DeviceType.controller){
                 table.table(info -> {
                     info.add("Controller Type: [#" + style.controllerColor.toString().toUpperCase() + "]" +
-                            Strings.capitalize(section.device.name())).left();
+                    Strings.capitalize(section.device.name())).left();
                 });
             }
             table.row();
@@ -192,9 +192,9 @@ public class KeybindDialog extends Dialog{
                     table.row();
                 }else{
                     table.add(bundle.get("keybind." + keybind.name() + ".name", Strings.capitalize(keybind.name())),
-                        style.keyNameColor).left().padRight(40).padLeft(8);
+                    style.keyNameColor).left().padRight(40).padLeft(8);
                     table.add(keybinds.get(section, keybind).key.toString(),
-                        style.keyColor).left().minWidth(90).padRight(20);
+                    style.keyColor).left().minWidth(90).padRight(20);
                     table.addButton(bundle.get("text.settings.rebind", "Rebind"), () -> openDialog(section, keybind)).width(110f);
                     table.row();
                 }
@@ -280,7 +280,7 @@ public class KeybindDialog extends Dialog{
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
                     if(Core.app.getType() == ApplicationType.Android) return false;
-                   // rebind(Input.findByType(Type.mouse, button, false));
+                    // rebind(Input.findByType(Type.mouse, button, false));
                     return false;
                 }
 

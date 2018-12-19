@@ -22,7 +22,6 @@
  * Project home page: <a href="http://www.source-code.biz/base64coder/java/">www.source-code.biz/base64coder/java</a><br>
  * Author: Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland<br>
  * Multi-licensed: EPL / LGPL / GPL / AL / BSD.
- *
  * @author Christian d'Heureuse
  * @author vaxquis
  */
@@ -32,44 +31,13 @@ package com.badlogic.gdx.utils.serialization;
 import com.badlogic.gdx.utils.StringBuilder;
 
 public class Base64Coder{
-    public static class CharMap{
-        protected final char[] encodingMap = new char[64];
-        protected final byte[] decodingMap = new byte[128];
-
-        public CharMap(char char63, char char64){
-            int i = 0;
-            for(char c = 'A'; c <= 'Z'; c++){
-                encodingMap[i++] = c;
-            }
-            for(char c = 'a'; c <= 'z'; c++){
-                encodingMap[i++] = c;
-            }
-            for(char c = '0'; c <= '9'; c++){
-                encodingMap[i++] = c;
-            }
-            encodingMap[i++] = char63;
-            encodingMap[i++] = char64;
-            for(i = 0; i < decodingMap.length; i++){
-                decodingMap[i] = -1;
-            }
-            for(i = 0; i < 64; i++){
-                decodingMap[encodingMap[i]] = (byte) i;
-            }
-        }
-
-        public byte[] getDecodingMap(){
-            return decodingMap;
-        }
-
-        public char[] getEncodingMap(){
-            return encodingMap;
-        }
-    }
-
+    public static final CharMap regularMap = new CharMap('+', '/'), urlsafeMap = new CharMap('-', '_');
     // The line separator string of the operating system.
     private static final String systemLineSeparator = "\n";
 
-    public static final CharMap regularMap = new CharMap('+', '/'), urlsafeMap = new CharMap('-', '_');
+    // Dummy constructor.
+    private Base64Coder(){
+    }
 
     /**
      * Encodes a string into Base64 format. No blanks or line breaks are inserted.
@@ -326,18 +294,48 @@ public class Base64Coder{
             int o0 = (b0 << 2) | (b1 >>> 4);
             int o1 = ((b1 & 0xf) << 4) | (b2 >>> 2);
             int o2 = ((b2 & 3) << 6) | b3;
-            out[op++] = (byte) o0;
+            out[op++] = (byte)o0;
             if(op < oLen){
-                out[op++] = (byte) o1;
+                out[op++] = (byte)o1;
             }
             if(op < oLen){
-                out[op++] = (byte) o2;
+                out[op++] = (byte)o2;
             }
         }
         return out;
     }
 
-    // Dummy constructor.
-    private Base64Coder(){
+    public static class CharMap{
+        protected final char[] encodingMap = new char[64];
+        protected final byte[] decodingMap = new byte[128];
+
+        public CharMap(char char63, char char64){
+            int i = 0;
+            for(char c = 'A'; c <= 'Z'; c++){
+                encodingMap[i++] = c;
+            }
+            for(char c = 'a'; c <= 'z'; c++){
+                encodingMap[i++] = c;
+            }
+            for(char c = '0'; c <= '9'; c++){
+                encodingMap[i++] = c;
+            }
+            encodingMap[i++] = char63;
+            encodingMap[i++] = char64;
+            for(i = 0; i < decodingMap.length; i++){
+                decodingMap[i] = -1;
+            }
+            for(i = 0; i < 64; i++){
+                decodingMap[encodingMap[i]] = (byte)i;
+            }
+        }
+
+        public byte[] getDecodingMap(){
+            return decodingMap;
+        }
+
+        public char[] getEncodingMap(){
+            return encodingMap;
+        }
     }
 }

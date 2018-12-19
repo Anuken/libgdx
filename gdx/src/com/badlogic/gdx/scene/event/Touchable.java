@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.event;
 
 /**
  * Determines how touch input events are distributed to an element and any children.
- *
  * @author Nathan Sweet
  */
 public enum Touchable{

@@ -20,9 +20,20 @@ import com.badlogic.gdx.math.Mathf;
 
 /** @author Xoppa */
 public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
+    public T[] controlPoints;
+    public boolean continuous;
+    public int spanCount;
+    private T tmp;
+    private T tmp2;
+    private T tmp3;
+    public CatmullRomSpline(){
+    }
+    public CatmullRomSpline(final T[] controlPoints, final boolean continuous){
+        set(controlPoints, continuous);
+    }
+
     /**
      * Calculates the catmullrom value for the given position (t).
-     *
      * @param out The Vector to set to the result.
      * @param t The position (0<=t<=1) on the spline
      * @param points The control points
@@ -34,14 +45,13 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
                                                     final T tmp){
         final int n = continuous ? points.length : points.length - 3;
         float u = t * n;
-        int i = (t >= 1f) ? (n - 1) : (int) u;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
         u -= i;
         return calculate(out, i, u, points, continuous, tmp);
     }
 
     /**
      * Calculates the catmullrom value for the given span (i) at the given position (u).
-     *
      * @param out The Vector to set to the result.
      * @param i The span (0<=i<spanCount) spanCount = continuous ? points.length : points.length - degree
      * @param u The position (0<=u<=1) on the span
@@ -64,7 +74,6 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
 
     /**
      * Calculates the derivative of the catmullrom spline for the given position (t).
-     *
      * @param out The Vector to set to the result.
      * @param t The position (0<=t<=1) on the spline
      * @param points The control points
@@ -76,14 +85,13 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
                                                      final T tmp){
         final int n = continuous ? points.length : points.length - 3;
         float u = t * n;
-        int i = (t >= 1f) ? (n - 1) : (int) u;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
         u -= i;
         return derivative(out, i, u, points, continuous, tmp);
     }
 
     /**
      * Calculates the derivative of the catmullrom spline for the given span (i) at the given position (u).
-     *
      * @param out The Vector to set to the result.
      * @param i The span (0<=i<spanCount) spanCount = continuous ? points.length : points.length - degree
      * @param u The position (0<=u<=1) on the span
@@ -107,20 +115,6 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
         return out;
     }
 
-    public T[] controlPoints;
-    public boolean continuous;
-    public int spanCount;
-    private T tmp;
-    private T tmp2;
-    private T tmp3;
-
-    public CatmullRomSpline(){
-    }
-
-    public CatmullRomSpline(final T[] controlPoints, final boolean continuous){
-        set(controlPoints, continuous);
-    }
-
     public CatmullRomSpline set(final T[] controlPoints, final boolean continuous){
         if(tmp == null) tmp = controlPoints[0].cpy();
         if(tmp2 == null) tmp2 = controlPoints[0].cpy();
@@ -135,7 +129,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
     public T valueAt(T out, float t){
         final int n = spanCount;
         float u = t * n;
-        int i = (t >= 1f) ? (n - 1) : (int) u;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
         u -= i;
         return valueAt(out, i, u);
     }
@@ -149,7 +143,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
     public T derivativeAt(T out, float t){
         final int n = spanCount;
         float u = t * n;
-        int i = (t >= 1f) ? (n - 1) : (int) u;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
         u -= i;
         return derivativeAt(out, i, u);
     }
@@ -211,7 +205,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
         float L1Sqr = P1.dst2(P2);
         float L2Sqr = P3.dst2(P2);
         float L3Sqr = P3.dst2(P1);
-        float L1 = (float) Math.sqrt(L1Sqr);
+        float L1 = (float)Math.sqrt(L1Sqr);
         float s = (L2Sqr + L1Sqr - L3Sqr) / (2f * L1);
         float u = Mathf.clamp((L1 - s) / L1, 0f, 1f);
         return (n + u) / spanCount;
@@ -227,7 +221,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T>{
         float tempLength = 0;
         for(int i = 0; i < samples; ++i){
             tmp2.set(tmp3);
-            valueAt(tmp3, (i) / ((float) samples - 1));
+            valueAt(tmp3, (i) / ((float)samples - 1));
             if(i > 0) tempLength += tmp2.dst(tmp3);
         }
         return tempLength;

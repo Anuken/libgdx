@@ -19,11 +19,11 @@ package com.badlogic.gdx.scene.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scene.Element;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.scene.style.Drawable;
 import com.badlogic.gdx.scene.style.SkinReader.ReadContext;
 import com.badlogic.gdx.scene.style.TextureRegionDrawable;
 import com.badlogic.gdx.scene.ui.layout.Cell;
+import com.badlogic.gdx.utils.Scaling;
 
 import static com.badlogic.gdx.Core.scene;
 
@@ -32,7 +32,6 @@ import static com.badlogic.gdx.Core.scene;
  * image centered on the button. If the image is the size of the button, a {@link Button} without any children can be used, where
  * the {@link Button.ButtonStyle#up}, {@link Button.ButtonStyle#down}, and {@link Button.ButtonStyle#checked} nine patches define
  * the image.
- *
  * @author Nathan Sweet
  */
 public class ImageButton extends Button{
@@ -108,7 +107,7 @@ public class ImageButton extends Button{
         if(!(style instanceof ImageButtonStyle))
             throw new IllegalArgumentException("style must be an ImageButtonStyle.");
         super.setStyle(style);
-        this.style = (ImageButtonStyle) style;
+        this.style = (ImageButtonStyle)style;
         if(image != null) updateImage();
     }
 
@@ -167,7 +166,6 @@ public class ImageButton extends Button{
 
     /**
      * The style for an image button, see {@link ImageButton}.
-     *
      * @author Nathan Sweet
      */
     static public class ImageButtonStyle extends ButtonStyle{

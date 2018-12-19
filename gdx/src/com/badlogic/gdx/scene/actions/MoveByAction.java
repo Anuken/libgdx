@@ -18,7 +18,6 @@ package com.badlogic.gdx.scene.actions;
 
 /**
  * Moves an actor to a relative position.
- *
  * @author Nathan Sweet
  */
 public class MoveByAction extends RelativeTemporalAction{

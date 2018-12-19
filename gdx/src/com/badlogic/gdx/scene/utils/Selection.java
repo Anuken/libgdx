@@ -11,7 +11,6 @@ import java.util.Iterator;
 /**
  * Manages selected objects. Optionally fires a {@link ChangeEvent} on an element. Selection changes can be vetoed via
  * {@link ChangeEvent#cancel()}.
- *
  * @author Nathan Sweet
  */
 public class Selection<T> implements Disableable, Iterable<T>{
@@ -215,7 +214,6 @@ public class Selection<T> implements Disableable, Iterable<T>{
     /**
      * Fires a change event on the selection's element, if any. Called internally when the selection changes, depending on
      * {@link #setProgrammaticChangeEvents(boolean)}.
-     *
      * @return true if the change should be undone.
      */
     public boolean fireChangeEvent(){

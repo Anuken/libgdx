@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
  * This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
  * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
  * next higher POT size.
- *
  * @author Nathan Sweet
  */
 public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
@@ -63,7 +62,6 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
 
     /**
      * Creates a new map with a load factor of 0.8.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public LongMap(int initialCapacity){
@@ -73,12 +71,11 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
     /**
      * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
      * growing the backing table.
-     *
      * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
      */
     public LongMap(int initialCapacity, float loadFactor){
         if(initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-        initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
+        initialCapacity = Mathf.nextPowerOfTwo((int)Math.ceil(initialCapacity / loadFactor));
         if(initialCapacity > 1 << 30)
             throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
         capacity = initialCapacity;
@@ -86,19 +83,19 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
         if(loadFactor <= 0) throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
         this.loadFactor = loadFactor;
 
-        threshold = (int) (capacity * loadFactor);
+        threshold = (int)(capacity * loadFactor);
         mask = capacity - 1;
         hashShift = 63 - Long.numberOfTrailingZeros(capacity);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-        pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(capacity)) * 2);
+        pushIterations = Math.max(Math.min(capacity, 8), (int)Math.sqrt(capacity) / 8);
 
         keyTable = new long[capacity + stashCapacity];
-        valueTable = (V[]) new Object[keyTable.length];
+        valueTable = (V[])new Object[keyTable.length];
     }
 
     /** Creates a new map identical to the specified map. */
     public LongMap(LongMap<? extends V> map){
-        this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
+        this((int)Math.floor(map.capacity * map.loadFactor), map.loadFactor);
         stashSize = map.stashSize;
         System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
         System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
@@ -121,7 +118,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
         long[] keyTable = this.keyTable;
 
         // Check for existing keys.
-        int index1 = (int) (key & mask);
+        int index1 = (int)(key & mask);
         long key1 = keyTable[index1];
         if(key1 == key){
             V oldValue = valueTable[index1];
@@ -194,7 +191,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
         }
 
         // Check for empty buckets.
-        int index1 = (int) (key & mask);
+        int index1 = (int)(key & mask);
         long key1 = keyTable[index1];
         if(key1 == EMPTY){
             keyTable[index1] = key;
@@ -257,7 +254,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
             }
 
             // If the evicted key hashes to an empty bucket, put it there and stop.
-            index1 = (int) (evictedKey & mask);
+            index1 = (int)(evictedKey & mask);
             key1 = keyTable[index1];
             if(key1 == EMPTY){
                 keyTable[index1] = evictedKey;
@@ -313,7 +310,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
             if(!hasZeroValue) return null;
             return zeroValue;
         }
-        int index = (int) (key & mask);
+        int index = (int)(key & mask);
         if(keyTable[index] != key){
             index = hash2(key);
             if(keyTable[index] != key){
@@ -329,7 +326,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
             if(!hasZeroValue) return defaultValue;
             return zeroValue;
         }
-        int index = (int) (key & mask);
+        int index = (int)(key & mask);
         if(keyTable[index] != key){
             index = hash2(key);
             if(keyTable[index] != key){
@@ -357,7 +354,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
             return oldValue;
         }
 
-        int index = (int) (key & mask);
+        int index = (int)(key & mask);
         if(keyTable[index] == key){
             keyTable[index] = EMPTY;
             V oldValue = valueTable[index];
@@ -480,7 +477,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
 
     public boolean containsKey(long key){
         if(key == 0) return hasZeroValue;
-        int index = (int) (key & mask);
+        int index = (int)(key & mask);
         if(keyTable[index] != key){
             index = hash2(key);
             if(keyTable[index] != key){
@@ -501,7 +498,6 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
     /**
      * Returns the key for the specified value, or <tt>notFound</tt> if it is not in the map. Note this traverses the entire map
      * and compares every value, which may be an expensive operation.
-     *
      * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
      * {@link #equals(Object)}.
      */
@@ -532,24 +528,24 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
         if(additionalCapacity < 0)
             throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
         int sizeNeeded = size + additionalCapacity;
-        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
+        if(sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int)Math.ceil(sizeNeeded / loadFactor)));
     }
 
     private void resize(int newSize){
         int oldEndIndex = capacity + stashSize;
 
         capacity = newSize;
-        threshold = (int) (newSize * loadFactor);
+        threshold = (int)(newSize * loadFactor);
         mask = newSize - 1;
         hashShift = 63 - Long.numberOfTrailingZeros(newSize);
-        stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-        pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+        stashCapacity = Math.max(3, (int)Math.ceil(Math.log(newSize)) * 2);
+        pushIterations = Math.max(Math.min(newSize, 8), (int)Math.sqrt(newSize) / 8);
 
         long[] oldKeyTable = keyTable;
         V[] oldValueTable = valueTable;
 
         keyTable = new long[newSize + stashCapacity];
-        valueTable = (V[]) new Object[newSize + stashCapacity];
+        valueTable = (V[])new Object[newSize + stashCapacity];
 
         int oldSize = size;
         size = hasZeroValue ? 1 : 0;
@@ -564,12 +560,12 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
 
     private int hash2(long h){
         h *= PRIME2;
-        return (int) ((h ^ h >>> hashShift) & mask);
+        return (int)((h ^ h >>> hashShift) & mask);
     }
 
     private int hash3(long h){
         h *= PRIME3;
-        return (int) ((h ^ h >>> hashShift) & mask);
+        return (int)((h ^ h >>> hashShift) & mask);
     }
 
     public int hashCode(){
@@ -582,7 +578,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
         for(int i = 0, n = capacity + stashSize; i < n; i++){
             long key = keyTable[i];
             if(key != EMPTY){
-                h += (int) (key ^ (key >>> 32)) * 31;
+                h += (int)(key ^ (key >>> 32)) * 31;
 
                 V value = valueTable[i];
                 if(value != null){
@@ -596,7 +592,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
     public boolean equals(Object obj){
         if(obj == this) return true;
         if(!(obj instanceof LongMap)) return false;
-        LongMap<V> other = (LongMap) obj;
+        LongMap<V> other = (LongMap)obj;
         if(other.size != size) return false;
         if(other.hasZeroValue != hasZeroValue) return false;
         if(hasZeroValue){
@@ -728,10 +724,8 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>>{
     static private class MapIterator<V>{
         static final int INDEX_ILLEGAL = -2;
         static final int INDEX_ZERO = -1;
-
-        public boolean hasNext;
-
         final LongMap<V> map;
+        public boolean hasNext;
         int nextIndex, currentIndex;
         boolean valid = true;
 

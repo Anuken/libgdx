@@ -66,6 +66,87 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
         return copy;
     }
 
+    /**
+     * @return the currently active {@link DisplayMode} of the primary monitor
+     */
+    public static DisplayMode getDisplayMode(){
+        Lwjgl3Application.initializeGlfw();
+        GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.width(), videoMode.height(), videoMode.refreshRate(),
+        videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
+    }
+
+    /**
+     * @return the currently active {@link DisplayMode} of the given monitor
+     */
+    public static DisplayMode getDisplayMode(Monitor monitor){
+        Lwjgl3Application.initializeGlfw();
+        GLFWVidMode videoMode = GLFW.glfwGetVideoMode(((Lwjgl3Monitor)monitor).monitorHandle);
+        return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Monitor)monitor).monitorHandle, videoMode.width(), videoMode.height(), videoMode.refreshRate(),
+        videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
+    }
+
+    /**
+     * @return the available {@link DisplayMode}s of the primary monitor
+     */
+    public static DisplayMode[] getDisplayModes(){
+        Lwjgl3Application.initializeGlfw();
+        Buffer videoModes = GLFW.glfwGetVideoModes(GLFW.glfwGetPrimaryMonitor());
+        DisplayMode[] result = new DisplayMode[videoModes.limit()];
+        for(int i = 0; i < result.length; i++){
+            GLFWVidMode videoMode = videoModes.get(i);
+            result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.width(), videoMode.height(),
+            videoMode.refreshRate(), videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
+        }
+        return result;
+    }
+
+    /**
+     * @return the available {@link DisplayMode}s of the given {@link Monitor}
+     */
+    public static DisplayMode[] getDisplayModes(Monitor monitor){
+        Lwjgl3Application.initializeGlfw();
+        Buffer videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Monitor)monitor).monitorHandle);
+        DisplayMode[] result = new DisplayMode[videoModes.limit()];
+        for(int i = 0; i < result.length; i++){
+            GLFWVidMode videoMode = videoModes.get(i);
+            result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Monitor)monitor).monitorHandle, videoMode.width(), videoMode.height(),
+            videoMode.refreshRate(), videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
+        }
+        return result;
+    }
+
+    /**
+     * @return the primary {@link Monitor}
+     */
+    public static Monitor getPrimaryMonitor(){
+        Lwjgl3Application.initializeGlfw();
+        return toLwjgl3Monitor(GLFW.glfwGetPrimaryMonitor());
+    }
+
+    /**
+     * @return the connected {@link Monitor}s
+     */
+    public static Monitor[] getMonitors(){
+        Lwjgl3Application.initializeGlfw();
+        PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
+        Monitor[] monitors = new Monitor[glfwMonitors.limit()];
+        for(int i = 0; i < glfwMonitors.limit(); i++){
+            monitors[i] = toLwjgl3Monitor(glfwMonitors.get(i));
+        }
+        return monitors;
+    }
+
+    static Lwjgl3Monitor toLwjgl3Monitor(long glfwMonitor){
+        IntBuffer tmp = BufferUtils.createIntBuffer(1);
+        IntBuffer tmp2 = BufferUtils.createIntBuffer(1);
+        GLFW.glfwGetMonitorPos(glfwMonitor, tmp, tmp2);
+        int virtualX = tmp.get(0);
+        int virtualY = tmp2.get(0);
+        String name = GLFW.glfwGetMonitorName(glfwMonitor);
+        return new Lwjgl3Monitor(glfwMonitor, virtualX, virtualY, name);
+    }
+
     void set(Lwjgl3ApplicationConfiguration config){
         super.setWindowConfiguration(config);
         disableAudio = config.disableAudio;
@@ -109,7 +190,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
 
     /**
      * Sets the audio device configuration.
-     *
      * @param simultaniousSources the maximum number of sources that can be played
      * simultaniously (default 16)
      * @param bufferSize the audio device buffer size in samples (default 512)
@@ -128,7 +208,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
      * respectively to be compatible with Mac OS X. Specifying major version 4
      * and minor version 2 will ensure that all OpenGL ES 3.0 features are
      * supported. Note however that Mac OS X does only support 3.2.
-     *
      * @param useGL30 whether to use OpenGL ES 3.0
      * @param gles3MajorVersion OpenGL ES major version, use 3 as default
      * @param gles3MinorVersion OpenGL ES minor version, use 2 as default
@@ -145,7 +224,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
     /**
      * Sets the bit depth of the color, depth and stencil buffer as well as
      * multi-sampling.
-     *
      * @param r red bits (default 8)
      * @param g green bits (default 8)
      * @param b blue bits (default 8)
@@ -166,8 +244,6 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
 
     /**
      * Set transparent window hint
-     *
-     * @param transparentFramebuffer
      * @deprecated Results may vary on different OS and GPUs. See https://github.com/glfw/glfw/issues/1237
      */
     @Deprecated
@@ -223,86 +299,5 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration{
     public void enableGLDebugOutput(boolean enable, PrintStream debugOutputStream){
         debug = enable;
         debugStream = debugOutputStream;
-    }
-
-    /**
-     * @return the currently active {@link DisplayMode} of the primary monitor
-     */
-    public static DisplayMode getDisplayMode(){
-        Lwjgl3Application.initializeGlfw();
-        GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-        return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.width(), videoMode.height(), videoMode.refreshRate(),
-        videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
-    }
-
-    /**
-     * @return the currently active {@link DisplayMode} of the given monitor
-     */
-    public static DisplayMode getDisplayMode(Monitor monitor){
-        Lwjgl3Application.initializeGlfw();
-        GLFWVidMode videoMode = GLFW.glfwGetVideoMode(((Lwjgl3Monitor) monitor).monitorHandle);
-        return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Monitor) monitor).monitorHandle, videoMode.width(), videoMode.height(), videoMode.refreshRate(),
-        videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
-    }
-
-    /**
-     * @return the available {@link DisplayMode}s of the primary monitor
-     */
-    public static DisplayMode[] getDisplayModes(){
-        Lwjgl3Application.initializeGlfw();
-        Buffer videoModes = GLFW.glfwGetVideoModes(GLFW.glfwGetPrimaryMonitor());
-        DisplayMode[] result = new DisplayMode[videoModes.limit()];
-        for(int i = 0; i < result.length; i++){
-            GLFWVidMode videoMode = videoModes.get(i);
-            result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.width(), videoMode.height(),
-            videoMode.refreshRate(), videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
-        }
-        return result;
-    }
-
-    /**
-     * @return the available {@link DisplayMode}s of the given {@link Monitor}
-     */
-    public static DisplayMode[] getDisplayModes(Monitor monitor){
-        Lwjgl3Application.initializeGlfw();
-        Buffer videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Monitor) monitor).monitorHandle);
-        DisplayMode[] result = new DisplayMode[videoModes.limit()];
-        for(int i = 0; i < result.length; i++){
-            GLFWVidMode videoMode = videoModes.get(i);
-            result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Monitor) monitor).monitorHandle, videoMode.width(), videoMode.height(),
-            videoMode.refreshRate(), videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
-        }
-        return result;
-    }
-
-    /**
-     * @return the primary {@link Monitor}
-     */
-    public static Monitor getPrimaryMonitor(){
-        Lwjgl3Application.initializeGlfw();
-        return toLwjgl3Monitor(GLFW.glfwGetPrimaryMonitor());
-    }
-
-    /**
-     * @return the connected {@link Monitor}s
-     */
-    public static Monitor[] getMonitors(){
-        Lwjgl3Application.initializeGlfw();
-        PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
-        Monitor[] monitors = new Monitor[glfwMonitors.limit()];
-        for(int i = 0; i < glfwMonitors.limit(); i++){
-            monitors[i] = toLwjgl3Monitor(glfwMonitors.get(i));
-        }
-        return monitors;
-    }
-
-    static Lwjgl3Monitor toLwjgl3Monitor(long glfwMonitor){
-        IntBuffer tmp = BufferUtils.createIntBuffer(1);
-        IntBuffer tmp2 = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetMonitorPos(glfwMonitor, tmp, tmp2);
-        int virtualX = tmp.get(0);
-        int virtualY = tmp2.get(0);
-        String name = GLFW.glfwGetMonitorName(glfwMonitor);
-        return new Lwjgl3Monitor(glfwMonitor, virtualX, virtualY, name);
     }
 }

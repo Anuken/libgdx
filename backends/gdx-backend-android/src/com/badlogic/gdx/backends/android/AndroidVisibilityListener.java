@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.Log;
 
 /**
  * Allows immersive mode support while maintaining compatibility with Android versions before API Level 19 (4.4)
- *
  * @author Unkn0wn0ne
  */
 public class AndroidVisibilityListener{

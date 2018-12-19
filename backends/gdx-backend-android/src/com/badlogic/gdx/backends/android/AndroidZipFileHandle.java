@@ -17,8 +17,8 @@
 package com.badlogic.gdx.backends.android;
 
 import android.content.res.AssetFileDescriptor;
-import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Core;
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.android.ZipResourceFile.ZipEntryRO;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -43,7 +43,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle{
 
     private void initialize(){
         path = file.getPath().replace('\\', '/');
-        expansionFile = ((AndroidFiles) Core.files).getExpansionFile();
+        expansionFile = ((AndroidFiles)Core.files).getExpansionFile();
         assetFd = expansionFile.getAssetFileDescriptor(getPath());
 
         // needed for listing entries and exists() of directories

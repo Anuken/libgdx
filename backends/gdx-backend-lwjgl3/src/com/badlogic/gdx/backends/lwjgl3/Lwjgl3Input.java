@@ -36,7 +36,15 @@ public class Lwjgl3Input extends Input implements Disposable{
     private boolean keyJustPressed;
     private Bits justPressedKeys = new Bits(KeyCode.values().length);
     private char lastCharacter;
-
+    private GLFWCharCallback charCallback = new GLFWCharCallback(){
+        @Override
+        public void invoke(long window, int codepoint){
+            if((codepoint & 0xff00) == 0xf700) return;
+            lastCharacter = (char)codepoint;
+            Lwjgl3Input.this.window.getGraphics().requestRendering();
+            eventQueue.keyTyped((char)codepoint);
+        }
+    };
     private GLFWKeyCallback keyCallback = new GLFWKeyCallback(){
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods){
@@ -66,22 +74,11 @@ public class Lwjgl3Input extends Input implements Disposable{
             }
         }
     };
-
-    private GLFWCharCallback charCallback = new GLFWCharCallback(){
-        @Override
-        public void invoke(long window, int codepoint){
-            if((codepoint & 0xff00) == 0xf700) return;
-            lastCharacter = (char) codepoint;
-            Lwjgl3Input.this.window.getGraphics().requestRendering();
-            eventQueue.keyTyped((char) codepoint);
-        }
-    };
-
     private GLFWScrollCallback scrollCallback = new GLFWScrollCallback(){
         @Override
         public void invoke(long window, double scrollX, double scrollY){
             Lwjgl3Input.this.window.getGraphics().requestRendering();
-            eventQueue.scrolled(-(float) scrollX, -(float) scrollY);
+            eventQueue.scrolled(-(float)scrollX, -(float)scrollY);
         }
     };
 
@@ -93,18 +90,18 @@ public class Lwjgl3Input extends Input implements Disposable{
         public void invoke(long windowHandle, double x, double y){
             y = window.getGraphics().getLogicalHeight() - y;
 
-            deltaX = (int) x - logicalMouseX;
-            deltaY = (int) y - logicalMouseY;
-            mouseX = logicalMouseX = (int) x;
-            mouseY = logicalMouseY = (int) y;
+            deltaX = (int)x - logicalMouseX;
+            deltaY = (int)y - logicalMouseY;
+            mouseX = logicalMouseX = (int)x;
+            mouseY = logicalMouseY = (int)y;
 
             if(window.getConfig().hdpiMode == HdpiMode.Pixels){
-                float xScale = window.getGraphics().getBackBufferWidth() / (float) window.getGraphics().getLogicalWidth();
-                float yScale = window.getGraphics().getBackBufferHeight() / (float) window.getGraphics().getLogicalHeight();
-                deltaX = (int) (deltaX * xScale);
-                deltaY = (int) (deltaY * yScale);
-                mouseX = (int) (mouseX * xScale);
-                mouseY = (int) (mouseY * yScale);
+                float xScale = window.getGraphics().getBackBufferWidth() / (float)window.getGraphics().getLogicalWidth();
+                float yScale = window.getGraphics().getBackBufferHeight() / (float)window.getGraphics().getLogicalHeight();
+                deltaX = (int)(deltaX * xScale);
+                deltaY = (int)(deltaY * yScale);
+                mouseX = (int)(mouseX * xScale);
+                mouseY = (int)(mouseY * yScale);
             }
 
             Lwjgl3Input.this.window.getGraphics().requestRendering();
@@ -280,22 +277,22 @@ public class Lwjgl3Input extends Input implements Disposable{
     }
 
     @Override
-    public void setCursorCatched(boolean catched){
-        GLFW.glfwSetInputMode(window.getWindowHandle(), GLFW.GLFW_CURSOR, catched ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
-    }
-
-    @Override
     public boolean isCursorCatched(){
         return GLFW.glfwGetInputMode(window.getWindowHandle(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED;
     }
 
     @Override
+    public void setCursorCatched(boolean catched){
+        GLFW.glfwSetInputMode(window.getWindowHandle(), GLFW.GLFW_CURSOR, catched ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
+    }
+
+    @Override
     public void setCursorPosition(int x, int y){
         if(window.getConfig().hdpiMode == HdpiMode.Pixels){
-            float xScale = window.getGraphics().getLogicalWidth() / (float) window.getGraphics().getBackBufferWidth();
-            float yScale = window.getGraphics().getLogicalHeight() / (float) window.getGraphics().getBackBufferHeight();
-            x = (int) (x * xScale);
-            y = (int) (y * yScale);
+            float xScale = window.getGraphics().getLogicalWidth() / (float)window.getGraphics().getBackBufferWidth();
+            float yScale = window.getGraphics().getLogicalHeight() / (float)window.getGraphics().getBackBufferHeight();
+            x = (int)(x * xScale);
+            y = (int)(y * yScale);
         }
         GLFW.glfwSetCursorPos(window.getWindowHandle(), x, y);
     }

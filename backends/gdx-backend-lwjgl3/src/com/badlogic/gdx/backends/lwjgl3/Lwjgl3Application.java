@@ -35,29 +35,17 @@ import java.io.PrintStream;
 import java.nio.IntBuffer;
 
 public class Lwjgl3Application implements Application{
-    private final Lwjgl3ApplicationConfiguration config;
-    private final Array<Lwjgl3Window> windows = new Array<>();
-    private Audio audio;
-    private final Lwjgl3Clipboard clipboard;
-    private volatile boolean running = true;
-    private final Array<ApplicationListener> listeners = new Array<>();
-    private final Array<Runnable> runnables = new Array<>();
-    private final Array<Runnable> executedRunnables = new Array<>();
     private static GLFWErrorCallback errorCallback;
     private static GLVersion glVersion;
     private static Callback glDebugCallback;
-
-    static void initializeGlfw(){
-        if(errorCallback == null){
-            Lwjgl3NativesLoader.load();
-            errorCallback = GLFWErrorCallback.createPrint(System.err);
-            GLFW.glfwSetErrorCallback(errorCallback);
-            GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
-            if(!GLFW.glfwInit()){
-                throw new GdxRuntimeException("Unable to initialize GLFW");
-            }
-        }
-    }
+    private final Lwjgl3ApplicationConfiguration config;
+    private final Array<Lwjgl3Window> windows = new Array<>();
+    private final Lwjgl3Clipboard clipboard;
+    private final Array<ApplicationListener> listeners = new Array<>();
+    private final Array<Runnable> runnables = new Array<>();
+    private final Array<Runnable> executedRunnables = new Array<>();
+    private Audio audio;
+    private volatile boolean running = true;
 
     public Lwjgl3Application(ApplicationListener listener, Lwjgl3ApplicationConfiguration config){
         initializeGlfw();
@@ -88,7 +76,7 @@ public class Lwjgl3Application implements Application{
             cleanupWindows();
         }catch(Throwable t){
             if(t instanceof RuntimeException)
-                throw (RuntimeException) t;
+                throw (RuntimeException)t;
             else
                 throw new GdxRuntimeException(t);
         }finally{
@@ -96,186 +84,15 @@ public class Lwjgl3Application implements Application{
         }
     }
 
-    private void loop(){
-        Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
-        while(running && windows.size > 0){
-            // FIXME put it on a separate thread
-            if(audio instanceof OpenALAudio){
-                ((OpenALAudio) audio).update();
+    static void initializeGlfw(){
+        if(errorCallback == null){
+            Lwjgl3NativesLoader.load();
+            errorCallback = GLFWErrorCallback.createPrint(System.err);
+            GLFW.glfwSetErrorCallback(errorCallback);
+            GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
+            if(!GLFW.glfwInit()){
+                throw new GdxRuntimeException("Unable to initialize GLFW");
             }
-
-            boolean haveWindowsRendered = false;
-            closedWindows.clear();
-            for(Lwjgl3Window window : windows){
-                window.makeCurrent();
-                synchronized(listeners){
-                    haveWindowsRendered |= window.update();
-                }
-                if(window.shouldClose()){
-                    closedWindows.add(window);
-                }
-            }
-            for(ApplicationListener listener : listeners){
-                listener.update();
-            }
-            GLFW.glfwPollEvents();
-
-            boolean shouldRequestRendering;
-            synchronized(runnables){
-                shouldRequestRendering = runnables.size > 0;
-                executedRunnables.clear();
-                executedRunnables.addAll(runnables);
-                runnables.clear();
-            }
-            for(Runnable runnable : executedRunnables){
-                runnable.run();
-            }
-            if(shouldRequestRendering){
-                // Must follow Runnables execution so changes done by Runnables are reflected
-                // in the following render.
-                for(Lwjgl3Window window : windows){
-                    if(!window.getGraphics().isContinuousRendering())
-                        window.requestRendering();
-                }
-            }
-
-            for(Lwjgl3Window closedWindow : closedWindows){
-                if(windows.size == 1){
-                    // Lifecycle listener methods have to be called before ApplicationListener methods. The
-                    // application will be disposed when _all_ windows have been disposed, which is the case,
-                    // when there is only 1 window left, which is in the process of being disposed.
-                    for(int i = listeners.size - 1; i >= 0; i--){
-                        ApplicationListener l = listeners.get(i);
-                        l.pause();
-                        l.dispose();
-                    }
-                    listeners.clear();
-                }
-                closedWindow.dispose();
-
-                windows.remove(closedWindow);
-            }
-
-            if(!haveWindowsRendered){
-                // Sleep a few milliseconds in case no rendering was requested
-                // with continuous rendering disabled.
-                try{
-                    Thread.sleep(1000 / config.idleFPS);
-                }catch(InterruptedException e){
-                    // ignore
-                }
-            }
-        }
-    }
-
-    private void cleanupWindows(){
-        synchronized(listeners){
-            for(ApplicationListener lifecycleListener : listeners){
-                lifecycleListener.pause();
-                lifecycleListener.dispose();
-            }
-        }
-        for(Lwjgl3Window window : windows){
-            window.dispose();
-        }
-        windows.clear();
-    }
-
-    private void cleanup(){
-        dispose();
-        Lwjgl3Cursor.disposeSystemCursors();
-        if(audio instanceof OpenALAudio){
-            ((OpenALAudio) audio).dispose();
-        }
-        errorCallback.free();
-        errorCallback = null;
-        if(glDebugCallback != null){
-            glDebugCallback.free();
-            glDebugCallback = null;
-        }
-        GLFW.glfwTerminate();
-    }
-
-    @Override
-    public ApplicationType getType(){
-        return ApplicationType.Desktop;
-    }
-
-    @Override
-    public int getVersion(){
-        return 0;
-    }
-
-    @Override
-    public long getJavaHeap(){
-        return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-    }
-
-    @Override
-    public long getNativeHeap(){
-        return getJavaHeap();
-    }
-
-    @Override
-    public Clipboard getClipboard(){
-        return clipboard;
-    }
-
-    @Override
-    public void post(Runnable runnable){
-        synchronized(runnables){
-            runnables.add(runnable);
-        }
-    }
-
-    @Override
-    public Array<ApplicationListener> getListeners(){
-        return listeners;
-    }
-
-    @Override
-    public void exit(){
-        running = false;
-    }
-
-    /**
-     * Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
-     * <p>
-     * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation
-     * is postponed with {@link Application#post(Runnable)} until after all existing windows are updated.
-     */
-    public Lwjgl3Window newWindow(ApplicationListener listener, Lwjgl3WindowConfiguration config){
-        Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
-        appConfig.setWindowConfiguration(config);
-        return createWindow(appConfig, listener, windows.get(0).getWindowHandle());
-    }
-
-    private Lwjgl3Window createWindow(final Lwjgl3ApplicationConfiguration config, ApplicationListener listener,
-                                      final long sharedContext){
-        final Lwjgl3Window window = new Lwjgl3Window(listener, config);
-        if(sharedContext == 0){
-            // the main window is created immediately
-            createWindow(window, config, sharedContext);
-        }else{
-            // creation of additional windows is deferred to avoid GL context trouble
-            post(() -> {
-                createWindow(window, config, sharedContext);
-                windows.add(window);
-            });
-        }
-        return window;
-    }
-
-    private void createWindow(Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, long sharedContext){
-        long windowHandle = createGlfwWindow(config, sharedContext);
-        window.create(windowHandle);
-        window.setVisible(config.initialVisible);
-
-        for(int i = 0; i < 2; i++){
-            GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
-            config.initialBackgroundColor.a);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-            GLFW.glfwSwapBuffers(windowHandle);
         }
     }
 
@@ -379,6 +196,222 @@ public class Lwjgl3Application implements Application{
         || GLFW.glfwExtensionSupported("GL_ARB_framebuffer_object");
     }
 
+    /**
+     * Enables or disables GL debug messages for the specified severity level. Returns false if the severity
+     * level could not be set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
+     * <p>
+     * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(boolean, PrintStream)}
+     */
+    public static boolean setGLDebugMessageControl(GLDebugMessageSeverity severity, boolean enabled){
+        GLCapabilities caps = GL.getCapabilities();
+        final int GL_DONT_CARE = 0x1100; // not defined anywhere yet
+
+        if(caps.OpenGL43){
+            GL43.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.gl43, (IntBuffer)null, enabled);
+            return true;
+        }
+
+        if(caps.GL_KHR_debug){
+            KHRDebug.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.khr, (IntBuffer)null, enabled);
+            return true;
+        }
+
+        if(caps.GL_ARB_debug_output && severity.arb != -1){
+            ARBDebugOutput.glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, severity.arb, (IntBuffer)null, enabled);
+            return true;
+        }
+
+        if(caps.GL_AMD_debug_output && severity.amd != -1){
+            AMDDebugOutput.glDebugMessageEnableAMD(GL_DONT_CARE, severity.amd, (IntBuffer)null, enabled);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void loop(){
+        Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
+        while(running && windows.size > 0){
+            // FIXME put it on a separate thread
+            if(audio instanceof OpenALAudio){
+                ((OpenALAudio)audio).update();
+            }
+
+            boolean haveWindowsRendered = false;
+            closedWindows.clear();
+            for(Lwjgl3Window window : windows){
+                window.makeCurrent();
+                synchronized(listeners){
+                    haveWindowsRendered |= window.update();
+                }
+                if(window.shouldClose()){
+                    closedWindows.add(window);
+                }
+            }
+            for(ApplicationListener listener : listeners){
+                listener.update();
+            }
+            GLFW.glfwPollEvents();
+
+            boolean shouldRequestRendering;
+            synchronized(runnables){
+                shouldRequestRendering = runnables.size > 0;
+                executedRunnables.clear();
+                executedRunnables.addAll(runnables);
+                runnables.clear();
+            }
+            for(Runnable runnable : executedRunnables){
+                runnable.run();
+            }
+            if(shouldRequestRendering){
+                // Must follow Runnables execution so changes done by Runnables are reflected
+                // in the following render.
+                for(Lwjgl3Window window : windows){
+                    if(!window.getGraphics().isContinuousRendering())
+                        window.requestRendering();
+                }
+            }
+
+            for(Lwjgl3Window closedWindow : closedWindows){
+                if(windows.size == 1){
+                    // Lifecycle listener methods have to be called before ApplicationListener methods. The
+                    // application will be disposed when _all_ windows have been disposed, which is the case,
+                    // when there is only 1 window left, which is in the process of being disposed.
+                    for(int i = listeners.size - 1; i >= 0; i--){
+                        ApplicationListener l = listeners.get(i);
+                        l.pause();
+                        l.dispose();
+                    }
+                    listeners.clear();
+                }
+                closedWindow.dispose();
+
+                windows.remove(closedWindow);
+            }
+
+            if(!haveWindowsRendered){
+                // Sleep a few milliseconds in case no rendering was requested
+                // with continuous rendering disabled.
+                try{
+                    Thread.sleep(1000 / config.idleFPS);
+                }catch(InterruptedException e){
+                    // ignore
+                }
+            }
+        }
+    }
+
+    private void cleanupWindows(){
+        synchronized(listeners){
+            for(ApplicationListener lifecycleListener : listeners){
+                lifecycleListener.pause();
+                lifecycleListener.dispose();
+            }
+        }
+        for(Lwjgl3Window window : windows){
+            window.dispose();
+        }
+        windows.clear();
+    }
+
+    private void cleanup(){
+        dispose();
+        Lwjgl3Cursor.disposeSystemCursors();
+        if(audio instanceof OpenALAudio){
+            ((OpenALAudio)audio).dispose();
+        }
+        errorCallback.free();
+        errorCallback = null;
+        if(glDebugCallback != null){
+            glDebugCallback.free();
+            glDebugCallback = null;
+        }
+        GLFW.glfwTerminate();
+    }
+
+    @Override
+    public ApplicationType getType(){
+        return ApplicationType.Desktop;
+    }
+
+    @Override
+    public int getVersion(){
+        return 0;
+    }
+
+    @Override
+    public long getJavaHeap(){
+        return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+    }
+
+    @Override
+    public long getNativeHeap(){
+        return getJavaHeap();
+    }
+
+    @Override
+    public Clipboard getClipboard(){
+        return clipboard;
+    }
+
+    @Override
+    public void post(Runnable runnable){
+        synchronized(runnables){
+            runnables.add(runnable);
+        }
+    }
+
+    @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
+    }
+
+    @Override
+    public void exit(){
+        running = false;
+    }
+
+    /**
+     * Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
+     * <p>
+     * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation
+     * is postponed with {@link Application#post(Runnable)} until after all existing windows are updated.
+     */
+    public Lwjgl3Window newWindow(ApplicationListener listener, Lwjgl3WindowConfiguration config){
+        Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
+        appConfig.setWindowConfiguration(config);
+        return createWindow(appConfig, listener, windows.get(0).getWindowHandle());
+    }
+
+    private Lwjgl3Window createWindow(final Lwjgl3ApplicationConfiguration config, ApplicationListener listener,
+                                      final long sharedContext){
+        final Lwjgl3Window window = new Lwjgl3Window(listener, config);
+        if(sharedContext == 0){
+            // the main window is created immediately
+            createWindow(window, config, sharedContext);
+        }else{
+            // creation of additional windows is deferred to avoid GL context trouble
+            post(() -> {
+                createWindow(window, config, sharedContext);
+                windows.add(window);
+            });
+        }
+        return window;
+    }
+
+    private void createWindow(Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, long sharedContext){
+        long windowHandle = createGlfwWindow(config, sharedContext);
+        window.create(windowHandle);
+        window.setVisible(config.initialVisible);
+
+        for(int i = 0; i < 2; i++){
+            GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
+            config.initialBackgroundColor.a);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+            GLFW.glfwSwapBuffers(windowHandle);
+        }
+    }
+
     public enum GLDebugMessageSeverity{
         HIGH(
         GL43.GL_DEBUG_SEVERITY_HIGH,
@@ -409,39 +442,6 @@ public class Lwjgl3Application implements Application{
             this.arb = arb;
             this.amd = amd;
         }
-    }
-
-    /**
-     * Enables or disables GL debug messages for the specified severity level. Returns false if the severity
-     * level could not be set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
-     * <p>
-     * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(boolean, PrintStream)}
-     */
-    public static boolean setGLDebugMessageControl(GLDebugMessageSeverity severity, boolean enabled){
-        GLCapabilities caps = GL.getCapabilities();
-        final int GL_DONT_CARE = 0x1100; // not defined anywhere yet
-
-        if(caps.OpenGL43){
-            GL43.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.gl43, (IntBuffer) null, enabled);
-            return true;
-        }
-
-        if(caps.GL_KHR_debug){
-            KHRDebug.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.khr, (IntBuffer) null, enabled);
-            return true;
-        }
-
-        if(caps.GL_ARB_debug_output && severity.arb != -1){
-            ARBDebugOutput.glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, severity.arb, (IntBuffer) null, enabled);
-            return true;
-        }
-
-        if(caps.GL_AMD_debug_output && severity.amd != -1){
-            AMDDebugOutput.glDebugMessageEnableAMD(GL_DONT_CARE, severity.amd, (IntBuffer) null, enabled);
-            return true;
-        }
-
-        return false;
     }
 
 }

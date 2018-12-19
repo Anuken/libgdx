@@ -49,7 +49,6 @@ import static com.badlogic.gdx.Core.scene;
  * was previously.
  * <p>
  * The preferred size of the button is determined by the background and the button contents.
- *
  * @author Nathan Sweet
  */
 public class Button extends Table implements Disableable{
@@ -185,7 +184,7 @@ public class Button extends Table implements Disableable{
 
         forEach(element -> {
             element.stageToLocalCoordinates(v.set(input.mouseX(), input.mouseY()));
-            if(element instanceof Button && (((Button) element).getClickListener().isOver(element, v.x, v.y))){
+            if(element instanceof Button && (((Button)element).getClickListener().isOver(element, v.x, v.y))){
                 b[0] = true;
             }
         });
@@ -320,7 +319,6 @@ public class Button extends Table implements Disableable{
 
     /**
      * The style for a button, see {@link Button}.
-     *
      * @author mzechner
      */
     static public class ButtonStyle extends Style{
@@ -328,7 +326,7 @@ public class Button extends Table implements Disableable{
         public Drawable up, down, over, checked, checkedOver, disabled;
         /** Optional. */
         public float pressedOffsetX, pressedOffsetY, unpressedOffsetX,
-                unpressedOffsetY, checkedOffsetX, checkedOffsetY, transition = -1;
+        unpressedOffsetY, checkedOffsetX, checkedOffsetY, transition = -1;
 
         public ButtonStyle(){
         }

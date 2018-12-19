@@ -60,35 +60,28 @@ import static com.badlogic.gdx.graphics.g2d.SpriteBatch.VERTEX_SIZE;
  * SpriteCache works with OpenGL ES 1.x and 2.0. For 2.0, it uses its own custom shader to draw.<br>
  * <br>
  * SpriteCache must be disposed once it is no longer needed.
- *
  * @author Nathan Sweet
  */
 public class SpriteCache implements Disposable{
     static private final float[] tempVertices = new float[VERTEX_SIZE * 6];
 
     private final Mesh mesh;
-    private boolean drawing;
     private final Matrix3 transformMatrix = new Matrix3();
     private final Matrix3 projectionMatrix = new Matrix3();
-    private Array<Cache> caches = new Array<>();
-
     private final Matrix3 combinedMatrix = new Matrix3();
     private final ShaderProgram shader;
-
-    private Cache currentCache;
     private final Array<Texture> textures = new Array<>(8);
     private final IntArray counts = new IntArray(8);
-
     private final Color color = new Color(1, 1, 1, 1);
-    private float colorPacked = Color.WHITE_FLOAT_BITS;
-
-    private ShaderProgram customShader = null;
-
     /** Number of render calls since the last {@link #begin()}. **/
     public int renderCalls = 0;
-
     /** Number of rendering calls, ever. Will not be reset unless set manually. **/
     public int totalRenderCalls = 0;
+    private boolean drawing;
+    private Array<Cache> caches = new Array<>();
+    private Cache currentCache;
+    private float colorPacked = Color.WHITE_FLOAT_BITS;
+    private ShaderProgram customShader = null;
 
     /** Creates a cache that uses indexed geometry and can contain up to 1000 images. */
     public SpriteCache(){
@@ -97,7 +90,6 @@ public class SpriteCache implements Disposable{
 
     /**
      * Creates a cache with the specified size, using a default shader if OpenGL ES 2.0 is being used.
-     *
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      * Max of 8191 if indices are used.
      * @param useIndices If true, indexed geometry will be used.
@@ -108,7 +100,6 @@ public class SpriteCache implements Disposable{
 
     /**
      * Creates a cache with the specified size and OpenGL ES 2.0 shader.
-     *
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      * Max of 8191 if indices are used.
      * @param useIndices If true, indexed geometry will be used.
@@ -130,10 +121,10 @@ public class SpriteCache implements Disposable{
             short j = 0;
             for(int i = 0; i < length; i += 6, j += 4){
                 indices[i + 0] = j;
-                indices[i + 1] = (short) (j + 1);
-                indices[i + 2] = (short) (j + 2);
-                indices[i + 3] = (short) (j + 2);
-                indices[i + 4] = (short) (j + 3);
+                indices[i + 1] = (short)(j + 1);
+                indices[i + 2] = (short)(j + 2);
+                indices[i + 3] = (short)(j + 2);
+                indices[i + 4] = (short)(j + 3);
                 indices[i + 5] = j;
             }
             mesh.setIndices(indices);
@@ -142,10 +133,34 @@ public class SpriteCache implements Disposable{
         projectionMatrix.setOrtho(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
     }
 
-    /** Sets the color used to tint images when they are added to the SpriteCache. Default is {@link Color#WHITE}. */
-    public void setColor(Color tint){
-        color.set(tint);
-        colorPacked = tint.toFloatBits();
+    static ShaderProgram createDefaultShader(){
+        String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+        + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+        + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+        + "uniform mat3 u_projectionViewMatrix;\n" //
+        + "varying vec4 v_color;\n" //
+        + "varying vec2 v_texCoords;\n" //
+        + "\n" //
+        + "void main()\n" //
+        + "{\n" //
+        + "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+        + "   v_color.a = v_color.a * (255.0/254.0);\n" //
+        + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+        + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+        + "}\n";
+        String fragmentShader = "#ifdef GL_ES\n" //
+        + "precision mediump float;\n" //
+        + "#endif\n" //
+        + "varying vec4 v_color;\n" //
+        + "varying vec2 v_texCoords;\n" //
+        + "uniform sampler2D u_texture;\n" //
+        + "void main()\n"//
+        + "{\n" //
+        + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+        + "}";
+        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+        if(!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        return shader;
     }
 
     /** @see #setColor(Color) */
@@ -158,18 +173,23 @@ public class SpriteCache implements Disposable{
         return color;
     }
 
+    /** Sets the color used to tint images when they are added to the SpriteCache. Default is {@link Color#WHITE}. */
+    public void setColor(Color tint){
+        color.set(tint);
+        colorPacked = tint.toFloatBits();
+    }
+
+    public float getPackedColor(){
+        return colorPacked;
+    }
+
     /**
      * Sets the color of this sprite cache, expanding the alpha from 0-254 to 0-255.
-     *
      * @see Color#toFloatBits()
      */
     public void setPackedColor(float packedColor){
         Color.abgr8888ToColor(color, packedColor);
         colorPacked = packedColor;
-    }
-
-    public float getPackedColor(){
-        return colorPacked;
     }
 
     /** Starts the definition of a new cache, allowing the add and {@link #endCache()} methods to be called. */
@@ -905,7 +925,6 @@ public class SpriteCache implements Disposable{
 
     /**
      * Draws a subset of images defined for the specified cache ID.
-     *
      * @param offset The first image to render.
      * @param length The number of images from the first image (inclusive) to render.
      */
@@ -960,6 +979,20 @@ public class SpriteCache implements Disposable{
         transformMatrix.set(transform);
     }
 
+    /**
+     * Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is called "a_position", the texture
+     * coordinates attribute is called called "a_texCoords", the color attribute is called "a_color". The projection matrix is
+     * uploaded via a mat4 uniform called "u_proj", the transform matrix is uploaded via a uniform called "u_trans", the combined
+     * transform and projection matrx is is uploaded via a mat4 uniform called "u_projTrans". The texture sampler is passed via a
+     * uniform called "u_texture".
+     * <p>
+     * Call this method with a null argument to use the default shader.
+     * @param shader the {@link ShaderProgram} or null to use the default shader.
+     */
+    public void setShader(ShaderProgram shader){
+        customShader = shader;
+    }
+
     static private class Cache{
         final int id;
         final int offset;
@@ -972,50 +1005,5 @@ public class SpriteCache implements Disposable{
             this.id = id;
             this.offset = offset;
         }
-    }
-
-    static ShaderProgram createDefaultShader(){
-        String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-        + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-        + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-        + "uniform mat3 u_projectionViewMatrix;\n" //
-        + "varying vec4 v_color;\n" //
-        + "varying vec2 v_texCoords;\n" //
-        + "\n" //
-        + "void main()\n" //
-        + "{\n" //
-        + "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-        + "   v_color.a = v_color.a * (255.0/254.0);\n" //
-        + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-        + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-        + "}\n";
-        String fragmentShader = "#ifdef GL_ES\n" //
-        + "precision mediump float;\n" //
-        + "#endif\n" //
-        + "varying vec4 v_color;\n" //
-        + "varying vec2 v_texCoords;\n" //
-        + "uniform sampler2D u_texture;\n" //
-        + "void main()\n"//
-        + "{\n" //
-        + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
-        + "}";
-        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-        if(!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
-        return shader;
-    }
-
-    /**
-     * Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is called "a_position", the texture
-     * coordinates attribute is called called "a_texCoords", the color attribute is called "a_color". The projection matrix is
-     * uploaded via a mat4 uniform called "u_proj", the transform matrix is uploaded via a uniform called "u_trans", the combined
-     * transform and projection matrx is is uploaded via a mat4 uniform called "u_projTrans". The texture sampler is passed via a
-     * uniform called "u_texture".
-     * <p>
-     * Call this method with a null argument to use the default shader.
-     *
-     * @param shader the {@link ShaderProgram} or null to use the default shader.
-     */
-    public void setShader(ShaderProgram shader){
-        customShader = shader;
     }
 }

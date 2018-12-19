@@ -33,7 +33,6 @@ import com.badlogic.gdx.utils.Align;
  * <p>
  * Widgets are sized using their {@link Layout#getPrefWidth() preferred height}, so widgets which return 0 as their preferred
  * height will be given a height of 0.
- *
  * @author Nathan Sweet
  */
 public class VerticalGroup extends WidgetGroup{

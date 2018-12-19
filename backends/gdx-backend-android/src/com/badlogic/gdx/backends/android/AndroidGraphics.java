@@ -46,7 +46,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 /**
  * An implementation of {@link Graphics} for Android.
- *
  * @author mzechner
  */
 public class AndroidGraphics extends Graphics implements Renderer{
@@ -61,8 +60,15 @@ public class AndroidGraphics extends Graphics implements Renderer{
      * kill the current process to avoid ANR
      */
     static volatile boolean enforceContinuousRendering = false;
-
+    protected final AndroidApplicationConfiguration config;
     final View view;
+    protected long lastFrameTime = System.nanoTime();
+    protected float deltaTime = 0;
+    protected long frameStart = System.nanoTime();
+    protected long frameId = -1;
+    protected int frames = 0;
+    protected int fps;
+    protected WindowedMean mean = new WindowedMean(5);
     int width;
     int height;
     AndroidApplicationBase app;
@@ -71,28 +77,18 @@ public class AndroidGraphics extends Graphics implements Renderer{
     EGLContext eglContext;
     GLVersion glVersion;
     String extensions;
-
-    protected long lastFrameTime = System.nanoTime();
-    protected float deltaTime = 0;
-    protected long frameStart = System.nanoTime();
-    protected long frameId = -1;
-    protected int frames = 0;
-    protected int fps;
-    protected WindowedMean mean = new WindowedMean(5);
-
     volatile boolean created = false;
     volatile boolean running = false;
     volatile boolean pause = false;
     volatile boolean resume = false;
     volatile boolean destroy = false;
-
+    int[] value = new int[1];
+    Object synch = new Object();
     private float ppiX = 0;
     private float ppiY = 0;
     private float ppcX = 0;
     private float ppcY = 0;
     private float density = 1;
-
-    protected final AndroidApplicationConfiguration config;
     private BufferFormat bufferFormat = new BufferFormat(5, 6, 5, 0, 16, 0, 0, false);
     private boolean isContinuous = true;
 
@@ -150,15 +146,15 @@ public class AndroidGraphics extends Graphics implements Renderer{
 
     public void onPauseGLSurfaceView(){
         if(view != null){
-            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18) view).onPause();
-            if(view instanceof GLSurfaceView) ((GLSurfaceView) view).onPause();
+            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18)view).onPause();
+            if(view instanceof GLSurfaceView) ((GLSurfaceView)view).onPause();
         }
     }
 
     public void onResumeGLSurfaceView(){
         if(view != null){
-            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18) view).onResume();
-            if(view instanceof GLSurfaceView) ((GLSurfaceView) view).onResume();
+            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18)view).onResume();
+            if(view instanceof GLSurfaceView) ((GLSurfaceView)view).onResume();
         }
     }
 
@@ -178,7 +174,7 @@ public class AndroidGraphics extends Graphics implements Renderer{
     }
 
     protected boolean checkGL20(){
-        EGL10 egl = (EGL10) EGLContext.getEGL();
+        EGL10 egl = (EGL10)EGLContext.getEGL();
         EGLDisplay display = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
 
         int[] version = new int[2];
@@ -262,8 +258,6 @@ public class AndroidGraphics extends Graphics implements Renderer{
      * This instantiates the GL10, GL11 and GL20 instances. Includes the check for certain devices that pretend to support GL11 but
      * fuck up vertex buffer objects. This includes the pixelflinger which segfaults when buffers are deleted as well as the
      * Motorola CLIQ and the Samsung Behold II.
-     *
-     * @param gl
      */
     protected void setupGL(javax.microedition.khronos.opengles.GL10 gl){
         String versionString = gl.glGetString(GL10.GL_VERSION);
@@ -314,7 +308,7 @@ public class AndroidGraphics extends Graphics implements Renderer{
 
     @Override
     public void onSurfaceCreated(javax.microedition.khronos.opengles.GL10 gl, EGLConfig config){
-        eglContext = ((EGL10) EGLContext.getEGL()).eglGetCurrentContext();
+        eglContext = ((EGL10)EGLContext.getEGL()).eglGetCurrentContext();
         setupGL(gl);
         logConfig(config);
         updatePpi();
@@ -338,7 +332,7 @@ public class AndroidGraphics extends Graphics implements Renderer{
     }
 
     protected void logConfig(EGLConfig config){
-        EGL10 egl = (EGL10) EGLContext.getEGL();
+        EGL10 egl = (EGL10)EGLContext.getEGL();
         EGLDisplay display = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
         int r = getAttrib(egl, display, config, EGL10.EGL_RED_SIZE, 0);
         int g = getAttrib(egl, display, config, EGL10.EGL_GREEN_SIZE, 0);
@@ -359,16 +353,12 @@ public class AndroidGraphics extends Graphics implements Renderer{
         bufferFormat = new BufferFormat(r, g, b, a, d, s, samples, coverageSample);
     }
 
-    int[] value = new int[1];
-
     private int getAttrib(EGL10 egl, EGLDisplay display, EGLConfig config, int attrib, int defValue){
         if(egl.eglGetConfigAttrib(display, config, attrib, value)){
             return value[0];
         }
         return defValue;
     }
-
-    Object synch = new Object();
 
     void resume(){
         synchronized(synch){
@@ -688,27 +678,27 @@ public class AndroidGraphics extends Graphics implements Renderer{
     }
 
     @Override
-    public void setContinuousRendering(boolean isContinuous){
-        if(view != null){
-            // ignore setContinuousRendering(false) while pausing
-            this.isContinuous = enforceContinuousRendering || isContinuous;
-            int renderMode = this.isContinuous ? GLSurfaceView.RENDERMODE_CONTINUOUSLY : GLSurfaceView.RENDERMODE_WHEN_DIRTY;
-            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18) view).setRenderMode(renderMode);
-            if(view instanceof GLSurfaceView) ((GLSurfaceView) view).setRenderMode(renderMode);
-            mean.clear();
-        }
-    }
-
-    @Override
     public boolean isContinuousRendering(){
         return isContinuous;
     }
 
     @Override
+    public void setContinuousRendering(boolean isContinuous){
+        if(view != null){
+            // ignore setContinuousRendering(false) while pausing
+            this.isContinuous = enforceContinuousRendering || isContinuous;
+            int renderMode = this.isContinuous ? GLSurfaceView.RENDERMODE_CONTINUOUSLY : GLSurfaceView.RENDERMODE_WHEN_DIRTY;
+            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18)view).setRenderMode(renderMode);
+            if(view instanceof GLSurfaceView) ((GLSurfaceView)view).setRenderMode(renderMode);
+            mean.clear();
+        }
+    }
+
+    @Override
     public void requestRendering(){
         if(view != null){
-            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18) view).requestRender();
-            if(view instanceof GLSurfaceView) ((GLSurfaceView) view).requestRender();
+            if(view instanceof GLSurfaceViewAPI18) ((GLSurfaceViewAPI18)view).requestRender();
+            if(view instanceof GLSurfaceView) ((GLSurfaceView)view).requestRender();
         }
     }
 

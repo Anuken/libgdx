@@ -53,7 +53,7 @@ public class NinePatch{
     public static final int BOTTOM_RIGHT = 8;
 
     static private final Color tmpDrawColor = new Color();
-
+    private final Color color = new Color(Color.WHITE);
     private Texture texture;
     private int bottomLeft = -1, bottomCenter = -1, bottomRight = -1;
     private int middleLeft = -1, middleCenter = -1, middleRight = -1;
@@ -61,13 +61,11 @@ public class NinePatch{
     private float leftWidth, rightWidth, middleWidth, middleHeight, topHeight, bottomHeight;
     private float[] vertices = new float[9 * 4 * 5];
     private int idx;
-    private final Color color = new Color(Color.WHITE);
     private float padLeft = -1, padRight = -1, padTop = -1, padBottom = -1;
 
     /**
      * Create a ninepatch by cutting up the given texture into nine patches. The subsequent parameters define the 4 lines that
      * will cut the texture region into 9 pieces.
-     *
      * @param left Pixels from left edge.
      * @param right Pixels from right edge.
      * @param top Pixels from top edge.
@@ -80,7 +78,6 @@ public class NinePatch{
     /**
      * Create a ninepatch by cutting up the given texture region into nine patches. The subsequent parameters define the 4 lines
      * that will cut the texture region into 9 pieces.
-     *
      * @param left Pixels from left edge.
      * @param right Pixels from right edge.
      * @param top Pixels from top edge.
@@ -410,16 +407,16 @@ public class NinePatch{
         graphics.batch().draw().vert(texture, vertices, 0, n);
     }
 
+    public Color getColor(){
+        return color;
+    }
+
     /**
      * Copy given color. The color will be blended with the batch color, then combined with the texture colors at
      * {@link NinePatch#draw(Batch, float, float, float, float) draw} time. Default is {@link Color#WHITE}.
      */
     public void setColor(Color color){
         this.color.set(color);
-    }
-
-    public Color getColor(){
-        return color;
     }
 
     public float getLeftWidth(){

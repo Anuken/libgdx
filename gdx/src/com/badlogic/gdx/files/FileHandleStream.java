@@ -25,7 +25,6 @@ import java.io.OutputStream;
 /**
  * A FileHandle intended to be subclassed for the purpose of implementing {@link #read()} and/or {@link #write(boolean)}. Methods
  * that would manipulate the file instead throw UnsupportedOperationException.
- *
  * @author Nathan Sweet
  */
 public abstract class FileHandleStream extends FileHandle{

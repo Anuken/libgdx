@@ -16,19 +16,10 @@
 
 apply plugin: "java"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 sourceSets.main.java.srcDirs = ["src"]
 sourceSets.main.resources.srcDirs = ["src"]
 sourceSets.test.java.srcDirs = ["test"]
 
-compileJava {
-    options.fork = true
-    options.incremental = true
-}
-
-dependencies {
-    compileOnly project(":extensions:gdx-jnigen")
+dependencies{
     testCompile libraries.junit
 }

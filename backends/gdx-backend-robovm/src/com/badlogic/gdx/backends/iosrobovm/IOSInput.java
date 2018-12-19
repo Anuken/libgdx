@@ -42,36 +42,13 @@ import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Pointer;
 
+@SuppressWarnings("deprecation")
 public class IOSInput extends Input{
     static final int MAX_TOUCHES = 20;
-    private static final int POINTER_NOT_FOUND = -1;
-
-    private static class NSObjectWrapper<T extends NSObject>{
-        private static final long HANDLE_OFFSET;
-
-        static{
-            try{
-                HANDLE_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(NativeObject.class.getDeclaredField("handle")));
-            }catch(Throwable t){
-                throw new Error(t);
-            }
-        }
-
-        private final T instance;
-
-        public NSObjectWrapper(Class<T> cls){
-            instance = VM.allocateObject(cls);
-        }
-
-        public T wrap(long handle){
-            VM.setLong(VM.getObjectAddress(instance) + HANDLE_OFFSET, handle);
-            return instance;
-        }
-    }
-
-    private static final NSObjectWrapper<UITouch> UI_TOUCH_WRAPPER = new NSObjectWrapper<>(UITouch.class);
     static final NSObjectWrapper<UIAcceleration> UI_ACCELERATION_WRAPPER = new NSObjectWrapper<>(UIAcceleration.class);
-
+    private static final int POINTER_NOT_FOUND = -1;
+    private static final NSObjectWrapper<UITouch> UI_TOUCH_WRAPPER = new NSObjectWrapper<>(UITouch.class);
+    protected UIAccelerometerDelegate accelerometerDelegate;
     IOSApplication app;
     IOSApplicationConfiguration config;
     int[] deltaX = new int[MAX_TOUCHES];
@@ -90,16 +67,59 @@ public class IOSInput extends Input{
             return new TouchEvent();
         }
     };
-    Array<TouchEvent> touchEvents = new Array<TouchEvent>();
+    Array<TouchEvent> touchEvents = new Array<>();
     TouchEvent currentEvent = null;
     float[] rotation = new float[3];
     InputProcessor inputProcessor = null;
     Vector3 accel = new Vector3();
 
     boolean hasVibrator;
-    protected UIAccelerometerDelegate accelerometerDelegate;
     boolean compassSupported;
     boolean keyboardCloseOnReturn;
+    // Issue 773 indicates this may solve a premature GC issue
+    UIAlertViewDelegate delegate;
+    private UITextField textfield = null;
+    private final UITextFieldDelegate textDelegate = new UITextFieldDelegateAdapter(){
+        @Override
+        public boolean shouldChangeCharacters(UITextField textField, NSRange range, String string){
+            for(int i = 0; i < range.getLength(); i++){
+                app.input.inputProcessor.keyTyped((char)8);
+            }
+
+            if(string.isEmpty()){
+                if(range.getLength() > 0) Core.graphics.requestRendering();
+                return false;
+            }
+
+            char[] chars = new char[string.length()];
+            string.getChars(0, string.length(), chars, 0);
+
+            for(int i = 0; i < chars.length; i++){
+                app.input.inputProcessor.keyTyped(chars[i]);
+            }
+            Core.graphics.requestRendering();
+
+            return true;
+        }
+
+        @Override
+        public boolean shouldEndEditing(UITextField textField){
+            // Text field needs to have at least one symbol - so we can use backspace
+            textField.setText("x");
+            Core.graphics.requestRendering();
+
+            return true;
+        }
+
+        @Override
+        public boolean shouldReturn(UITextField textField){
+            if(keyboardCloseOnReturn) setOnscreenKeyboardVisible(false);
+            app.input.inputProcessor.keyDown(KeyCode.ENTER);
+            app.input.inputProcessor.keyTyped((char)13);
+            Core.graphics.requestRendering();
+            return false;
+        }
+    };
 
     public IOSInput(IOSApplication app){
         this.app = app;
@@ -125,9 +145,9 @@ public class IOSInput extends Input{
                 @Method(selector = "accelerometer:didAccelerate:")
                 public void didAccelerate(UIAccelerometer accelerometer, @Pointer long valuesPtr){
                     UIAcceleration values = UI_ACCELERATION_WRAPPER.wrap(valuesPtr);
-                    float x = (float) values.getX() * 10;
-                    float y = (float) values.getY() * 10;
-                    float z = (float) values.getZ() * 10;
+                    float x = (float)values.getX() * 10;
+                    float y = (float)values.getY() * 10;
+                    float z = (float)values.getZ() * 10;
 
                     accel.set(-x, -y, -z);
                 }
@@ -207,6 +227,10 @@ public class IOSInput extends Input{
         return pressures[0];
     }
 
+    // hack for software keyboard support
+    // uses a hidden textfield to capture input
+    // see: http://www.badlogicgames.com/forum/viewtopic.php?f=17&t=11788
+
     @Override
     public float getPressure(int pointer){
         return pressures[pointer];
@@ -216,73 +240,6 @@ public class IOSInput extends Input{
     public void getTextInput(TextInput input){
         buildUIAlertView(input).show();
     }
-
-    // hack for software keyboard support
-    // uses a hidden textfield to capture input
-    // see: http://www.badlogicgames.com/forum/viewtopic.php?f=17&t=11788
-
-    private class HiddenTextField extends UITextField{
-        public HiddenTextField(CGRect frame){
-            super(frame);
-
-            setKeyboardType(UIKeyboardType.Default);
-            setReturnKeyType(UIReturnKeyType.Done);
-            setAutocapitalizationType(UITextAutocapitalizationType.None);
-            setAutocorrectionType(UITextAutocorrectionType.No);
-            setSpellCheckingType(UITextSpellCheckingType.No);
-            setHidden(true);
-        }
-
-        @Override
-        public void deleteBackward(){
-            app.input.inputProcessor.keyTyped((char) 8);
-            super.deleteBackward();
-            Core.graphics.requestRendering();
-        }
-    }
-
-    private UITextField textfield = null;
-    private final UITextFieldDelegate textDelegate = new UITextFieldDelegateAdapter(){
-        @Override
-        public boolean shouldChangeCharacters(UITextField textField, NSRange range, String string){
-            for(int i = 0; i < range.getLength(); i++){
-                app.input.inputProcessor.keyTyped((char) 8);
-            }
-
-            if(string.isEmpty()){
-                if(range.getLength() > 0) Core.graphics.requestRendering();
-                return false;
-            }
-
-            char[] chars = new char[string.length()];
-            string.getChars(0, string.length(), chars, 0);
-
-            for(int i = 0; i < chars.length; i++){
-                app.input.inputProcessor.keyTyped(chars[i]);
-            }
-            Core.graphics.requestRendering();
-
-            return true;
-        }
-
-        @Override
-        public boolean shouldEndEditing(UITextField textField){
-            // Text field needs to have at least one symbol - so we can use backspace
-            textField.setText("x");
-            Core.graphics.requestRendering();
-
-            return true;
-        }
-
-        @Override
-        public boolean shouldReturn(UITextField textField){
-            if(keyboardCloseOnReturn) setOnscreenKeyboardVisible(false);
-            app.input.inputProcessor.keyDown(KeyCode.ENTER);
-            app.input.inputProcessor.keyTyped((char) 13);
-            Core.graphics.requestRendering();
-            return false;
-        }
-    };
 
     @Override
     public void setOnscreenKeyboardVisible(boolean visible){
@@ -297,7 +254,6 @@ public class IOSInput extends Input{
 
     /**
      * Set the keyboard to close when the UITextField return key is pressed
-     *
      * @param shouldClose Whether or not the keyboard should clsoe on return key press
      */
     public void setKeyboardCloseOnReturnKey(boolean shouldClose){
@@ -324,12 +280,8 @@ public class IOSInput extends Input{
         app.getUIViewController().getView().addSubview(textfield);
     }
 
-    // Issue 773 indicates this may solve a premature GC issue
-    UIAlertViewDelegate delegate;
-
     /**
      * Builds an {@link UIAlertView} with an added {@link UITextField} for inputting text.
-     *
      * @param listener Text input listener
      * @param title Dialog title
      * @param text Text for text field
@@ -472,25 +424,9 @@ public class IOSInput extends Input{
         return POINTER_NOT_FOUND;
     }
 
-    private static class NSSetExtensions extends NSExtensions{
-        @Method(selector = "allObjects")
-        public static native @Pointer
-        long allObjects(@Pointer long thiz);
-    }
-
-    private static class NSArrayExtensions extends NSExtensions{
-        @Method(selector = "objectAtIndex:")
-        public static native @Pointer
-        long objectAtIndex$(@Pointer long thiz, @MachineSizedUInt long index);
-
-        @Method(selector = "count")
-        public static native @MachineSizedUInt
-        long count(@Pointer long thiz);
-    }
-
     private void toTouchEvents(long touches){
         long array = NSSetExtensions.allObjects(touches);
-        int length = (int) NSArrayExtensions.count(array);
+        int length = (int)NSArrayExtensions.count(array);
         for(int i = 0; i < length; i++){
             long touchHandle = NSArrayExtensions.objectAtIndex$(array, i);
             UITouch touch = UI_TOUCH_WRAPPER.wrap(touchHandle);
@@ -499,15 +435,15 @@ public class IOSInput extends Input{
             {
                 CGPoint loc = touch.getLocationInView(touch.getWindow());
                 final CGRect bounds = app.getCachedBounds();
-                locX = (int) (loc.getX() * app.displayScaleFactor - bounds.getMinX());
-                locY = (int) (loc.getY() * app.displayScaleFactor - bounds.getMinY());
+                locX = (int)(loc.getX() * app.displayScaleFactor - bounds.getMinX());
+                locY = (int)(loc.getY() * app.displayScaleFactor - bounds.getMinY());
                 // app.debug("IOSInput","pos= "+loc+"  bounds= "+bounds+" x= "+locX+" locY= "+locY);
             }
 
             // if its not supported, we will simply use 1.0f when touch is present
             float pressure = 1.0f;
             if(pressureSupported){
-                pressure = (float) touch.getForce();
+                pressure = (float)touch.getForce();
             }
 
             synchronized(touchEvents){
@@ -516,7 +452,7 @@ public class IOSInput extends Input{
                 event.x = locX;
                 event.y = locY;
                 event.phase = phase;
-                event.timestamp = (long) (touch.getTimestamp() * 1000000000);
+                event.timestamp = (long)(touch.getTimestamp() * 1000000000);
 
                 if(phase == UITouchPhase.Began){
                     event.pointer = getFreePointer();
@@ -558,10 +494,69 @@ public class IOSInput extends Input{
         }
     }
 
+    private static class NSObjectWrapper<T extends NSObject>{
+        private static final long HANDLE_OFFSET;
+
+        static{
+            try{
+                HANDLE_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(NativeObject.class.getDeclaredField("handle")));
+            }catch(Throwable t){
+                throw new Error(t);
+            }
+        }
+
+        private final T instance;
+
+        public NSObjectWrapper(Class<T> cls){
+            instance = VM.allocateObject(cls);
+        }
+
+        public T wrap(long handle){
+            VM.setLong(VM.getObjectAddress(instance) + HANDLE_OFFSET, handle);
+            return instance;
+        }
+    }
+
+    private static class NSSetExtensions extends NSExtensions{
+        @Method(selector = "allObjects")
+        public static native @Pointer
+        long allObjects(@Pointer long thiz);
+    }
+
+    private static class NSArrayExtensions extends NSExtensions{
+        @Method(selector = "objectAtIndex:")
+        public static native @Pointer
+        long objectAtIndex$(@Pointer long thiz, @MachineSizedUInt long index);
+
+        @Method(selector = "count")
+        public static native @MachineSizedUInt
+        long count(@Pointer long thiz);
+    }
+
     static class TouchEvent{
         UITouchPhase phase;
         long timestamp;
         int x, y;
         int pointer;
+    }
+
+    private class HiddenTextField extends UITextField{
+        public HiddenTextField(CGRect frame){
+            super(frame);
+
+            setKeyboardType(UIKeyboardType.Default);
+            setReturnKeyType(UIReturnKeyType.Done);
+            setAutocapitalizationType(UITextAutocapitalizationType.None);
+            setAutocorrectionType(UITextAutocorrectionType.No);
+            setSpellCheckingType(UITextSpellCheckingType.No);
+            setHidden(true);
+        }
+
+        @Override
+        public void deleteBackward(){
+            app.input.inputProcessor.keyTyped((char)8);
+            super.deleteBackward();
+            Core.graphics.requestRendering();
+        }
     }
 }

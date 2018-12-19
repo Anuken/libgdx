@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * A FacedCubemapData holds a cubemap data definition based on a {@link TextureData} per face.
- *
  * @author Vincent Nousquet
  */
 public class FacedCubemapData implements CubemapData{
@@ -22,7 +21,7 @@ public class FacedCubemapData implements CubemapData{
      * before it can be used.
      */
     public FacedCubemapData(){
-        this((Pixmap) null, null, null, null, null, null);
+        this((Pixmap)null, null, null, null, null, null);
     }
 
     /** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
@@ -89,7 +88,6 @@ public class FacedCubemapData implements CubemapData{
      * Loads the texture specified using the {@link FileHandle} and sets it to specified side, overwriting any previous data set to
      * that side. Note that you need to reload through {@link Cubemap#load(CubemapData)} any cubemap using this data for the change
      * to be taken in account.
-     *
      * @param side The {@link CubemapSide}
      * @param file The texture {@link FileHandle}
      */
@@ -101,7 +99,6 @@ public class FacedCubemapData implements CubemapData{
      * Sets the specified side of this cubemap to the specified {@link Pixmap}, overwriting any previous data set to that side.
      * Note that you need to reload through {@link Cubemap#load(CubemapData)} any cubemap using this data for the change to be
      * taken in account.
-     *
      * @param side The {@link CubemapSide}
      * @param pixmap The {@link Pixmap}
      */

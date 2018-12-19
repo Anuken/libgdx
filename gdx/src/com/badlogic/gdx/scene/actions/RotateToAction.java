@@ -26,7 +26,6 @@ import com.badlogic.gdx.math.Mathf;
  * <p>
  * If the action is instead set to useShortestDirection instead, it will rotate straight to the target angle, regardless of where
  * the angle starts and stops. For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
- *
  * @author Nathan Sweet
  */
 public class RotateToAction extends TemporalAction{

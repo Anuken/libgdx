@@ -5,7 +5,7 @@ import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.collection.ObjectMap;
 import com.badlogic.gdx.function.Consumer;
 
-/**Parses command syntax.*/
+/** Parses command syntax. */
 public class CommandHandler{
     private final ObjectMap<String, Command> commands = new ObjectMap<>();
     private final Array<Command> orderedCommands = new Array<>();

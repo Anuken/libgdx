@@ -39,11 +39,11 @@ public class RidgedPerlin{
         // Create a unit-length cube aligned along an integer boundary. This
         // cube
         // surrounds the input point.
-        int x0 = (x > 0.0 ? (int) x : (int) x - 1);
+        int x0 = (x > 0.0 ? (int)x : (int)x - 1);
         int x1 = x0 + 1;
-        int y0 = (y > 0.0 ? (int) y : (int) y - 1);
+        int y0 = (y > 0.0 ? (int)y : (int)y - 1);
         int y1 = y0 + 1;
-        int z0 = (z > 0.0 ? (int) z : (int) z - 1);
+        int z0 = (z > 0.0 ? (int)z : (int)z - 1);
         int z1 = z0 + 1;
 
         // Map the difference between the coordinates of the input value and the
@@ -51,19 +51,19 @@ public class RidgedPerlin{
         double xs = 0, ys = 0, zs = 0;
         switch(quality){
             case 0: // fast
-                xs = (x - (double) x0);
-                ys = (y - (double) y0);
-                zs = (z - (double) z0);
+                xs = (x - (double)x0);
+                ys = (y - (double)y0);
+                zs = (z - (double)z0);
                 break;
             case 1: // STD
-                xs = SCurve3(x - (double) x0);
-                ys = SCurve3(y - (double) y0);
-                zs = SCurve3(z - (double) z0);
+                xs = SCurve3(x - (double)x0);
+                ys = SCurve3(y - (double)y0);
+                zs = SCurve3(z - (double)z0);
                 break;
             case 2: // best
-                xs = SCurve5(x - (double) x0);
-                ys = SCurve5(y - (double) y0);
-                zs = SCurve5(z - (double) z0);
+                xs = SCurve5(x - (double)x0);
+                ys = SCurve5(y - (double)y0);
+                zs = SCurve5(z - (double)z0);
                 break;
         }
 
@@ -113,9 +113,9 @@ public class RidgedPerlin{
         // Set up us another vector equal to the distance between the two
         // vectors
         // passed to this function.
-        double xvPoint = (fx - (double) ix);
-        double yvPoint = (fy - (double) iy);
-        double zvPoint = (fz - (double) iz);
+        double xvPoint = (fx - (double)ix);
+        double yvPoint = (fy - (double)iy);
+        double zvPoint = (fz - (double)iz);
 
         // Now compute the dot product of the gradient vector with the distance
         // vector. The resulting value is gradient noise. Apply a scaling value
@@ -212,7 +212,7 @@ public class RidgedPerlin{
             z1 *= lacunarity;
         }
 
-        return (float) ((value * 1.25) - 1.0);
+        return (float)((value * 1.25) - 1.0);
     }
 
 }

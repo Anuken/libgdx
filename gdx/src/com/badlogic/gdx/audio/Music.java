@@ -40,7 +40,6 @@ import com.badlogic.gdx.utils.Disposable;
  * <p>
  * <b>Note</b>: any values provided will not be clamped, it is the developer's responsibility to do so
  * </p>
- *
  * @author mzechner
  */
 public interface Music extends Disposable{
@@ -62,47 +61,42 @@ public interface Music extends Disposable{
     /** @return whether this music stream is playing */
     boolean isPlaying();
 
-    /**
-     * Sets whether the music stream is looping. This can be called at any time, whether the stream is playing.
-     *
-     * @param isLooping whether to loop the stream
-     */
-    void setLooping(boolean isLooping);
-
     /** @return whether the music stream is playing. */
     boolean isLooping();
 
     /**
-     * Sets the volume of this music stream. The volume must be given in the range [0,1] with 0 being silent and 1 being the
-     * maximum volume.
-     *
-     * @param volume
+     * Sets whether the music stream is looping. This can be called at any time, whether the stream is playing.
+     * @param isLooping whether to loop the stream
      */
-    void setVolume(float volume);
+    void setLooping(boolean isLooping);
 
     /** @return the volume of this music stream. */
     float getVolume();
 
     /**
+     * Sets the volume of this music stream. The volume must be given in the range [0,1] with 0 being silent and 1 being the
+     * maximum volume.
+     */
+    void setVolume(float volume);
+
+    /**
      * Sets the panning and volume of this music stream.
-     *
      * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @param volume the volume in the range [0,1].
      */
     void setPan(float pan, float volume);
 
-    /** Set the playback position in seconds. */
-    void setPosition(float position);
-
     /** Returns the playback position in seconds. */
     float getPosition();
+
+    /** Set the playback position in seconds. */
+    void setPosition(float position);
 
     /** Needs to be called when the Music is no longer needed. */
     void dispose();
 
     /**
      * Register a callback to be invoked when the end of a music stream has been reached during playback.
-     *
      * @param listener the callback that will be run.
      */
     void setOnCompletionListener(OnCompletionListener listener);
@@ -111,7 +105,6 @@ public interface Music extends Disposable{
     interface OnCompletionListener{
         /**
          * Called when the end of a media source is reached during playback.
-         *
          * @param music the Music that reached the end of the file
          */
         void onCompletion(Music music);

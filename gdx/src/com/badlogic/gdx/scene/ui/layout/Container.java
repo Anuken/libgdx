@@ -13,7 +13,6 @@ import static com.badlogic.gdx.Core.scene;
 /**
  * A group with a single child that sizes and positions the child using constraints. This provides layout similar to a
  * {@link Table} with a single cell but is more lightweight.
- *
  * @author Nathan Sweet
  */
 public class Container<T extends Element> extends WidgetGroup{
@@ -48,7 +47,7 @@ public class Container<T extends Element> extends WidgetGroup{
                 graphics.batch().flush();
                 float marginLeft = this.marginLeft.get(this), marginBottom = this.marginBottom.get(this);
                 if(clipBegin(marginLeft, marginBottom, getWidth() - marginLeft - marginRight.get(this),
-                        getHeight() - marginBottom - marginTop.get(this))){
+                getHeight() - marginBottom - marginTop.get(this))){
                     drawChildren();
                     graphics.batch().flush();
                     clipEnd();
@@ -77,7 +76,6 @@ public class Container<T extends Element> extends WidgetGroup{
      * Sets the background drawable and, if adjustPadding is true, sets the container's marginding to
      * {@link Drawable#getBottomHeight()} , {@link Drawable#getTopHeight()}, {@link Drawable#getLeftWidth()}, and
      * {@link Drawable#getRightWidth()}.
-     *
      * @param background If null, the background will be cleared and marginding removed.
      */
     public void setBackground(Drawable background, boolean adjustPadding){
@@ -109,7 +107,6 @@ public class Container<T extends Element> extends WidgetGroup{
 
     /**
      * Sets the background drawable and adjusts the container's marginding to match the background.
-     *
      * @see #setBackground(Drawable, boolean)
      */
     public void setBackground(Drawable background){

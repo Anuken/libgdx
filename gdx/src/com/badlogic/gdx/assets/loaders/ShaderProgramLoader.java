@@ -34,7 +34,6 @@ import com.badlogic.gdx.utils.Log;
  * <p>
  * The above default behavior for finding the files can be overridden by explicitly setting the file names in a
  * {@link ShaderProgramParameter}. The parameter can also be used to prepend code to the programs.
- *
  * @author cypherdare
  */
 public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, ShaderProgramLoader.ShaderProgramParameter>{

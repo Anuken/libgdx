@@ -24,7 +24,6 @@ import com.badlogic.gdx.math.FloatCounter;
  * When enabled, collects statistics about GL calls and checks for GL errors.
  * Enabling will wrap Gdx.gl* instances with delegate classes which provide described functionality
  * and route GL calls to the actual GL instances.
- *
  * @author Daniel Holderbaum
  * @author Jan Polák
  * @see GL20Interceptor
@@ -39,7 +38,6 @@ public class GLProfiler{
 
     /**
      * Create a new instance of GLProfiler to monitor a {@link com.badlogic.gdx.Graphics} instance's gl calls
-     *
      * @param graphics instance to monitor with this instance, With Lwjgl 2.x you can pass in Gdx.graphics, with Lwjgl3 use
      * Lwjgl3Window.getGraphics()
      */
@@ -60,7 +58,7 @@ public class GLProfiler{
 
         GL30 gl30 = graphics.getGL30();
         if(gl30 != null){
-            graphics.setGL30((GL30) glInterceptor);
+            graphics.setGL30((GL30)glInterceptor);
         }else{
             graphics.setGL20(glInterceptor);
         }
@@ -73,20 +71,20 @@ public class GLProfiler{
         if(!enabled) return;
 
         GL30 gl30 = graphics.getGL30();
-        if(gl30 != null) graphics.setGL30(((GL30Interceptor) graphics.getGL30()).gl30);
-        else graphics.setGL20(((GL20Interceptor) graphics.getGL20()).gl20);
+        if(gl30 != null) graphics.setGL30(((GL30Interceptor)graphics.getGL30()).gl30);
+        else graphics.setGL20(((GL20Interceptor)graphics.getGL20()).gl20);
 
         enabled = false;
-    }
-
-    /** Set the current listener for the {@link GLProfiler} to {@code errorListener} */
-    public void setListener(GLErrorListener errorListener){
-        this.listener = errorListener;
     }
 
     /** @return the current {@link GLErrorListener} */
     public GLErrorListener getListener(){
         return listener;
+    }
+
+    /** Set the current listener for the {@link GLProfiler} to {@code errorListener} */
+    public void setListener(GLErrorListener errorListener){
+        this.listener = errorListener;
     }
 
     /** @return true if the GLProfiler is currently profiling */

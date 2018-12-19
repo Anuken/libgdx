@@ -17,13 +17,12 @@
 package com.badlogic.gdx.scene.event;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scene.ui.ScrollPane;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.badlogic.gdx.scene.ui.ScrollPane;
 
 /**
  * Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.
- *
  * @author Nathan Sweet
  */
 public class DragScrollListener extends DragListener{
@@ -52,11 +51,11 @@ public class DragScrollListener extends DragListener{
         this.minSpeed = minSpeedPixels;
         this.maxSpeed = maxSpeedPixels;
         this.tickSecs = tickSecs;
-        rampTime = (long) (rampSecs * 1000);
+        rampTime = (long)(rampSecs * 1000);
     }
 
     float getScrollPixels(){
-        return interpolation.apply(minSpeed, maxSpeed, Math.min(1, (System.currentTimeMillis() - startTime) / (float) rampTime));
+        return interpolation.apply(minSpeed, maxSpeed, Math.min(1, (System.currentTimeMillis() - startTime) / (float)rampTime));
     }
 
     public void drag(InputEvent event, float x, float y, int pointer){

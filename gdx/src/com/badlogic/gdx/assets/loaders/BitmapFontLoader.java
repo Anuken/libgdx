@@ -19,6 +19,7 @@ package com.badlogic.gdx.assets.loaders;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -27,22 +28,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * {@link AssetLoader} for {@link BitmapFont} instances. Loads the font description file (.fnt) asynchronously, loads the
  * {@link Texture} containing the glyphs as a dependency. The {@link BitmapFontParameter} allows you to set things like texture
  * filters or whether to flip the glyphs vertically.
- *
  * @author mzechner
  */
 public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter>{
+    BitmapFontData data;
+
     public BitmapFontLoader(FileHandleResolver resolver){
         super(resolver);
     }
-
-    BitmapFontData data;
 
     @Override
     public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, BitmapFontParameter parameter){
@@ -103,7 +102,6 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
     /**
      * Parameter to be passed to {@link AssetManager#load(String, Class, AssetLoaderParameters)} if additional configuration is
      * necessary for the {@link BitmapFont}.
-     *
      * @author mzechner
      */
     static public class BitmapFontParameter extends AssetLoaderParameters<BitmapFont>{

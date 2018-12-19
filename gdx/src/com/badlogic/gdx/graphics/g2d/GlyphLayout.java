@@ -22,25 +22,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.BitmapFontData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.Glyph;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.pooling.Pool;
 import com.badlogic.gdx.utils.pooling.Pool.Poolable;
 import com.badlogic.gdx.utils.pooling.Pools;
 
-import java.lang.StringBuilder;
-
 /**
  * Stores {@link GlyphRun runs} of glyphs for a piece of text. The text may contain newlines and color markup tags.
- *
  * @author Nathan Sweet
  * @author davebaol
  * @author Alexander Dorokhov
  */
 public class GlyphLayout implements Poolable{
     public final Array<GlyphRun> runs = new Array<>();
-    public float width, height;
-
     private final Array<Color> colorStack = new Array<>(4);
+    public float width, height;
 
     /** Creates an empty GlyphLayout. */
     public GlyphLayout(){
@@ -204,7 +200,7 @@ public class GlyphLayout implements Poolable{
 
                             // Remove leading whitespace.
                             for(int glyphCount = run.glyphs.size; wrapIndex < glyphCount; wrapIndex++)
-                                if(!fontData.isWhitespace((char) run.glyphs.get(wrapIndex).id)) break;
+                                if(!fontData.isWhitespace((char)run.glyphs.get(wrapIndex).id)) break;
                             if(wrapIndex > 0){
                                 run.glyphs.removeRange(0, wrapIndex - 1);
                                 run.xAdvances.removeRange(1, wrapIndex);
@@ -217,7 +213,7 @@ public class GlyphLayout implements Poolable{
                                 int lastIndex = previous.glyphs.size - 1;
                                 for(; lastIndex > 0; lastIndex--){
                                     Glyph g = previous.glyphs.get(lastIndex);
-                                    if(!fontData.isWhitespace((char) g.id)) break;
+                                    if(!fontData.isWhitespace((char)g.id)) break;
                                     previous.width -= previous.xAdvances.get(lastIndex + 1);
                                 }
                                 previous.glyphs.truncate(lastIndex + 1);
@@ -355,7 +351,6 @@ public class GlyphLayout implements Poolable{
 
     /**
      * Breaks a run into two runs at the specified wrapIndex.
-     *
      * @return May be null if second run is all whitespace.
      */
     private GlyphRun wrap(BitmapFontData fontData, GlyphRun first, Pool<GlyphRun> glyphRunPool, int wrapIndex, int widthIndex){
@@ -366,12 +361,12 @@ public class GlyphLayout implements Poolable{
         // Skip whitespace before the wrap index.
         int firstEnd = wrapIndex;
         for(; firstEnd > 0; firstEnd--)
-            if(!fontData.isWhitespace((char) glyphs2.get(firstEnd - 1).id)) break;
+            if(!fontData.isWhitespace((char)glyphs2.get(firstEnd - 1).id)) break;
 
         // Skip whitespace after the wrap index.
         int secondStart = wrapIndex;
         for(; secondStart < glyphCount; secondStart++)
-            if(!fontData.isWhitespace((char) glyphs2.get(secondStart).id)) break;
+            if(!fontData.isWhitespace((char)glyphs2.get(secondStart).id)) break;
 
         // Increase first run width up to the end index.
         while(widthIndex < firstEnd)
@@ -501,10 +496,10 @@ public class GlyphLayout implements Poolable{
 
     /**
      * Stores glyphs and positions for a piece of text which is a single color and does not span multiple lines.
-     *
      * @author Nathan Sweet
      */
     static public class GlyphRun implements Poolable{
+        public final Color color = new Color();
         public Array<Glyph> glyphs = new Array();
         /**
          * Contains glyphs.size+1 entries: First entry is X offset relative to the drawing position. Subsequent entries are the X
@@ -512,7 +507,6 @@ public class GlyphLayout implements Poolable{
          */
         public FloatArray xAdvances = new FloatArray();
         public float x, y, width;
-        public final Color color = new Color();
 
         public void reset(){
             glyphs.clear();
@@ -525,7 +519,7 @@ public class GlyphLayout implements Poolable{
             Array<Glyph> glyphs = this.glyphs;
             for(int i = 0, n = glyphs.size; i < n; i++){
                 Glyph g = glyphs.get(i);
-                buffer.append((char) g.id);
+                buffer.append((char)g.id);
             }
             buffer.append(", #");
             buffer.append(color);

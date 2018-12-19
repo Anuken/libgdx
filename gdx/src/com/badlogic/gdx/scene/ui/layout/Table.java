@@ -40,7 +40,6 @@ import static com.badlogic.gdx.Core.scene;
  * {@link Touchable#childrenOnly}.
  * <p>
  * The preferred and minimum sizes are that of the children when laid out in columns and rows.
- *
  * @author Nathan Sweet
  */
 public class Table extends WidgetGroup{
@@ -54,22 +53,22 @@ public class Table extends WidgetGroup{
     static public Color debugActorColor = new Color(0, 1, 0, 1);
     /** Value that is the top padding of the table's background. */
     static public Value backgroundTop = context -> {
-        Drawable background = ((Table) context).background;
+        Drawable background = ((Table)context).background;
         return background == null ? 0 : background.getTopHeight();
     };
     /** Value that is the left padding of the table's background. */
     static public Value backgroundLeft = context -> {
-        Drawable background = ((Table) context).background;
+        Drawable background = ((Table)context).background;
         return background == null ? 0 : background.getLeftWidth();
     };
     /** Value that is the bottom padding of the table's background. */
     static public Value backgroundBottom = context -> {
-        Drawable background = ((Table) context).background;
+        Drawable background = ((Table)context).background;
         return background == null ? 0 : background.getBottomHeight();
     };
     /** Value that is the right padding of the table's background. */
     static public Value backgroundRight = context -> {
-        Drawable background = ((Table) context).background;
+        Drawable background = ((Table)context).background;
         return background == null ? 0 : background.getRightWidth();
     };
     static private float[] columnWeightedWidth, rowWeightedHeight;
@@ -134,7 +133,7 @@ public class Table extends WidgetGroup{
                 graphics.batch().flush();
                 float padLeft = this.padLeft.get(this), padBottom = this.padBottom.get(this);
                 if(clipBegin(padLeft, padBottom, getWidth() - padLeft - padRight.get(this),
-                        getHeight() - padBottom - padTop.get(this))){
+                getHeight() - padBottom - padTop.get(this))){
                     drawChildren();
                     graphics.batch().flush();
                     clipEnd();
@@ -159,16 +158,6 @@ public class Table extends WidgetGroup{
         background.draw(x, y, getWidth(), getHeight());
     }
 
-    /**
-     * Sets the background drawable from the skin and adjusts the table's padding to match the background.
-     *
-     * @see #setBackground(Drawable)
-     */
-    public void setBackground(String drawableName){
-        if(scene.skin == null) throw new IllegalStateException("Table must have a skin set to use this method.");
-        setBackground(scene.skin.getDrawable(drawableName));
-    }
-
     /** @see #setBackground(Drawable) */
     public Table background(Drawable background){
         setBackground(background);
@@ -183,6 +172,15 @@ public class Table extends WidgetGroup{
 
     public Drawable getBackground(){
         return background;
+    }
+
+    /**
+     * Sets the background drawable from the skin and adjusts the table's padding to match the background.
+     * @see #setBackground(Drawable)
+     */
+    public void setBackground(String drawableName){
+        if(scene.skin == null) throw new IllegalStateException("Table must have a skin set to use this method.");
+        setBackground(scene.skin.getDrawable(drawableName));
     }
 
     /** @param background May be null to clear the background. */
@@ -284,7 +282,7 @@ public class Table extends WidgetGroup{
     }
 
     public Cell<Table> table(){
-        return table((String) null);
+        return table((String)null);
     }
 
     public Cell<Table> table(String background){
@@ -377,12 +375,11 @@ public class Table extends WidgetGroup{
 
     /** Adds a cell without an element. */
     public Cell add(){
-        return add((Element) null);
+        return add((Element)null);
     }
 
     /**
      * Adds a new cell to the table with the specified elements in a {@link Stack}.
-     *
      * @param elements May be null to add a stack without any elements.
      */
     public Cell<Stack> stack(Element... elements){
@@ -880,7 +877,6 @@ public class Table extends WidgetGroup{
 
     /**
      * Returns the row index for the y coordinate, or -1 if there are no cells.
-     *
      * @param y The y coordinate, where 0 is the top of the table.
      */
     public int getRow(float y){

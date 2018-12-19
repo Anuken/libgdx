@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * A point in a 3D grid, with integer x and y coordinates
- *
  * @author badlogic
  */
 public class GridPoint3 implements Serializable{
@@ -36,7 +35,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Constructs a 3D grid point.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param z Z coordinate
@@ -49,7 +47,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Copy constructor
-     *
      * @param point The 3D grid point to make a copy of.
      */
     public GridPoint3(GridPoint3 point){
@@ -60,7 +57,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Sets the coordinates of this 3D grid point to that of another.
-     *
      * @param point The 3D grid point to copy coordinates of.
      * @return this GridPoint3 for chaining.
      */
@@ -73,7 +69,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Sets the coordinates of this GridPoint3D.
-     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param z Z coordinate
@@ -121,7 +116,7 @@ public class GridPoint3 implements Serializable{
         int yd = other.y - y;
         int zd = other.z - z;
 
-        return (float) Math.sqrt(xd * xd + yd * yd + zd * zd);
+        return (float)Math.sqrt(xd * xd + yd * yd + zd * zd);
     }
 
     /**
@@ -135,12 +130,11 @@ public class GridPoint3 implements Serializable{
         int yd = y - this.y;
         int zd = z - this.z;
 
-        return (float) Math.sqrt(xd * xd + yd * yd + zd * zd);
+        return (float)Math.sqrt(xd * xd + yd * yd + zd * zd);
     }
 
     /**
      * Adds another 3D grid point to this point.
-     *
      * @param other The other point
      * @return this 3d grid point for chaining.
      */
@@ -153,7 +147,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Adds another 3D grid point to this point.
-     *
      * @param x The x-coordinate of the other point
      * @param y The y-coordinate of the other point
      * @param z The z-coordinate of the other point
@@ -168,7 +161,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Subtracts another 3D grid point from this point.
-     *
      * @param other The other point
      * @return this 3d grid point for chaining.
      */
@@ -181,7 +173,6 @@ public class GridPoint3 implements Serializable{
 
     /**
      * Subtracts another 3D grid point from this point.
-     *
      * @param x The x-coordinate of the other point
      * @param y The y-coordinate of the other point
      * @param z The z-coordinate of the other point
@@ -205,7 +196,7 @@ public class GridPoint3 implements Serializable{
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        GridPoint3 g = (GridPoint3) o;
+        GridPoint3 g = (GridPoint3)o;
         return this.x == g.x && this.y == g.y && this.z == g.z;
     }
 

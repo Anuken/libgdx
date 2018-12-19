@@ -25,7 +25,6 @@ import java.net.InetSocketAddress;
 
 /**
  * Socket implementation using java.net.Socket.
- *
  * @author noblemaster
  */
 public class NetJavaSocketImpl implements Socket{

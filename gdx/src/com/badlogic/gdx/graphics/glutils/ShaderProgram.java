@@ -28,10 +28,9 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.geom.Vector2;
 import com.badlogic.gdx.math.geom.Vector3;
-import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.Disposable;
 
-import java.lang.StringBuilder;
 import java.nio.*;
 
 /**
@@ -61,7 +60,6 @@ import java.nio.*;
  * happens on Android when a user switches to another application or receives an incoming call. Managed ShaderPrograms are
  * automatically reloaded when the OpenGL context is recreated so you don't have to do this manually.
  * </p>
- *
  * @author mzechner
  */
 public class ShaderProgram implements Disposable{
@@ -79,82 +77,62 @@ public class ShaderProgram implements Disposable{
     public static final String BINORMAL_ATTRIBUTE = "a_binormal";
     /** default name for boneweight attribute **/
     public static final String BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
-
+    final static IntBuffer intbuf = BufferUtils.newIntBuffer(1);
+    /** the list of currently available shaders **/
+    private final static ObjectMap<Application, Array<ShaderProgram>> shaders = new ObjectMap<Application, Array<ShaderProgram>>();
     /** flag indicating whether attributes & uniforms must be present at all times **/
     public static boolean pedantic = true;
-
     /**
      * code that is always added to the vertex shader code, typically used to inject a #version line. Note that this is added
      * as-is, you should include a newline (`\n`) if needed.
      */
     public static String prependVertexCode = "";
-
     /**
      * code that is always added to every fragment shader code, typically used to inject a #version line. Note that this is added
      * as-is, you should include a newline (`\n`) if needed.
      */
     public static String prependFragmentCode = "";
-
-    /** the list of currently available shaders **/
-    private final static ObjectMap<Application, Array<ShaderProgram>> shaders = new ObjectMap<Application, Array<ShaderProgram>>();
-
-    /** the log **/
-    private String log = "";
-
-    /** whether this program compiled successfully **/
-    private boolean isCompiled;
-
     /** uniform lookup **/
     private final ObjectIntMap<String> uniforms = new ObjectIntMap<String>();
-
     /** uniform types **/
     private final ObjectIntMap<String> uniformTypes = new ObjectIntMap<String>();
-
     /** uniform sizes **/
     private final ObjectIntMap<String> uniformSizes = new ObjectIntMap<String>();
-
-    /** uniform names **/
-    private String[] uniformNames;
-
     /** attribute lookup **/
     private final ObjectIntMap<String> attributes = new ObjectIntMap<String>();
-
     /** attribute types **/
     private final ObjectIntMap<String> attributeTypes = new ObjectIntMap<String>();
-
     /** attribute sizes **/
     private final ObjectIntMap<String> attributeSizes = new ObjectIntMap<String>();
-
-    /** attribute names **/
-    private String[] attributeNames;
-
-    /** program handle **/
-    private int program;
-
-    /** vertex shader handle **/
-    private int vertexShaderHandle;
-
-    /** fragment shader handle **/
-    private int fragmentShaderHandle;
-
     /** matrix float buffer **/
     private final FloatBuffer matrix;
-
     /** vertex shader source **/
     private final String vertexShaderSource;
-
     /** fragment shader source **/
     private final String fragmentShaderSource;
-
+    IntBuffer params = BufferUtils.newIntBuffer(1);
+    IntBuffer type = BufferUtils.newIntBuffer(1);
+    /** the log **/
+    private String log = "";
+    /** whether this program compiled successfully **/
+    private boolean isCompiled;
+    /** uniform names **/
+    private String[] uniformNames;
+    /** attribute names **/
+    private String[] attributeNames;
+    /** program handle **/
+    private int program;
+    /** vertex shader handle **/
+    private int vertexShaderHandle;
+    /** fragment shader handle **/
+    private int fragmentShaderHandle;
     /** whether this shader was invalidated **/
     private boolean invalidated;
-
     /** reference count **/
     private int refCount = 0;
 
     /**
      * Constructs a new ShaderProgram and immediately compiles it.
-     *
      * @param vertexShader the vertex shader
      * @param fragmentShader the fragment shader
      */
@@ -185,10 +163,43 @@ public class ShaderProgram implements Disposable{
     }
 
     /**
+     * Invalidates all shaders so the next time they are used new handles are generated
+     */
+    public static void invalidateAllShaderPrograms(Application app){
+        if(Core.gl20 == null) return;
+
+        Array<ShaderProgram> shaderArray = shaders.get(app);
+        if(shaderArray == null) return;
+
+        for(int i = 0; i < shaderArray.size; i++){
+            shaderArray.get(i).invalidated = true;
+            shaderArray.get(i).checkManaged();
+        }
+    }
+
+    public static void clearAllShaderPrograms(Application app){
+        shaders.remove(app);
+    }
+
+    public static String getManagedStatus(){
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+        builder.append("Managed shaders/app: { ");
+        for(Application app : shaders.keys()){
+            builder.append(shaders.get(app).size);
+            builder.append(" ");
+        }
+        builder.append("}");
+        return builder.toString();
+    }
+
+    /** @return the number of managed shader programs currently loaded */
+    public static int getNumManagedShaderPrograms(){
+        return shaders.get(Core.app).size;
+    }
+
+    /**
      * Loads and compiles the shaders, creates a new program and links the shaders.
-     *
-     * @param vertexShader
-     * @param fragmentShader
      */
     private void compileShaders(String vertexShader, String fragmentShader){
         vertexShaderHandle = loadShader(GL20.GL_VERTEX_SHADER, vertexShader);
@@ -266,8 +277,6 @@ public class ShaderProgram implements Disposable{
         return program;
     }
 
-    final static IntBuffer intbuf = BufferUtils.newIntBuffer(1);
-
     /**
      * @return the log info for the shader compilation and program linking stage. The shader needs to be bound for this method to
      * have an effect.
@@ -322,7 +331,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value the value
      */
@@ -341,7 +349,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -361,7 +368,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -382,7 +388,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -404,7 +409,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value the value
      */
@@ -423,7 +427,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -443,7 +446,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -464,7 +466,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param value1 the first value
      * @param value2 the second value
@@ -538,7 +539,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform matrix with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param matrix the matrix
      */
@@ -548,7 +548,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform matrix with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param matrix the matrix
      * @param transpose whether the uniform matrix should be transposed
@@ -569,7 +568,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets an array of uniform matrices with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param buffer buffer containing the matrix data
      * @param transpose whether the uniform matrix should be transposed
@@ -584,7 +582,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets an array of uniform matrices with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param buffer buffer containing the matrix data
      * @param transpose whether the uniform matrix should be transposed
@@ -609,7 +606,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param values x and y as the first and second values respectively
      */
@@ -623,7 +619,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param values x, y and z as the first, second and third values respectively
      */
@@ -637,7 +632,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the uniform with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the name of the uniform
      * @param values r, g, b and a as the first through fourth values respectively
      */
@@ -651,7 +645,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the vertex attribute with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the attribute name
      * @param size the number of components, must be >= 1 and <= 4
      * @param type the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
@@ -676,7 +669,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Sets the vertex attribute with the given name. The {@link ShaderProgram} must be bound for this to work.
-     *
      * @param name the attribute name
      * @param size the number of components, must be >= 1 and <= 4
      * @param type the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
@@ -730,7 +722,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Disables the vertex attribute with the given name
-     *
      * @param name the vertex attribute name
      */
     public void disableVertexAttribute(String name){
@@ -749,7 +740,6 @@ public class ShaderProgram implements Disposable{
 
     /**
      * Enables the vertex attribute with the given name
-     *
      * @param name the vertex attribute name
      */
     public void enableVertexAttribute(String name){
@@ -781,46 +771,7 @@ public class ShaderProgram implements Disposable{
     }
 
     /**
-     * Invalidates all shaders so the next time they are used new handles are generated
-     *
-     * @param app
-     */
-    public static void invalidateAllShaderPrograms(Application app){
-        if(Core.gl20 == null) return;
-
-        Array<ShaderProgram> shaderArray = shaders.get(app);
-        if(shaderArray == null) return;
-
-        for(int i = 0; i < shaderArray.size; i++){
-            shaderArray.get(i).invalidated = true;
-            shaderArray.get(i).checkManaged();
-        }
-    }
-
-    public static void clearAllShaderPrograms(Application app){
-        shaders.remove(app);
-    }
-
-    public static String getManagedStatus(){
-        StringBuilder builder = new StringBuilder();
-        int i = 0;
-        builder.append("Managed shaders/app: { ");
-        for(Application app : shaders.keys()){
-            builder.append(shaders.get(app).size);
-            builder.append(" ");
-        }
-        builder.append("}");
-        return builder.toString();
-    }
-
-    /** @return the number of managed shader programs currently loaded */
-    public static int getNumManagedShaderPrograms(){
-        return shaders.get(Core.app).size;
-    }
-
-    /**
      * Sets the given attribute
-     *
      * @param name the name of the attribute
      * @param value1 the first value
      * @param value2 the second value
@@ -832,9 +783,6 @@ public class ShaderProgram implements Disposable{
         int location = fetchAttributeLocation(name);
         gl.glVertexAttrib4f(location, value1, value2, value3, value4);
     }
-
-    IntBuffer params = BufferUtils.newIntBuffer(1);
-    IntBuffer type = BufferUtils.newIntBuffer(1);
 
     private void fetchUniforms(){
         params.clear();

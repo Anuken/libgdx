@@ -22,12 +22,14 @@ import com.badlogic.gdx.function.Supplier;
 
 /**
  * Stores a map of {@link Pool}s by type for convenient static access.
- *
  * @author Nathan Sweet
  */
 @SuppressWarnings("unchecked")
 public class Pools{
     static private final ObjectMap<Class, Pool> typePools = new ObjectMap<>();
+
+    private Pools(){
+    }
 
     /**
      * Returns a new or existing pool for the specified type, stored in a Class to {@link Pool} map. Note the max size is ignored
@@ -83,7 +85,6 @@ public class Pools{
 
     /**
      * Frees the specified objects from the {@link #get(Class, Supplier) pool}. Null objects within the array are silently ignored.
-     *
      * @param samePool If true, objects don't need to be from the same pool but the pool must be looked up for each object.
      */
     static public void freeAll(Array objects, boolean samePool){
@@ -99,8 +100,5 @@ public class Pools{
             pool.free(object);
             if(!samePool) pool = null;
         }
-    }
-
-    private Pools(){
     }
 }

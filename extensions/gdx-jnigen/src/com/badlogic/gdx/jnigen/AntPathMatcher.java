@@ -44,16 +44,11 @@ import java.util.StringTokenizer;
  * <li>org/&#42;&#42;/servlet/bla.jsp - matches org/springframework/servlet/bla.jsp but also
  * org/springframework/testing/servlet/bla.jsp and com/servlet/bla.jsp</li>
  * </ul>
- *
  * @author Alef Arendsen
  * @author Juergen Hoeller
  * @since 16.07.2003
  */
 public class AntPathMatcher{
-
-    public boolean isPattern(String str){
-        return (str.indexOf('*') != -1 || str.indexOf('?') != -1);
-    }
 
     public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens){
         if(str == null){
@@ -71,6 +66,10 @@ public class AntPathMatcher{
             }
         }
         return tokens.toArray(new String[tokens.size()]);
+    }
+
+    public boolean isPattern(String str){
+        return (str.indexOf('*') != -1 || str.indexOf('?') != -1);
     }
 
     public boolean match(String file, String[] patterns){
@@ -199,7 +198,6 @@ public class AntPathMatcher{
      * Tests whether or not a string matches against a pattern. The pattern may contain two special characters:<br>
      * '*' means zero or more characters<br>
      * '?' means one and only one character
-     *
      * @param pattern pattern to match against. Must not be <code>null</code>.
      * @param str string which must be matched against the pattern. Must not be <code>null</code>.
      * @return <code>true</code> if the string matches against the pattern, or <code>false</code> otherwise.

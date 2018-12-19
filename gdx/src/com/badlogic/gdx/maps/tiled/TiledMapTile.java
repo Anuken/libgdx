@@ -23,10 +23,6 @@ import com.badlogic.gdx.maps.MapProperties;
 /** @brief Generalises the concept of tile in a TiledMap */
 public interface TiledMapTile{
 
-    enum BlendMode{
-        NONE, ALPHA
-    }
-
     int getId();
 
     void setId(int id);
@@ -36,7 +32,6 @@ public interface TiledMapTile{
 
     /**
      * Sets the {@link BlendMode} to use for rendering the tile
-     *
      * @param blendMode the blend mode to use for rendering the tile
      */
     void setBlendMode(BlendMode blendMode);
@@ -64,5 +59,9 @@ public interface TiledMapTile{
 
     /** @return collection of objects contained in the tile */
     MapObjects getObjects();
+
+    enum BlendMode{
+        NONE, ALPHA
+    }
 
 }
