@@ -29,27 +29,29 @@ import java.util.NoSuchElementException;
  * {@link OrderedSet#orderedItems()}.
  * @author Nathan Sweet
  */
+
 public class OrderedSet<T> extends ObjectSet<T>{
     final Array<T> items;
-    OrderedSetIterator iterator1, iterator2;
+    OrderedSetIterator<T> iterator1, iterator2;
 
     public OrderedSet(){
-        items = new Array();
+        items = new Array<>();
     }
 
     public OrderedSet(int initialCapacity, float loadFactor){
         super(initialCapacity, loadFactor);
-        items = new Array(capacity);
+        items = new Array<>(capacity);
     }
 
     public OrderedSet(int initialCapacity){
         super(initialCapacity);
-        items = new Array(capacity);
+        items = new Array<>(capacity);
     }
 
+    @SuppressWarnings("unchecked")
     public OrderedSet(OrderedSet set){
         super(set);
-        items = new Array(capacity);
+        items = new Array<>(capacity);
         items.addAll(set.items);
     }
 
@@ -97,8 +99,8 @@ public class OrderedSet<T> extends ObjectSet<T>{
 
     public OrderedSetIterator<T> iterator(){
         if(iterator1 == null){
-            iterator1 = new OrderedSetIterator(this);
-            iterator2 = new OrderedSetIterator(this);
+            iterator1 = new OrderedSetIterator<>(this);
+            iterator2 = new OrderedSetIterator<>(this);
         }
         if(!iterator1.valid){
             iterator1.reset();

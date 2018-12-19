@@ -17,7 +17,6 @@
 package com.badlogic.gdx.backends.gwt.widgets;
 
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -32,6 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>.gwt-ProgressBar-shell .gwt-ProgressBar-text-secondHalf { applied to text when progress is greater than 50 percent }</li>
  * </ul>
  */
+@SuppressWarnings("deprecation")
 public class ProgressBar extends Widget implements ResizableWidget{
 
     private static final String DEFAULT_TEXT_CLASS_NAME = "gwt-ProgressBar-text";
@@ -40,7 +40,7 @@ public class ProgressBar extends Widget implements ResizableWidget{
     private String textFirstHalfClassName = DEFAULT_TEXT_CLASS_NAME + "-firstHalf";
     private String textSecondHalfClassName = DEFAULT_TEXT_CLASS_NAME + "-secondHalf";
     /** The bar element that displays the progress. */
-    private Element barElement;
+    private com.google.gwt.user.client.Element barElement;
     /** The current progress. */
     private double curProgress;
     /** The maximum progress. */
@@ -50,7 +50,7 @@ public class ProgressBar extends Widget implements ResizableWidget{
     /** A boolean that determines if the text is visible. */
     private boolean textVisible = true;
     /** The element that displays text on the page. */
-    private Element textElement;
+    private com.google.gwt.user.client.Element textElement;
     /** The current text formatter. */
     private TextFormatter textFormatter;
 
@@ -297,7 +297,7 @@ public class ProgressBar extends Widget implements ResizableWidget{
      * Get the bar element.
      * @return the bar element
      */
-    protected Element getBarElement(){
+    protected com.google.gwt.user.client.Element getBarElement(){
         return barElement;
     }
 
@@ -305,7 +305,7 @@ public class ProgressBar extends Widget implements ResizableWidget{
      * Get the text element.
      * @return the text element
      */
-    protected Element getTextElement(){
+    protected com.google.gwt.user.client.Element getTextElement(){
         return textElement;
     }
 

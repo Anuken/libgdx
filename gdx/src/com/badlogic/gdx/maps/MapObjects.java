@@ -94,6 +94,7 @@ public class MapObjects implements Iterable<MapObject>{
      * @param fill collection to put the returned objects in
      * @return array filled with all the objects in the collection matching type
      */
+    @SuppressWarnings("unchecked")
     public <T extends MapObject> Array<T> getByType(Class<T> type, Array<T> fill){
         fill.clear();
         for(int i = 0, n = objects.size; i < n; i++){

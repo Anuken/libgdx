@@ -35,6 +35,7 @@ import java.util.NoSuchElementException;
  * the capacity. {@link OrderedSet} provides much faster iteration.
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class ObjectSet<T> implements Iterable<T>{
     private static final int PRIME1 = 0xbe1f14b1;
     private static final int PRIME2 = 0xb4b82e39;
@@ -98,7 +99,7 @@ public class ObjectSet<T> implements Iterable<T>{
     }
 
     static public <T> ObjectSet<T> with(T... array){
-        ObjectSet set = new ObjectSet();
+        ObjectSet<T> set = new ObjectSet<>();
         set.addAll(array);
         return set;
     }

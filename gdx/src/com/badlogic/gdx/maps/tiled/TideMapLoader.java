@@ -245,7 +245,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
                     String name = currentChild.getName();
                     if(name.equals("TileSheet")){
                         currentTileSet = tilesets.getTileSet(currentChild.getAttribute("Ref"));
-                        firstgid = currentTileSet.getProperties().get("firstgid", Integer.class);
+                        firstgid = currentTileSet.getProperties().get("firstgid");
                     }else if(name.equals("Null")){
                         x += currentChild.getIntAttribute("Count");
                     }else if(name.equals("Static")){
@@ -256,13 +256,13 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
                         // Create an AnimatedTile
                         int interval = currentChild.getInt("Interval");
                         Element frames = currentChild.getChildByName("Frames");
-                        Array<StaticTiledMapTile> frameTiles = new Array<StaticTiledMapTile>();
+                        Array<StaticTiledMapTile> frameTiles = new Array<>();
                         for(int frameChild = 0, frameChildCount = frames.getChildCount(); frameChild < frameChildCount; frameChild++){
                             Element frame = frames.getChild(frameChild);
                             String frameName = frame.getName();
                             if(frameName.equals("TileSheet")){
                                 currentTileSet = tilesets.getTileSet(frame.getAttribute("Ref"));
-                                firstgid = currentTileSet.getProperties().get("firstgid", Integer.class);
+                                firstgid = currentTileSet.getProperties().get("firstgid");
                             }else if(frameName.equals("Static")){
                                 frameTiles.add((StaticTiledMapTile)currentTileSet.getTile(firstgid + frame.getIntAttribute("Index")));
                             }

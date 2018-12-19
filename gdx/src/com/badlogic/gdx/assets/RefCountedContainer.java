@@ -41,6 +41,7 @@ public class RefCountedContainer{
         this.refCount = refCount;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getObject(Class<T> type){
         return (T)object;
     }

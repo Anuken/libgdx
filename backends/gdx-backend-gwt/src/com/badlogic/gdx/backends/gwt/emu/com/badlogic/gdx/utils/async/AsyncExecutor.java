@@ -37,13 +37,13 @@ public class AsyncExecutor implements Disposable{
      * @param task the task to execute asynchronously
      */
     public <T> AsyncResult<T> submit(final AsyncTask<T> task){
-        T result = null;
+        T result;
         try{
             result = task.call();
         }catch(Throwable t){
             throw new GdxRuntimeException("Could not submit AsyncTask: " + t.getMessage(), t);
         }
-        return new AsyncResult(result);
+        return new AsyncResult<T>(result);
     }
 
     /**

@@ -125,6 +125,7 @@ public class Button extends Table implements Disableable{
         addListener(new HandCursorListener());
     }
 
+    @SuppressWarnings("unchecked")
     void setChecked(boolean isChecked, boolean fireEvent){
         if(this.isChecked == isChecked) return;
         if(buttonGroup != null && !buttonGroup.canCheck(this, isChecked)) return;

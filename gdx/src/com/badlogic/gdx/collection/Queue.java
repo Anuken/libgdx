@@ -28,6 +28,7 @@ import java.util.NoSuchElementException;
  * wrap back to the beginning, making add and remove at the beginning and end O(1) (unless the backing array needs to resize when
  * adding). Deque functionality is provided via {@link #removeLast()} and {@link #addFirst(Object)}.
  */
+@SuppressWarnings("unchecked")
 public class Queue<T> implements Iterable<T>{
     /** Number of elements in the queue. */
     public int size = 0;

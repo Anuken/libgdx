@@ -34,13 +34,10 @@ public class AsyncExecutor implements Disposable{
      * Creates a new AsynchExecutor that allows maxConcurrent {@link Runnable} instances to run in parallel.
      */
     public AsyncExecutor(int maxConcurrent){
-        executor = Executors.newFixedThreadPool(maxConcurrent, new ThreadFactory(){
-            @Override
-            public Thread newThread(Runnable r){
-                Thread thread = new Thread(r, "AsynchExecutor-Thread");
-                thread.setDaemon(true);
-                return thread;
-            }
+        executor = Executors.newFixedThreadPool(maxConcurrent, r -> {
+            Thread thread = new Thread(r, "AsynchExecutor-Thread");
+            thread.setDaemon(true);
+            return thread;
         });
     }
 
@@ -53,12 +50,7 @@ public class AsyncExecutor implements Disposable{
         if(executor.isShutdown()){
             throw new GdxRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");
         }
-        return new AsyncResult(executor.submit(new Callable<T>(){
-            @Override
-            public T call() throws Exception{
-                return task.call();
-            }
-        }));
+        return new AsyncResult<>(executor.submit(task::call));
     }
 
     /**

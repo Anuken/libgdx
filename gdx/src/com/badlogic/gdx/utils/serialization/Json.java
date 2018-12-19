@@ -35,6 +35,7 @@ import java.util.*;
  * https://github.com/libgdx/libgdx/wiki/Reading-%26-writing-JSON
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class Json{
     static private final boolean debug = false;
     private final ObjectMap<Class, OrderedMap<String, FieldMetadata>> typeToFields = new ObjectMap();

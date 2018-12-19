@@ -18,8 +18,6 @@ package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration;
-import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegate;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegateAdapter;
 import com.badlogic.gdx.collection.Array;
@@ -45,7 +43,7 @@ import org.robovm.rt.bro.annotation.Pointer;
 @SuppressWarnings("deprecation")
 public class IOSInput extends Input{
     static final int MAX_TOUCHES = 20;
-    static final NSObjectWrapper<UIAcceleration> UI_ACCELERATION_WRAPPER = new NSObjectWrapper<>(UIAcceleration.class);
+    static final NSObjectWrapper<com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration> UI_ACCELERATION_WRAPPER = new NSObjectWrapper<>(com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration.class);
     private static final int POINTER_NOT_FOUND = -1;
     private static final NSObjectWrapper<UITouch> UI_TOUCH_WRAPPER = new NSObjectWrapper<>(UITouch.class);
     protected UIAccelerometerDelegate accelerometerDelegate;
@@ -143,8 +141,8 @@ public class IOSInput extends Input{
             accelerometerDelegate = new UIAccelerometerDelegateAdapter(){
 
                 @Method(selector = "accelerometer:didAccelerate:")
-                public void didAccelerate(UIAccelerometer accelerometer, @Pointer long valuesPtr){
-                    UIAcceleration values = UI_ACCELERATION_WRAPPER.wrap(valuesPtr);
+                public void didAccelerate(com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer accelerometer, @Pointer long valuesPtr){
+                    com.badlogic.gdx.backends.iosrobovm.custom.UIAcceleration values = UI_ACCELERATION_WRAPPER.wrap(valuesPtr);
                     float x = (float)values.getX() * 10;
                     float y = (float)values.getY() * 10;
                     float z = (float)values.getZ() * 10;
@@ -152,8 +150,8 @@ public class IOSInput extends Input{
                     accel.set(-x, -y, -z);
                 }
             };
-            UIAccelerometer.getSharedAccelerometer().setDelegate(accelerometerDelegate);
-            UIAccelerometer.getSharedAccelerometer().setUpdateInterval(config.accelerometerUpdate);
+            com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer.getSharedAccelerometer().setDelegate(accelerometerDelegate);
+            com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometer.getSharedAccelerometer().setUpdateInterval(config.accelerometerUpdate);
         }
     }
 

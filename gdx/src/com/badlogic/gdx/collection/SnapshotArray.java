@@ -46,7 +46,7 @@ public class SnapshotArray<T> extends Array<T>{
         super();
     }
 
-    public SnapshotArray(Array array){
+    public SnapshotArray(Array<T> array){
         super(array);
     }
 
@@ -76,7 +76,7 @@ public class SnapshotArray<T> extends Array<T>{
 
     /** @see #SnapshotArray(Object[]) */
     static public <T> SnapshotArray<T> with(T... array){
-        return new SnapshotArray(array);
+        return new SnapshotArray<>(array);
     }
 
     /** Returns the backing array, which is guaranteed to not be modified before {@link #end()}. */

@@ -88,7 +88,8 @@ class AndroidAudioDevice implements AudioDevice{
     }
 
     @Override
+
     public void setVolume(float volume){
-        track.setStereoVolume(volume, volume);
+        track.setVolume(volume);
     }
 }

@@ -28,6 +28,7 @@ import java.util.Comparator;
  * problem.
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class DelayedRemovalArray<T> extends Array<T>{
     private int iterating;
     private IntArray remove = new IntArray(0);

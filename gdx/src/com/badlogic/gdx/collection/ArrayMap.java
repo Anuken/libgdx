@@ -33,6 +33,7 @@ import java.util.NoSuchElementException;
  * element is moved to the removed element's position).
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     public K[] keys;
     public V[] values;

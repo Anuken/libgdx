@@ -32,27 +32,27 @@ import java.util.NoSuchElementException;
 public class OrderedMap<K, V> extends ObjectMap<K, V>{
     final Array<K> keys;
 
-    private Entries entries1, entries2;
-    private Values values1, values2;
-    private Keys keys1, keys2;
+    private Entries<K, V> entries1, entries2;
+    private Values<V> values1, values2;
+    private Keys<K> keys1, keys2;
 
     public OrderedMap(){
-        keys = new Array();
+        keys = new Array<>();
     }
 
     public OrderedMap(int initialCapacity){
         super(initialCapacity);
-        keys = new Array(capacity);
+        keys = new Array<>(capacity);
     }
 
     public OrderedMap(int initialCapacity, float loadFactor){
         super(initialCapacity, loadFactor);
-        keys = new Array(capacity);
+        keys = new Array<>(capacity);
     }
 
     public OrderedMap(OrderedMap<? extends K, ? extends V> map){
         super(map);
-        keys = new Array(map.keys);
+        keys = new Array<>(map.keys);
     }
 
     public V put(K key, V value){
@@ -93,8 +93,8 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
      */
     public Entries<K, V> entries(){
         if(entries1 == null){
-            entries1 = new OrderedMapEntries(this);
-            entries2 = new OrderedMapEntries(this);
+            entries1 = new OrderedMapEntries<>(this);
+            entries2 = new OrderedMapEntries<>(this);
         }
         if(!entries1.valid){
             entries1.reset();
@@ -114,8 +114,8 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
      */
     public Values<V> values(){
         if(values1 == null){
-            values1 = new OrderedMapValues(this);
-            values2 = new OrderedMapValues(this);
+            values1 = new OrderedMapValues<>(this);
+            values2 = new OrderedMapValues<>(this);
         }
         if(!values1.valid){
             values1.reset();
@@ -135,8 +135,8 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
      */
     public Keys<K> keys(){
         if(keys1 == null){
-            keys1 = new OrderedMapKeys(this);
-            keys2 = new OrderedMapKeys(this);
+            keys1 = new OrderedMapKeys<>(this);
+            keys2 = new OrderedMapKeys<>(this);
         }
         if(!keys1.valid){
             keys1.reset();
@@ -179,7 +179,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
             hasNext = map.size > 0;
         }
 
-        public Entry next(){
+        public Entry<K, V> next(){
             if(!hasNext) throw new NoSuchElementException();
             if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
             entry.key = keys.get(nextIndex);

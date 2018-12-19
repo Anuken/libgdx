@@ -78,7 +78,7 @@ public class Tree extends WidgetGroup{
         initialize();
     }
 
-    static boolean findExpandedObjects(Array<Node> nodes, Array objects){
+    static boolean findExpandedObjects(Array<Node> nodes, Array<Object> objects){
         boolean expanded = false;
         for(int i = 0, n = nodes.size; i < n; i++){
             Node node = nodes.get(i);
@@ -629,7 +629,7 @@ public class Tree extends WidgetGroup{
             this.selectable = selectable;
         }
 
-        public void findExpandedObjects(Array objects){
+        public void findExpandedObjects(Array<Object> objects){
             if(expanded && !Tree.findExpandedObjects(children, objects)) objects.add(object);
         }
 

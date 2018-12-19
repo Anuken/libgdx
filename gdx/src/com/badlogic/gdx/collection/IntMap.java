@@ -32,6 +32,7 @@ import java.util.NoSuchElementException;
  * next higher POT size.
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class IntMap<V> implements Iterable<IntMap.Entry<V>>{
     private static final int PRIME1 = 0xbe1f14b1;
     private static final int PRIME2 = 0xb4b82e39;

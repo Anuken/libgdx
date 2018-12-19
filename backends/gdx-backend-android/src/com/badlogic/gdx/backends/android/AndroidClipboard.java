@@ -17,43 +17,30 @@
 package com.badlogic.gdx.backends.android;
 
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import com.badlogic.gdx.utils.Clipboard;
 
 public class AndroidClipboard implements Clipboard{
 
-    private android.text.ClipboardManager clipboard;
-    private android.content.ClipboardManager honeycombClipboard;
+    private ClipboardManager honeycombClipboard;
 
     public AndroidClipboard(Context context){
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
-            clipboard = (android.text.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-        }else{
-            honeycombClipboard = (android.content.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-        }
+        honeycombClipboard = (android.content.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override
     public String getContents(){
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
-            if(clipboard.getText() == null) return null;
-            return clipboard.getText().toString();
-        }else{
-            ClipData clip = honeycombClipboard.getPrimaryClip();
-            if(clip == null) return null;
-            CharSequence text = clip.getItemAt(0).getText();
-            if(text == null) return null;
-            return text.toString();
-        }
+        ClipData clip = honeycombClipboard.getPrimaryClip();
+        if(clip == null) return null;
+        CharSequence text = clip.getItemAt(0).getText();
+        if(text == null) return null;
+        return text.toString();
     }
 
     @Override
     public void setContents(final String contents){
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
-            clipboard.setText(contents);
-        }else{
-            ClipData data = ClipData.newPlainText(contents, contents);
-            honeycombClipboard.setPrimaryClip(data);
-        }
+        ClipData data = ClipData.newPlainText(contents, contents);
+        honeycombClipboard.setPrimaryClip(data);
     }
 }

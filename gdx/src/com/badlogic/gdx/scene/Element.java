@@ -91,6 +91,7 @@ public class Element implements Layout{
             visible(visibility.get());
     }
 
+    @SuppressWarnings("unchecked")
     public boolean fire(Event event){
         event.targetActor = this;
 

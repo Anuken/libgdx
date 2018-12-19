@@ -42,6 +42,7 @@ import java.util.List;
  * An implementation of the {@link Audio} interface for Android.
  * @author mzechner
  */
+@SuppressWarnings("deprecation")
 public final class AndroidAudio implements Audio{
     protected final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
     private final SoundPool soundPool;

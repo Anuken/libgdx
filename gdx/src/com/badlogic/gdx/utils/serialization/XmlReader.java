@@ -41,6 +41,7 @@ import java.io.Reader;
  * When this is done, the parse methods will return null.
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class XmlReader{
     static final int xml_start = 1;
     static final int xml_first_final = 34;

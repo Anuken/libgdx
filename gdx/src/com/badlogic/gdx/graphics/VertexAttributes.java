@@ -242,7 +242,7 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
     static private class ReadonlyIterable<T> implements Iterable<T>{
         private final T[] array;
-        private ReadonlyIterator iterator1, iterator2;
+        private ReadonlyIterator<T> iterator1, iterator2;
 
         public ReadonlyIterable(T[] array){
             this.array = array;
@@ -251,8 +251,8 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
         @Override
         public Iterator<T> iterator(){
             if(iterator1 == null){
-                iterator1 = new ReadonlyIterator(array);
-                iterator2 = new ReadonlyIterator(array);
+                iterator1 = new ReadonlyIterator<>(array);
+                iterator2 = new ReadonlyIterator<>(array);
             }
             if(!iterator1.valid){
                 iterator1.index = 0;

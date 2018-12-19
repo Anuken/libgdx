@@ -47,6 +47,7 @@ public class Select{
         return items[idx];
     }
 
+    @SuppressWarnings("unchecked")
     public <T> int selectIndex(T[] items, Comparator<T> comp, int kthLowest, int size){
         if(size < 1){
             throw new GdxRuntimeException("cannot select from empty array (size < 1)");

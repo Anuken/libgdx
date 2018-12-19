@@ -106,9 +106,8 @@ public class IOSApplicationConfiguration{
     /**
      * Experimental, whether to enable OpenGL ES 3 if supported. If not supported it will fall-back to OpenGL ES 2.0.
      * When GL ES 3 is enabled, {@link Core#gl30} can be used to access it's functionality.
-     * @deprecated this option is currently experimental and not yet fully supported, expect issues.
+     * This option is currently experimental and not yet fully supported, expect issues.
      */
-    @Deprecated
     public boolean useGL30 = false;
 
     /** whether the home indicator should be hidden or not **/

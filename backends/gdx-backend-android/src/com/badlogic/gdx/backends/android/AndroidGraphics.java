@@ -48,8 +48,8 @@ import javax.microedition.khronos.opengles.GL10;
  * An implementation of {@link Graphics} for Android.
  * @author mzechner
  */
+@SuppressWarnings("deprecation")
 public class AndroidGraphics extends Graphics implements Renderer{
-
     private static final String LOG_TAG = "AndroidGraphics";
 
     /**

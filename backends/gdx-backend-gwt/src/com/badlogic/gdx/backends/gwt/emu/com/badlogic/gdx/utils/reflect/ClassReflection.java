@@ -25,6 +25,7 @@ import java.lang.annotation.Inherited;
  * Utilities for Class reflection.
  * @author nexsoftware
  */
+@SuppressWarnings("unchecked")
 public final class ClassReflection{
 
     /** Returns the Class object associated with the class or interface with the supplied string name. */

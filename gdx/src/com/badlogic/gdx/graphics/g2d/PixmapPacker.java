@@ -97,7 +97,7 @@ import java.util.Comparator;
  * @author Rob Rendell
  */
 public class PixmapPacker implements Disposable{
-    final Array<Page> pages = new Array();
+    final Array<Page> pages = new Array<>();
     boolean packToTexture;
     boolean disposed;
     int pageWidth, pageHeight;
@@ -796,11 +796,7 @@ public class PixmapPacker implements Disposable{
 
         public void sort(Array<Pixmap> images){
             if(comparator == null){
-                comparator = new Comparator<Pixmap>(){
-                    public int compare(Pixmap o1, Pixmap o2){
-                        return o1.getHeight() - o2.getHeight();
-                    }
-                };
+                comparator = (o1, o2) -> o1.getHeight() - o2.getHeight();
             }
             images.sort(comparator);
         }

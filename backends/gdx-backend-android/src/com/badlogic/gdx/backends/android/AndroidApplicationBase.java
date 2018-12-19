@@ -32,7 +32,7 @@ import com.badlogic.gdx.collection.Array;
  * @author davebaol
  */
 public interface AndroidApplicationBase extends Application{
-    int MINIMUM_SDK = 9;
+    int MINIMUM_SDK = 11;
 
     /**
      * The application or activity context

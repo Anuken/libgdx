@@ -35,6 +35,7 @@ import java.util.NoSuchElementException;
  * the capacity. {@link OrderedMap} provides much faster iteration.
  * @author Nathan Sweet
  */
+@SuppressWarnings("unchecked")
 public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
     private static final int PRIME1 = 0xbe1f14b1;
     private static final int PRIME2 = 0xb4b82e39;

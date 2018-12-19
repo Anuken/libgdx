@@ -75,7 +75,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                     String value = property.getAttribute("value");
                     if(name.startsWith("atlas")){
                         FileHandle atlasHandle = getRelativeFileHandle(tmxFile, value);
-                        dependencies.add(new AssetDescriptor(atlasHandle, TextureAtlas.class));
+                        dependencies.add(new AssetDescriptor<>(atlasHandle, TextureAtlas.class));
                     }
                 }
             }
@@ -285,7 +285,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                 }
             }
 
-            String atlasFilePath = map.getProperties().get("atlas", String.class);
+            String atlasFilePath = map.getProperties().get("atlas");
             if(atlasFilePath == null){
                 FileHandle atlasFile = tmxFile.sibling(tmxFile.nameWithoutExtension() + ".atlas");
                 if(atlasFile.exists()) atlasFilePath = atlasFile.name();

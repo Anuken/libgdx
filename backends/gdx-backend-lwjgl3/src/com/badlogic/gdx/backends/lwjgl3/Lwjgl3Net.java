@@ -16,13 +16,11 @@
 
 package com.badlogic.gdx.backends.lwjgl3;
 
-import com.apple.eio.FileManager;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.*;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -62,9 +60,9 @@ public class Lwjgl3Net implements Net{
     public boolean openURI(String URI){
         if(SharedLibraryLoader.isMac){
             try{
-                FileManager.openURL(URI);
+                Class.forName("com.apple.eio.FileManager").getMethod("openURL", String.class).invoke(null, URI);
                 return true;
-            }catch(IOException e){
+            }catch(Exception e){
                 return false;
             }
         }else{

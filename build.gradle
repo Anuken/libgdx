@@ -48,6 +48,7 @@ configure(subprojects){
     compileJava{
         options.fork = true
         options.incremental = true
+        options.compilerArgs << "-Xlint:unchecked"
     }
 }
 

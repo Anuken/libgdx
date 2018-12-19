@@ -26,13 +26,13 @@ import com.badlogic.gdx.collection.Array;
  * @author Nathan Sweet
  */
 public class Timer{
-    static final Array<Timer> instances = new Array(1);
+    static final Array<Timer> instances = new Array<>(1);
     static private final int CANCELLED = -1;
     static private final int FOREVER = -2;
     static TimerThread thread;
     /** Timer instance for general application wide usage. Static methods on {@link Timer} make convenient use of this instance. */
     static Timer instance = new Timer();
-    private final Array<Task> tasks = new Array(false, 8);
+    private final Array<Task> tasks = new Array<>(false, 8);
 
     public Timer(){
         start();

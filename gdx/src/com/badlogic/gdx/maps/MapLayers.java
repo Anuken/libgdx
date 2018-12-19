@@ -91,6 +91,7 @@ public class MapLayers implements Iterable<MapLayer>{
      * @param fill array to be filled with the matching layers
      * @return array with all the layers matching type
      */
+    @SuppressWarnings("unchecked")
     public <T extends MapLayer> Array<T> getByType(Class<T> type, Array<T> fill){
         fill.clear();
         for(int i = 0, n = layers.size; i < n; i++){

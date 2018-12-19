@@ -18,6 +18,7 @@ package com.badlogic.gdx.collection;
 
 import com.badlogic.gdx.utils.StringBuilder;
 
+@SuppressWarnings("unchecked")
 /** @author Nathan Sweet */
 public class BinaryHeap<T extends BinaryHeap.Node>{
     private final boolean isMaxHeap;

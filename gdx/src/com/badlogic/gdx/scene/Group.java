@@ -361,6 +361,7 @@ public class Group extends Element implements Cullable{
      * Returns the first actor found with the specified name. Note this recursively compares the name of every actor in the
      * group.
      */
+    @SuppressWarnings("unchecked")
     public <T extends Element> T find(String name){
         Array<Element> children = this.children;
         for(int i = 0, n = children.size; i < n; i++)
@@ -376,6 +377,7 @@ public class Group extends Element implements Cullable{
     }
 
     /** Find element by a predicate. */
+    @SuppressWarnings("unchecked")
     public <T extends Element> T find(Predicate<Element> pred){
         Array<Element> children = this.children;
         for(int i = 0, n = children.size; i < n; i++)

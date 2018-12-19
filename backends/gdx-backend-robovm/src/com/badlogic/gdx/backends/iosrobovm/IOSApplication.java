@@ -121,8 +121,7 @@ public class IOSApplication implements Application{
 
     int getIosVersion(){
         String systemVersion = UIDevice.getCurrentDevice().getSystemVersion();
-        int version = Integer.parseInt(systemVersion.split("\\.")[0]);
-        return version;
+        return Integer.parseInt(systemVersion.split("\\.")[0]);
     }
 
     /**

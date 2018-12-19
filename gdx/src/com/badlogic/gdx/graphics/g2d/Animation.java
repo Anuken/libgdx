@@ -46,6 +46,7 @@ public class Animation<T>{
      * @param keyFrames the objects representing the frames. If this Array is type-aware, {@link #getKeyFrames()} can return the
      * correct type of array. Otherwise, it returns an Object[].
      */
+    @SuppressWarnings("unchecked")
     public Animation(float frameDuration, Array<? extends T> keyFrames){
         this.frameDuration = frameDuration;
         Class arrayType = keyFrames.items.getClass().getComponentType();

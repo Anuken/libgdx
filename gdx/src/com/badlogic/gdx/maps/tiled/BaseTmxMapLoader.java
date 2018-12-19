@@ -164,8 +164,8 @@ public abstract class BaseTmxMapLoader<P extends AssetLoaderParameters<TiledMap>
         if(element.getName().equals("layer")){
             int width = element.getIntAttribute("width", 0);
             int height = element.getIntAttribute("height", 0);
-            int tileWidth = map.getProperties().get("tilewidth", Integer.class);
-            int tileHeight = map.getProperties().get("tileheight", Integer.class);
+            int tileWidth = map.getProperties().get("tilewidth");
+            int tileHeight = map.getProperties().get("tileheight");
             TiledMapTileLayer layer = new TiledMapTileLayer(width, height, tileWidth, tileHeight);
 
             loadBasicLayerInfo(layer, element);

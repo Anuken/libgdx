@@ -181,7 +181,7 @@ public class BitmapFont implements Disposable{
 
             // Load each path.
             int n = data.imagePaths.length;
-            regions = new Array(n);
+            regions = new Array<>(n);
             for(int i = 0; i < n; i++){
                 FileHandle file;
                 if(data.fontFile == null)
