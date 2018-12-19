@@ -490,6 +490,8 @@ public class AndroidGraphics extends Graphics implements Renderer{
                     listeners.get(i).update();
                 }
             }
+
+            ((AndroidInput)Core.input).processDevices();
         }
 
         if(lpause){

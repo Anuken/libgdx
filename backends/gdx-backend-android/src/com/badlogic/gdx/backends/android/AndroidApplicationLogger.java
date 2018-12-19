@@ -17,6 +17,7 @@
 package com.badlogic.gdx.backends.android;
 
 import android.util.Log;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.Log.LogHandler;
 import com.badlogic.gdx.utils.Strings;
 
@@ -24,16 +25,16 @@ public class AndroidApplicationLogger extends LogHandler{
 
     @Override
     public void info(String text, Object... args){
-        Log.i(appName, Strings.formatArgs(text, args));
+        Log.i(Core.settings == null || Core.settings.getAppName() == null ? "libGDX" : Core.settings.getAppName(), Strings.formatArgs(text, args));
     }
 
     @Override
     public void warn(String text, Object... args){
-        Log.w(appName, Strings.formatArgs(text, args));
+        Log.w(Core.settings == null || Core.settings.getAppName() == null ? "libGDX" : Core.settings.getAppName(), Strings.formatArgs(text, args));
     }
 
     @Override
     public void err(String text, Object... args){
-        Log.e(appName, Strings.formatArgs(text, args));
+        Log.e(Core.settings == null || Core.settings.getAppName() == null ? "libGDX" : Core.settings.getAppName(), Strings.formatArgs(text, args));
     }
 }

@@ -33,7 +33,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  *
  * @author Jon Renner
  */
-public class HeadlessApplication extends Application{
+public class HeadlessApplication implements Application{
     protected Thread mainLoopThread;
     protected final HeadlessFiles files;
     protected final HeadlessNet net;
@@ -41,6 +41,7 @@ public class HeadlessApplication extends Application{
     protected final MockInput input;
     protected final MockGraphics graphics;
     protected boolean running = true;
+    protected final Array<ApplicationListener> listeners = new Array<>();
     protected final Array<Runnable> runnables = new Array<>();
     protected final Array<Runnable> executedRunnables = new Array<>();
     private final long renderInterval;
@@ -172,6 +173,11 @@ public class HeadlessApplication extends Application{
     public Clipboard getClipboard(){
         // no clipboards for headless apps
         return null;
+    }
+
+    @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
     }
 
     @Override

@@ -126,7 +126,7 @@ public class GwtFileHandle extends FileHandle{
     public Reader reader(String charset){
         try{
             return new InputStreamReader(read(), charset);
-        }catch(UnsupportedEncodingException e){
+        }catch(Exception e){
             throw new GdxRuntimeException("Encoding '" + charset + "' not supported", e);
         }
     }

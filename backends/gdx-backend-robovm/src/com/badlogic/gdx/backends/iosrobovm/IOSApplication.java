@@ -29,7 +29,26 @@ import org.robovm.apple.foundation.NSThread;
 import org.robovm.apple.uikit.*;
 import org.robovm.rt.bro.Bro;
 
-public class IOSApplication extends Application{
+public class IOSApplication implements Application{
+    UIApplication uiApp;
+    UIWindow uiWindow;
+    IOSViewControllerListener viewControllerListener;
+    IOSApplicationConfiguration config;
+    IOSGraphics graphics;
+    IOSAudio audio;
+    IOSFiles files;
+    IOSInput input;
+    IOSNet net;
+
+    /** The display scale factor (1.0f for normal; 2.0f to use retina coordinates/dimensions). */
+    float displayScaleFactor;
+
+    private CGRect lastScreenBounds = null;
+
+    Array<ApplicationListener> listeners = new Array<>();
+    Array<Runnable> runnables = new Array<>();
+    Array<Runnable> executedRunnables = new Array<>();
+
 
     public static abstract class Delegate extends UIApplicationDelegateAdapter{
         private IOSApplication app;
@@ -63,24 +82,6 @@ public class IOSApplication extends Application{
             app.willTerminate(application);
         }
     }
-
-    UIApplication uiApp;
-    UIWindow uiWindow;
-    IOSViewControllerListener viewControllerListener;
-    IOSApplicationConfiguration config;
-    IOSGraphics graphics;
-    IOSAudio audio;
-    IOSFiles files;
-    IOSInput input;
-    IOSNet net;
-
-    /** The display scale factor (1.0f for normal; 2.0f to use retina coordinates/dimensions). */
-    float displayScaleFactor;
-
-    private CGRect lastScreenBounds = null;
-
-    Array<Runnable> runnables = new Array<>();
-    Array<Runnable> executedRunnables = new Array<>();
 
     public IOSApplication(ApplicationListener listener, IOSApplicationConfiguration config){
         addListener(listener);
@@ -337,6 +338,11 @@ public class IOSApplication extends Application{
                 return UIPasteboard.getGeneralPasteboard().getString();
             }
         };
+    }
+
+    @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
     }
 
     /**

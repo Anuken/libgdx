@@ -24,6 +24,8 @@ import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegate;
 import com.badlogic.gdx.backends.iosrobovm.custom.UIAccelerometerDelegateAdapter;
 import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.input.InputProcessor;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.math.geom.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.pooling.Pool;
@@ -67,8 +69,8 @@ public class IOSInput extends Input{
         }
     }
 
-    private static final NSObjectWrapper<UITouch> UI_TOUCH_WRAPPER = new NSObjectWrapper<UITouch>(UITouch.class);
-    static final NSObjectWrapper<UIAcceleration> UI_ACCELERATION_WRAPPER = new NSObjectWrapper<UIAcceleration>(UIAcceleration.class);
+    private static final NSObjectWrapper<UITouch> UI_TOUCH_WRAPPER = new NSObjectWrapper<>(UITouch.class);
+    static final NSObjectWrapper<UIAcceleration> UI_ACCELERATION_WRAPPER = new NSObjectWrapper<>(UIAcceleration.class);
 
     IOSApplication app;
     IOSApplicationConfiguration config;
@@ -90,13 +92,11 @@ public class IOSInput extends Input{
     };
     Array<TouchEvent> touchEvents = new Array<TouchEvent>();
     TouchEvent currentEvent = null;
-    float[] acceleration = new float[3];
     float[] rotation = new float[3];
-    float[] R = new float[9];
     InputProcessor inputProcessor = null;
+    Vector3 accel = new Vector3();
 
     boolean hasVibrator;
-    //CMMotionManager motionManager;
     protected UIAccelerometerDelegate accelerometerDelegate;
     boolean compassSupported;
     boolean keyboardCloseOnReturn;
@@ -108,21 +108,13 @@ public class IOSInput extends Input{
     }
 
     void setupPeripherals(){
-        //motionManager = new CMMotionManager();
         setupAccelerometer();
-        setupCompass();
         UIDevice device = UIDevice.getCurrentDevice();
         if(device.getModel().equalsIgnoreCase("iphone")) hasVibrator = true;
 
         if(app.getIosVersion() >= 9){
             UIForceTouchCapability forceTouchCapability = UIScreen.getMainScreen().getTraitCollection().getForceTouchCapability();
             pressureSupported = forceTouchCapability == UIForceTouchCapability.Available;
-        }
-    }
-
-    protected void setupCompass(){
-        if(config.useCompass){
-            //setupMagnetometer();
         }
     }
 
@@ -137,9 +129,7 @@ public class IOSInput extends Input{
                     float y = (float) values.getY() * 10;
                     float z = (float) values.getZ() * 10;
 
-                    acceleration[0] = -x;
-                    acceleration[1] = -y;
-                    acceleration[2] = -z;
+                    accel.set(-x, -y, -z);
                 }
             };
             UIAccelerometer.getSharedAccelerometer().setDelegate(accelerometerDelegate);
@@ -147,159 +137,48 @@ public class IOSInput extends Input{
         }
     }
 
-    // need to retain a reference so GC doesn't get right of the
-    // object passed to the native thread
-//	VoidBlock2<CMAccelerometerData, NSError> accelVoid = null;	
-//	private void setupAccelerometer () {
-//		if (config.useAccelerometer) {
-//			motionManager.setAccelerometerUpdateInterval(config.accelerometerUpdate);			
-//			accelVoid = new VoidBlock2<CMAccelerometerData, NSError>() {
-//				@Override
-//				public void invoke(CMAccelerometerData accelData, NSError error) {
-//					updateAccelerometer(accelData);					
-//				}
-//			};
-//			motionManager.startAccelerometerUpdates(new NSOperationQueue(), accelVoid);
-//		}
-//	}
-
-    // need to retain a reference so GC doesn't get right of the
-    // object passed to the native thread
-//	VoidBlock2<CMMagnetometerData, NSError> magnetVoid = null;
-//	private void setupMagnetometer () {
-//		if (motionManager.isMagnetometerAvailable() && config.useCompass) compassSupported = true;
-//		else return;
-//		motionManager.setMagnetometerUpdateInterval(config.magnetometerUpdate);
-//		magnetVoid = new VoidBlock2<CMMagnetometerData, NSError>() {
-//			@Override
-//			public void invoke(CMMagnetometerData magnetData, NSError error) {
-//				updateRotation(magnetData);
-//			}
-//		};
-//		motionManager.startMagnetometerUpdates(new NSOperationQueue(), magnetVoid);
-//	}
-
-//	private void updateAccelerometer (CMAccelerometerData data) {
-//		float x = (float) data.getAcceleration().x() * 10f;
-//		float y = (float) data.getAcceleration().y() * 10f;
-//		float z = (float) data.getAcceleration().z() * 10f;
-//		acceleration[0] = -x;
-//		acceleration[1] = -y;
-//		acceleration[2] = -z;
-//	}
-//	
-//	private void updateRotation (CMMagnetometerData data) {
-//		final float eX = (float) data.getMagneticField().x();
-//		final float eY = (float) data.getMagneticField().y();
-//		final float eZ = (float) data.getMagneticField().z();
-//				
-//		float gX = acceleration[0];
-//		float gY = acceleration[1];
-//		float gZ = acceleration[2];
-//		
-//		float cX = eY * gZ - eZ * gY;
-//		float cY = eZ * gX - eX * gZ;
-//		float cZ = eX * gY - eY * gX;
-//		
-//		final float normal = (float) Math.sqrt(cX * cX + cY * cY + cZ * cZ);
-//		final float invertC = 1.0f / normal;
-//		cX *= invertC;
-//		cY *= invertC;
-//		cZ *= invertC;
-//		final float invertG = 1.0f / (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
-//		gX *= invertG;
-//		gY *= invertG;
-//		gZ *= invertG;
-//		final float mX = gY * cZ - gZ * cY;
-//		final float mY = gZ * cX - gX * cZ;
-//		final float mZ = gX * cY - gY * cX;
-//		
-//		R[0] = cX;	R[1] = cY;	R[2] = cZ;
-//		R[3] = mX;	R[4] = mY;	R[5] = mZ;
-//		R[6] = gX;	R[7] = gY;	R[8] = gZ;
-//		
-//		rotation[0] = (float) Math.atan2(R[1], R[4]) * Mathf.radDeg;
-//		rotation[1] = (float) Math.asin(-R[7]) * Mathf.radDeg;
-//		rotation[2] = (float) Math.atan2(-R[6], R[8]) * Mathf.radDeg;
-//	}
-
     @Override
-    public float getAccelerometerX(){
-        return acceleration[0];
+    public Vector3 getAccelerometer(){
+        return accel;
     }
 
     @Override
-    public float getAccelerometerY(){
-        return acceleration[1];
-    }
-
-    @Override
-    public float getAccelerometerZ(){
-        return acceleration[2];
-    }
-
-
-    @Override
-    public float getAzimuth(){
-        if(!compassSupported) return 0;
-        return rotation[0];
-    }
-
-    @Override
-    public float getPitch(){
-        if(!compassSupported) return 0;
-        return rotation[1];
-    }
-
-    @Override
-    public float getRoll(){
-        if(!compassSupported) return 0;
-        return rotation[2];
-    }
-
-    @Override
-    public void getRotationMatrix(float[] matrix){
-        if(matrix.length != 9) return;
-        //TODO implement when azimuth is fixed
-    }
-
-    @Override
-    public int getX(){
+    public int mouseX(){
         return touchX[0];
     }
 
     @Override
-    public int getX(int pointer){
+    public int mouseX(int pointer){
         return touchX[pointer];
     }
 
     @Override
-    public int getDeltaX(){
+    public int deltaX(){
         return deltaX[0];
     }
 
     @Override
-    public int getDeltaX(int pointer){
+    public int deltaX(int pointer){
         return deltaX[pointer];
     }
 
     @Override
-    public int getY(){
+    public int mouseY(){
         return touchY[0];
     }
 
     @Override
-    public int getY(int pointer){
+    public int mouseY(int pointer){
         return touchY[pointer];
     }
 
     @Override
-    public int getDeltaY(){
+    public int deltaY(){
         return deltaY[0];
     }
 
     @Override
-    public int getDeltaY(int pointer){
+    public int deltaY(int pointer){
         return deltaY[pointer];
     }
 
@@ -334,23 +213,8 @@ public class IOSInput extends Input{
     }
 
     @Override
-    public boolean isButtonPressed(int button){
-        return button == Buttons.LEFT && numTouched > 0;
-    }
-
-    @Override
-    public boolean isKeyPressed(int key){
-        return false;
-    }
-
-    @Override
-    public boolean isKeyJustPressed(int key){
-        return false;
-    }
-
-    @Override
-    public void getTextInput(TextInputListener listener, String title, String text, String hint){
-        buildUIAlertView(listener, title, text, hint).show();
+    public void getTextInput(TextInput input){
+        buildUIAlertView(input).show();
     }
 
     // hack for software keyboard support
@@ -413,7 +277,7 @@ public class IOSInput extends Input{
         @Override
         public boolean shouldReturn(UITextField textField){
             if(keyboardCloseOnReturn) setOnscreenKeyboardVisible(false);
-            app.input.inputProcessor.keyDown(Keys.ENTER);
+            app.input.inputProcessor.keyDown(KeyCode.ENTER);
             app.input.inputProcessor.keyTyped((char) 13);
             Core.graphics.requestRendering();
             return false;
@@ -471,39 +335,38 @@ public class IOSInput extends Input{
      * @param text Text for text field
      * @return UiAlertView
      */
-    private UIAlertView buildUIAlertView(final TextInputListener listener, String title, String text, String placeholder){
+    private UIAlertView buildUIAlertView(TextInput input){
         delegate = new UIAlertViewDelegateAdapter(){
             @Override
             public void clicked(UIAlertView view, long clicked){
                 if(clicked == 0){
                     // user clicked "Cancel" button
-                    listener.canceled();
+                    input.canceled.run();
                 }else if(clicked == 1){
                     // user clicked "Ok" button
                     UITextField textField = view.getTextField(0);
-                    listener.input(textField.getText());
+                    input.accepted.accept(textField.getText());
                 }
                 delegate = null;
             }
 
             @Override
             public void cancel(UIAlertView view){
-                listener.canceled();
+                input.canceled.run();
                 delegate = null;
             }
         };
 
         // build the view
         final UIAlertView uiAlertView = new UIAlertView();
-        uiAlertView.setTitle(title);
+        uiAlertView.setTitle(input.title);
         uiAlertView.addButton("Cancel");
         uiAlertView.addButton("Ok");
         uiAlertView.setAlertViewStyle(UIAlertViewStyle.PlainTextInput);
         uiAlertView.setDelegate(delegate);
 
         UITextField textField = uiAlertView.getTextField(0);
-        textField.setPlaceholder(placeholder);
-        textField.setText(text);
+        textField.setText(input.text);
 
         return uiAlertView;
     }
@@ -514,46 +377,8 @@ public class IOSInput extends Input{
     }
 
     @Override
-    public void vibrate(long[] pattern, int repeat){
-        // FIXME implement this
-    }
-
-    @Override
-    public void cancelVibrate(){
-        // FIXME implement this
-    }
-
-    @Override
     public long getCurrentEventTime(){
         return currentEvent.timestamp;
-    }
-
-    @Override
-    public void setCatchBackKey(boolean catchBack){
-    }
-
-    @Override
-    public boolean isCatchBackKey(){
-        return false;
-    }
-
-    @Override
-    public void setCatchMenuKey(boolean catchMenu){
-    }
-
-    @Override
-    public boolean isCatchMenuKey(){
-        return false;
-    }
-
-    @Override
-    public void setInputProcessor(InputProcessor processor){
-        this.inputProcessor = processor;
-    }
-
-    @Override
-    public InputProcessor getInputProcessor(){
-        return inputProcessor;
     }
 
     @Override
@@ -594,19 +419,6 @@ public class IOSInput extends Input{
         }
     }
 
-    @Override
-    public void setCursorCatched(boolean catched){
-    }
-
-    @Override
-    public boolean isCursorCatched(){
-        return false;
-    }
-
-    @Override
-    public void setCursorPosition(int x, int y){
-    }
-
     protected void onTouch(long touches){
         toTouchEvents(touches);
         Core.graphics.requestRendering();
@@ -620,13 +432,13 @@ public class IOSInput extends Input{
                 switch(event.phase){
                     case Began:
                         if(inputProcessor != null)
-                            inputProcessor.touchDown(event.x, event.y, event.pointer, Buttons.LEFT);
+                            inputProcessor.touchDown(event.x, event.y, event.pointer, KeyCode.LEFT);
                         if(numTouched >= 1) justTouched = true;
                         break;
                     case Cancelled:
                     case Ended:
                         if(inputProcessor != null)
-                            inputProcessor.touchUp(event.x, event.y, event.pointer, Buttons.LEFT);
+                            inputProcessor.touchUp(event.x, event.y, event.pointer, KeyCode.LEFT);
                         break;
                     case Moved:
                     case Stationary:
@@ -752,24 +564,4 @@ public class IOSInput extends Input{
         int x, y;
         int pointer;
     }
-
-    @Override
-    public float getGyroscopeX(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public float getGyroscopeY(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public float getGyroscopeZ(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-
 }

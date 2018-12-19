@@ -16,8 +16,8 @@
 
 package com.badlogic.gdx.graphics.profiling;
 
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
 
 import static com.badlogic.gdx.graphics.profiling.GLInterceptor.resolveErrorNumber;
 
@@ -58,7 +58,7 @@ public interface GLErrorListener{
             }
 
             if(place != null){
-                Log.errTag("GLProfiler", "Error " + resolveErrorNumber(error) + " from " + place);
+                Log.err("[GLProfiler] Error " + resolveErrorNumber(error) + " from " + place);
             }else{
                 StringBuilder sb = new StringBuilder("Error ");
                 sb.append(resolveErrorNumber(error));

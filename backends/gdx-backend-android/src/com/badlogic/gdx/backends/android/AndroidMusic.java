@@ -19,6 +19,7 @@ package com.badlogic.gdx.backends.android;
 import android.media.MediaPlayer;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.utils.Log;
 
 import java.io.IOException;
 

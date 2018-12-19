@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.webgl.client.WebGLContextAttributes;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
 
-public class GwtGraphics implements Graphics{
+public class GwtGraphics extends Graphics{
 
     /* Enum values from http://www.w3.org/TR/screen-orientation. Filtered based on what the browsers actually support. */
     public enum OrientationLockType{

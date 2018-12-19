@@ -34,12 +34,7 @@ public class IOSMusic implements Music{
             public void didFinishPlaying(NSObject player, boolean success){
                 final OnCompletionListener listener = onCompletionListener;
                 if(listener != null){
-                    Core.app.post(new Runnable(){
-                        @Override
-                        public void run(){
-                            listener.onCompletion(IOSMusic.this);
-                        }
-                    });
+                    Core.app.post(() -> listener.onCompletion(IOSMusic.this));
                 }
             }
         });

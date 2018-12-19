@@ -59,23 +59,8 @@ public class AndroidMouseHandler{
 
             }
         }
-        Core.app.getGraphics().requestRendering();
+        Core.graphics.requestRendering();
         return true;
-    }
-
-    private void logAction(int action){
-        String actionStr = "";
-        if(action == MotionEvent.ACTION_HOVER_ENTER)
-            actionStr = "HOVER_ENTER";
-        else if(action == MotionEvent.ACTION_HOVER_MOVE)
-            actionStr = "HOVER_MOVE";
-        else if(action == MotionEvent.ACTION_HOVER_EXIT)
-            actionStr = "HOVER_EXIT";
-        else if(action == MotionEvent.ACTION_SCROLL)
-            actionStr = "SCROLL";
-        else
-            actionStr = "UNKNOWN (" + action + ")";
-        Log.infoTag("AndroidMouseHandler", "action " + actionStr);
     }
 
     private void postTouchEvent(AndroidInput input, int type, int x, int y, int scrollAmountX, int scrollAmountY, long timeStamp){

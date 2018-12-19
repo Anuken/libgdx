@@ -22,8 +22,8 @@
 
 package com.badlogic.gdx.backends.lwjgl3.audio;
 
-import com.badlogic.gdx.Core;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.io.StreamUtils;
 import com.jcraft.jogg.Packet;
 import com.jcraft.jogg.Page;

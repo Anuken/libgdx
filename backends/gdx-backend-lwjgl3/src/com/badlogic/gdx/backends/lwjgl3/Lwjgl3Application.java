@@ -34,12 +34,13 @@ import org.lwjgl.system.Callback;
 import java.io.PrintStream;
 import java.nio.IntBuffer;
 
-public class Lwjgl3Application extends Application{
+public class Lwjgl3Application implements Application{
     private final Lwjgl3ApplicationConfiguration config;
     private final Array<Lwjgl3Window> windows = new Array<>();
     private Audio audio;
     private final Lwjgl3Clipboard clipboard;
     private volatile boolean running = true;
+    private final Array<ApplicationListener> listeners = new Array<>();
     private final Array<Runnable> runnables = new Array<>();
     private final Array<Runnable> executedRunnables = new Array<>();
     private static GLFWErrorCallback errorCallback;
@@ -225,6 +226,11 @@ public class Lwjgl3Application extends Application{
         synchronized(runnables){
             runnables.add(runnable);
         }
+    }
+
+    @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
     }
 
     @Override

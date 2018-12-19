@@ -379,41 +379,6 @@ public final class BufferUtils{
      * the offset.
      *
      * @param data The buffer to transform.
-     * @param dimensions The number of components of the vector (2 for xy, 3 for xyz or 4 for xyzw)
-     * @param strideInBytes The offset between the first and the second vector to transform
-     * @param count The number of vectors to transform
-     * @param matrix The matrix to multiply the vector with
-     */
-    public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix){
-        FloatBuffer buffer = asFloatBuffer(data);
-        final int pos = buffer.position();
-        int idx = pos;
-        float[] arr = asFloatArray(buffer);
-        int stride = strideInBytes / 4;
-        float[] m = matrix.val;
-        for(int i = 0; i < count; i++){
-            final float x = arr[idx];
-            final float y = arr[idx + 1];
-            final float z = dimensions >= 3 ? arr[idx + 2] : 0f;
-            final float w = dimensions >= 4 ? arr[idx + 3] : 1f;
-            arr[idx] = x * m[0] + y * m[4] + z * m[8] + w * m[12];
-            arr[idx + 1] = x * m[1] + y * m[5] + z * m[9] + w * m[13];
-            if(dimensions >= 3){
-                arr[idx + 2] = x * m[2] + y * m[6] + z * m[10] + w * m[14];
-                if(dimensions >= 4)
-                    arr[idx + 3] = x * m[3] + y * m[7] + z * m[11] + w * m[15];
-            }
-            idx += stride;
-        }
-        buffer.put(arr);
-        buffer.position(pos);
-    }
-
-    /**
-     * Multiply float vector components within the buffer with the specified matrix. The {@link Buffer#position()} is used as
-     * the offset.
-     *
-     * @param data The buffer to transform.
      * @param dimensions The number of components (x, y, z) of the vector (2 for xy or 3 for xyz)
      * @param strideInBytes The offset between the first and the second vector to transform
      * @param count The number of vectors to transform

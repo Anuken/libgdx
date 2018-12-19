@@ -17,18 +17,19 @@
 package com.badlogic.gdx.backends.iosrobovm;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.iosrobovm.custom.HWMachine;
+import com.badlogic.gdx.collection.Array;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
-import com.badlogic.gdx.collection.Array;
+import com.badlogic.gdx.utils.Log;
 import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.opengles.EAGLContext;
 import org.robovm.apple.opengles.EAGLRenderingAPI;
@@ -42,9 +43,39 @@ import org.robovm.objc.annotation.Method;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Pointer;
 
-public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, GLKViewControllerDelegate{
-
+public class IOSGraphics extends Graphics implements GLKViewDelegate, GLKViewControllerDelegate{
     private static final String tag = "IOSGraphics";
+
+    IOSApplication app;
+    IOSInput input;
+    GL20 gl20;
+    GL30 gl30;
+    int width;
+    int height;
+    long lastFrameTime;
+    float deltaTime;
+    long framesStart;
+    int frames;
+    int fps;
+    BufferFormat bufferFormat;
+    String extensions;
+
+    private float ppiX;
+    private float ppiY;
+    private float ppcX;
+    private float ppcY;
+    private float density;
+
+    volatile boolean appPaused;
+    private long frameId = -1;
+    private boolean isContinuous = true;
+    private boolean isFrameRequested = true;
+
+    IOSApplicationConfiguration config;
+    EAGLContext context;
+    GLVersion glVersion;
+    GLKView view;
+    IOSUIViewController viewController;
 
     static class IOSUIViewController extends GLKViewController{
         final IOSApplication app;
@@ -112,7 +143,9 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
             graphics.height = (int) bounds.getHeight();
             graphics.makeCurrent();
             if(graphics.created){
-                app.listener.resize(graphics.width, graphics.height);
+                for(ApplicationListener list : app.listeners){
+                    list.resize(graphics.width, graphics.height);
+                }
             }
         }
 
@@ -135,37 +168,6 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
             super(frame, context);
         }
     }
-
-    IOSApplication app;
-    IOSInput input;
-    GL20 gl20;
-    GL30 gl30;
-    int width;
-    int height;
-    long lastFrameTime;
-    float deltaTime;
-    long framesStart;
-    int frames;
-    int fps;
-    BufferFormat bufferFormat;
-    String extensions;
-
-    private float ppiX = 0;
-    private float ppiY = 0;
-    private float ppcX = 0;
-    private float ppcY = 0;
-    private float density = 1;
-
-    volatile boolean appPaused;
-    private long frameId = -1;
-    private boolean isContinuous = true;
-    private boolean isFrameRequested = true;
-
-    IOSApplicationConfiguration config;
-    EAGLContext context;
-    GLVersion glVersion;
-    GLKView view;
-    IOSUIViewController viewController;
 
     public IOSGraphics(float scale, IOSApplication app, IOSApplicationConfiguration config, IOSInput input, boolean useGLES30){
         this.config = config;
@@ -256,14 +258,14 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
 
         String machineString = HWMachine.getMachineString();
         IOSDevice device = IOSDevice.getDevice(machineString);
-        if(device == null) app.error(tag, "Machine ID: " + machineString + " not found, please report to LibGDX");
+        if(device == null) Log.err(tag, "Machine ID: " + machineString + " not found, please report to LibGDX");
         int ppi = device != null ? device.ppi : 163;
         density = device != null ? device.ppi / 160f : scale;
         ppiX = ppi;
         ppiY = ppi;
         ppcX = ppiX / 2.54f;
         ppcY = ppiY / 2.54f;
-        app.debug(tag, "Display: ppi=" + ppi + ", density=" + density);
+        Log.info(tag, "Display: ppi=" + ppi + ", density=" + density);
 
         // time + FPS
         lastFrameTime = System.nanoTime();
@@ -276,26 +278,24 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
         if(!appPaused) return;
         appPaused = false;
 
-        Array<LifecycleListener> listeners = app.lifecycleListeners;
+        Array<ApplicationListener> listeners = app.listeners;
         synchronized(listeners){
-            for(LifecycleListener listener : listeners){
+            for(ApplicationListener listener : listeners){
                 listener.resume();
             }
         }
-        app.listener.resume();
     }
 
     public void pause(){
         if(appPaused) return;
         appPaused = true;
 
-        Array<LifecycleListener> listeners = app.lifecycleListeners;
+        Array<ApplicationListener> listeners = app.listeners;
         synchronized(listeners){
-            for(LifecycleListener listener : listeners){
+            for(ApplicationListener listener : listeners){
                 listener.pause();
             }
         }
-        app.listener.pause();
     }
 
     boolean created = false;
@@ -315,8 +315,10 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
             String rendererString = gl20.glGetString(GL20.GL_RENDERER);
             glVersion = new GLVersion(Application.ApplicationType.iOS, versionString, vendorString, rendererString);
 
-            app.listener.create();
-            app.listener.resize(width, height);
+            for(ApplicationListener listener : app.listeners){
+                listener.create();
+                listener.resize(width, height);
+            }
             created = true;
         }
         if(appPaused){
@@ -336,7 +338,9 @@ public class IOSGraphics extends NSObject implements Graphics, GLKViewDelegate, 
 
         input.processEvents();
         frameId++;
-        app.listener.update();
+        for(ApplicationListener listener : app.listeners){
+            listener.update();
+        }
     }
 
     void makeCurrent(){

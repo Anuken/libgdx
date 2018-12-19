@@ -16,15 +16,18 @@
 
 package com.badlogic.gdx.backends.gwt;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Core;
 import com.badlogic.gdx.backends.gwt.preloader.Preloader;
 import com.badlogic.gdx.backends.gwt.preloader.Preloader.PreloaderCallback;
 import com.badlogic.gdx.backends.gwt.preloader.Preloader.PreloaderState;
 import com.badlogic.gdx.backends.gwt.soundmanager2.SoundManager;
 import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.ObjectMap;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.Log;
 import com.badlogic.gdx.utils.Log.LogLevel;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.core.client.EntryPoint;
@@ -45,35 +48,32 @@ import com.google.gwt.user.client.ui.*;
  * @author mzechner
  */
 public abstract class GwtApplication implements EntryPoint, Application{
-    private ApplicationListener listener;
     GwtApplicationConfiguration config;
     GwtGraphics graphics;
     private GwtInput input;
     private GwtNet net;
     private Panel root = null;
     protected TextArea log = null;
-    private Array<Runnable> runnables = new Array<Runnable>();
-    private Array<Runnable> runnablesHelper = new Array<Runnable>();
-    private Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
+    private Array<Runnable> runnables = new Array<>();
+    private Array<Runnable> runnablesHelper = new Array<>();
+    private Array<ApplicationListener> listeners = new Array<ApplicationListener>();
     private int lastWidth;
     private int lastHeight;
     Preloader preloader;
     private static AgentInfo agentInfo;
-    private ObjectMap<String, Preferences> prefs = new ObjectMap<String, Preferences>();
     private Clipboard clipboard;
     LoadingListener loadingListener;
 
     /** @return the configuration for the {@link GwtApplication}. */
     public abstract GwtApplicationConfiguration getConfig();
 
+    @Override
+    public Array<ApplicationListener> getListeners(){
+        return listeners;
+    }
 
     public String getPreloaderBaseURL(){
         return GWT.getHostPageBaseURL() + "assets/";
-    }
-
-    @Override
-    public ApplicationListener getApplicationListener(){
-        return listener;
     }
 
     public abstract ApplicationListener createApplicationListener();
@@ -81,7 +81,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
     @Override
     public void onModuleLoad(){
         GwtApplication.agentInfo = computeAgentInfo();
-        this.listener = createApplicationListener();
+        addListener(createApplicationListener());
         this.config = getConfig();
         Log.setLogger(new GwtApplicationLogger(this.config.log));
         Log.setLogLevel(LogLevel.none);
@@ -186,6 +186,7 @@ public abstract class GwtApplication implements EntryPoint, Application{
         }
         Core.graphics = graphics;
         Core.gl20 = graphics.getGL20();
+        Core.settings = new GwtSettings();
         Core.gl = Core.gl20;
         Core.files = new GwtFiles(preloader);
         this.input = new GwtInput(graphics.canvas);
@@ -197,8 +198,10 @@ public abstract class GwtApplication implements EntryPoint, Application{
 
         // tell listener about app creation
         try{
-            listener.create();
-            listener.resize(graphics.getWidth(), graphics.getHeight());
+            for(ApplicationListener listener : listeners){
+                listener.create();
+                listener.resize(graphics.getWidth(), graphics.getHeight());
+            }
         }catch(Throwable t){
             Log.err("[GwtApplication] exception: " + t.getMessage(), t);
             t.printStackTrace();
@@ -225,7 +228,9 @@ public abstract class GwtApplication implements EntryPoint, Application{
             lastWidth = graphics.getWidth();
             lastHeight = graphics.getHeight();
             Core.gl.glViewport(0, 0, lastWidth, lastHeight);
-            GwtApplication.this.listener.resize(lastWidth, lastHeight);
+            for(ApplicationListener listener : listeners){
+                listener.resize(lastWidth, lastHeight);
+            }
         }
         runnablesHelper.addAll(runnables);
         runnables.clear();
@@ -234,7 +239,9 @@ public abstract class GwtApplication implements EntryPoint, Application{
         }
         runnablesHelper.clear();
         graphics.frameId++;
-        listener.update();
+        for(ApplicationListener listener : listeners){
+            listener.update();
+        }
         input.reset();
     }
 
@@ -278,31 +285,6 @@ public abstract class GwtApplication implements EntryPoint, Application{
         };
     }
 
-    @Override
-    public Graphics getGraphics(){
-        return graphics;
-    }
-
-    @Override
-    public Audio getAudio(){
-        return Core.audio;
-    }
-
-    @Override
-    public Input getInput(){
-        return Core.input;
-    }
-
-    @Override
-    public Files getFiles(){
-        return Core.files;
-    }
-
-    @Override
-    public Net getNet(){
-        return Core.net;
-    }
-
     private void updateLogLabelSize(){
         if(log != null){
             if(graphics != null){
@@ -331,16 +313,6 @@ public abstract class GwtApplication implements EntryPoint, Application{
     @Override
     public long getNativeHeap(){
         return 0;
-    }
-
-    @Override
-    public Preferences getPreferences(String name){
-        Preferences pref = prefs.get(name);
-        if(pref == null){
-            pref = new GwtPreferences(name);
-            prefs.put(name, pref);
-        }
-        return pref;
     }
 
     @Override
@@ -440,19 +412,6 @@ public abstract class GwtApplication implements EntryPoint, Application{
         this.loadingListener = loadingListener;
     }
 
-    @Override
-    public void addLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifecycleListener(LifecycleListener listener){
-        synchronized(lifecycleListeners){
-            lifecycleListeners.removeValue(listener, true);
-        }
-    }
 
     native static public void consoleLog(String message) /*-{
 		console.log( "GWT: " + message );
@@ -481,15 +440,13 @@ public abstract class GwtApplication implements EntryPoint, Application{
 
     private void onVisibilityChange(boolean visible){
         if(visible){
-            for(LifecycleListener listener : lifecycleListeners){
+            for(ApplicationListener listener : listeners){
                 listener.resume();
             }
-            listener.resume();
         }else{
-            for(LifecycleListener listener : lifecycleListeners){
+            for(ApplicationListener listener : listeners){
                 listener.pause();
             }
-            listener.pause();
         }
     }
 

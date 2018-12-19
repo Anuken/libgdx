@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * @author mzechner
  */
 public class AndroidInputThreePlus extends AndroidInput implements OnGenericMotionListener{
-    ArrayList<OnGenericMotionListener> genericMotionListeners = new ArrayList();
+    ArrayList<OnGenericMotionListener> genericMotionListeners = new ArrayList<>();
     private final AndroidMouseHandler mouseHandler;
 
     public AndroidInputThreePlus(Application activity, Context context, Object view, AndroidApplicationConfiguration config){

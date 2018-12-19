@@ -17,6 +17,7 @@
 package com.badlogic.gdx.utils;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.collection.Array;
 
@@ -219,12 +220,12 @@ public class Timer{
      *
      * @author Nathan Sweet
      */
-    static class TimerThread extends com.google.gwt.user.client.Timer implements Runnable, LifecycleListener{
+    static class TimerThread extends com.google.gwt.user.client.Timer implements Runnable, ApplicationListener{
         private Application app;
         private long pauseMillis;
 
         public TimerThread(){
-            Core.app.addLifecycleListener(this);
+            Core.app.addListener(this);
             resume();
         }
 
@@ -268,7 +269,7 @@ public class Timer{
 
         public void dispose(){
             pause();
-            Core.app.removeLifecycleListener(this);
+            Core.app.removeListener(this);
             thread = null;
             instances.clear();
             instance = null;

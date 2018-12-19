@@ -151,7 +151,7 @@ public class FileWrapper{
     public Reader reader(String charset){
         try{
             return new InputStreamReader(read(), charset);
-        }catch(UnsupportedEncodingException ex){
+        }catch(Exception ex){
             throw new GdxRuntimeException("Error reading file: " + this, ex);
         }
     }
@@ -173,7 +173,7 @@ public class FileWrapper{
     public BufferedReader reader(int bufferSize, String charset){
         try{
             return new BufferedReader(new InputStreamReader(read(), charset), bufferSize);
-        }catch(UnsupportedEncodingException ex){
+        }catch(Exception ex){
             throw new GdxRuntimeException("Error reading file: " + this, ex);
         }
     }

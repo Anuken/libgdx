@@ -37,6 +37,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.input.InputDevice;
 import com.badlogic.gdx.input.InputProcessor;
 import com.badlogic.gdx.input.KeyCode;
 import com.badlogic.gdx.math.geom.Vector3;
@@ -289,9 +290,9 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         }
     }
 
-    public void setInputProcessor(InputProcessor processor){
-        synchronized(this){
-            this.processor = processor;
+    void processDevices(){
+        for(InputDevice device : devices){
+            device.update();
         }
     }
 

@@ -18,12 +18,12 @@ package com.badlogic.gdx.backends.gwt;
 
 import com.badlogic.gdx.Core;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.input.InputProcessor;
-import com.badlogic.gdx.backends.gwt.widgets.TextInputDialogBox;
-import com.badlogic.gdx.backends.gwt.widgets.TextInputDialogBox.TextInputDialogListener;
 import com.badlogic.gdx.collection.IntMap;
 import com.badlogic.gdx.collection.IntSet;
 import com.badlogic.gdx.collection.IntSet.IntSetIterator;
+import com.badlogic.gdx.input.InputProcessor;
+import com.badlogic.gdx.input.KeyCode;
+import com.badlogic.gdx.utils.Bits;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
@@ -33,7 +33,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.KeyCodes;
 
-public class GwtInput implements Input{
+public class GwtInput extends Input{
     static final int MAX_TOUCHES = 20;
     boolean justTouched = false;
     private IntMap<Integer> touchMap = new IntMap<Integer>(20);
@@ -45,9 +45,9 @@ public class GwtInput implements Input{
     IntSet pressedButtons = new IntSet();
     int pressedKeyCount = 0;
     IntSet pressedKeySet = new IntSet();
-    boolean[] pressedKeys = new boolean[256];
+    Bits pressedKeys = new Bits(256);
     boolean keyJustPressed = false;
-    boolean[] justPressedKeys = new boolean[256];
+    Bits justPressedKeys = new Bits(256);
     InputProcessor processor;
     char lastKeyCharPressed;
     float keyRepeatTimer;
@@ -64,82 +64,47 @@ public class GwtInput implements Input{
         justTouched = false;
         if(keyJustPressed){
             keyJustPressed = false;
-            for(int i = 0; i < justPressedKeys.length; i++){
-                justPressedKeys[i] = false;
-            }
+            justPressedKeys.clear();
         }
     }
 
     @Override
-    public float getAccelerometerX(){
-        return 0;
-    }
-
-    @Override
-    public float getAccelerometerY(){
-        return 0;
-    }
-
-    @Override
-    public float getAccelerometerZ(){
-        return 0;
-    }
-
-    @Override
-    public float getGyroscopeX(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public float getGyroscopeY(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public float getGyroscopeZ(){
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getX(){
+    public int mouseX(){
         return touchX[0];
     }
 
     @Override
-    public int getX(int pointer){
+    public int mouseX(int pointer){
         return touchX[pointer];
     }
 
     @Override
-    public int getDeltaX(){
+    public int deltaX(){
         return deltaX[0];
     }
 
     @Override
-    public int getDeltaX(int pointer){
+    public int deltaX(int pointer){
         return deltaX[pointer];
     }
 
     @Override
-    public int getY(){
+    public int mouseY(){
         return touchY[0];
     }
 
     @Override
-    public int getY(int pointer){
+    public int mouseY(int pointer){
         return touchY[pointer];
     }
 
     @Override
-    public int getDeltaY(){
+    public int deltaY(){
         return deltaY[0];
     }
 
     @Override
-    public int getDeltaY(int pointer){
+    public int deltaY(int pointer){
         return deltaY[pointer];
     }
 
@@ -164,128 +129,8 @@ public class GwtInput implements Input{
     }
 
     @Override
-    public boolean isButtonPressed(int button){
-        return pressedButtons.contains(button) && touched[0];
-    }
-
-    @Override
-    public float getPressure(){
-        return getPressure(0);
-    }
-
-    @Override
-    public float getPressure(int pointer){
-        return isTouched(pointer) ? 1 : 0;
-    }
-
-    @Override
-    public boolean isKeyPressed(int key){
-        if(key == Keys.ANY_KEY){
-            return pressedKeyCount > 0;
-        }
-        if(key < 0 || key > 255){
-            return false;
-        }
-        return pressedKeys[key];
-    }
-
-    @Override
-    public boolean isKeyJustPressed(int key){
-        if(key == Keys.ANY_KEY){
-            return keyJustPressed;
-        }
-        if(key < 0 || key > 255){
-            return false;
-        }
-        return justPressedKeys[key];
-    }
-
-    public void getTextInput(TextInputListener listener, String title, String text, String hint){
-        TextInputDialogBox dialog = new TextInputDialogBox(title, text, hint);
-        final TextInputListener capturedListener = listener;
-        dialog.setListener(new TextInputDialogListener(){
-            @Override
-            public void onPositive(String text){
-                if(capturedListener != null){
-                    capturedListener.input(text);
-                }
-            }
-
-            @Override
-            public void onNegative(){
-                if(capturedListener != null){
-                    capturedListener.canceled();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void setOnscreenKeyboardVisible(boolean visible){
-    }
-
-    @Override
-    public void vibrate(int milliseconds){
-    }
-
-    @Override
-    public void vibrate(long[] pattern, int repeat){
-    }
-
-    @Override
-    public void cancelVibrate(){
-    }
-
-    @Override
-    public float getAzimuth(){
-        return 0;
-    }
-
-    @Override
-    public float getPitch(){
-        return 0;
-    }
-
-    @Override
-    public float getRoll(){
-        return 0;
-    }
-
-    @Override
-    public void getRotationMatrix(float[] matrix){
-    }
-
-    @Override
     public long getCurrentEventTime(){
         return currentEventTimeStamp;
-    }
-
-    @Override
-    public void setCatchBackKey(boolean catchBack){
-    }
-
-    @Override
-    public boolean isCatchBackKey(){
-        return false;
-    }
-
-    @Override
-    public void setCatchMenuKey(boolean catchMenu){
-    }
-
-    @Override
-    public boolean isCatchMenuKey(){
-        return false;
-    }
-
-    @Override
-    public void setInputProcessor(InputProcessor processor){
-        this.processor = processor;
-    }
-
-    @Override
-    public InputProcessor getInputProcessor(){
-        return processor;
     }
 
     @Override
@@ -517,16 +362,16 @@ public class GwtInput implements Input{
 
     }
 
-    private int getButton(int button){
-        if(button == NativeEvent.BUTTON_LEFT) return Buttons.LEFT;
-        if(button == NativeEvent.BUTTON_RIGHT) return Buttons.RIGHT;
-        if(button == NativeEvent.BUTTON_MIDDLE) return Buttons.MIDDLE;
-        return Buttons.LEFT;
+    private KeyCode getButton(int button){
+        if(button == NativeEvent.BUTTON_LEFT) return KeyCode.MOUSE_LEFT;
+        if(button == NativeEvent.BUTTON_RIGHT) return KeyCode.MOUSE_RIGHT;
+        if(button == NativeEvent.BUTTON_MIDDLE) return KeyCode.MOUSE_MIDDLE;
+        return KeyCode.MOUSE_LEFT;
     }
 
     private void handleEvent(NativeEvent e){
         if(e.getType().equals("mousedown")){
-            if(!e.getEventTarget().equals(canvas) || pressedButtons.contains(getButton(e.getButton()))){
+            if(!e.getEventTarget().equals(canvas) || pressedButtons.contains(getButton(e.getButton()).ordinal())){
                 float mouseX = getRelativeX(e, canvas);
                 float mouseY = getRelativeY(e, canvas);
                 if(mouseX < 0 || mouseX > Core.graphics.getWidth() || mouseY < 0 || mouseY > Core.graphics.getHeight()){
@@ -537,7 +382,7 @@ public class GwtInput implements Input{
             hasFocus = true;
             this.justTouched = true;
             this.touched[0] = true;
-            this.pressedButtons.add(getButton(e.getButton()));
+            this.pressedButtons.add(getButton(e.getButton()).ordinal());
             this.deltaX[0] = 0;
             this.deltaY[0] = 0;
             if(isCursorCatched()){
@@ -573,8 +418,8 @@ public class GwtInput implements Input{
         }
 
         if(e.getType().equals("mouseup")){
-            if(!pressedButtons.contains(getButton(e.getButton()))) return;
-            this.pressedButtons.remove(getButton(e.getButton()));
+            if(!pressedButtons.contains(getButton(e.getButton()).ordinal())) return;
+            this.pressedButtons.remove(getButton(e.getButton()).ordinal());
             this.touched[0] = pressedButtons.size > 0;
             if(isCursorCatched()){
                 this.deltaX[0] = (int) getMovementXJSNI(e);
@@ -602,20 +447,20 @@ public class GwtInput implements Input{
         if(hasFocus && !e.getType().equals("blur")){
             if(e.getType().equals("keydown")){
                 // Gdx.app.log("GwtInput", "keydown");
-                int code = keyForCode(e.getKeyCode());
-                if(code == 67){
+                KeyCode code = keyForCode(e.getKeyCode());
+                if(code == KeyCode.BACKSPACE){
                     e.preventDefault();
                     if(processor != null){
                         processor.keyDown(code);
                         processor.keyTyped('\b');
                     }
                 }else{
-                    if(!pressedKeys[code]){
-                        pressedKeySet.add(code);
+                    if(!pressedKeys.get(code.ordinal())){
+                        pressedKeySet.add(code.ordinal());
                         pressedKeyCount++;
-                        pressedKeys[code] = true;
+                        pressedKeys.set(code.ordinal());
                         keyJustPressed = true;
-                        justPressedKeys[code] = true;
+                        justPressedKeys.set(code.ordinal());
                         if(processor != null){
                             processor.keyDown(code);
                         }
@@ -631,30 +476,29 @@ public class GwtInput implements Input{
 
             if(e.getType().equals("keyup")){
                 // Gdx.app.log("GwtInput", "keyup");
-                int code = keyForCode(e.getKeyCode());
-                if(pressedKeys[code]){
-                    pressedKeySet.remove(code);
+                KeyCode code = keyForCode(e.getKeyCode());
+                if(pressedKeys.get(code.ordinal())){
+                    pressedKeySet.remove(code.ordinal());
                     pressedKeyCount--;
-                    pressedKeys[code] = false;
+                    pressedKeys.clear(code.ordinal());
                 }
                 if(processor != null){
                     processor.keyUp(code);
                 }
             }
         }else if(pressedKeyCount > 0){
-            // Gdx.app.log("GwtInput", "unfocused");
             IntSetIterator iterator = pressedKeySet.iterator();
 
             while(iterator.hasNext){
                 int code = iterator.next();
 
-                if(pressedKeys[code]){
+                if(pressedKeys.get(code)){
                     pressedKeySet.remove(code);
                     pressedKeyCount--;
-                    pressedKeys[code] = false;
+                    pressedKeys.clear(code);
                 }
                 if(processor != null){
-                    processor.keyUp(code);
+                    processor.keyUp(KeyCode.byOrdinal(code));
                 }
             }
         }
@@ -673,7 +517,7 @@ public class GwtInput implements Input{
                 deltaX[touchId] = 0;
                 deltaY[touchId] = 0;
                 if(processor != null){
-                    processor.touchDown(touchX[touchId], touchY[touchId], touchId, Buttons.LEFT);
+                    processor.touchDown(touchX[touchId], touchY[touchId], touchId, KeyCode.MOUSE_LEFT);
                 }
             }
             this.currentEventTimeStamp = TimeUtils.nanoTime();
@@ -709,7 +553,7 @@ public class GwtInput implements Input{
                 touchX[touchId] = getRelativeX(touch, canvas);
                 touchY[touchId] = getRelativeY(touch, canvas);
                 if(processor != null){
-                    processor.touchUp(touchX[touchId], touchY[touchId], touchId, Buttons.LEFT);
+                    processor.touchUp(touchX[touchId], touchY[touchId], touchId, KeyCode.MOUSE_LEFT);
                 }
             }
             this.currentEventTimeStamp = TimeUtils.nanoTime();
@@ -728,7 +572,7 @@ public class GwtInput implements Input{
                 touchX[touchId] = getRelativeX(touch, canvas);
                 touchY[touchId] = getRelativeY(touch, canvas);
                 if(processor != null){
-                    processor.touchUp(touchX[touchId], touchY[touchId], touchId, Buttons.LEFT);
+                    processor.touchUp(touchX[touchId], touchY[touchId], touchId, KeyCode.MOUSE_LEFT);
                 }
             }
             this.currentEventTimeStamp = TimeUtils.nanoTime();
@@ -745,208 +589,208 @@ public class GwtInput implements Input{
     }
 
     /** borrowed from PlayN, thanks guys **/
-    private static int keyForCode(int keyCode){
+    private static KeyCode keyForCode(int keyCode){
         switch(keyCode){
             case KeyCodes.KEY_ALT:
-                return Keys.ALT_LEFT;
+                return KeyCode.ALT_LEFT;
             case KeyCodes.KEY_BACKSPACE:
-                return Keys.BACKSPACE;
+                return KeyCode.BACKSPACE;
             case KeyCodes.KEY_CTRL:
-                return Keys.CONTROL_LEFT;
+                return KeyCode.CONTROL_LEFT;
             case KeyCodes.KEY_DELETE:
-                return Keys.DEL;
+                return KeyCode.DEL;
             case KeyCodes.KEY_DOWN:
-                return Keys.DOWN;
+                return KeyCode.DOWN;
             case KeyCodes.KEY_END:
-                return Keys.END;
+                return KeyCode.END;
             case KeyCodes.KEY_ENTER:
-                return Keys.ENTER;
+                return KeyCode.ENTER;
             case KeyCodes.KEY_ESCAPE:
-                return Keys.ESCAPE;
+                return KeyCode.ESCAPE;
             case KeyCodes.KEY_HOME:
-                return Keys.HOME;
+                return KeyCode.HOME;
             case KeyCodes.KEY_LEFT:
-                return Keys.LEFT;
+                return KeyCode.LEFT;
             case KeyCodes.KEY_PAGEDOWN:
-                return Keys.PAGE_DOWN;
+                return KeyCode.PAGE_DOWN;
             case KeyCodes.KEY_PAGEUP:
-                return Keys.PAGE_UP;
+                return KeyCode.PAGE_UP;
             case KeyCodes.KEY_RIGHT:
-                return Keys.RIGHT;
+                return KeyCode.RIGHT;
             case KeyCodes.KEY_SHIFT:
-                return Keys.SHIFT_LEFT;
+                return KeyCode.SHIFT_LEFT;
             case KeyCodes.KEY_TAB:
-                return Keys.TAB;
+                return KeyCode.TAB;
             case KeyCodes.KEY_UP:
-                return Keys.UP;
+                return KeyCode.UP;
 
             case KEY_PAUSE:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_CAPS_LOCK:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_SPACE:
-                return Keys.SPACE;
+                return KeyCode.SPACE;
             case KEY_INSERT:
-                return Keys.INSERT;
+                return KeyCode.INSERT;
             case KEY_0:
-                return Keys.NUM_0;
+                return KeyCode.NUM_0;
             case KEY_1:
-                return Keys.NUM_1;
+                return KeyCode.NUM_1;
             case KEY_2:
-                return Keys.NUM_2;
+                return KeyCode.NUM_2;
             case KEY_3:
-                return Keys.NUM_3;
+                return KeyCode.NUM_3;
             case KEY_4:
-                return Keys.NUM_4;
+                return KeyCode.NUM_4;
             case KEY_5:
-                return Keys.NUM_5;
+                return KeyCode.NUM_5;
             case KEY_6:
-                return Keys.NUM_6;
+                return KeyCode.NUM_6;
             case KEY_7:
-                return Keys.NUM_7;
+                return KeyCode.NUM_7;
             case KEY_8:
-                return Keys.NUM_8;
+                return KeyCode.NUM_8;
             case KEY_9:
-                return Keys.NUM_9;
+                return KeyCode.NUM_9;
             case KEY_A:
-                return Keys.A;
+                return KeyCode.A;
             case KEY_B:
-                return Keys.B;
+                return KeyCode.B;
             case KEY_C:
-                return Keys.C;
+                return KeyCode.C;
             case KEY_D:
-                return Keys.D;
+                return KeyCode.D;
             case KEY_E:
-                return Keys.E;
+                return KeyCode.E;
             case KEY_F:
-                return Keys.F;
+                return KeyCode.F;
             case KEY_G:
-                return Keys.G;
+                return KeyCode.G;
             case KEY_H:
-                return Keys.H;
+                return KeyCode.H;
             case KEY_I:
-                return Keys.I;
+                return KeyCode.I;
             case KEY_J:
-                return Keys.J;
+                return KeyCode.J;
             case KEY_K:
-                return Keys.K;
+                return KeyCode.K;
             case KEY_L:
-                return Keys.L;
+                return KeyCode.L;
             case KEY_M:
-                return Keys.M;
+                return KeyCode.M;
             case KEY_N:
-                return Keys.N;
+                return KeyCode.N;
             case KEY_O:
-                return Keys.O;
+                return KeyCode.O;
             case KEY_P:
-                return Keys.P;
+                return KeyCode.P;
             case KEY_Q:
-                return Keys.Q;
+                return KeyCode.Q;
             case KEY_R:
-                return Keys.R;
+                return KeyCode.R;
             case KEY_S:
-                return Keys.S;
+                return KeyCode.S;
             case KEY_T:
-                return Keys.T;
+                return KeyCode.T;
             case KEY_U:
-                return Keys.U;
+                return KeyCode.U;
             case KEY_V:
-                return Keys.V;
+                return KeyCode.V;
             case KEY_W:
-                return Keys.W;
+                return KeyCode.W;
             case KEY_X:
-                return Keys.X;
+                return KeyCode.X;
             case KEY_Y:
-                return Keys.Y;
+                return KeyCode.Y;
             case KEY_Z:
-                return Keys.Z;
+                return KeyCode.Z;
             case KEY_LEFT_WINDOW_KEY:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_RIGHT_WINDOW_KEY:
-                return Keys.UNKNOWN; // FIXME
-            // case KEY_SELECT_KEY: return Keys.SELECT_KEY;
+                return KeyCode.UNKNOWN; // FIXME
+            // case KEY_SELECT_KEY: return KeyCode.SELECT_KEY;
             case KEY_NUMPAD0:
-                return Keys.NUMPAD_0;
+                return KeyCode.NUMPAD_0;
             case KEY_NUMPAD1:
-                return Keys.NUMPAD_1;
+                return KeyCode.NUMPAD_1;
             case KEY_NUMPAD2:
-                return Keys.NUMPAD_2;
+                return KeyCode.NUMPAD_2;
             case KEY_NUMPAD3:
-                return Keys.NUMPAD_3;
+                return KeyCode.NUMPAD_3;
             case KEY_NUMPAD4:
-                return Keys.NUMPAD_4;
+                return KeyCode.NUMPAD_4;
             case KEY_NUMPAD5:
-                return Keys.NUMPAD_5;
+                return KeyCode.NUMPAD_5;
             case KEY_NUMPAD6:
-                return Keys.NUMPAD_6;
+                return KeyCode.NUMPAD_6;
             case KEY_NUMPAD7:
-                return Keys.NUMPAD_7;
+                return KeyCode.NUMPAD_7;
             case KEY_NUMPAD8:
-                return Keys.NUMPAD_8;
+                return KeyCode.NUMPAD_8;
             case KEY_NUMPAD9:
-                return Keys.NUMPAD_9;
+                return KeyCode.NUMPAD_9;
             case KEY_MULTIPLY:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_ADD:
-                return Keys.PLUS;
+                return KeyCode.PLUS;
             case KEY_SUBTRACT:
-                return Keys.MINUS;
+                return KeyCode.MINUS;
             case KEY_DECIMAL_POINT_KEY:
-                return Keys.PERIOD;
+                return KeyCode.PERIOD;
             case KEY_DIVIDE:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_F1:
-                return Keys.F1;
+                return KeyCode.F1;
             case KEY_F2:
-                return Keys.F2;
+                return KeyCode.F2;
             case KEY_F3:
-                return Keys.F3;
+                return KeyCode.F3;
             case KEY_F4:
-                return Keys.F4;
+                return KeyCode.F4;
             case KEY_F5:
-                return Keys.F5;
+                return KeyCode.F5;
             case KEY_F6:
-                return Keys.F6;
+                return KeyCode.F6;
             case KEY_F7:
-                return Keys.F7;
+                return KeyCode.F7;
             case KEY_F8:
-                return Keys.F8;
+                return KeyCode.F8;
             case KEY_F9:
-                return Keys.F9;
+                return KeyCode.F9;
             case KEY_F10:
-                return Keys.F10;
+                return KeyCode.F10;
             case KEY_F11:
-                return Keys.F11;
+                return KeyCode.F11;
             case KEY_F12:
-                return Keys.F12;
+                return KeyCode.F12;
             case KEY_NUM_LOCK:
-                return Keys.NUM;
+                return KeyCode.NUM;
             case KEY_SCROLL_LOCK:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_SEMICOLON:
-                return Keys.SEMICOLON;
+                return KeyCode.SEMICOLON;
             case KEY_EQUALS:
-                return Keys.EQUALS;
+                return KeyCode.EQUALS;
             case KEY_COMMA:
-                return Keys.COMMA;
+                return KeyCode.COMMA;
             case KEY_DASH:
-                return Keys.MINUS;
+                return KeyCode.MINUS;
             case KEY_PERIOD:
-                return Keys.PERIOD;
+                return KeyCode.PERIOD;
             case KEY_FORWARD_SLASH:
-                return Keys.SLASH;
+                return KeyCode.SLASH;
             case KEY_GRAVE_ACCENT:
-                return Keys.UNKNOWN; // FIXME
+                return KeyCode.UNKNOWN; // FIXME
             case KEY_OPEN_BRACKET:
-                return Keys.LEFT_BRACKET;
+                return KeyCode.LEFT_BRACKET;
             case KEY_BACKSLASH:
-                return Keys.BACKSLASH;
+                return KeyCode.BACKSLASH;
             case KEY_CLOSE_BRACKET:
-                return Keys.RIGHT_BRACKET;
+                return KeyCode.RIGHT_BRACKET;
             case KEY_SINGLE_QUOTE:
-                return Keys.APOSTROPHE;
+                return KeyCode.APOSTROPHE;
             default:
-                return Keys.UNKNOWN;
+                return KeyCode.UNKNOWN;
         }
     }
 

@@ -198,7 +198,7 @@ public enum KeyCode implements KeybindValue{
     public final String value;
     public final boolean axis;
 
-    private static final KeyCode[] all = values();
+    public static final KeyCode[] all = values();
 
     KeyCode(KeyType type, String value){
         this(type, value, false);
