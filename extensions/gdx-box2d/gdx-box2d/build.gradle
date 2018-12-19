@@ -14,7 +14,6 @@
  * limitations under the License.
  ******************************************************************************/
 
-
 task runBox2DBuild(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.badlogic.gdx.physics.box2d.utils.Box2DBuild"
