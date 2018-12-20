@@ -362,16 +362,16 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         return true;
     }
 
-    /** Called in {@link AndroidLiveWallpaperService} on tap
-     * @param x
-     * @param y */
+    /**
+     * Called in {@link AndroidLiveWallpaperService} on tap
+     */
     public void onTap(int x, int y){
         postTap(x, y);
     }
 
-    /** Called in {@link AndroidLiveWallpaperService} on drop
-     * @param x
-     * @param y */
+    /**
+     * Called in {@link AndroidLiveWallpaperService} on drop
+     */
     public void onDrop(int x, int y){
         postTap(x, y);
     }
@@ -536,11 +536,12 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         roll = (float)Math.toDegrees(orientation[2]);
     }
 
-    /** Returns the rotation matrix describing the devices rotation as per <a href=
+    /**
+     * Returns the rotation matrix describing the devices rotation as per <a href=
      * "http://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[], float[], float[], float[])"
      * >SensorManager#getRotationMatrix(float[], float[], float[], float[])</a>. Does not manipulate the matrix if the platform
      * does not have an accelerometer and compass, or a rotation vector sensor.
-     * @param matrix */
+     */
     @Override
     public void getRotationMatrix(float[] matrix){
         if(rotationVectorAvailable)
@@ -805,9 +806,11 @@ public class AndroidInput extends Input implements OnKeyListener, OnTouchListene
         int pointer;
     }
 
-    /** Our implementation of SensorEventListener. Because Android doesn't like it when we register more than one Sensor to a single
+    /**
+     * Our implementation of SensorEventListener. Because Android doesn't like it when we register more than one Sensor to a single
      * SensorEventListener, we add one of these for each Sensor. Could use an anonymous class, but I don't see any harm in
-     * explicitly defining it here. Correct me if I am wrong. */
+     * explicitly defining it here. Correct me if I am wrong.
+     */
     private class SensorListener implements SensorEventListener{
 
         public SensorListener(){

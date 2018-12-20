@@ -72,6 +72,6 @@ public interface ApplicationListener{
      * e.g from the Desktop.
      * @param files array with absolute paths to the files
      */
-    default void filesDropped(FileHandle[] files){
+    default void fileDropped(FileHandle file){
     }
 }

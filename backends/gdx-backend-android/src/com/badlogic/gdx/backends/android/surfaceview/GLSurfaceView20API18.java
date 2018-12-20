@@ -172,6 +172,7 @@ public class GLSurfaceView20API18 extends GLSurfaceViewAPI18{
         protected int mDepthSize;
         protected int mStencilSize;
         private int[] mValue = new int[1];
+
         public ConfigChooser(int r, int g, int b, int a, int depth, int stencil){
             mRedSize = r;
             mGreenSize = g;

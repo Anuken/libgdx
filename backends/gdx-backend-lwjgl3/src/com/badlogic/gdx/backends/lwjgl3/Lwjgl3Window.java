@@ -85,6 +85,12 @@ public class Lwjgl3Window implements Disposable{
             postRunnable(() -> {
                 if(windowListener != null){
                     windowListener.filesDropped(files);
+
+                    for(String file : files){
+                        for(ApplicationListener list : Core.app.getListeners()){
+                            list.fileDropped(Core.files.absolute(file));
+                        }
+                    }
                 }
             });
         }

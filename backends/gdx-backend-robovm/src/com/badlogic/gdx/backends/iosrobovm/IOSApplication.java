@@ -26,8 +26,11 @@ import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Log;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.foundation.NSThread;
+import org.robovm.apple.foundation.NSURL;
 import org.robovm.apple.uikit.*;
 import org.robovm.rt.bro.Bro;
+
+import static org.robovm.apple.foundation.NSPathUtilities.getDocumentsDirectory;
 
 public class IOSApplication implements Application{
     UIApplication uiApp;
@@ -320,10 +323,15 @@ public class IOSApplication implements Application{
         protected abstract IOSApplication createApplication();
 
         @Override
-        public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions){
+        public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions options){
             application.addStrongRef(this); // Prevent this from being GCed until the ObjC UIApplication is deallocated
             this.app = createApplication();
-            return app.didFinishLaunching(application, launchOptions);
+
+            boolean result = app.didFinishLaunching(application, options);
+            if(options != null && options.has(UIApplicationLaunchOptions.Keys.URL())){
+                openURL(((NSURL)options.get(UIApplicationLaunchOptions.Keys.URL())));
+            }
+            return result;
         }
 
         @Override
@@ -344,6 +352,21 @@ public class IOSApplication implements Application{
         @Override
         public void willTerminate(UIApplication application){
             app.willTerminate(application);
+        }
+
+        @Override
+        public boolean openURL(UIApplication app, NSURL url, UIApplicationOpenURLOptions options) {
+            openURL(url);
+            return false;
+        }
+
+        void openURL(NSURL url){
+            if(Core.app == null) return;
+            Core.app.post(() -> {
+                for(ApplicationListener list : Core.app.getListeners()){
+                    list.fileDropped(Core.files.absolute(getDocumentsDirectory()).child(url.getLastPathComponent()));
+                }
+            });
         }
     }
 }

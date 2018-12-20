@@ -41,6 +41,8 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Log;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * An implementation of the {@link Application} interface for Android. Create an {@link Activity} that derives from this class. In
@@ -49,14 +51,10 @@ import java.lang.reflect.Method;
  * @author mzechner
  */
 public class AndroidApplication extends Activity implements AndroidApplicationBase{
-    static{
-        GdxNativesLoader.load();
-        Log.setLogger(new AndroidApplicationLogger());
-    }
-
     protected final Array<ApplicationListener> listeners = new Array<>();
     protected final Array<Runnable> runnables = new Array<>();
     protected final Array<Runnable> executedRunnables = new Array<>();
+    private final ExecutorService exec = Executors.newSingleThreadExecutor();
     private final Array<AndroidEventListener> androidEventListeners = new Array<>();
     public Handler handler;
     protected AndroidGraphics graphics;
@@ -65,12 +63,16 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     protected AndroidFiles files;
     protected AndroidNet net;
     protected AndroidClipboard clipboard;
-    protected ApplicationListener listener;
     protected boolean firstResume = true;
     protected boolean useImmersiveMode = false;
     protected boolean hideStatusBar = false;
     private int wasFocusChanged = -1;
     private boolean isWaitingForAudio = false;
+
+    static{
+        GdxNativesLoader.load();
+        Log.setLogger(new AndroidApplicationLogger());
+    }
 
     /**
      * This method has to be called in the {@link Activity#onCreate(Bundle)} method. It sets up all the things necessary to get
@@ -134,7 +136,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         this.getFilesDir(); // workaround for Android bug #10515463
         files = new AndroidFiles(this.getAssets(), this.getFilesDir().getAbsolutePath());
         net = new AndroidNet(this);
-        this.listener = listener;
+        addListener(listener);
         this.handler = new Handler();
         this.useImmersiveMode = config.useImmersiveMode;
         this.hideStatusBar = config.hideStatusBar;
@@ -253,6 +255,17 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
     @Override
     protected void onPause(){
+        //fixes obscure destruction bug
+        if(useImmersiveMode){
+            exec.submit(() -> {
+                try{
+                    Thread.sleep(100);
+                }catch(InterruptedException ignored){
+                }
+                graphics.onDrawFrame(null);
+            });
+        }
+
         boolean isContinuous = graphics.isContinuousRendering();
         boolean isContinuousEnforced = AndroidGraphics.enforceContinuousRendering;
 
@@ -295,8 +308,9 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
         if(!firstResume){
             graphics.resume();
-        }else
+        }else{
             firstResume = false;
+        }
 
         this.isWaitingForAudio = true;
         if(this.wasFocusChanged == 1 || this.wasFocusChanged == -1){
@@ -365,6 +379,19 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
         synchronized(androidEventListeners){
             for(int i = 0; i < androidEventListeners.size; i++){
                 androidEventListeners.get(i).onActivityResult(requestCode, resultCode, data);
+            }
+        }
+
+        //TODO verify if this works
+        if(data.getData() != null){
+            String scheme = data.getData().getScheme();
+            if(scheme.equals("file")){
+                String fileName = data.getData().getEncodedPath();
+                synchronized(listeners){
+                    for(ApplicationListener list : listeners){
+                        Core.app.post(() -> list.fileDropped(Core.files.absolute(fileName)));
+                    }
+                }
             }
         }
     }

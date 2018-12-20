@@ -187,6 +187,7 @@ public class GLSurfaceView20 extends GLSurfaceView{
         protected int mDepthSize;
         protected int mStencilSize;
         private int[] mValue = new int[1];
+
         public ConfigChooser(int r, int g, int b, int a, int depth, int stencil){
             mRedSize = r;
             mGreenSize = g;

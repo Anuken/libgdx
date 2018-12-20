@@ -794,6 +794,7 @@ public class GLSurfaceViewAPI18 extends SurfaceView implements SurfaceHolder.Cal
 
         void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context);
     }
+
     /**
      * An interface for customizing the eglCreateWindowSurface and eglDestroySurface calls.
      * <p>
@@ -1138,6 +1139,7 @@ public class GLSurfaceViewAPI18 extends SurfaceView implements SurfaceHolder.Cal
          * the GLThread is still alive.
          */
         private WeakReference<GLSurfaceViewAPI18> mGLSurfaceViewWeakRef;
+
         GLThread(WeakReference<GLSurfaceViewAPI18> glSurfaceViewWeakRef){
             super();
             mWidth = 0;
@@ -1897,6 +1899,7 @@ public class GLSurfaceViewAPI18 extends SurfaceView implements SurfaceHolder.Cal
         protected int mDepthSize;
         protected int mStencilSize;
         private int[] mValue;
+
         public ComponentSizeChooser(int redSize, int greenSize, int blueSize,
                                     int alphaSize, int depthSize, int stencilSize){
             super(new int[]{

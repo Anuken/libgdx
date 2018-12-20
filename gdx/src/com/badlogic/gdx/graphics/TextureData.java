@@ -18,9 +18,7 @@ package com.badlogic.gdx.graphics;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.glutils.ETC1TextureData;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.badlogic.gdx.graphics.glutils.KTXTextureData;
 import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
 
 /**
@@ -36,7 +34,7 @@ import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
  * Before a call to either {@link #consumePixmap()} or {@link #consumeCustomData(int)}, Texture will bind the OpenGL ES
  * texture.</p>
  * <p>
- * Look at {@link FileTextureData} and {@link ETC1TextureData} for example implementations of this interface.
+ * Look at {@link FileTextureData} for example implementations of this interface.
  * @author mzechner
  */
 public interface TextureData{
@@ -103,11 +101,7 @@ public interface TextureData{
 
         public static TextureData loadFromFile(FileHandle file, Format format, boolean useMipMaps){
             if(file == null) return null;
-            if(file.name().endsWith(".cim"))
-                return new FileTextureData(file, PixmapIO.readCIM(file), format, useMipMaps);
-            if(file.name().endsWith(".etc1")) return new ETC1TextureData(file, useMipMaps);
-            if(file.name().endsWith(".ktx") || file.name().endsWith(".zktx"))
-                return new KTXTextureData(file, useMipMaps);
+            if(file.name().endsWith(".cim")) return new FileTextureData(file, PixmapIO.readCIM(file), format, useMipMaps);
             return new FileTextureData(file, new Pixmap(file), format, useMipMaps);
         }
 
