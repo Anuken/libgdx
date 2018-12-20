@@ -22,7 +22,7 @@ import io.anuke.arc.graphics.GL30;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.TextureArrayData;
 import io.anuke.arc.graphics.TextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /** @author Tomski **/
 public class FileTextureArrayData implements TextureArrayData{
@@ -60,7 +60,7 @@ public class FileTextureArrayData implements TextureArrayData{
                 continue;
             }
             if(width != data.getWidth() || height != data.getHeight()){
-                throw new GdxRuntimeException("Error whilst preparing TextureArray: TextureArray Textures must have equal dimensions.");
+                throw new ArcRuntimeException("Error whilst preparing TextureArray: TextureArray Textures must have equal dimensions.");
             }
         }
         prepared = true;

@@ -21,7 +21,7 @@ import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.TextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * A {@link TextureData} implementation which should be used to create gl only textures. This TextureData fits perfectly for
@@ -73,7 +73,7 @@ public class GLOnlyTextureData implements TextureData{
 
     @Override
     public void prepare(){
-        if(isPrepared) throw new GdxRuntimeException("Already prepared");
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
         isPrepared = true;
     }
 
@@ -84,12 +84,12 @@ public class GLOnlyTextureData implements TextureData{
 
     @Override
     public Pixmap consumePixmap(){
-        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
     }
 
     @Override
     public boolean disposePixmap(){
-        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
     }
 
     @Override

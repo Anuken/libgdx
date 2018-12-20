@@ -27,13 +27,15 @@ import io.anuke.arc.Application;
 import io.anuke.arc.ApplicationListener;
 import io.anuke.arc.Core;
 import io.anuke.arc.Graphics;
+import io.anuke.arc.backends.android.surfaceview.surfaceview.*;
 import io.anuke.arc.collection.Array;
+import io.anuke.arc.graphics.*;
 import io.anuke.arc.graphics.Cursor.SystemCursor;
 import io.anuke.arc.graphics.glutils.FrameBuffer;
 import io.anuke.arc.graphics.glutils.GLVersion;
 import io.anuke.arc.graphics.glutils.ShaderProgram;
 import io.anuke.arc.math.WindowedMean;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Log;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -119,7 +121,7 @@ public class AndroidGraphics extends Graphics implements Renderer{
     }
 
     protected View createGLSurfaceView(AndroidApplicationBase application, final ResolutionStrategy resolutionStrategy){
-        if(!checkGL20()) throw new GdxRuntimeException("Libgdx requires OpenGL ES 2.0");
+        if(!checkGL20()) throw new ArcRuntimeException("Arc requires OpenGL ES 2.0");
 
         EGLConfigChooser configChooser = getEglConfigChooser();
         int sdkVersion = android.os.Build.VERSION.SDK_INT;

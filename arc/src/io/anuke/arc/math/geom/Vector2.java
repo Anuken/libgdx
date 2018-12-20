@@ -19,7 +19,7 @@ package io.anuke.arc.math.geom;
 import io.anuke.arc.math.Interpolation;
 import io.anuke.arc.math.Mathf;
 import io.anuke.arc.math.Matrix3;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -311,10 +311,10 @@ public class Vector2 implements Serializable, Vector<Vector2>, Position{
                 float y = Float.parseFloat(v.substring(s + 1, v.length() - 1));
                 return this.set(x, y);
             }catch(NumberFormatException ex){
-                // Throw a GdxRuntimeException
+                // Throw a ArcRuntimeException
             }
         }
-        throw new GdxRuntimeException("Malformed Vector2: " + v);
+        throw new ArcRuntimeException("Malformed Vector2: " + v);
     }
 
     /**

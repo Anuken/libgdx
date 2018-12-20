@@ -56,10 +56,6 @@ public class CubemapLoader extends AsynchronousAssetLoader<Cubemap, CubemapLoade
                 format = parameter.format;
                 info.cubemap = parameter.cubemap;
             }
-
-            if(fileName.contains(".ktx") || fileName.contains(".zktx")){
-                info.data = new KTXTextureData(file, genMipMaps);
-            }
         }else{
             info.data = parameter.cubemapData;
             info.cubemap = parameter.cubemap;

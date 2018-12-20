@@ -20,7 +20,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import io.anuke.arc.audio.AudioRecorder;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * {@link AudioRecorder} implementation for the android system based on AudioRecord
@@ -36,7 +36,7 @@ public class AndroidAudioRecorder implements AudioRecorder{
         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, samplingRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT,
         minBufferSize);
         if(recorder.getState() != AudioRecord.STATE_INITIALIZED)
-            throw new GdxRuntimeException("Unable to initialize AudioRecorder.\nDo you have the RECORD_AUDIO permission?");
+            throw new ArcRuntimeException("Unable to initialize AudioRecorder.\nDo you have the RECORD_AUDIO permission?");
         recorder.startRecording();
     }
 

@@ -18,7 +18,7 @@ package io.anuke.arc.collection;
 
 import io.anuke.arc.collection.ObjectMap.Entry;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 import io.anuke.arc.utils.reflect.ArrayReflection;
 
@@ -555,7 +555,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return index < map.size;
         }
 
@@ -566,7 +566,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         /** Note the same entry instance is returned each time this method is called. */
         public Entry<K, V> next(){
             if(index >= map.size) throw new NoSuchElementException(String.valueOf(index));
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             entry.key = map.keys[index];
             entry.value = map.values[index++];
             return entry;
@@ -592,7 +592,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return index < map.size;
         }
 
@@ -602,7 +602,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
         public V next(){
             if(index >= map.size) throw new NoSuchElementException(String.valueOf(index));
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return map.values[index++];
         }
 
@@ -635,7 +635,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return index < map.size;
         }
 
@@ -645,7 +645,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>>{
 
         public K next(){
             if(index >= map.size) throw new NoSuchElementException(String.valueOf(index));
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return map.keys[index++];
         }
 

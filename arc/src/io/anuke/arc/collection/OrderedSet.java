@@ -16,7 +16,7 @@
 
 package io.anuke.arc.collection;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 
 import java.util.NoSuchElementException;
@@ -147,7 +147,7 @@ public class OrderedSet<T> extends ObjectSet<T>{
 
         public T next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             T key = items.get(nextIndex);
             nextIndex++;
             hasNext = nextIndex < set.size;

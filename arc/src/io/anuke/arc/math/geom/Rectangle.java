@@ -13,7 +13,7 @@
 
 package io.anuke.arc.math.geom;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.NumberUtils;
 import io.anuke.arc.utils.Scaling;
 
@@ -455,10 +455,10 @@ public class Rectangle implements Serializable, Shape2D{
                 float height = Float.parseFloat(v.substring(s2 + 1, v.length() - 1));
                 return this.set(x, y, width, height);
             }catch(NumberFormatException ex){
-                // Throw a GdxRuntimeException
+                // Throw a ArcRuntimeException
             }
         }
-        throw new GdxRuntimeException("Malformed Rectangle: " + v);
+        throw new ArcRuntimeException("Malformed Rectangle: " + v);
     }
 
     public float area(){

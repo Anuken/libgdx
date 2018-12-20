@@ -24,7 +24,7 @@ import io.anuke.arc.graphics.glutils.*;
 import io.anuke.arc.math.Matrix3;
 import io.anuke.arc.math.geom.Vector2;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
@@ -585,7 +585,7 @@ public class Mesh implements Disposable{
         }else{
             if(indices.getNumIndices() > 0){
                 if(count + offset > indices.getNumMaxIndices()){
-                    throw new GdxRuntimeException("Mesh attempting to access memory outside of the index buffer (count: "
+                    throw new ArcRuntimeException("Mesh attempting to access memory outside of the index buffer (count: "
                     + count + ", offset: " + offset + ", max: " + indices.getNumMaxIndices() + ")");
                 }
 

@@ -22,7 +22,7 @@ import io.anuke.arc.Net.HttpRequest;
 import io.anuke.arc.Net.HttpResponse;
 import io.anuke.arc.Net.HttpResponseListener;
 import io.anuke.arc.collection.ObjectMap;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.async.AsyncExecutor;
 import io.anuke.arc.utils.async.AsyncTask;
 import io.anuke.arc.utils.io.StreamUtils;
@@ -54,7 +54,7 @@ public class NetJavaImpl{
 
     public void sendHttpRequest(final HttpRequest httpRequest, final HttpResponseListener httpResponseListener){
         if(httpRequest.getUrl() == null){
-            httpResponseListener.failed(new GdxRuntimeException("can't process a HTTP request without URL set"));
+            httpResponseListener.failed(new ArcRuntimeException("can't process a HTTP request without URL set"));
             return;
         }
 

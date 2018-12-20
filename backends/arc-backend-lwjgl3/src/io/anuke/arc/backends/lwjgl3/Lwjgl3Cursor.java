@@ -19,7 +19,7 @@ package io.anuke.arc.backends.lwjgl3;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.graphics.Cursor;
 import io.anuke.arc.graphics.Pixmap;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -38,26 +38,26 @@ public class Lwjgl3Cursor implements Cursor{
     Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot){
         this.window = window;
         if(pixmap.getFormat() != Pixmap.Format.RGBA8888){
-            throw new GdxRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
+            throw new ArcRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
         }
 
         if((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0){
-            throw new GdxRuntimeException(
+            throw new ArcRuntimeException(
             "Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
         }
 
         if((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0){
-            throw new GdxRuntimeException("Cursor image pixmap height of " + pixmap.getHeight()
+            throw new ArcRuntimeException("Cursor image pixmap height of " + pixmap.getHeight()
             + " is not a power-of-two greater than zero.");
         }
 
         if(xHotspot < 0 || xHotspot >= pixmap.getWidth()){
-            throw new GdxRuntimeException("xHotspot coordinate of " + xHotspot
+            throw new ArcRuntimeException("xHotspot coordinate of " + xHotspot
             + " is not within image width bounds: [0, " + pixmap.getWidth() + ").");
         }
 
         if(yHotspot < 0 || yHotspot >= pixmap.getHeight()){
-            throw new GdxRuntimeException("yHotspot coordinate of " + yHotspot
+            throw new ArcRuntimeException("yHotspot coordinate of " + yHotspot
             + " is not within image height bounds: [0, " + pixmap.getHeight() + ").");
         }
 
@@ -105,7 +105,7 @@ public class Lwjgl3Cursor implements Cursor{
             }else if(systemCursor == SystemCursor.Ibeam){
                 handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR);
             }else{
-                throw new GdxRuntimeException("Unknown system cursor " + systemCursor);
+                throw new ArcRuntimeException("Unknown system cursor " + systemCursor);
             }
 
             if(handle == 0){
@@ -120,7 +120,7 @@ public class Lwjgl3Cursor implements Cursor{
     @Override
     public void dispose(){
         if(pixmapCopy == null){
-            throw new GdxRuntimeException("Cursor already disposed");
+            throw new ArcRuntimeException("Cursor already disposed");
         }
         cursors.removeValue(this, true);
         pixmapCopy.dispose();

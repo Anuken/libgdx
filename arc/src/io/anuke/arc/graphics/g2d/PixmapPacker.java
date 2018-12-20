@@ -28,8 +28,8 @@ import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.graphics.g2d.PixmapPacker.SkylineStrategy.SkylinePage.Row;
 import io.anuke.arc.graphics.glutils.PixmapTextureData;
 import io.anuke.arc.math.geom.Rectangle;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -168,13 +168,13 @@ public class PixmapPacker implements Disposable{
      * {@link #getRect(String)}.
      * @param name If null, the image cannot be looked up by name.
      * @return Rectangle describing the area the pixmap was rendered to.
-     * @throws GdxRuntimeException in case the image did not fit due to the page size being too small or providing a duplicate
+     * @throws ArcRuntimeException in case the image did not fit due to the page size being too small or providing a duplicate
      * name.
      */
     public synchronized Rectangle pack(String name, Pixmap image){
         if(disposed) return null;
         if(name != null && getRect(name) != null)
-            throw new GdxRuntimeException("Pixmap has already been packed with name: " + name);
+            throw new ArcRuntimeException("Pixmap has already been packed with name: " + name);
 
         boolean isPatch = name != null && name.endsWith(".9");
 
@@ -252,8 +252,8 @@ public class PixmapPacker implements Disposable{
         }
 
         if(rect.getWidth() > pageWidth || rect.getHeight() > pageHeight){
-            if(name == null) throw new GdxRuntimeException("Page size too small for pixmap.");
-            throw new GdxRuntimeException("Page size too small for pixmap: " + name);
+            if(name == null) throw new ArcRuntimeException("Page size too small for pixmap.");
+            throw new ArcRuntimeException("Page size too small for pixmap: " + name);
         }
 
         Page page = packStrategy.pack(this, name, rect);

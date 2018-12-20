@@ -17,7 +17,7 @@
 package io.anuke.arc.collection;
 
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 
 import java.util.NoSuchElementException;
@@ -566,7 +566,7 @@ public class IntSet{
 
         public int next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             int key = nextIndex == INDEX_ZERO ? 0 : set.keyTable[nextIndex];
             currentIndex = nextIndex;
             findNextIndex();

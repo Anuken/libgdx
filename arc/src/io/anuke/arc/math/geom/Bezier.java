@@ -18,7 +18,7 @@ package io.anuke.arc.math.geom;
 
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * Implementation of the Bezier curve.
@@ -153,7 +153,7 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     public Bezier set(final T[] points, final int offset, final int length){
         if(length < 2 || length > 4)
-            throw new GdxRuntimeException("Only first, second and third degree Bezier curves are supported.");
+            throw new ArcRuntimeException("Only first, second and third degree Bezier curves are supported.");
         if(tmp == null) tmp = points[0].cpy();
         if(tmp2 == null) tmp2 = points[0].cpy();
         if(tmp3 == null) tmp3 = points[0].cpy();
@@ -164,7 +164,7 @@ public class Bezier<T extends Vector<T>> implements Path<T>{
 
     public Bezier set(final Array<T> points, final int offset, final int length){
         if(length < 2 || length > 4)
-            throw new GdxRuntimeException("Only first, second and third degree Bezier curves are supported.");
+            throw new ArcRuntimeException("Only first, second and third degree Bezier curves are supported.");
         if(tmp == null) tmp = points.get(0).cpy();
         if(tmp2 == null) tmp2 = points.get(0).cpy();
         if(tmp3 == null) tmp3 = points.get(0).cpy();

@@ -19,9 +19,10 @@ package io.anuke.arc.backends.lwjgl3.audio;
 import io.anuke.arc.Audio;
 import io.anuke.arc.audio.AudioDevice;
 import io.anuke.arc.audio.AudioRecorder;
+import io.anuke.arc.collection.*;
 import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
@@ -122,11 +123,11 @@ public class OpenALAudio implements Audio{
     public OpenALSound newSound(FileHandle file){
         if(file == null) throw new IllegalArgumentException("file cannot be null.");
         Class<? extends OpenALSound> soundClass = extensionToSoundClass.get(file.extension().toLowerCase());
-        if(soundClass == null) throw new GdxRuntimeException("Unknown file extension for sound: " + file);
+        if(soundClass == null) throw new ArcRuntimeException("Unknown file extension for sound: " + file);
         try{
             return soundClass.getConstructor(new Class[]{OpenALAudio.class, FileHandle.class}).newInstance(this, file);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error creating sound " + soundClass.getName() + " for file: " + file, ex);
+            throw new ArcRuntimeException("Error creating sound " + soundClass.getName() + " for file: " + file, ex);
         }
     }
 
@@ -134,11 +135,11 @@ public class OpenALAudio implements Audio{
     public OpenALMusic newMusic(FileHandle file){
         if(file == null) throw new IllegalArgumentException("file cannot be null.");
         Class<? extends OpenALMusic> musicClass = extensionToMusicClass.get(file.extension().toLowerCase());
-        if(musicClass == null) throw new GdxRuntimeException("Unknown file extension for music: " + file);
+        if(musicClass == null) throw new ArcRuntimeException("Unknown file extension for music: " + file);
         try{
             return musicClass.getConstructor(new Class[]{OpenALAudio.class, FileHandle.class}).newInstance(this, file);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error creating music " + musicClass.getName() + " for file: " + file, ex);
+            throw new ArcRuntimeException("Error creating music " + musicClass.getName() + " for file: " + file, ex);
         }
     }
 

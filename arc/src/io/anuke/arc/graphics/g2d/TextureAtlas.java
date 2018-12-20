@@ -29,7 +29,7 @@ import io.anuke.arc.graphics.Texture.TextureWrap;
 import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import io.anuke.arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.BufferedReader;
@@ -104,7 +104,7 @@ public class TextureAtlas implements Disposable{
     static String readValue(BufferedReader reader) throws IOException{
         String line = reader.readLine();
         int colon = line.indexOf(':');
-        if(colon == -1) throw new GdxRuntimeException("Invalid line: " + line);
+        if(colon == -1) throw new ArcRuntimeException("Invalid line: " + line);
         return line.substring(colon + 1).trim();
     }
 
@@ -112,7 +112,7 @@ public class TextureAtlas implements Disposable{
     static int readTuple(BufferedReader reader) throws IOException{
         String line = reader.readLine();
         int colon = line.indexOf(':');
-        if(colon == -1) throw new GdxRuntimeException("Invalid line: " + line);
+        if(colon == -1) throw new ArcRuntimeException("Invalid line: " + line);
         int i = 0, lastMatch = colon + 1;
         for(i = 0; i < 3; i++){
             int comma = line.indexOf(',', lastMatch);
@@ -361,7 +361,7 @@ public class TextureAtlas implements Disposable{
                     }
                 }
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error reading pack file: " + packFile, ex);
+                throw new ArcRuntimeException("Error reading pack file: " + packFile, ex);
             }finally{
                 StreamUtils.closeQuietly(reader);
             }

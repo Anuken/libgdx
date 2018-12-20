@@ -23,8 +23,8 @@ import io.anuke.arc.graphics.GL30;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.TextureData;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.BufferUtils;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.nio.FloatBuffer;
 
@@ -64,7 +64,7 @@ public class FloatTextureData implements TextureData{
 
     @Override
     public void prepare(){
-        if(isPrepared) throw new GdxRuntimeException("Already prepared");
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
         if(!isGpuOnly){
             int amountOfFloats = 4;
             if(Core.graphics.getGLVersion().getType().equals(GLVersion.Type.OpenGL)){
@@ -84,7 +84,7 @@ public class FloatTextureData implements TextureData{
         || Core.app.getType() == ApplicationType.WebGL){
 
             if(!Core.graphics.supportsExtension("OES_texture_float"))
-                throw new GdxRuntimeException("Extension OES_texture_float not supported!");
+                throw new ArcRuntimeException("Extension OES_texture_float not supported!");
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
@@ -93,7 +93,7 @@ public class FloatTextureData implements TextureData{
         }else{
             if(!Core.graphics.isGL30Available()){
                 if(!Core.graphics.supportsExtension("GL_ARB_texture_float"))
-                    throw new GdxRuntimeException("Extension GL_ARB_texture_float not supported!");
+                    throw new ArcRuntimeException("Extension GL_ARB_texture_float not supported!");
             }
             // in desktop OpenGL the texture format is defined only by the third argument,
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
@@ -103,12 +103,12 @@ public class FloatTextureData implements TextureData{
 
     @Override
     public Pixmap consumePixmap(){
-        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
     }
 
     @Override
     public boolean disposePixmap(){
-        throw new GdxRuntimeException("This TextureData implementation does not return a Pixmap");
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
     }
 
     @Override

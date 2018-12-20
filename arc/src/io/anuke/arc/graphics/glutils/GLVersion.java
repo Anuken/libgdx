@@ -71,7 +71,7 @@ public class GLVersion{
             minorVersion = resultSplit.length < 2 ? 0 : parseInt(resultSplit[1], 0);
             releaseVersion = resultSplit.length < 3 ? 0 : parseInt(resultSplit[2], 0);
         }else{
-            Log.err("[LibGDX GL] Invalid version string: " + versionString);
+            Log.err("[Arc GL] Invalid version string: " + versionString);
             majorVersion = 2;
             minorVersion = 0;
             releaseVersion = 0;
@@ -83,7 +83,7 @@ public class GLVersion{
         try{
             return Integer.parseInt(v);
         }catch(NumberFormatException nfe){
-            Log.err("[LibGDX GL] Error parsing number: " + v + ", assuming: " + defaultValue);
+            Log.err("[Arc GL] Error parsing number: " + v + ", assuming: " + defaultValue);
             return defaultValue;
         }
     }

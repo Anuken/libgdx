@@ -24,7 +24,7 @@ import io.anuke.arc.collection.Array;
 import io.anuke.arc.input.InputProcessor;
 import io.anuke.arc.input.KeyCode;
 import io.anuke.arc.math.geom.Vector3;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Log;
 import io.anuke.arc.utils.pooling.Pool;
 import org.robovm.apple.audiotoolbox.AudioServices;
@@ -405,7 +405,7 @@ public class IOSInput extends Input{
         for(int i = 0; i < touchDown.length; i++){
             if(touchDown[i] == 0) return i;
         }
-        throw new GdxRuntimeException("Couldn't find free pointer id!");
+        throw new ArcRuntimeException("Couldn't find free pointer id!");
     }
 
     private int findPointer(UITouch touch){

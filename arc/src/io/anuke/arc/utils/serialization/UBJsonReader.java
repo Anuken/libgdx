@@ -17,7 +17,7 @@
 package io.anuke.arc.utils.serialization;
 
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.DataInputStream;
@@ -102,7 +102,7 @@ public class UBJsonReader implements BaseJsonReader{
         else if(type == 'C')
             return new JsonValue(din.readChar());
         else
-            throw new GdxRuntimeException("Unrecognized data type");
+            throw new ArcRuntimeException("Unrecognized data type");
     }
 
     protected JsonValue parseArray(final DataInputStream din) throws IOException{
@@ -116,7 +116,7 @@ public class UBJsonReader implements BaseJsonReader{
         long size = -1;
         if(type == '#'){
             size = parseSize(din, false, -1);
-            if(size < 0) throw new GdxRuntimeException("Unrecognized data type");
+            if(size < 0) throw new ArcRuntimeException("Unrecognized data type");
             if(size == 0) return result;
             type = valueType == 0 ? din.readByte() : valueType;
         }
@@ -151,7 +151,7 @@ public class UBJsonReader implements BaseJsonReader{
         long size = -1;
         if(type == '#'){
             size = parseSize(din, false, -1);
-            if(size < 0) throw new GdxRuntimeException("Unrecognized data type");
+            if(size < 0) throw new ArcRuntimeException("Unrecognized data type");
             if(size == 0) return result;
             type = din.readByte();
         }
@@ -210,7 +210,7 @@ public class UBJsonReader implements BaseJsonReader{
         }else if(type == 's')
             size = (long)readUChar(din);
         else if(sOptional) size = parseSize(din, type, false, -1);
-        if(size < 0) throw new GdxRuntimeException("Unrecognized data type, string expected");
+        if(size < 0) throw new ArcRuntimeException("Unrecognized data type, string expected");
         return size > 0 ? readString(din, size) : "";
     }
 

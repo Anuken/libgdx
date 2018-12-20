@@ -34,9 +34,9 @@ import io.anuke.arc.graphics.g2d.TextureRegion;
 import io.anuke.arc.graphics.g2d.freetype.FreeType.*;
 import io.anuke.arc.math.Mathf;
 import io.anuke.arc.math.geom.Rectangle;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.BufferUtils;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.Log;
 import io.anuke.arc.utils.io.StreamUtils;
 
@@ -90,20 +90,20 @@ public class FreeTypeFontGenerator implements Disposable{
     /**
      * Creates a new generator from the given font file. Uses {@link FileHandle#length()} to determine the file size. If the file
      * length could not be determined (it was 0), an extra copy of the font bytes is performed. Throws a
-     * {@link GdxRuntimeException} if loading did not succeed.
+     * {@link ArcRuntimeException} if loading did not succeed.
      */
     public FreeTypeFontGenerator(FileHandle fontFile, int faceIndex){
         name = fontFile.pathWithoutExtension();
         int fileSize = (int)fontFile.length();
 
         library = FreeType.initFreeType();
-        if(library == null) throw new GdxRuntimeException("Couldn't initialize FreeType");
+        if(library == null) throw new ArcRuntimeException("Couldn't initialize FreeType");
 
         ByteBuffer buffer = null;
 
         try{
             buffer = fontFile.map();
-        }catch(GdxRuntimeException e){
+        }catch(ArcRuntimeException e){
             // Silently error, certain platforms do not support file mapping.
         }
 
@@ -121,14 +121,14 @@ public class FreeTypeFontGenerator implements Disposable{
                     StreamUtils.copyStream(input, buffer);
                 }
             }catch(IOException ex){
-                throw new GdxRuntimeException(ex);
+                throw new ArcRuntimeException(ex);
             }finally{
                 StreamUtils.closeQuietly(input);
             }
         }
 
         face = library.newMemoryFace(buffer, faceIndex);
-        if(face == null) throw new GdxRuntimeException("Couldn't create face for font: " + fontFile);
+        if(face == null) throw new ArcRuntimeException("Couldn't create face for font: " + fontFile);
 
         if(checkForBitmapFont()) return;
         setPixelSizes(0, 15);
@@ -214,7 +214,7 @@ public class FreeTypeFontGenerator implements Disposable{
     }
 
     /**
-     * Generates a new {@link BitmapFont}. The size is expressed in pixels. Throws a GdxRuntimeException if the font could not be
+     * Generates a new {@link BitmapFont}. The size is expressed in pixels. Throws a ArcRuntimeException if the font could not be
      * generated. Using big sizes might cause such an exception.
      * @param parameter configures how the font is generated
      */
@@ -224,7 +224,7 @@ public class FreeTypeFontGenerator implements Disposable{
         generateData(parameter, data);
         if(updateTextureRegions)
             parameter.packer.updateTextureRegions(data.regions, parameter.minFilter, parameter.magFilter, parameter.genMipMaps);
-        if(data.regions.isEmpty()) throw new GdxRuntimeException("Unable to create a font with no texture regions.");
+        if(data.regions.isEmpty()) throw new ArcRuntimeException("Unable to create a font with no texture regions.");
         BitmapFont font = new BitmapFont(data, data.regions, true);
         font.setOwnsTexture(parameter.packer == null);
         return font;
@@ -288,7 +288,7 @@ public class FreeTypeFontGenerator implements Disposable{
 
         // Try to load character
         if(!loadChar(c)){
-            throw new GdxRuntimeException("Unable to load character!");
+            throw new ArcRuntimeException("Unable to load character!");
         }
 
         GlyphSlot slot = face.getGlyph();
@@ -327,7 +327,7 @@ public class FreeTypeFontGenerator implements Disposable{
     }
 
     /**
-     * Generates a new {@link BitmapFontData} instance, expert usage only. Throws a GdxRuntimeException if something went wrong.
+     * Generates a new {@link BitmapFontData} instance, expert usage only. Throws a ArcRuntimeException if something went wrong.
      * @param size the size in pixels
      */
     public FreeTypeBitmapFontData generateData(int size){
@@ -344,11 +344,11 @@ public class FreeTypeFontGenerator implements Disposable{
         this.pixelWidth = pixelWidth;
         this.pixelHeight = pixelHeight;
         if(!bitmapped && !face.setPixelSizes(pixelWidth, pixelHeight))
-            throw new GdxRuntimeException("Couldn't set size for font");
+            throw new ArcRuntimeException("Couldn't set size for font");
     }
 
     /**
-     * Generates a new {@link BitmapFontData} instance, expert usage only. Throws a GdxRuntimeException if something went wrong.
+     * Generates a new {@link BitmapFontData} instance, expert usage only. Throws a ArcRuntimeException if something went wrong.
      * @param parameter configures how the font is generated
      */
     public FreeTypeBitmapFontData generateData(FreeTypeFontParameter parameter, FreeTypeBitmapFontData data){
@@ -392,7 +392,7 @@ public class FreeTypeFontGenerator implements Disposable{
             data.xHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
             break;
         }
-        if(data.xHeight == 0) throw new GdxRuntimeException("No x-height character found in font");
+        if(data.xHeight == 0) throw new ArcRuntimeException("No x-height character found in font");
 
         // determine cap height
         for(char capChar : data.capChars){
@@ -400,7 +400,7 @@ public class FreeTypeFontGenerator implements Disposable{
             data.capHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight()) + Math.abs(parameter.shadowOffsetY);
             break;
         }
-        if(!bitmapped && data.capHeight == 1) throw new GdxRuntimeException("No cap character found in font");
+        if(!bitmapped && data.capHeight == 1) throw new ArcRuntimeException("No cap character found in font");
 
         data.ascent -= data.capHeight;
         data.down = -data.lineHeight;
@@ -554,7 +554,7 @@ public class FreeTypeFontGenerator implements Disposable{
         FreeType.Glyph mainGlyph = slot.getGlyph();
         try{
             mainGlyph.toBitmap(parameter.mono ? FreeType.FT_RENDER_MODE_MONO : FreeType.FT_RENDER_MODE_NORMAL);
-        }catch(GdxRuntimeException e){
+        }catch(ArcRuntimeException e){
             mainGlyph.dispose();
             Log.infoTag("FreeTypeFontGenerator", "Couldn't render char: " + c);
             return null;

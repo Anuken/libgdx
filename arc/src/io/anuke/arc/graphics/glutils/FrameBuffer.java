@@ -22,6 +22,7 @@ import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Texture;
 import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.graphics.Texture.TextureWrap;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * <p>
@@ -64,7 +65,7 @@ public class FrameBuffer extends GLFrameBuffer<Texture>{
      * @param width the width of the framebuffer in pixels
      * @param height the height of the framebuffer in pixels
      * @param hasDepth whether to attach a depth buffer
-     * @throws io.anuke.arc.utils.GdxRuntimeException in case the FrameBuffer could not be created
+     * @throws ArcRuntimeException in case the FrameBuffer could not be created
      */
     public FrameBuffer(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil){
         FrameBufferBuilder frameBufferBuilder = new FrameBufferBuilder(width, height);

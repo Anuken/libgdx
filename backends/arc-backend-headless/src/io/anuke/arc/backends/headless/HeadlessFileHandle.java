@@ -18,7 +18,7 @@ package io.anuke.arc.backends.headless;
 
 import io.anuke.arc.Files.FileType;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.File;
 
@@ -41,7 +41,7 @@ public final class HeadlessFileHandle extends FileHandle{
     }
 
     public FileHandle sibling(String name){
-        if(file.getPath().length() == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
+        if(file.getPath().length() == 0) throw new ArcRuntimeException("Cannot get the sibling of the root.");
         return new HeadlessFileHandle(new File(file.getParent(), name), type);
     }
 

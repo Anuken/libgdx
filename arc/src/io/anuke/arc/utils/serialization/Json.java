@@ -16,6 +16,7 @@
 
 package io.anuke.arc.utils.serialization;
 
+import io.anuke.arc.collection.*;
 import io.anuke.arc.collection.ObjectMap.Entry;
 import io.anuke.arc.collection.Queue;
 import io.anuke.arc.collection.OrderedMap.OrderedMapValues;

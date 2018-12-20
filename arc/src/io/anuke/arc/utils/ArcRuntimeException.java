@@ -16,18 +16,18 @@
 
 package io.anuke.arc.utils;
 
-public class GdxNativesLoader{
-    static public boolean disableNativesLoading = false;
+public class ArcRuntimeException extends RuntimeException{
+    private static final long serialVersionUID = 6735854402467673117L;
 
-    static private boolean nativesLoaded;
+    public ArcRuntimeException(String message){
+        super(message);
+    }
 
-    /** Loads the libgdx native libraries if they have not already been loaded. */
-    static public synchronized void load(){
-        if(nativesLoaded) return;
-        nativesLoaded = true;
+    public ArcRuntimeException(Throwable t){
+        super(t);
+    }
 
-        if(disableNativesLoading) return;
-
-        new SharedLibraryLoader().load("gdx");
+    public ArcRuntimeException(String message, Throwable t){
+        super(message, t);
     }
 }

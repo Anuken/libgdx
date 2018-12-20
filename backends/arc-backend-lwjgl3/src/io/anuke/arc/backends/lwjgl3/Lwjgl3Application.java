@@ -21,8 +21,8 @@ import io.anuke.arc.backends.lwjgl3.audio.mock.MockAudio;
 import io.anuke.arc.*;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.graphics.glutils.GLVersion;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Clipboard;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.Log;
 import io.anuke.arc.utils.SharedLibraryLoader;
 import org.lwjgl.glfw.GLFW;
@@ -78,7 +78,7 @@ public class Lwjgl3Application implements Application{
             if(t instanceof RuntimeException)
                 throw (RuntimeException)t;
             else
-                throw new GdxRuntimeException(t);
+                throw new ArcRuntimeException(t);
         }finally{
             cleanup();
         }
@@ -91,7 +91,7 @@ public class Lwjgl3Application implements Application{
             GLFW.glfwSetErrorCallback(errorCallback);
             GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
             if(!GLFW.glfwInit()){
-                throw new GdxRuntimeException("Unable to initialize GLFW");
+                throw new ArcRuntimeException("Unable to initialize GLFW");
             }
         }
     }
@@ -143,7 +143,7 @@ public class Lwjgl3Application implements Application{
             windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);
         }
         if(windowHandle == 0){
-            throw new GdxRuntimeException("Couldn't create window");
+            throw new ArcRuntimeException("Couldn't create window");
         }
         Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth, config.windowMaxHeight);
         if(config.fullscreenMode == null && !config.windowMaximized){
@@ -167,11 +167,11 @@ public class Lwjgl3Application implements Application{
 
         initiateGL();
         if(!glVersion.isVersionEqualToOrHigher(2, 0))
-            throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+            throw new ArcRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
             + GL11.glGetString(GL11.GL_VERSION) + "\n" + glVersion.getDebugVersionString());
 
         if(!supportsFBO()){
-            throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
+            throw new ArcRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
             + GL11.glGetString(GL11.GL_VERSION) + ", FBO extension: false\n" + glVersion.getDebugVersionString());
         }
 

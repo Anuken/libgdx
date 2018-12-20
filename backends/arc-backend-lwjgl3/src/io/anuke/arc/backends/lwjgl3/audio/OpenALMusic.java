@@ -20,7 +20,7 @@ import io.anuke.arc.audio.Music;
 import io.anuke.arc.collection.FloatArray;
 import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -75,7 +75,7 @@ public abstract class OpenALMusic implements Music{
                 alGenBuffers(buffers);
                 int errorCode = alGetError();
                 if(errorCode != AL_NO_ERROR)
-                    throw new GdxRuntimeException("Unable to allocate audio buffers. AL Error: " + errorCode);
+                    throw new ArcRuntimeException("Unable to allocate audio buffers. AL Error: " + errorCode);
             }
 
             alSourcei(sourceID, AL_DIRECT_CHANNELS_SOFT, AL_TRUE);

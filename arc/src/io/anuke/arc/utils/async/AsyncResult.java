@@ -16,7 +16,7 @@
 
 package io.anuke.arc.utils.async;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -39,7 +39,7 @@ public class AsyncResult<T>{
 
     /**
      * @return waits if necessary for the computation to complete and then returns the result
-     * @throws GdxRuntimeException if there was an error
+     * @throws ArcRuntimeException if there was an error
      */
     public T get(){
         try{
@@ -47,7 +47,7 @@ public class AsyncResult<T>{
         }catch(InterruptedException ex){
             return null;
         }catch(ExecutionException ex){
-            throw new GdxRuntimeException(ex.getCause());
+            throw new ArcRuntimeException(ex.getCause());
         }
     }
 }

@@ -34,7 +34,7 @@ import io.anuke.arc.maps.ImageResolver.DirectImageResolver;
 import io.anuke.arc.maps.MapProperties;
 import io.anuke.arc.maps.tiled.tiles.AnimatedTiledMapTile;
 import io.anuke.arc.maps.tiled.tiles.StaticTiledMapTile;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.serialization.SerializationException;
 import io.anuke.arc.utils.serialization.XmlReader.Element;
 
@@ -93,7 +93,7 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
             map.setOwnedResources(textures.values().toArray());
             return map;
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -111,7 +111,7 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
         try{
             map = loadTilemap(root, tmxFile, new AssetManagerImageResolver(manager));
         }catch(Exception e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -145,7 +145,7 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
             }
             return dependencies;
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -349,7 +349,7 @@ public class TmxMapLoader extends BaseTmxMapLoader<TmxMapLoader.Parameters>{
                         image = getRelativeFileHandle(tsx, imageSource);
                     }
                 }catch(SerializationException e){
-                    throw new GdxRuntimeException("Error parsing external tileset.");
+                    throw new ArcRuntimeException("Error parsing external tileset.");
                 }
             }else{
                 Element offset = element.getChildByName("tileoffset");

@@ -20,7 +20,7 @@ import io.anuke.arc.graphics.Color;
 import io.anuke.arc.graphics.Texture;
 import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import static io.anuke.arc.Core.graphics;
 
@@ -173,28 +173,28 @@ public class NinePatch{
         if((patches[TOP_LEFT] != null && patches[TOP_LEFT].getWidth() != leftWidth)
         || (patches[MIDDLE_LEFT] != null && patches[MIDDLE_LEFT].getWidth() != leftWidth)
         || (patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getWidth() != leftWidth)){
-            throw new GdxRuntimeException("Left side patches must have the same width");
+            throw new ArcRuntimeException("Left side patches must have the same width");
         }
 
         float rightWidth = getRightWidth();
         if((patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getWidth() != rightWidth)
         || (patches[MIDDLE_RIGHT] != null && patches[MIDDLE_RIGHT].getWidth() != rightWidth)
         || (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getWidth() != rightWidth)){
-            throw new GdxRuntimeException("Right side patches must have the same width");
+            throw new ArcRuntimeException("Right side patches must have the same width");
         }
 
         float bottomHeight = getBottomHeight();
         if((patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getHeight() != bottomHeight)
         || (patches[BOTTOM_CENTER] != null && patches[BOTTOM_CENTER].getHeight() != bottomHeight)
         || (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getHeight() != bottomHeight)){
-            throw new GdxRuntimeException("Bottom side patches must have the same height");
+            throw new ArcRuntimeException("Bottom side patches must have the same height");
         }
 
         float topHeight = getTopHeight();
         if((patches[TOP_LEFT] != null && patches[TOP_LEFT].getHeight() != topHeight)
         || (patches[TOP_CENTER] != null && patches[TOP_CENTER].getHeight() != topHeight)
         || (patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getHeight() != topHeight)){
-            throw new GdxRuntimeException("Top side patches must have the same height");
+            throw new ArcRuntimeException("Top side patches must have the same height");
         }
     }
 

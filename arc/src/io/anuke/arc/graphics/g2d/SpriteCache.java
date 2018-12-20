@@ -26,7 +26,7 @@ import io.anuke.arc.graphics.glutils.ShaderProgram;
 import io.anuke.arc.math.Mathf;
 import io.anuke.arc.math.Matrix3;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.nio.FloatBuffer;
 
@@ -238,7 +238,7 @@ public class SpriteCache implements Disposable{
         }else{
             // Redefine existing cache.
             if(cacheCount > cache.maxCount){
-                throw new GdxRuntimeException(
+                throw new ArcRuntimeException(
                 "If a cache is not the last created, it cannot be redefined with more entries than when it was first created: "
                 + cacheCount + " (" + cache.maxCount + " max)");
             }

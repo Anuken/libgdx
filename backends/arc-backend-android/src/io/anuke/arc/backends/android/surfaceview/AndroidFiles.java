@@ -24,7 +24,7 @@ import android.os.Environment;
 import io.anuke.arc.Core;
 import io.anuke.arc.Files;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.IOException;
 
@@ -132,13 +132,13 @@ public class AndroidFiles implements Files{
             }else if(Core.app instanceof Fragment){
                 context = ((Fragment)Core.app).getActivity().getBaseContext();
             }else{
-                throw new GdxRuntimeException("APK expansion not supported for application type");
+                throw new ArcRuntimeException("APK expansion not supported for application type");
             }
             expansionFile = APKExpansionSupport.getAPKExpansionZipFile(
             context,
             mainVersion, patchVersion);
         }catch(IOException ex){
-            throw new GdxRuntimeException("APK expansion main version " + mainVersion + " or patch version " + patchVersion + " couldn't be opened!");
+            throw new ArcRuntimeException("APK expansion main version " + mainVersion + " or patch version " + patchVersion + " couldn't be opened!");
         }
         return expansionFile != null;
     }

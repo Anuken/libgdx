@@ -17,7 +17,7 @@
 package io.anuke.arc;
 
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * Provides standard access to the filesystem, classpath, Android SD card, and Android assets directory.
@@ -28,7 +28,7 @@ public interface Files{
     /**
      * Returns a handle representing a file or directory.
      * @param type Determines how the path is resolved.
-     * @throws GdxRuntimeException if the type is classpath or internal and the file does not exist.
+     * @throws ArcRuntimeException if the type is classpath or internal and the file does not exist.
      * @see FileType
      */
     FileHandle getFileHandle(String path, FileType type);

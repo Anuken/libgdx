@@ -21,7 +21,7 @@ import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.PixmapIO;
 import io.anuke.arc.graphics.TextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class FileTextureData implements TextureData{
 
@@ -52,7 +52,7 @@ public class FileTextureData implements TextureData{
 
     @Override
     public void prepare(){
-        if(isPrepared) throw new GdxRuntimeException("Already prepared");
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
         if(pixmap == null){
             if(file.extension().equals("cim"))
                 pixmap = PixmapIO.readCIM(file);
@@ -67,7 +67,7 @@ public class FileTextureData implements TextureData{
 
     @Override
     public Pixmap consumePixmap(){
-        if(!isPrepared) throw new GdxRuntimeException("Call prepare() before calling getPixmap()");
+        if(!isPrepared) throw new ArcRuntimeException("Call prepare() before calling getPixmap()");
         isPrepared = false;
         Pixmap pixmap = this.pixmap;
         this.pixmap = null;
@@ -115,7 +115,7 @@ public class FileTextureData implements TextureData{
 
     @Override
     public void consumeCustomData(int target){
-        throw new GdxRuntimeException("This TextureData implementation does not upload data itself");
+        throw new ArcRuntimeException("This TextureData implementation does not upload data itself");
     }
 
     public String toString(){

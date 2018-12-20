@@ -35,9 +35,9 @@ import io.anuke.arc.ApplicationListener;
 import io.anuke.arc.Core;
 import io.anuke.arc.backends.android.surfaceview.surfaceview.FillResolutionStrategy;
 import io.anuke.arc.collection.Array;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Clipboard;
-import io.anuke.arc.utils.GdxNativesLoader;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcNativesLoader;
 import io.anuke.arc.utils.Log;
 
 import java.lang.reflect.Method;
@@ -70,7 +70,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
     private boolean isWaitingForAudio = false;
 
     static{
-        GdxNativesLoader.load();
+        ArcNativesLoader.load();
         Log.setLogger(new AndroidApplicationLogger());
     }
 
@@ -127,7 +127,7 @@ public class AndroidApplication extends Activity implements AndroidApplicationBa
 
     private void init(ApplicationListener listener, AndroidApplicationConfiguration config, boolean isForView){
         if(this.getVersion() < MINIMUM_SDK){
-            throw new GdxRuntimeException("LibGDX requires Android API Level " + MINIMUM_SDK + " or later.");
+            throw new ArcRuntimeException("Arc requires Android API Level " + MINIMUM_SDK + " or later.");
         }
         graphics = new AndroidGraphics(this, config, config.resolutionStrategy == null ? new FillResolutionStrategy()
         : config.resolutionStrategy);

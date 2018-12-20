@@ -20,7 +20,7 @@ import io.anuke.arc.math.Interpolation;
 import io.anuke.arc.math.Mathf;
 import io.anuke.arc.math.Matrix3;
 import io.anuke.arc.math.Quaternion;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.NumberUtils;
 
 import java.io.Serializable;
@@ -555,10 +555,10 @@ public class Vector3 implements Serializable, Vector<Vector3>{
                 float z = Float.parseFloat(v.substring(s1 + 1, v.length() - 1));
                 return this.set(x, y, z);
             }catch(NumberFormatException ex){
-                // Throw a GdxRuntimeException
+                // Throw a ArcRuntimeException
             }
         }
-        throw new GdxRuntimeException("Malformed Vector3: " + v);
+        throw new ArcRuntimeException("Malformed Vector3: " + v);
     }
 
     @Override

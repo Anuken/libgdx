@@ -24,8 +24,8 @@ import io.anuke.arc.backends.headless.mock.audio.MockAudio;
 import io.anuke.arc.backends.headless.mock.graphics.MockGraphics;
 import io.anuke.arc.backends.headless.mock.input.MockInput;
 import io.anuke.arc.collection.Array;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Clipboard;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.TimeUtils;
 
 /**
@@ -85,7 +85,7 @@ public class HeadlessApplication implements Application{
                     if(t instanceof RuntimeException)
                         throw (RuntimeException)t;
                     else
-                        throw new GdxRuntimeException(t);
+                        throw new ArcRuntimeException(t);
                 }
             }
         };

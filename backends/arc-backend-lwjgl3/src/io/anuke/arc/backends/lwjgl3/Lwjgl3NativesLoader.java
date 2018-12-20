@@ -16,7 +16,7 @@
 
 package io.anuke.arc.backends.lwjgl3;
 
-import io.anuke.arc.utils.GdxNativesLoader;
+import io.anuke.arc.utils.ArcNativesLoader;
 
 public final class Lwjgl3NativesLoader{
 
@@ -25,6 +25,6 @@ public final class Lwjgl3NativesLoader{
     }
 
     static public void load(){
-        GdxNativesLoader.load();
+        ArcNativesLoader.load();
     }
 }

@@ -24,7 +24,7 @@ import java.util.Comparator;
  * often as every x frames. Certain values of k will result in a partial sorting of the Array.
  * <p>
  * The lowest ranking element starts at 1, not 0. 1 = first, 2 = second, 3 = third, etc. calling with a value of zero will result
- * in a {@link GdxRuntimeException}
+ * in a {@link ArcRuntimeException}
  * </p>
  * <p>
  * This class uses very minimal extra memory, as it makes no copies of the array. The underlying algorithms used are a naive
@@ -50,9 +50,9 @@ public class Select{
     @SuppressWarnings("unchecked")
     public <T> int selectIndex(T[] items, Comparator<T> comp, int kthLowest, int size){
         if(size < 1){
-            throw new GdxRuntimeException("cannot select from empty array (size < 1)");
+            throw new ArcRuntimeException("cannot select from empty array (size < 1)");
         }else if(kthLowest > size){
-            throw new GdxRuntimeException("Kth rank is larger than size. k: " + kthLowest + ", size: " + size);
+            throw new ArcRuntimeException("Kth rank is larger than size. k: " + kthLowest + ", size: " + size);
         }
         int idx;
         // naive partial selection sort almost certain to outperform quickselect where n is min or max

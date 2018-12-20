@@ -17,8 +17,8 @@
 package com.badlogic.gdx.graphics.g2d;
 
 import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,10 +81,10 @@ public class Gdx2DPixmap implements Disposable{
         }
     }
 
-    /** @throws GdxRuntimeException if allocation failed. */
-    public Gdx2DPixmap(int width, int height, int format) throws GdxRuntimeException{
+    /** @throws ArcRuntimeException if allocation failed. */
+    public Gdx2DPixmap(int width, int height, int format) throws ArcRuntimeException{
         pixelPtr = newPixmap(nativeData, width, height, format);
-        if(pixelPtr == null) throw new GdxRuntimeException("Error loading pixmap.");
+        if(pixelPtr == null) throw new ArcRuntimeException("Error loading pixmap.");
 
         this.basePtr = nativeData[0];
         this.width = (int)nativeData[1];
@@ -113,7 +113,7 @@ public class Gdx2DPixmap implements Disposable{
             case GDX2D_FORMAT_RGBA4444:
                 return GL20.GL_RGBA;
             default:
-                throw new GdxRuntimeException("unknown format: " + format);
+                throw new ArcRuntimeException("unknown format: " + format);
         }
     }
 
@@ -129,7 +129,7 @@ public class Gdx2DPixmap implements Disposable{
             case GDX2D_FORMAT_RGBA4444:
                 return GL20.GL_UNSIGNED_SHORT_4_4_4_4;
             default:
-                throw new GdxRuntimeException("unknown format: " + format);
+                throw new ArcRuntimeException("unknown format: " + format);
         }
     }
 

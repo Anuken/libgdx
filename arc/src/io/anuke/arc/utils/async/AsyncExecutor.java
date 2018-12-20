@@ -16,8 +16,8 @@
 
 package io.anuke.arc.utils.async;
 
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.util.concurrent.*;
 
@@ -48,7 +48,7 @@ public class AsyncExecutor implements Disposable{
      */
     public <T> AsyncResult<T> submit(final AsyncTask<T> task){
         if(executor.isShutdown()){
-            throw new GdxRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");
+            throw new ArcRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");
         }
         return new AsyncResult<>(executor.submit(task::call));
     }
@@ -63,7 +63,7 @@ public class AsyncExecutor implements Disposable{
         try{
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
         }catch(InterruptedException e){
-            throw new GdxRuntimeException("Couldn't shutdown loading thread", e);
+            throw new ArcRuntimeException("Couldn't shutdown loading thread", e);
         }
     }
 }

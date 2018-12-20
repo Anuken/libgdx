@@ -19,8 +19,8 @@ package io.anuke.arc.graphics;
 import io.anuke.arc.collection.ByteArray;
 import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.*;
@@ -36,7 +36,7 @@ public class PixmapIO{
     /**
      * Writes the {@link Pixmap} to the given file using a custom compression scheme. First three integers define the width, height
      * and format, remaining bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture, use ".cim" as the file
-     * suffix. Throws a GdxRuntimeException in case the Pixmap couldn't be written to the file.
+     * suffix. Throws a ArcRuntimeException in case the Pixmap couldn't be written to the file.
      * @param file the file to write the Pixmap to
      */
     static public void writeCIM(FileHandle file, Pixmap pixmap){
@@ -45,7 +45,7 @@ public class PixmapIO{
 
     /**
      * Reads the {@link Pixmap} from the given file, assuming the Pixmap was written with the
-     * {@link PixmapIO#writeCIM(FileHandle, Pixmap)} method. Throws a GdxRuntimeException in case the file couldn't be read.
+     * {@link PixmapIO#writeCIM(FileHandle, Pixmap)} method. Throws a ArcRuntimeException in case the file couldn't be read.
      * @param file the file to read the Pixmap from
      */
     static public Pixmap readCIM(FileHandle file){
@@ -66,7 +66,7 @@ public class PixmapIO{
                 writer.dispose();
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error writing PNG: " + file, ex);
+            throw new ArcRuntimeException("Error writing PNG: " + file, ex);
         }
     }
 
@@ -106,7 +106,7 @@ public class PixmapIO{
                 pixelBuf.position(0);
                 pixelBuf.limit(pixelBuf.capacity());
             }catch(Exception e){
-                throw new GdxRuntimeException("Couldn't write Pixmap to file '" + file + "'", e);
+                throw new ArcRuntimeException("Couldn't write Pixmap to file '" + file + "'", e);
             }finally{
                 StreamUtils.closeQuietly(out);
             }
@@ -137,7 +137,7 @@ public class PixmapIO{
                 pixelBuf.limit(pixelBuf.capacity());
                 return pixmap;
             }catch(Exception e){
-                throw new GdxRuntimeException("Couldn't read Pixmap from file '" + file + "'", e);
+                throw new ArcRuntimeException("Couldn't read Pixmap from file '" + file + "'", e);
             }finally{
                 StreamUtils.closeQuietly(in);
             }

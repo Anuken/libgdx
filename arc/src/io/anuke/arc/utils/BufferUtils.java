@@ -21,7 +21,7 @@ import io.anuke.arc.math.Matrix3;
 
 import java.nio.*;
 
-import static com_TMP.badlogic.gdx.utils.BufferUtils.*;
+import static com.badlogic.gdx.utils.BufferUtils.*;
 
 /**
  * Class with static helper methods to increase the speed of array/direct buffer and direct buffer/direct buffer transfers
@@ -357,7 +357,7 @@ public final class BufferUtils{
         else if(dst instanceof DoubleBuffer)
             return dst.position() << 3;
         else
-            throw new GdxRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
+            throw new ArcRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
     }
 
     private static int bytesToElements(Buffer dst, int bytes){
@@ -376,7 +376,7 @@ public final class BufferUtils{
         else if(dst instanceof DoubleBuffer)
             return bytes >>> 3;
         else
-            throw new GdxRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
+            throw new ArcRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
     }
 
     private static int elementsToBytes(Buffer dst, int elements){
@@ -395,7 +395,7 @@ public final class BufferUtils{
         else if(dst instanceof DoubleBuffer)
             return elements << 3;
         else
-            throw new GdxRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
+            throw new ArcRuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
     }
 
     public static FloatBuffer newFloatBuffer(int numFloats){

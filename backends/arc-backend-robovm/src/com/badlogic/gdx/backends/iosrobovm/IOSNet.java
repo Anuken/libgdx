@@ -17,6 +17,7 @@
 package com.badlogic.gdx.backends.iosrobovm;
 
 import io.anuke.arc.Net;
+import io.anuke.arc.net.*;
 import org.robovm.apple.foundation.NSURL;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationOpenURLOptions;

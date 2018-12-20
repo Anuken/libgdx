@@ -21,7 +21,7 @@ import io.anuke.arc.Core;
 import io.anuke.arc.Files.FileType;
 import io.anuke.arc.backends.android.surfaceview.ZipResourceFile.ZipEntryRO;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.*;
 
@@ -67,7 +67,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle{
         try{
             input = expansionFile.getInputStream(getPath());
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading file: " + file + " (ZipResourceFile)", ex);
+            throw new ArcRuntimeException("Error reading file: " + file + " (ZipResourceFile)", ex);
         }
         return input;
     }
@@ -82,7 +82,7 @@ public class AndroidZipFileHandle extends AndroidFileHandle{
     @Override
     public FileHandle sibling(String name){
         if(file.getPath().length() == 0)
-            throw new GdxRuntimeException("Cannot get the sibling of the root.");
+            throw new ArcRuntimeException("Cannot get the sibling of the root.");
         return Core.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's not inside the obb
     }
 

@@ -16,7 +16,7 @@
 
 package io.anuke.arc.graphics.profiling;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Log;
 
 import static io.anuke.arc.graphics.profiling.GLInterceptor.resolveErrorNumber;
@@ -57,11 +57,11 @@ public interface GLErrorListener{
     };
 
     // Basic implementations
-    /** Listener that will throw a GdxRuntimeException with error name. */
+    /** Listener that will throw a ArcRuntimeException with error name. */
     GLErrorListener THROWING_LISTENER = new GLErrorListener(){
         @Override
         public void onError(int error){
-            throw new GdxRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
+            throw new ArcRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
         }
     };
 

@@ -21,7 +21,7 @@ import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.VertexAttribute;
 import io.anuke.arc.graphics.VertexAttributes;
 import io.anuke.arc.utils.BufferUtils;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -141,7 +141,7 @@ public class VertexBufferObjectSubData implements VertexData{
             BufferUtils.copy(vertices, sourceOffset, count, byteBuffer);
             byteBuffer.position(pos);
         }else
-            throw new GdxRuntimeException("Buffer must be allocated direct."); // Should never happen
+            throw new ArcRuntimeException("Buffer must be allocated direct."); // Should never happen
 
         bufferChanged();
     }

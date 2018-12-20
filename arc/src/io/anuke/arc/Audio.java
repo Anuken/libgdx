@@ -21,7 +21,7 @@ import io.anuke.arc.audio.AudioRecorder;
 import io.anuke.arc.audio.Music;
 import io.anuke.arc.audio.Sound;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * This interface encapsulates the creation and management of audio resources. It allows you to get direct access to the audio
@@ -45,7 +45,7 @@ public interface Audio{
      * @param samplingRate the sampling rate.
      * @param isMono whether the AudioDevice should be in mono or stereo mode
      * @return the AudioDevice
-     * @throws GdxRuntimeException in case the device could not be created
+     * @throws ArcRuntimeException in case the device could not be created
      */
     AudioDevice newAudioDevice(int samplingRate, boolean isMono);
 
@@ -54,7 +54,7 @@ public interface Audio{
      * @param samplingRate the sampling rate in Hertz
      * @param isMono whether the recorder records in mono or stereo
      * @return the AudioRecorder
-     * @throws GdxRuntimeException in case the recorder could not be created
+     * @throws ArcRuntimeException in case the recorder could not be created
      */
     AudioRecorder newAudioRecorder(int samplingRate, boolean isMono);
 
@@ -73,7 +73,7 @@ public interface Audio{
      * The Sound has to be disposed if it is no longer used via the {@link Sound#dispose()} method.
      * </p>
      * @return the new Sound
-     * @throws GdxRuntimeException in case the sound could not be loaded
+     * @throws ArcRuntimeException in case the sound could not be loaded
      */
     Sound newSound(FileHandle fileHandle);
 
@@ -84,7 +84,7 @@ public interface Audio{
      * {@link ApplicationListener#resume()} is called.
      * @param file the FileHandle
      * @return the new Music or null if the Music could not be loaded
-     * @throws GdxRuntimeException in case the music could not be loaded
+     * @throws ArcRuntimeException in case the music could not be loaded
      */
     Music newMusic(FileHandle file);
 }

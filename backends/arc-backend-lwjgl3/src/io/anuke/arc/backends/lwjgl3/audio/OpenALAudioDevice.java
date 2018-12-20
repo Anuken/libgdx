@@ -18,7 +18,7 @@ package io.anuke.arc.backends.lwjgl3.audio;
 
 import io.anuke.arc.audio.AudioDevice;
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
@@ -88,7 +88,7 @@ public class OpenALAudioDevice implements AudioDevice{
             if(buffers == null){
                 buffers = BufferUtils.createIntBuffer(bufferCount);
                 alGenBuffers(buffers);
-                if(alGetError() != AL_NO_ERROR) throw new GdxRuntimeException("Unabe to allocate audio buffers.");
+                if(alGetError() != AL_NO_ERROR) throw new ArcRuntimeException("Unabe to allocate audio buffers.");
             }
             alSourcei(sourceID, AL_LOOPING, AL_FALSE);
             alSourcef(sourceID, AL_GAIN, volume);

@@ -22,7 +22,7 @@ import io.anuke.arc.graphics.GL30;
 import io.anuke.arc.graphics.Texture;
 import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.graphics.Texture.TextureWrap;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /** This is a {@link FrameBuffer} variant backed by a float texture. */
 public class FloatFrameBuffer extends FrameBuffer{
@@ -42,7 +42,7 @@ public class FloatFrameBuffer extends FrameBuffer{
      * @param width the width of the framebuffer in pixels
      * @param height the height of the framebuffer in pixels
      * @param hasDepth whether to attach a depth buffer
-     * @throws GdxRuntimeException in case the FrameBuffer could not be created
+     * @throws ArcRuntimeException in case the FrameBuffer could not be created
      */
     public FloatFrameBuffer(int width, int height, boolean hasDepth){
         FloatFrameBufferBuilder bufferBuilder = new FloatFrameBufferBuilder(width, height);

@@ -31,7 +31,7 @@ import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.maps.MapProperties;
 import io.anuke.arc.maps.tiled.tiles.AnimatedTiledMapTile;
 import io.anuke.arc.maps.tiled.tiles.StaticTiledMapTile;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.serialization.SerializationException;
 import io.anuke.arc.utils.serialization.XmlReader.Element;
 
@@ -80,7 +80,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                 }
             }
         }catch(SerializationException e){
-            throw new GdxRuntimeException("Unable to parse .tmx file.");
+            throw new ArcRuntimeException("Unable to parse .tmx file.");
         }
         return dependencies;
     }
@@ -100,7 +100,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
             ObjectMap<String, TextureAtlas> atlases = new ObjectMap<String, TextureAtlas>();
             FileHandle atlasFile = loadAtlas(root, tmxFile);
             if(atlasFile == null){
-                throw new GdxRuntimeException("Couldn't load atlas");
+                throw new ArcRuntimeException("Couldn't load atlas");
             }
 
             TextureAtlas atlas = new TextureAtlas(atlasFile);
@@ -112,7 +112,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
             setTextureFilters(parameter.textureMinFilter, parameter.textureMagFilter);
             return map;
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -164,7 +164,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
         try{
             map = loadMap(root, tmxFile, new AtlasResolver.AssetManagerAtlasResolver(manager));
         }catch(Exception e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -268,7 +268,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                         image = getRelativeFileHandle(tsx, imageSource);
                     }
                 }catch(SerializationException e){
-                    throw new GdxRuntimeException("Error parsing external tileset.");
+                    throw new ArcRuntimeException("Error parsing external tileset.");
                 }
             }else{
                 Element offset = element.getChildByName("tileoffset");
@@ -291,7 +291,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                 if(atlasFile.exists()) atlasFilePath = atlasFile.name();
             }
             if(atlasFilePath == null){
-                throw new GdxRuntimeException("The map is missing the 'atlas' property");
+                throw new ArcRuntimeException("The map is missing the 'atlas' property");
             }
 
             // get the TextureAtlas for this tileset
@@ -343,7 +343,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
                         String regionName = imageElement.getAttribute("source");
                         regionName = regionName.substring(0, regionName.lastIndexOf('.'));
                         AtlasRegion region = atlas.find(regionName);
-                        if(region == null) throw new GdxRuntimeException("Tileset region not found: " + regionName);
+                        if(region == null) throw new ArcRuntimeException("Tileset region not found: " + regionName);
                         tile = new StaticTiledMapTile(region);
                         tile.setId(tileid);
                         tile.setOffsetX(offsetX);

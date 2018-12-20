@@ -28,7 +28,7 @@ import io.anuke.arc.graphics.g2d.BitmapFont.BitmapFontData;
 import io.anuke.arc.graphics.g2d.TextureAtlas;
 import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.graphics.g2d.TextureRegion;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * {@link AssetLoader} for {@link BitmapFont} instances. Loads the font description file (.fnt) asynchronously, loads the
@@ -87,7 +87,7 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
             AtlasRegion region = atlas.find(name);
 
             if(region == null)
-                throw new GdxRuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
+                throw new ArcRuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
             return new BitmapFont(file, region);
         }else{
             int n = data.getImagePaths().length;

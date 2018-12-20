@@ -16,16 +16,16 @@
 
 package io.anuke.arc.backends.gwt.preloader;
 
-import com.badlogic.gdx.Files.FileType;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.ImageElement;
+import io.anuke.arc.Files.FileType;
 import io.anuke.arc.backends.gwt.GwtFileHandle;
 import io.anuke.arc.backends.gwt.preloader.AssetDownloader.AssetLoaderListener;
 import io.anuke.arc.backends.gwt.preloader.AssetFilter.AssetType;
-import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.collection.ObjectMap;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.ImageElement;
+import io.anuke.arc.collection.Array;
+import io.anuke.arc.collection.ObjectMap;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.io.*;
 

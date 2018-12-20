@@ -17,7 +17,7 @@
 package io.anuke.arc.collection;
 
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Select;
 import io.anuke.arc.utils.StringBuilder;
 import io.anuke.arc.utils.reflect.ArrayReflection;
@@ -456,7 +456,7 @@ public class Array<T> implements Iterable<T>{
 
     /**
      * Selects the nth-lowest element from the Array according to Comparator ranking. This might partially sort the Array. The
-     * array must have a size greater than 0, or a {@link io.anuke.arc.utils.GdxRuntimeException} will be thrown.
+     * array must have a size greater than 0, or a {@link ArcRuntimeException} will be thrown.
      * @param comparator used for comparison
      * @param kthLowest rank of desired object according to comparison, n is based on ordinal numbers, not array indices. for min
      * value use 1, for max value use size of array, using 0 results in runtime exception.
@@ -465,7 +465,7 @@ public class Array<T> implements Iterable<T>{
      */
     public T selectRanked(Comparator<T> comparator, int kthLowest){
         if(kthLowest < 1){
-            throw new GdxRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+            throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
         }
         return Select.instance().select(items, comparator, kthLowest, size);
     }
@@ -479,7 +479,7 @@ public class Array<T> implements Iterable<T>{
      */
     public int selectRankedIndex(Comparator<T> comparator, int kthLowest){
         if(kthLowest < 1){
-            throw new GdxRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+            throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
         }
         return Select.instance().selectIndex(items, comparator, kthLowest, size);
     }
@@ -619,7 +619,7 @@ public class Array<T> implements Iterable<T>{
 
         public boolean hasNext(){
             if(!valid){
-                throw new GdxRuntimeException("#iterator() cannot be used nested.");
+                throw new ArcRuntimeException("#iterator() cannot be used nested.");
             }
             return index < array.size;
         }
@@ -627,13 +627,13 @@ public class Array<T> implements Iterable<T>{
         public T next(){
             if(index >= array.size) throw new NoSuchElementException(String.valueOf(index));
             if(!valid){
-                throw new GdxRuntimeException("#iterator() cannot be used nested.");
+                throw new ArcRuntimeException("#iterator() cannot be used nested.");
             }
             return array.items[index++];
         }
 
         public void remove(){
-            if(!allowRemove) throw new GdxRuntimeException("Remove not allowed.");
+            if(!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
             index--;
             array.removeAt(index);
         }

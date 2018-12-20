@@ -18,7 +18,7 @@ package io.anuke.arc;
 
 import io.anuke.arc.Application.ApplicationType;
 import io.anuke.arc.net.*;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.pooling.Pool.Poolable;
 
 import java.io.InputStream;
@@ -67,7 +67,7 @@ public interface Net{
      * @param hints additional {@link ServerSocketHints} used to create the socket. Input null to use the default setting provided
      * by the system.
      * @return the {@link ServerSocket}
-     * @throws GdxRuntimeException in case the socket couldn't be opened
+     * @throws ArcRuntimeException in case the socket couldn't be opened
      */
     ServerSocket newServerSocket(Protocol protocol, String hostname, int port, ServerSocketHints hints);
 
@@ -77,7 +77,7 @@ public interface Net{
      * @param hints additional {@link ServerSocketHints} used to create the socket. Input null to use the default setting provided
      * by the system.
      * @return the {@link ServerSocket}
-     * @throws GdxRuntimeException in case the socket couldn't be opened
+     * @throws ArcRuntimeException in case the socket couldn't be opened
      */
     ServerSocket newServerSocket(Protocol protocol, int port, ServerSocketHints hints);
 
@@ -87,7 +87,7 @@ public interface Net{
      * @param port the port
      * @param hints additional {@link SocketHints} used to create the socket. Input null to use the default setting provided by the
      * system.
-     * @return GdxRuntimeException in case the socket couldn't be opened
+     * @return ArcRuntimeException in case the socket couldn't be opened
      */
     Socket newClientSocket(Protocol protocol, String host, int port, SocketHints hints);
 

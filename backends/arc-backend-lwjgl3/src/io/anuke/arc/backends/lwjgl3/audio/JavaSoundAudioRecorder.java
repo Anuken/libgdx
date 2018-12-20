@@ -17,7 +17,7 @@
 package io.anuke.arc.backends.lwjgl3.audio;
 
 import io.anuke.arc.audio.AudioRecorder;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
@@ -37,7 +37,7 @@ public class JavaSoundAudioRecorder implements AudioRecorder{
             line.open(format, buffer.length);
             line.start();
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error creating JavaSoundAudioRecorder.", ex);
+            throw new ArcRuntimeException("Error creating JavaSoundAudioRecorder.", ex);
         }
     }
 

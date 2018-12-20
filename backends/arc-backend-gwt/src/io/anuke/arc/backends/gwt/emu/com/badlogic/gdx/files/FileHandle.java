@@ -14,10 +14,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.files;
+package io.anuke.arc.files;
 
-import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Files.FileType;
+import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.io.*;
 

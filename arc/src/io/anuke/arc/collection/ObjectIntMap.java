@@ -17,7 +17,7 @@
 package io.anuke.arc.collection;
 
 import io.anuke.arc.math.Mathf;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 
 import java.util.Iterator;
@@ -708,7 +708,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>>{
         /** Note the same entry instance is returned each time this method is called. */
         public Entry<K> next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             K[] keyTable = map.keyTable;
             entry.key = keyTable[nextIndex];
             entry.value = map.valueTable[nextIndex];
@@ -718,7 +718,7 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return hasNext;
         }
 
@@ -737,13 +737,13 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return hasNext;
         }
 
         public int next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             int value = map.valueTable[nextIndex];
             currentIndex = nextIndex;
             findNextIndex();
@@ -765,13 +765,13 @@ public class ObjectIntMap<K> implements Iterable<ObjectIntMap.Entry<K>>{
         }
 
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return hasNext;
         }
 
         public K next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             K key = map.keyTable[nextIndex];
             currentIndex = nextIndex;
             findNextIndex();

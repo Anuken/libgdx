@@ -18,7 +18,7 @@ package io.anuke.arc.net;
 
 import io.anuke.arc.Net.Protocol;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * A server socket that accepts new incoming connections, returning {@link Socket} instances. The {@link #accept(SocketHints)}
@@ -37,7 +37,7 @@ public interface ServerSocket extends Disposable{
      * @param hints additional {@link SocketHints} applied to the accepted {@link Socket}. Input null to use the default setting
      * provided by the system.
      * @return the accepted {@link Socket}
-     * @throws GdxRuntimeException in case an error occurred
+     * @throws ArcRuntimeException in case an error occurred
      */
     Socket accept(SocketHints hints);
 }

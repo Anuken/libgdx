@@ -16,7 +16,7 @@
 
 package io.anuke.arc.backends.lwjgl3;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -118,7 +118,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
 
     public void glBufferSubData(int target, int offset, int size, Buffer data){
         if(data == null)
-            throw new GdxRuntimeException("Using null for the data not possible, blame LWJGL");
+            throw new ArcRuntimeException("Using null for the data not possible, blame LWJGL");
         else if(data instanceof ByteBuffer)
             GL15.glBufferSubData(target, offset, (ByteBuffer)data);
         else if(data instanceof IntBuffer)
@@ -164,13 +164,13 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
         if(data instanceof ByteBuffer){
             GL13.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer)data);
         }else{
-            throw new GdxRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
+            throw new ArcRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
         }
     }
 
     public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
                                           int imageSize, Buffer data){
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border){
@@ -272,7 +272,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
         else if(indices instanceof ByteBuffer && type == io.anuke.arc.graphics.GL20.GL_UNSIGNED_BYTE)
             GL11.glDrawElements(mode, (ByteBuffer)indices);
         else
-            throw new GdxRuntimeException("Can't use " + indices.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + indices.getClass().getName()
             + " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
     }
 
@@ -526,7 +526,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
         else if(pixels instanceof FloatBuffer)
             GL11.glReadPixels(x, y, width, height, format, type, (FloatBuffer)pixels);
         else
-            throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer or FloatBuffer instead. Blame LWJGL");
     }
 
@@ -593,7 +593,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
         else if(pixels instanceof DoubleBuffer)
             GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer)pixels);
         else
-            throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
     }
 
@@ -626,7 +626,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
         else if(pixels instanceof DoubleBuffer)
             GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (DoubleBuffer)pixels);
         else
-            throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
     }
 
@@ -804,7 +804,7 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
             else if(type == GL_FLOAT)
                 GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer());
             else
-                throw new GdxRuntimeException(
+                throw new ArcRuntimeException(
                 "Can't use "
                 + buffer.getClass().getName()
                 + " with type "
@@ -814,10 +814,10 @@ class Lwjgl3GL20 implements io.anuke.arc.graphics.GL20{
             if(type == GL_FLOAT)
                 GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (FloatBuffer)buffer);
             else
-                throw new GdxRuntimeException("Can't use " + buffer.getClass().getName() + " with type " + type
+                throw new ArcRuntimeException("Can't use " + buffer.getClass().getName() + " with type " + type
                 + " with this method.");
         }else
-            throw new GdxRuntimeException("Can't use " + buffer.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + buffer.getClass().getName()
             + " with this method. Use ByteBuffer instead. Blame LWJGL");
     }
 

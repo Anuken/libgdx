@@ -130,7 +130,7 @@ public class SharedLibraryLoader{
                     loadFile(platformName);
                 setLoaded(libraryName);
             }catch(Throwable ex){
-                throw new GdxRuntimeException("Couldn't load shared library '" + platformName + "' for target: "
+                throw new ArcRuntimeException("Couldn't load shared library '" + platformName + "' for target: "
                 + System.getProperty("os.name") + (is64Bit ? ", 64-bit" : ", 32-bit"), ex);
             }
         }
@@ -139,7 +139,7 @@ public class SharedLibraryLoader{
     private InputStream readFile(String path){
         if(nativesJar == null){
             InputStream input = SharedLibraryLoader.class.getResourceAsStream("/" + path);
-            if(input == null) throw new GdxRuntimeException("Unable to read file for extraction: " + path);
+            if(input == null) throw new ArcRuntimeException("Unable to read file for extraction: " + path);
             return input;
         }
 
@@ -147,10 +147,10 @@ public class SharedLibraryLoader{
         try{
             ZipFile file = new ZipFile(nativesJar);
             ZipEntry entry = file.getEntry(path);
-            if(entry == null) throw new GdxRuntimeException("Couldn't find '" + path + "' in JAR: " + nativesJar);
+            if(entry == null) throw new ArcRuntimeException("Couldn't find '" + path + "' in JAR: " + nativesJar);
             return file.getInputStream(entry);
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading '" + path + "' in JAR: " + nativesJar, ex);
+            throw new ArcRuntimeException("Error reading '" + path + "' in JAR: " + nativesJar, ex);
         }
     }
 
@@ -169,7 +169,7 @@ public class SharedLibraryLoader{
             File extractedFile = getExtractedFile(dirName, new File(sourcePath).getName());
             if(extractedFile == null){
                 extractedFile = getExtractedFile(UUID.randomUUID().toString(), new File(sourcePath).getName());
-                if(extractedFile == null) throw new GdxRuntimeException(
+                if(extractedFile == null) throw new ArcRuntimeException(
                 "Unable to find writable path to extract file. Is the user home directory writable?");
             }
             return extractFile(sourcePath, sourceCrc, extractedFile);
@@ -198,7 +198,7 @@ public class SharedLibraryLoader{
     private File getExtractedFile(String dirName, String fileName){
         // Temp directory with username in path.
         File idealFile = new File(
-        System.getProperty("java.io.tmpdir") + "/libgdx" + System.getProperty("user.name") + "/" + dirName, fileName);
+        System.getProperty("java.io.tmpdir") + "/arc" + System.getProperty("user.name") + "/" + dirName, fileName);
         if(canWrite(idealFile)) return idealFile;
 
         // System provided temp directory.
@@ -212,7 +212,7 @@ public class SharedLibraryLoader{
         }
 
         // User home.
-        File file = new File(System.getProperty("user.home") + "/.libgdx/" + dirName, fileName);
+        File file = new File(System.getProperty("user.home") + "/.arc/" + dirName, fileName);
         if(canWrite(file)) return file;
 
         // Relative directory.
@@ -286,7 +286,7 @@ public class SharedLibraryLoader{
                     output.write(buffer, 0, length);
                 }
             }catch(IOException ex){
-                throw new GdxRuntimeException("Error extracting file: " + sourcePath + "\nTo: " + extractedFile.getAbsolutePath(),
+                throw new ArcRuntimeException("Error extracting file: " + sourcePath + "\nTo: " + extractedFile.getAbsolutePath(),
                 ex);
             }finally{
                 StreamUtils.closeQuietly(input);
@@ -307,7 +307,7 @@ public class SharedLibraryLoader{
         String fileName = new File(sourcePath).getName();
 
         // Temp directory with username in path.
-        File file = new File(System.getProperty("java.io.tmpdir") + "/libgdx" + System.getProperty("user.name") + "/" + sourceCrc,
+        File file = new File(System.getProperty("java.io.tmpdir") + "/arc" + System.getProperty("user.name") + "/" + sourceCrc,
         fileName);
         Throwable ex = loadFile(sourcePath, sourceCrc, file);
         if(ex == null) return;
@@ -320,7 +320,7 @@ public class SharedLibraryLoader{
         }
 
         // User home.
-        file = new File(System.getProperty("user.home") + "/.libgdx/" + sourceCrc, fileName);
+        file = new File(System.getProperty("user.home") + "/.arc/" + sourceCrc, fileName);
         if(loadFile(sourcePath, sourceCrc, file) == null) return;
 
         // Relative directory.
@@ -334,7 +334,7 @@ public class SharedLibraryLoader{
             return;
         }
 
-        throw new GdxRuntimeException(ex);
+        throw new ArcRuntimeException(ex);
     }
 
     /** @return null if the file was extracted and loaded. */

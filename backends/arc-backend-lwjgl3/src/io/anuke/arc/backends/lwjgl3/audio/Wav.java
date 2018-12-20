@@ -17,7 +17,7 @@
 package io.anuke.arc.backends.lwjgl3.audio;
 
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.EOFException;
@@ -43,7 +43,7 @@ public class Wav{
             try{
                 return input.read(buffer);
             }catch(IOException ex){
-                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+                throw new ArcRuntimeException("Error reading WAV file: " + file, ex);
             }
         }
 
@@ -63,7 +63,7 @@ public class Wav{
                 input = new WavInputStream(file);
                 setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels, input.sampleRate);
             }catch(IOException ex){
-                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+                throw new ArcRuntimeException("Error reading WAV file: " + file, ex);
             }finally{
                 StreamUtils.closeQuietly(input);
             }
@@ -78,21 +78,21 @@ public class Wav{
             super(file.read());
             try{
                 if(read() != 'R' || read() != 'I' || read() != 'F' || read() != 'F')
-                    throw new GdxRuntimeException("RIFF header not found: " + file);
+                    throw new ArcRuntimeException("RIFF header not found: " + file);
 
                 skipFully(4);
 
                 if(read() != 'W' || read() != 'A' || read() != 'V' || read() != 'E')
-                    throw new GdxRuntimeException("Invalid wave file header: " + file);
+                    throw new ArcRuntimeException("Invalid wave file header: " + file);
 
                 int fmtChunkLength = seekToChunk('f', 'm', 't', ' ');
 
                 int type = read() & 0xff | (read() & 0xff) << 8;
-                if(type != 1) throw new GdxRuntimeException("WAV files must be PCM: " + type);
+                if(type != 1) throw new ArcRuntimeException("WAV files must be PCM: " + type);
 
                 channels = read() & 0xff | (read() & 0xff) << 8;
                 if(channels != 1 && channels != 2)
-                    throw new GdxRuntimeException("WAV files must have 1 or 2 channels: " + channels);
+                    throw new ArcRuntimeException("WAV files must have 1 or 2 channels: " + channels);
 
                 sampleRate = read() & 0xff | (read() & 0xff) << 8 | (read() & 0xff) << 16 | (read() & 0xff) << 24;
 
@@ -100,14 +100,14 @@ public class Wav{
 
                 int bitsPerSample = read() & 0xff | (read() & 0xff) << 8;
                 if(bitsPerSample != 16)
-                    throw new GdxRuntimeException("WAV files must have 16 bits per sample: " + bitsPerSample);
+                    throw new ArcRuntimeException("WAV files must have 16 bits per sample: " + bitsPerSample);
 
                 skipFully(fmtChunkLength - 16);
 
                 dataRemaining = seekToChunk('d', 'a', 't', 'a');
             }catch(Throwable ex){
                 StreamUtils.closeQuietly(this);
-                throw new GdxRuntimeException("Error reading WAV file: " + file, ex);
+                throw new ArcRuntimeException("Error reading WAV file: " + file, ex);
             }
         }
 

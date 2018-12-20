@@ -30,8 +30,8 @@ import io.anuke.arc.graphics.Texture;
 import io.anuke.arc.graphics.g2d.BitmapFont;
 import io.anuke.arc.graphics.g2d.TextureAtlas;
 import io.anuke.arc.graphics.glutils.ShaderProgram;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.I18NBundle;
 import io.anuke.arc.utils.TimeUtils;
 import io.anuke.arc.utils.async.AsyncExecutor;
@@ -107,13 +107,13 @@ public class AssetManager implements Disposable{
      */
     public synchronized <T> T get(String fileName){
         Class<T> type = assetTypes.get(fileName);
-        if(type == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
-        if(assetsByType == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(assetsByType == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         RefCountedContainer assetContainer = assetsByType.get(fileName);
-        if(assetContainer == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(assetContainer == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         T asset = assetContainer.getObject(type);
-        if(asset == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(asset == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         return asset;
     }
 
@@ -124,11 +124,11 @@ public class AssetManager implements Disposable{
      */
     public synchronized <T> T get(String fileName, Class<T> type){
         ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
-        if(assetsByType == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(assetsByType == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         RefCountedContainer assetContainer = assetsByType.get(fileName);
-        if(assetContainer == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(assetContainer == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         T asset = assetContainer.getObject(type);
-        if(asset == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(asset == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         return asset;
     }
 
@@ -210,7 +210,7 @@ public class AssetManager implements Disposable{
 
         // get the asset and its type
         Class type = assetTypes.get(fileName);
-        if(type == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
 
         RefCountedContainer assetRef = assets.get(type).get(fileName);
 
@@ -346,7 +346,7 @@ public class AssetManager implements Disposable{
      */
     public synchronized <T> void load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter){
         AssetLoader loader = getLoader(type, fileName);
-        if(loader == null) throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(type));
+        if(loader == null) throw new ArcRuntimeException("No loader for type: " + ClassReflection.getSimpleName(type));
 
         // reset stats
         if(loadQueue.size == 0){
@@ -360,7 +360,7 @@ public class AssetManager implements Disposable{
         // check preload queue
         for(int i = 0; i < loadQueue.size; i++){
             AssetDescriptor desc = loadQueue.get(i);
-            if(desc.fileName.equals(fileName) && !desc.type.equals(type)) throw new GdxRuntimeException(
+            if(desc.fileName.equals(fileName) && !desc.type.equals(type)) throw new ArcRuntimeException(
             "Asset with name '" + fileName + "' already in preload queue, but has different type (expected: "
             + ClassReflection.getSimpleName(type) + ", found: " + ClassReflection.getSimpleName(desc.type) + ")");
         }
@@ -368,7 +368,7 @@ public class AssetManager implements Disposable{
         // check task list
         for(int i = 0; i < tasks.size(); i++){
             AssetDescriptor desc = tasks.get(i).assetDesc;
-            if(desc.fileName.equals(fileName) && !desc.type.equals(type)) throw new GdxRuntimeException(
+            if(desc.fileName.equals(fileName) && !desc.type.equals(type)) throw new ArcRuntimeException(
             "Asset with name '" + fileName + "' already in task list, but has different type (expected: "
             + ClassReflection.getSimpleName(type) + ", found: " + ClassReflection.getSimpleName(desc.type) + ")");
         }
@@ -376,7 +376,7 @@ public class AssetManager implements Disposable{
         // check loaded assets
         Class otherType = assetTypes.get(fileName);
         if(otherType != null && !otherType.equals(type))
-            throw new GdxRuntimeException("Asset with name '" + fileName + "' already loaded, but has different type (expected: "
+            throw new ArcRuntimeException("Asset with name '" + fileName + "' already loaded, but has different type (expected: "
             + ClassReflection.getSimpleName(type) + ", found: " + ClassReflection.getSimpleName(otherType) + ")");
 
         toLoad++;
@@ -519,7 +519,7 @@ public class AssetManager implements Disposable{
     private void addTask(AssetDescriptor assetDesc){
         AssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
         if(loader == null)
-            throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(assetDesc.type));
+            throw new ArcRuntimeException("No loader for type: " + ClassReflection.getSimpleName(assetDesc.type));
         tasks.push(new AssetLoadingTask(this, assetDesc, loader, executor));
         peakTasks++;
     }
@@ -603,7 +603,7 @@ public class AssetManager implements Disposable{
      */
     private void handleTaskError(Throwable t){
 
-        if(tasks.isEmpty()) throw new GdxRuntimeException(t);
+        if(tasks.isEmpty()) throw new ArcRuntimeException(t);
 
         // pop the faulty task from the stack
         AssetLoadingTask task = tasks.pop();
@@ -623,7 +623,7 @@ public class AssetManager implements Disposable{
         if(listener != null){
             listener.error(assetDesc, t);
         }else{
-            throw new GdxRuntimeException(t);
+            throw new ArcRuntimeException(t);
         }
     }
 
@@ -734,7 +734,7 @@ public class AssetManager implements Disposable{
      */
     public synchronized int getReferenceCount(String fileName){
         Class type = assetTypes.get(fileName);
-        if(type == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         return assets.get(type).get(fileName).getRefCount();
     }
 
@@ -743,7 +743,7 @@ public class AssetManager implements Disposable{
      */
     public synchronized void setReferenceCount(String fileName, int refCount){
         Class type = assetTypes.get(fileName);
-        if(type == null) throw new GdxRuntimeException("Asset not loaded: " + fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
         assets.get(type).get(fileName).setRefCount(refCount);
     }
 

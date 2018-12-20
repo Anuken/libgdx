@@ -17,7 +17,7 @@
 package io.anuke.arc.math;
 
 import io.anuke.arc.math.geom.Vector2;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.Serializable;
 
@@ -356,11 +356,11 @@ public final class Affine2 implements Serializable{
     /**
      * Inverts this matrix given that the determinant is != 0.
      * @return This matrix for the purpose of chaining operations.
-     * @throws GdxRuntimeException if the matrix is singular (not invertible)
+     * @throws ArcRuntimeException if the matrix is singular (not invertible)
      */
     public Affine2 inv(){
         float det = det();
-        if(det == 0) throw new GdxRuntimeException("Can't invert a singular affine matrix");
+        if(det == 0) throw new ArcRuntimeException("Can't invert a singular affine matrix");
 
         float invDet = 1.0f / det;
 

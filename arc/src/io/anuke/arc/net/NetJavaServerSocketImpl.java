@@ -17,7 +17,7 @@
 package io.anuke.arc.net;
 
 import io.anuke.arc.Net.Protocol;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.net.InetSocketAddress;
 
@@ -65,7 +65,7 @@ public class NetJavaServerSocketImpl implements ServerSocket{
                 server.bind(address);
             }
         }catch(Exception e){
-            throw new GdxRuntimeException("Cannot create a server socket at port " + port + ".", e);
+            throw new ArcRuntimeException("Cannot create a server socket at port " + port + ".", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class NetJavaServerSocketImpl implements ServerSocket{
         try{
             return new NetJavaSocketImpl(server.accept(), hints);
         }catch(Exception e){
-            throw new GdxRuntimeException("Error accepting socket.", e);
+            throw new ArcRuntimeException("Error accepting socket.", e);
         }
     }
 
@@ -90,7 +90,7 @@ public class NetJavaServerSocketImpl implements ServerSocket{
                 server.close();
                 server = null;
             }catch(Exception e){
-                throw new GdxRuntimeException("Error closing server.", e);
+                throw new ArcRuntimeException("Error closing server.", e);
             }
         }
     }

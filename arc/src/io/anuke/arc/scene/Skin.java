@@ -28,8 +28,8 @@ import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import io.anuke.arc.graphics.g2d.TextureRegion;
 import io.anuke.arc.scene.style.*;
 import io.anuke.arc.scene.style.SkinReader.ValueReader;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.serialization.JsonReader;
 import io.anuke.arc.utils.serialization.JsonValue;
 import io.anuke.arc.utils.serialization.SerializationException;
@@ -39,9 +39,6 @@ import io.anuke.arc.utils.serialization.SerializationException;
  * be looked up by name and type. Resources can be described in JSON. Skin provides useful conversions, such as allowing access to
  * regions in the atlas as ninepatches, sprites, drawables, etc. The get* methods return an instance of the object in the skin.
  * The new* methods return a copy of an instance in the skin.
- * <p>
- * See the <a href="https://github.com/libgdx/libgdx/wiki/Skin">documentation</a> for more.
- * @author Nathan Sweet
  */
 @SuppressWarnings("unchecked")
 public class Skin implements Disposable{
@@ -158,7 +155,7 @@ public class Skin implements Disposable{
 
     /**
      * Returns a resource named "default" for the specified type.
-     * @throws GdxRuntimeException if the resource was not found.
+     * @throws ArcRuntimeException if the resource was not found.
      */
     public <T> T get(Class<T> type){
         return get("default", type);
@@ -166,7 +163,7 @@ public class Skin implements Disposable{
 
     /**
      * Returns a named resource of the specified type.
-     * @throws GdxRuntimeException if the resource was not found.
+     * @throws ArcRuntimeException if the resource was not found.
      */
     public <T> T get(String name, Class<T> type){
         if(name == null) throw new IllegalArgumentException("name cannot be null.");
@@ -178,9 +175,9 @@ public class Skin implements Disposable{
 
         ObjectMap<String, Object> typeResources = resources.get(type);
         if(typeResources == null)
-            throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
+            throw new ArcRuntimeException("No " + type.getName() + " registered with name: " + name);
         Object resource = typeResources.get(name);
-        if(resource == null) throw new GdxRuntimeException("No " + type.getName() + " registered with name: " + name);
+        if(resource == null) throw new ArcRuntimeException("No " + type.getName() + " registered with name: " + name);
         return (T)resource;
     }
 
@@ -223,7 +220,7 @@ public class Skin implements Disposable{
         if(region != null) return region;
 
         Texture texture = optional(name, Texture.class);
-        if(texture == null) throw new GdxRuntimeException("No TextureRegion or Texture registered with name: " + name);
+        if(texture == null) throw new ArcRuntimeException("No TextureRegion or Texture registered with name: " + name);
         region = new TextureRegion(texture);
         add(name, region, TextureRegion.class);
         return region;
@@ -280,8 +277,8 @@ public class Skin implements Disposable{
             if(patch == null) patch = new NinePatch(region);
             add(name, patch, NinePatch.class);
             return patch;
-        }catch(GdxRuntimeException ex){
-            throw new GdxRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
+        }catch(ArcRuntimeException ex){
+            throw new ArcRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
         }
     }
 
@@ -303,7 +300,7 @@ public class Skin implements Disposable{
                 }
             }
             if(drawable == null) drawable = new TextureRegionDrawable(textureRegion);
-        }catch(GdxRuntimeException ignored){
+        }catch(ArcRuntimeException ignored){
         }
 
         // Check for explicit registration of ninepatch, sprite, or tiled drawable.
@@ -312,7 +309,7 @@ public class Skin implements Disposable{
             if(patch != null){
                 drawable = new NinePatchDrawable(patch);
             }else{
-                throw new GdxRuntimeException("No Drawable, NinePatch, TextureRegion, or Texture registered with name: " + name);
+                throw new ArcRuntimeException("No Drawable, NinePatch, TextureRegion, or Texture registered with name: " + name);
             }
         }
 
@@ -354,7 +351,7 @@ public class Skin implements Disposable{
         if(drawable instanceof TextureRegionDrawable)
             return new TextureRegionDrawable((TextureRegionDrawable)drawable);
         if(drawable instanceof NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable)drawable);
-        throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+        throw new ArcRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
     }
 
     /** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
@@ -370,7 +367,7 @@ public class Skin implements Disposable{
         else if(drawable instanceof NinePatchDrawable)
             newDrawable = ((NinePatchDrawable)drawable).tint(tint);
         else
-            throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+            throw new ArcRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
 
         if(newDrawable instanceof BaseDrawable){
             BaseDrawable named = (BaseDrawable)newDrawable;

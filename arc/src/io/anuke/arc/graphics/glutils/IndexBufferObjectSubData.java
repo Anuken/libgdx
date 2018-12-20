@@ -18,8 +18,8 @@ package io.anuke.arc.graphics.glutils;
 
 import io.anuke.arc.Core;
 import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.BufferUtils;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
@@ -172,7 +172,7 @@ public class IndexBufferObjectSubData implements IndexData{
     /** Binds this IndexBufferObject for rendering with glDrawElements. */
     public void bind(){
         if(bufferHandle == 0)
-            throw new GdxRuntimeException("IndexBufferObject cannot be used after it has been disposed.");
+            throw new ArcRuntimeException("IndexBufferObject cannot be used after it has been disposed.");
 
         Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, bufferHandle);
         if(isDirty){

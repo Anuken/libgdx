@@ -24,9 +24,9 @@ import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.GL30;
 import io.anuke.arc.graphics.GLTexture;
 import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.BufferUtils;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -311,19 +311,19 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable{
 
         if(!runningGL30){
             if(bufferBuilder.hasPackedStencilDepthRenderBuffer){
-                throw new GdxRuntimeException("Packed Stencil/Render render buffers are not available on GLES 2.0");
+                throw new ArcRuntimeException("Packed Stencil/Render render buffers are not available on GLES 2.0");
             }
             if(bufferBuilder.textureAttachmentSpecs.size > 1){
-                throw new GdxRuntimeException("Multiple render targets not available on GLES 2.0");
+                throw new ArcRuntimeException("Multiple render targets not available on GLES 2.0");
             }
             for(FrameBufferTextureAttachmentSpec spec : bufferBuilder.textureAttachmentSpecs){
                 if(spec.isDepth)
-                    throw new GdxRuntimeException("Depth texture FrameBuffer Attachment not available on GLES 2.0");
+                    throw new ArcRuntimeException("Depth texture FrameBuffer Attachment not available on GLES 2.0");
                 if(spec.isStencil)
-                    throw new GdxRuntimeException("Stencil texture FrameBuffer Attachment not available on GLES 2.0");
+                    throw new ArcRuntimeException("Stencil texture FrameBuffer Attachment not available on GLES 2.0");
                 if(spec.isFloat){
                     if(!Core.graphics.supportsExtension("OES_texture_float")){
-                        throw new GdxRuntimeException("Float texture FrameBuffer Attachment not available on GLES 2.0");
+                        throw new ArcRuntimeException("Float texture FrameBuffer Attachment not available on GLES 2.0");
                     }
                 }
             }

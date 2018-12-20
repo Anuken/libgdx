@@ -79,9 +79,9 @@ public class PixmapPackerIO{
 
     /** Image formats which can be used when saving a PixmapPacker. */
     public enum ImageFormat{
-        /** A simple compressed image format which is libgdx specific. */
+        /** A simple compressed image format which is arc specific. */
         CIM(".cim"),
-        /** A standard compressed image format which is not libgdx specific. */
+        /** A standard compressed image format which is not arc specific. */
         PNG(".png");
 
         private final String extension;

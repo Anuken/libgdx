@@ -29,7 +29,7 @@ import io.anuke.arc.scene.ui.layout.Container;
 import io.anuke.arc.scene.ui.layout.WidgetGroup;
 import io.anuke.arc.scene.utils.Layout;
 import io.anuke.arc.scene.utils.ScissorStack;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import static io.anuke.arc.Core.graphics;
 
@@ -328,7 +328,7 @@ public class SplitPane extends WidgetGroup{
     }
 
     public void setMinSplitAmount(float minAmount){
-        if(minAmount < 0 || minAmount > 1) throw new GdxRuntimeException("minAmount has to be >= 0 and <= 1");
+        if(minAmount < 0 || minAmount > 1) throw new ArcRuntimeException("minAmount has to be >= 0 and <= 1");
         this.minAmount = minAmount;
     }
 
@@ -337,7 +337,7 @@ public class SplitPane extends WidgetGroup{
     }
 
     public void setMaxSplitAmount(float maxAmount){
-        if(maxAmount < 0 || maxAmount > 1) throw new GdxRuntimeException("maxAmount has to be >= 0 and <= 1");
+        if(maxAmount < 0 || maxAmount > 1) throw new ArcRuntimeException("maxAmount has to be >= 0 and <= 1");
         this.maxAmount = maxAmount;
     }
 

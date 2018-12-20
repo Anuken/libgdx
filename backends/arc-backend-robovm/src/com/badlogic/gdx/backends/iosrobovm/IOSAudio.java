@@ -24,7 +24,7 @@ import io.anuke.arc.audio.Sound;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALAudioTrack;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Log;
 
 public class IOSAudio implements Audio{
@@ -63,7 +63,7 @@ public class IOSAudio implements Audio{
                 return new IOSMusic(track);
             }
         }
-        throw new GdxRuntimeException("Error opening music file at " + path);
+        throw new ArcRuntimeException("Error opening music file at " + path);
     }
 
 }

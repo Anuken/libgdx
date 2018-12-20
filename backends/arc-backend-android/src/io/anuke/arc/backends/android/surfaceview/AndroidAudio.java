@@ -31,7 +31,7 @@ import io.anuke.arc.audio.AudioRecorder;
 import io.anuke.arc.audio.Music;
 import io.anuke.arc.audio.Sound;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -101,7 +101,7 @@ public final class AndroidAudio implements Audio{
     @Override
     public AudioDevice newAudioDevice(int samplingRate, boolean isMono){
         if(soundPool == null){
-            throw new GdxRuntimeException("Android audio is not enabled by the application config.");
+            throw new ArcRuntimeException("Android audio is not enabled by the application config.");
         }
         return new AndroidAudioDevice(samplingRate, isMono);
     }
@@ -110,7 +110,7 @@ public final class AndroidAudio implements Audio{
     @Override
     public Music newMusic(FileHandle file){
         if(soundPool == null){
-            throw new GdxRuntimeException("Android audio is not enabled by the application config.");
+            throw new ArcRuntimeException("Android audio is not enabled by the application config.");
         }
         AndroidFileHandle aHandle = (AndroidFileHandle)file;
 
@@ -128,7 +128,7 @@ public final class AndroidAudio implements Audio{
                 }
                 return music;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error loading audio file: " + file
+                throw new ArcRuntimeException("Error loading audio file: " + file
                 + "\nNote: Internal audio files must be placed in the assets directory.", ex);
             }
         }else{
@@ -141,7 +141,7 @@ public final class AndroidAudio implements Audio{
                 }
                 return music;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error loading audio file: " + file, ex);
+                throw new ArcRuntimeException("Error loading audio file: " + file, ex);
             }
         }
 
@@ -155,7 +155,7 @@ public final class AndroidAudio implements Audio{
      */
     public Music newMusic(FileDescriptor fd){
         if(soundPool == null){
-            throw new GdxRuntimeException("Android audio is not enabled by the application config.");
+            throw new ArcRuntimeException("Android audio is not enabled by the application config.");
         }
 
         MediaPlayer mediaPlayer = new MediaPlayer();
@@ -170,7 +170,7 @@ public final class AndroidAudio implements Audio{
             }
             return music;
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error loading audio from FileDescriptor", ex);
+            throw new ArcRuntimeException("Error loading audio from FileDescriptor", ex);
         }
     }
 
@@ -178,7 +178,7 @@ public final class AndroidAudio implements Audio{
     @Override
     public Sound newSound(FileHandle file){
         if(soundPool == null){
-            throw new GdxRuntimeException("Android audio is not enabled by the application config.");
+            throw new ArcRuntimeException("Android audio is not enabled by the application config.");
         }
         AndroidFileHandle aHandle = (AndroidFileHandle)file;
         if(aHandle.type() == FileType.Internal){
@@ -188,14 +188,14 @@ public final class AndroidAudio implements Audio{
                 descriptor.close();
                 return sound;
             }catch(IOException ex){
-                throw new GdxRuntimeException("Error loading audio file: " + file
+                throw new ArcRuntimeException("Error loading audio file: " + file
                 + "\nNote: Internal audio files must be placed in the assets directory.", ex);
             }
         }else{
             try{
                 return new AndroidSound(soundPool, manager, soundPool.load(aHandle.file().getPath(), 1));
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error loading audio file: " + file, ex);
+                throw new ArcRuntimeException("Error loading audio file: " + file, ex);
             }
         }
     }
@@ -204,7 +204,7 @@ public final class AndroidAudio implements Audio{
     @Override
     public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono){
         if(soundPool == null){
-            throw new GdxRuntimeException("Android audio is not enabled by the application config.");
+            throw new ArcRuntimeException("Android audio is not enabled by the application config.");
         }
         return new AndroidAudioRecorder(samplingRate, isMono);
     }

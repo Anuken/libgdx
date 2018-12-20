@@ -17,6 +17,7 @@
 package io.anuke.arc.backends.lwjgl3;
 
 import io.anuke.arc.Net;
+import io.anuke.arc.net.*;
 import io.anuke.arc.utils.SharedLibraryLoader;
 
 import java.awt.*;

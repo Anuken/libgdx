@@ -21,7 +21,7 @@ import io.anuke.arc.assets.loaders.AsynchronousAssetLoader;
 import io.anuke.arc.assets.loaders.SynchronousAssetLoader;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.TimeUtils;
 import io.anuke.arc.utils.async.AsyncExecutor;
 import io.anuke.arc.utils.async.AsyncResult;
@@ -119,7 +119,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
                     try{
                         depsFuture.get();
                     }catch(Exception e){
-                        throw new GdxRuntimeException("Couldn't load dependencies of asset: " + assetDesc.fileName, e);
+                        throw new ArcRuntimeException("Couldn't load dependencies of asset: " + assetDesc.fileName, e);
                     }
                     dependenciesLoaded = true;
                     if(asyncDone){
@@ -137,7 +137,7 @@ class AssetLoadingTask implements AsyncTask<Void>{
                     try{
                         loadFuture.get();
                     }catch(Exception e){
-                        throw new GdxRuntimeException("Couldn't load asset: " + assetDesc.fileName, e);
+                        throw new ArcRuntimeException("Couldn't load asset: " + assetDesc.fileName, e);
                     }
                     asset = asyncLoader.loadSync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.params);
                 }

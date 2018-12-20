@@ -16,7 +16,7 @@
 
 package io.anuke.arc.backends.lwjgl3;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import org.lwjgl.opengl.*;
 
 import java.nio.*;
@@ -32,7 +32,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements io.anuke.arc.graphics.GL30{
         if(indices instanceof ByteBuffer) GL12.glDrawRangeElements(mode, start, end, (ByteBuffer)indices);
         else if(indices instanceof ShortBuffer) GL12.glDrawRangeElements(mode, start, end, (ShortBuffer)indices);
         else if(indices instanceof IntBuffer) GL12.glDrawRangeElements(mode, start, end, (IntBuffer)indices);
-        else throw new GdxRuntimeException("indices must be byte, short or int buffer");
+        else throw new ArcRuntimeException("indices must be byte, short or int buffer");
     }
 
     @Override
@@ -56,7 +56,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements io.anuke.arc.graphics.GL30{
         else if(pixels instanceof DoubleBuffer)
             GL12.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, (DoubleBuffer)pixels);
         else
-            throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
     }
 
@@ -80,7 +80,7 @@ class Lwjgl3GL30 extends Lwjgl3GL20 implements io.anuke.arc.graphics.GL30{
         else if(pixels instanceof DoubleBuffer)
             GL12.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (DoubleBuffer)pixels);
         else
-            throw new GdxRuntimeException("Can't use " + pixels.getClass().getName()
+            throw new ArcRuntimeException("Can't use " + pixels.getClass().getName()
             + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
     }
 

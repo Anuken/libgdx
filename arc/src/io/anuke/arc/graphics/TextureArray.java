@@ -20,7 +20,7 @@ import io.anuke.arc.Application;
 import io.anuke.arc.Core;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class TextureArray extends GLTexture{
         super(GL30.GL_TEXTURE_2D_ARRAY, Core.gl.glGenTexture());
 
         if(Core.gl30 == null){
-            throw new GdxRuntimeException("TextureArray requires a device running with GLES 3.0 compatibilty");
+            throw new ArcRuntimeException("TextureArray requires a device running with GLES 3.0 compatibilty");
         }
 
         load(data);
@@ -112,7 +112,7 @@ public class TextureArray extends GLTexture{
 
     private void load(TextureArrayData data){
         if(this.data != null && data.isManaged() != this.data.isManaged())
-            throw new GdxRuntimeException("New data must have the same managed status as the old data");
+            throw new ArcRuntimeException("New data must have the same managed status as the old data");
         this.data = data;
 
         bind();
@@ -149,7 +149,7 @@ public class TextureArray extends GLTexture{
 
     @Override
     protected void reload(){
-        if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged TextureArray");
+        if(!isManaged()) throw new ArcRuntimeException("Tried to reload an unmanaged TextureArray");
         glHandle = Core.gl.glGenTexture();
         load(data);
     }

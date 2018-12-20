@@ -27,7 +27,7 @@ import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.glutils.FileTextureData;
 import io.anuke.arc.graphics.glutils.PixmapTextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -194,7 +194,7 @@ public class Texture extends GLTexture{
 
     public void load(TextureData data){
         if(this.data != null && data.isManaged() != this.data.isManaged())
-            throw new GdxRuntimeException("New data must have the same managed status as the old data");
+            throw new ArcRuntimeException("New data must have the same managed status as the old data");
         this.data = data;
 
         if(!data.isPrepared()) data.prepare();
@@ -213,7 +213,7 @@ public class Texture extends GLTexture{
      */
     @Override
     protected void reload(){
-        if(!isManaged()) throw new GdxRuntimeException("Tried to reload unmanaged Texture");
+        if(!isManaged()) throw new ArcRuntimeException("Tried to reload unmanaged Texture");
         glHandle = Core.gl.glGenTexture();
         load(data);
     }
@@ -226,7 +226,7 @@ public class Texture extends GLTexture{
      * @param y The y coordinate in pixels
      */
     public void draw(Pixmap pixmap, int x, int y){
-        if(data.isManaged()) throw new GdxRuntimeException("can't draw to a managed texture");
+        if(data.isManaged()) throw new ArcRuntimeException("can't draw to a managed texture");
 
         bind();
         Core.gl.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(), pixmap.getGLFormat(), pixmap.getGLType(),

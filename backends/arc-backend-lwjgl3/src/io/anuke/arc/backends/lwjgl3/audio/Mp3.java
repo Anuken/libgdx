@@ -17,7 +17,7 @@
 package io.anuke.arc.backends.lwjgl3.audio;
 
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import javazoom.jl.decoder.*;
 
 import java.io.ByteArrayOutputStream;
@@ -39,13 +39,13 @@ public class Mp3{
             bufferOverhead = 4096;
             try{
                 Header header = bitstream.readFrame();
-                if(header == null) throw new GdxRuntimeException("Empty MP3");
+                if(header == null) throw new ArcRuntimeException("Empty MP3");
                 int channels = header.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
                 outputBuffer = new OutputBuffer(channels, false);
                 decoder.setOutputBuffer(outputBuffer);
                 setup(channels, header.getSampleRate());
             }catch(BitstreamException e){
-                throw new GdxRuntimeException("error while preloading mp3", e);
+                throw new ArcRuntimeException("error while preloading mp3", e);
             }
         }
 
@@ -83,7 +83,7 @@ public class Mp3{
                 return totalLength;
             }catch(Throwable ex){
                 reset();
-                throw new GdxRuntimeException("Error reading audio data.", ex);
+                throw new ArcRuntimeException("Error reading audio data.", ex);
             }
         }
 
@@ -131,7 +131,7 @@ public class Mp3{
                 bitstream.close();
                 setup(output.toByteArray(), channels, sampleRate);
             }catch(Throwable ex){
-                throw new GdxRuntimeException("Error reading audio data.", ex);
+                throw new ArcRuntimeException("Error reading audio data.", ex);
             }
         }
     }

@@ -47,26 +47,17 @@ ipch/
 hs_err_pid*
 Thumbs.db
 
-libgdx-*.zip
-libgdx-*.zip.MD5
+arc-*.zip
+arc-*.zip.MD5
 
 *.iml
 /.idea/
 
 #core & extension libs/ folders that have no 3rd party dependencies in them
-/gdx/libs
-/backends/gdx-backend-robovm/libs/
-/extensions/gdx-box2d/gdx-box2d/libs/
-/extensions/gdx-freetype/libs/
-
-#the LWJGL3 libs are pulled via fetch.xml
-/backends/gdx-backend-lwjgl3/libs/lwjgl*.jar
-
-#ensure gdx-setup.jar works properly
-!/extensions/gdx-setup/src/com/badlogic/gdx/setup/resources/gwt/war
+/backends/arc-backend-robovm/libs/
+/extensions/arc-freetype/libs/
 
 #directories created by fetch.xml
-/tests/gdx-tests-android/libs
 /tmp/
 
 #gradle wrapper

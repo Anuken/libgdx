@@ -22,7 +22,7 @@ import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.graphics.Texture.TextureWrap;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * <p>
@@ -92,7 +92,7 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
      * @param height the height of the cubemap in pixels
      * @param hasDepth whether to attach a depth buffer
      * @param hasStencil whether to attach a stencil buffer
-     * @throws io.anuke.arc.utils.GdxRuntimeException in case the FrameBuffer could not be created
+     * @throws ArcRuntimeException in case the FrameBuffer could not be created
      */
     public FrameBufferCubemap(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil){
         FrameBufferCubemapBuilder frameBufferBuilder = new FrameBufferCubemapBuilder(width, height);
@@ -146,7 +146,7 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap>{
      */
     public boolean nextSide(){
         if(currentSide > 5){
-            throw new GdxRuntimeException("No remaining sides.");
+            throw new ArcRuntimeException("No remaining sides.");
         }else if(currentSide == 5){
             return false;
         }

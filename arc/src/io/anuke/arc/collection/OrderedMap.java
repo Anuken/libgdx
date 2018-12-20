@@ -16,7 +16,7 @@
 
 package io.anuke.arc.collection;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 
 import java.util.NoSuchElementException;
@@ -181,7 +181,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
 
         public Entry<K, V> next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             entry.key = keys.get(nextIndex);
             entry.value = map.get(entry.key);
             nextIndex++;
@@ -211,7 +211,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
 
         public K next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             K key = keys.get(nextIndex);
             currentIndex = nextIndex;
             nextIndex++;
@@ -242,7 +242,7 @@ public class OrderedMap<K, V> extends ObjectMap<K, V>{
 
         public V next(){
             if(!hasNext) throw new NoSuchElementException();
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             V value = map.get(keys.get(nextIndex));
             currentIndex = nextIndex;
             nextIndex++;

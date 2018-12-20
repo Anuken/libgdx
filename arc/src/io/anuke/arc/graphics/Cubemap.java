@@ -30,7 +30,7 @@ import io.anuke.arc.graphics.Texture.TextureWrap;
 import io.anuke.arc.graphics.glutils.FacedCubemapData;
 import io.anuke.arc.graphics.glutils.PixmapTextureData;
 import io.anuke.arc.math.geom.Vector3;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -218,7 +218,7 @@ public class Cubemap extends GLTexture{
 
     @Override
     protected void reload(){
-        if(!isManaged()) throw new GdxRuntimeException("Tried to reload an unmanaged Cubemap");
+        if(!isManaged()) throw new ArcRuntimeException("Tried to reload an unmanaged Cubemap");
         glHandle = Core.gl.glGenTexture();
         load(data);
     }

@@ -4,7 +4,7 @@ import io.anuke.arc.graphics.GLTexture;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.TextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * This class will load each contained TextureData to the chosen mipmap level.
@@ -35,7 +35,7 @@ public class MipMapTextureData implements TextureData{
 
     @Override
     public Pixmap consumePixmap(){
-        throw new GdxRuntimeException("It's compressed, use the compressed method");
+        throw new ArcRuntimeException("It's compressed, use the compressed method");
     }
 
     @Override

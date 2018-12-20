@@ -263,7 +263,7 @@ public class Timer{
     }
 
     /**
-     * Manages a single thread for updating timers. Uses libgdx application events to pause, resume, and dispose the thread.
+     * Manages a single thread for updating timers. Uses application events to pause, resume, and dispose the thread.
      * @author Nathan Sweet
      */
     static class TimerThread implements Runnable, ApplicationListener{
@@ -295,7 +295,7 @@ public class Timer{
                             try{
                                 waitMillis = instances.get(i).update(timeMillis, waitMillis);
                             }catch(Throwable ex){
-                                throw new GdxRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
+                                throw new ArcRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
                             }
                         }
                     }

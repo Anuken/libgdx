@@ -16,11 +16,12 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Files;
-import io.anuke.arc.backends.gwt.preloader.Preloader;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gwt.storage.client.Storage;
+import io.anuke.arc.Files;
+import io.anuke.arc.Files.FileType;
+import io.anuke.arc.backends.gwt.preloader.Preloader;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.utils.GdxRuntimeException;
 
 public class GwtFiles implements Files{
 

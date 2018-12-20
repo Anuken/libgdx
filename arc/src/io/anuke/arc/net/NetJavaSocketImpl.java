@@ -17,7 +17,7 @@
 package io.anuke.arc.net;
 
 import io.anuke.arc.Net.Protocol;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -46,7 +46,7 @@ public class NetJavaSocketImpl implements Socket{
                 socket.connect(address);
             }
         }catch(Exception e){
-            throw new GdxRuntimeException("Error making a socket connection to " + host + ":" + port, e);
+            throw new ArcRuntimeException("Error making a socket connection to " + host + ":" + port, e);
         }
     }
 
@@ -68,7 +68,7 @@ public class NetJavaSocketImpl implements Socket{
                 socket.setSoLinger(hints.linger, hints.lingerDuration);
                 socket.setSoTimeout(hints.socketTimeout);
             }catch(Exception e){
-                throw new GdxRuntimeException("Error setting socket hints.", e);
+                throw new ArcRuntimeException("Error setting socket hints.", e);
             }
         }
     }
@@ -87,7 +87,7 @@ public class NetJavaSocketImpl implements Socket{
         try{
             return socket.getInputStream();
         }catch(Exception e){
-            throw new GdxRuntimeException("Error getting input stream from socket.", e);
+            throw new ArcRuntimeException("Error getting input stream from socket.", e);
         }
     }
 
@@ -96,7 +96,7 @@ public class NetJavaSocketImpl implements Socket{
         try{
             return socket.getOutputStream();
         }catch(Exception e){
-            throw new GdxRuntimeException("Error getting output stream from socket.", e);
+            throw new ArcRuntimeException("Error getting output stream from socket.", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class NetJavaSocketImpl implements Socket{
                 socket.close();
                 socket = null;
             }catch(Exception e){
-                throw new GdxRuntimeException("Error closing socket.", e);
+                throw new ArcRuntimeException("Error closing socket.", e);
             }
         }
     }

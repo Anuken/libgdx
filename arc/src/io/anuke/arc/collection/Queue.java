@@ -16,7 +16,7 @@
 
 package io.anuke.arc.collection;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 import io.anuke.arc.utils.reflect.ArrayReflection;
 
@@ -445,7 +445,7 @@ public class Queue<T> implements Iterable<T>{
         public boolean hasNext(){
             if(!valid){
 // System.out.println(iterable.lastAcquire);
-                throw new GdxRuntimeException("#iterator() cannot be used nested.");
+                throw new ArcRuntimeException("#iterator() cannot be used nested.");
             }
             return index < queue.size;
         }
@@ -454,13 +454,13 @@ public class Queue<T> implements Iterable<T>{
             if(index >= queue.size) throw new NoSuchElementException(String.valueOf(index));
             if(!valid){
 // System.out.println(iterable.lastAcquire);
-                throw new GdxRuntimeException("#iterator() cannot be used nested.");
+                throw new ArcRuntimeException("#iterator() cannot be used nested.");
             }
             return queue.get(index++);
         }
 
         public void remove(){
-            if(!allowRemove) throw new GdxRuntimeException("Remove not allowed.");
+            if(!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
             index--;
             queue.removeIndex(index);
         }

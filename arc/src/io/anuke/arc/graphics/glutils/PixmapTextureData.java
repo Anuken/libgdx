@@ -19,7 +19,7 @@ package io.anuke.arc.graphics.glutils;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Format;
 import io.anuke.arc.graphics.TextureData;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class PixmapTextureData implements TextureData{
     final Pixmap pixmap;
@@ -82,7 +82,7 @@ public class PixmapTextureData implements TextureData{
 
     @Override
     public void consumeCustomData(int target){
-        throw new GdxRuntimeException("This TextureData implementation does not upload data itself");
+        throw new ArcRuntimeException("This TextureData implementation does not upload data itself");
     }
 
     @Override
@@ -92,6 +92,6 @@ public class PixmapTextureData implements TextureData{
 
     @Override
     public void prepare(){
-        throw new GdxRuntimeException("prepare() must not be called on a PixmapTextureData instance as it is already prepared.");
+        throw new ArcRuntimeException("prepare() must not be called on a PixmapTextureData instance as it is already prepared.");
     }
 }

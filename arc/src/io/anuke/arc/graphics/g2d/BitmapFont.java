@@ -31,8 +31,8 @@ import io.anuke.arc.graphics.Texture;
 import io.anuke.arc.graphics.Texture.TextureFilter;
 import io.anuke.arc.graphics.g2d.GlyphLayout.GlyphRun;
 import io.anuke.arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.BufferedReader;
@@ -528,11 +528,11 @@ public class BitmapFont implements Disposable{
             BufferedReader reader = new BufferedReader(new InputStreamReader(fontFile.read()), 512);
             try{
                 String line = reader.readLine(); // info
-                if(line == null) throw new GdxRuntimeException("File is empty.");
+                if(line == null) throw new ArcRuntimeException("File is empty.");
 
                 line = line.substring(line.indexOf("padding=") + 8);
                 String[] padding = line.substring(0, line.indexOf(' ')).split(",", 4);
-                if(padding.length != 4) throw new GdxRuntimeException("Invalid padding.");
+                if(padding.length != 4) throw new ArcRuntimeException("Invalid padding.");
                 padTop = Integer.parseInt(padding[0]);
                 padRight = Integer.parseInt(padding[1]);
                 padBottom = Integer.parseInt(padding[2]);
@@ -540,16 +540,16 @@ public class BitmapFont implements Disposable{
                 float padY = padTop + padBottom;
 
                 line = reader.readLine();
-                if(line == null) throw new GdxRuntimeException("Missing common header.");
+                if(line == null) throw new ArcRuntimeException("Missing common header.");
                 String[] common = line.split(" ", 7); // At most we want the 6th element; i.e. "page=N"
 
                 // At least lineHeight and base are required.
-                if(common.length < 3) throw new GdxRuntimeException("Invalid common header.");
+                if(common.length < 3) throw new ArcRuntimeException("Invalid common header.");
 
-                if(!common[1].startsWith("lineHeight=")) throw new GdxRuntimeException("Missing: lineHeight");
+                if(!common[1].startsWith("lineHeight=")) throw new ArcRuntimeException("Missing: lineHeight");
                 lineHeight = Integer.parseInt(common[1].substring(11));
 
-                if(!common[2].startsWith("base=")) throw new GdxRuntimeException("Missing: base");
+                if(!common[2].startsWith("base=")) throw new ArcRuntimeException("Missing: base");
                 float baseLine = Integer.parseInt(common[2].substring(5));
 
                 int pageCount = 1;
@@ -566,7 +566,7 @@ public class BitmapFont implements Disposable{
                 for(int p = 0; p < pageCount; p++){
                     // Read each "page" info line.
                     line = reader.readLine();
-                    if(line == null) throw new GdxRuntimeException("Missing additional page definitions.");
+                    if(line == null) throw new ArcRuntimeException("Missing additional page definitions.");
 
                     // Expect ID to mean "index".
                     Matcher matcher = Pattern.compile(".*id=(\\d+)").matcher(line);
@@ -575,14 +575,14 @@ public class BitmapFont implements Disposable{
                         try{
                             int pageID = Integer.parseInt(id);
                             if(pageID != p)
-                                throw new GdxRuntimeException("Page IDs must be indices starting at 0: " + id);
+                                throw new ArcRuntimeException("Page IDs must be indices starting at 0: " + id);
                         }catch(NumberFormatException ex){
-                            throw new GdxRuntimeException("Invalid page id: " + id, ex);
+                            throw new ArcRuntimeException("Invalid page id: " + id, ex);
                         }
                     }
 
                     matcher = Pattern.compile(".*file=\"?([^\"]+)\"?").matcher(line);
-                    if(!matcher.find()) throw new GdxRuntimeException("Missing: file");
+                    if(!matcher.find()) throw new ArcRuntimeException("Missing: file");
                     String fileName = matcher.group(1);
 
                     imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
@@ -706,7 +706,7 @@ public class BitmapFont implements Disposable{
                     down = -down;
                 }
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error loading font file: " + fontFile, ex);
+                throw new ArcRuntimeException("Error loading font file: " + fontFile, ex);
             }finally{
                 StreamUtils.closeQuietly(reader);
             }
@@ -796,7 +796,7 @@ public class BitmapFont implements Disposable{
                     return glyph;
                 }
             }
-            throw new GdxRuntimeException("No glyphs found.");
+            throw new ArcRuntimeException("No glyphs found.");
         }
 
         /** Returns true if the font has the glyph, or if the font has a {@link #missingGlyph}. */

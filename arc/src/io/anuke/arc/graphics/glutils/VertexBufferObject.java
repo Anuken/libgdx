@@ -20,8 +20,8 @@ import io.anuke.arc.Core;
 import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.VertexAttribute;
 import io.anuke.arc.graphics.VertexAttributes;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.BufferUtils;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -106,14 +106,14 @@ public class VertexBufferObject implements VertexData{
      * Low level method to reset the buffer and attributes to the specified values. Use with care!
      */
     protected void setBuffer(Buffer data, boolean ownsBuffer, VertexAttributes value){
-        if(isBound) throw new GdxRuntimeException("Cannot change attributes while VBO is bound");
+        if(isBound) throw new ArcRuntimeException("Cannot change attributes while VBO is bound");
         if(this.ownsBuffer && byteBuffer != null)
             BufferUtils.disposeUnsafeByteBuffer(byteBuffer);
         attributes = value;
         if(data instanceof ByteBuffer)
             byteBuffer = (ByteBuffer)data;
         else
-            throw new GdxRuntimeException("Only ByteBuffer is currently supported");
+            throw new ArcRuntimeException("Only ByteBuffer is currently supported");
         this.ownsBuffer = ownsBuffer;
 
         final int l = byteBuffer.limit();
@@ -163,7 +163,7 @@ public class VertexBufferObject implements VertexData{
      * VBO is not bound.
      */
     protected void setUsage(int value){
-        if(isBound) throw new GdxRuntimeException("Cannot change usage while VBO is bound");
+        if(isBound) throw new ArcRuntimeException("Cannot change usage while VBO is bound");
         usage = value;
     }
 

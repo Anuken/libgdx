@@ -23,7 +23,7 @@ import io.anuke.arc.collection.Array;
 import io.anuke.arc.collection.ObjectMap;
 import io.anuke.arc.collection.ObjectMap.Entry;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.StringBuilder;
 import io.anuke.arc.utils.io.StreamUtils;
 
@@ -465,13 +465,13 @@ public class XmlReader{
             return attributes;
         }
 
-        /** @throws GdxRuntimeException if the attribute was not found. */
+        /** @throws ArcRuntimeException if the attribute was not found. */
         public String getAttribute(String name){
             if(attributes == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute: " + name);
             String value = attributes.get(name);
             if(value == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute: " + name);
             return value;
         }
 
@@ -497,9 +497,9 @@ public class XmlReader{
             return children.size;
         }
 
-        /** @throws GdxRuntimeException if the element has no children. */
+        /** @throws ArcRuntimeException if the element has no children. */
         public Element getChild(int index){
-            if(children == null) throw new GdxRuntimeException("Element has no children: " + name);
+            if(children == null) throw new ArcRuntimeException("Element has no children: " + name);
             return children.get(index);
         }
 
@@ -645,7 +645,7 @@ public class XmlReader{
             }
         }
 
-        /** @throws GdxRuntimeException if the attribute was not found. */
+        /** @throws ArcRuntimeException if the attribute was not found. */
         public float getFloatAttribute(String name){
             return Float.parseFloat(getAttribute(name));
         }
@@ -656,7 +656,7 @@ public class XmlReader{
             return Float.parseFloat(value);
         }
 
-        /** @throws GdxRuntimeException if the attribute was not found. */
+        /** @throws ArcRuntimeException if the attribute was not found. */
         public int getIntAttribute(String name){
             return Integer.parseInt(getAttribute(name));
         }
@@ -667,7 +667,7 @@ public class XmlReader{
             return Integer.parseInt(value);
         }
 
-        /** @throws GdxRuntimeException if the attribute was not found. */
+        /** @throws ArcRuntimeException if the attribute was not found. */
         public boolean getBooleanAttribute(String name){
             return Boolean.parseBoolean(getAttribute(name));
         }
@@ -680,18 +680,18 @@ public class XmlReader{
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public String get(String name){
             String value = get(name, null);
             if(value == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
             return value;
         }
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public String get(String name, String defaultValue){
             if(attributes != null){
@@ -707,18 +707,18 @@ public class XmlReader{
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public int getInt(String name){
             String value = get(name, null);
             if(value == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
             return Integer.parseInt(value);
         }
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public int getInt(String name, int defaultValue){
             String value = get(name, null);
@@ -728,18 +728,18 @@ public class XmlReader{
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public float getFloat(String name){
             String value = get(name, null);
             if(value == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
             return Float.parseFloat(value);
         }
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public float getFloat(String name, float defaultValue){
             String value = get(name, null);
@@ -749,18 +749,18 @@ public class XmlReader{
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public boolean getBoolean(String name){
             String value = get(name, null);
             if(value == null)
-                throw new GdxRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
+                throw new ArcRuntimeException("Element " + this.name + " doesn't have attribute or child: " + name);
             return Boolean.parseBoolean(value);
         }
 
         /**
          * Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.
-         * @throws GdxRuntimeException if no attribute or child was not found.
+         * @throws ArcRuntimeException if no attribute or child was not found.
          */
         public boolean getBoolean(String name, boolean defaultValue){
             String value = get(name, null);

@@ -22,7 +22,7 @@ import io.anuke.arc.graphics.GL20;
 import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Blending;
 import io.anuke.arc.graphics.Texture;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class MipMapGenerator{
 
@@ -84,7 +84,7 @@ public class MipMapGenerator{
         Core.gl.glTexImage2D(target, 0, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0,
         pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
         if((Core.gl20 == null) && textureWidth != textureHeight)
-            throw new GdxRuntimeException("texture width and height must be square when using mipmapping.");
+            throw new ArcRuntimeException("texture width and height must be square when using mipmapping.");
         int width = pixmap.getWidth() / 2;
         int height = pixmap.getHeight() / 2;
         int level = 1;

@@ -21,7 +21,7 @@ import android.content.res.AssetManager;
 import io.anuke.arc.Core;
 import io.anuke.arc.Files.FileType;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.*;
@@ -55,7 +55,7 @@ public class AndroidFileHandle extends FileHandle{
 
     public FileHandle sibling(String name){
         name = name.replace('\\', '/');
-        if(file.getPath().length() == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
+        if(file.getPath().length() == 0) throw new ArcRuntimeException("Cannot get the sibling of the root.");
         return Core.files.getFileHandle(new File(file.getParent(), name).getPath(), type); //this way we can find the sibling even if it's inside the obb
     }
 
@@ -75,7 +75,7 @@ public class AndroidFileHandle extends FileHandle{
             try{
                 return assets.open(file.getPath());
             }catch(IOException ex){
-                throw new GdxRuntimeException("Error reading file: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error reading file: " + file + " (" + type + ")", ex);
             }
         }
         return super.read();
@@ -93,7 +93,7 @@ public class AndroidFileHandle extends FileHandle{
                 map.order(ByteOrder.nativeOrder());
                 return map;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error memory mapping file: " + this + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error memory mapping file: " + this + " (" + type + ")", ex);
             }finally{
                 StreamUtils.closeQuietly(input);
             }
@@ -110,7 +110,7 @@ public class AndroidFileHandle extends FileHandle{
                     handles[i] = new AndroidFileHandle(assets, new File(file, relativePaths[i]), type);
                 return handles;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
             }
         }
         return super.list();
@@ -136,7 +136,7 @@ public class AndroidFileHandle extends FileHandle{
                 }
                 return handles;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
             }
         }
         return super.list(filter);
@@ -161,7 +161,7 @@ public class AndroidFileHandle extends FileHandle{
                 }
                 return handles;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
             }
         }
         return super.list(filter);
@@ -186,7 +186,7 @@ public class AndroidFileHandle extends FileHandle{
                 }
                 return handles;
             }catch(Exception ex){
-                throw new GdxRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Error listing children: " + file + " (" + type + ")", ex);
             }
         }
         return super.list(suffix);

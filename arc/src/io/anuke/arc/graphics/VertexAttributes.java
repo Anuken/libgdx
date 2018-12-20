@@ -16,7 +16,7 @@
 
 package io.anuke.arc.graphics;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -214,20 +214,20 @@ public final class VertexAttributes implements Iterable<VertexAttribute>, Compar
 
         @Override
         public boolean hasNext(){
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return index < array.length;
         }
 
         @Override
         public T next(){
             if(index >= array.length) throw new NoSuchElementException(String.valueOf(index));
-            if(!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+            if(!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
             return array[index++];
         }
 
         @Override
         public void remove(){
-            throw new GdxRuntimeException("Remove not allowed.");
+            throw new ArcRuntimeException("Remove not allowed.");
         }
 
         public void reset(){

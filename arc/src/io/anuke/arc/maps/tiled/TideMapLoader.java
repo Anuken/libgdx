@@ -34,7 +34,7 @@ import io.anuke.arc.maps.MapProperties;
 import io.anuke.arc.maps.tiled.TiledMapTileLayer.Cell;
 import io.anuke.arc.maps.tiled.tiles.AnimatedTiledMapTile;
 import io.anuke.arc.maps.tiled.tiles.StaticTiledMapTile;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.serialization.XmlReader;
 import io.anuke.arc.utils.serialization.XmlReader.Element;
 
@@ -80,7 +80,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
             map.setOwnedResources(textures.values().toArray());
             return map;
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
 
     }
@@ -90,7 +90,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
         try{
             return loadMap(root, tideFile, new AssetManagerImageResolver(assetManager));
         }catch(Exception e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 
@@ -104,7 +104,7 @@ public class TideMapLoader extends SynchronousAssetLoader<TiledMap, TideMapLoade
             }
             return dependencies;
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
+            throw new ArcRuntimeException("Couldn't load tilemap '" + fileName + "'", e);
         }
     }
 

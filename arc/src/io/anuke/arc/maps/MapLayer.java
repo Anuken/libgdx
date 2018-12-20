@@ -16,7 +16,7 @@
 
 package io.anuke.arc.maps;
 
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /** Map layer containing a set of objects and properties */
 public class MapLayer{
@@ -98,7 +98,7 @@ public class MapLayer{
 
     /** @param parent the layer's new parent {@MapLayer}, internal use only **/
     public void setParent(MapLayer parent){
-        if(parent == this) throw new GdxRuntimeException("Can't set self as the parent");
+        if(parent == this) throw new ArcRuntimeException("Can't set self as the parent");
         this.parent = parent;
     }
 

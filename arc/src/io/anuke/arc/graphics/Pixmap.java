@@ -17,9 +17,9 @@
 package io.anuke.arc.graphics;
 
 import io.anuke.arc.files.FileHandle;
-import com_TMP.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
+import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
+import io.anuke.arc.utils.ArcRuntimeException;
 import io.anuke.arc.utils.Disposable;
-import io.anuke.arc.utils.GdxRuntimeException;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -72,7 +72,7 @@ public class Pixmap implements Disposable{
         try{
             pixmap = new Gdx2DPixmap(encodedData, offset, len, 0);
         }catch(IOException e){
-            throw new GdxRuntimeException("Couldn't load pixmap from image data", e);
+            throw new ArcRuntimeException("Couldn't load pixmap from image data", e);
         }
     }
 
@@ -86,7 +86,7 @@ public class Pixmap implements Disposable{
             byte[] bytes = file.readBytes();
             pixmap = new Gdx2DPixmap(bytes, 0, bytes.length, 0);
         }catch(Exception e){
-            throw new GdxRuntimeException("Couldn't load file: " + file, e);
+            throw new ArcRuntimeException("Couldn't load file: " + file, e);
         }
     }
 
@@ -269,7 +269,7 @@ public class Pixmap implements Disposable{
 
     /** Releases all resources associated with this Pixmap. */
     public void dispose(){
-        if(disposed) throw new GdxRuntimeException("Pixmap already disposed!");
+        if(disposed) throw new ArcRuntimeException("Pixmap already disposed!");
         pixmap.dispose();
         disposed = true;
     }
@@ -332,7 +332,7 @@ public class Pixmap implements Disposable{
      * @return the direct {@link ByteBuffer} holding the pixel data.
      */
     public ByteBuffer getPixels(){
-        if(disposed) throw new GdxRuntimeException("Pixmap already disposed");
+        if(disposed) throw new ArcRuntimeException("Pixmap already disposed");
         return pixmap.getPixels();
     }
 
@@ -385,7 +385,7 @@ public class Pixmap implements Disposable{
             if(format == RGBA4444) return Gdx2DPixmap.GDX2D_FORMAT_RGBA4444;
             if(format == RGB888) return Gdx2DPixmap.GDX2D_FORMAT_RGB888;
             if(format == RGBA8888) return Gdx2DPixmap.GDX2D_FORMAT_RGBA8888;
-            throw new GdxRuntimeException("Unknown Format: " + format);
+            throw new ArcRuntimeException("Unknown Format: " + format);
         }
 
         public static Format fromGdx2DPixmapFormat(int format){
@@ -395,7 +395,7 @@ public class Pixmap implements Disposable{
             if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA4444) return RGBA4444;
             if(format == Gdx2DPixmap.GDX2D_FORMAT_RGB888) return RGB888;
             if(format == Gdx2DPixmap.GDX2D_FORMAT_RGBA8888) return RGBA8888;
-            throw new GdxRuntimeException("Unknown Gdx2DPixmap Format: " + format);
+            throw new ArcRuntimeException("Unknown Gdx2DPixmap Format: " + format);
         }
 
         public static int toGlFormat(Format format){

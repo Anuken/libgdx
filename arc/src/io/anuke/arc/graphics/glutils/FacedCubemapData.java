@@ -3,9 +3,13 @@ package io.anuke.arc.graphics.glutils;
 import io.anuke.arc.Core;
 import io.anuke.arc.files.FileHandle;
 import io.anuke.arc.graphics.Cubemap.CubemapSide;
+import io.anuke.arc.graphics.CubemapData;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.Pixmap;
 import io.anuke.arc.graphics.Pixmap.Blending;
 import io.anuke.arc.graphics.Pixmap.Format;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.graphics.TextureData;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * A FacedCubemapData holds a cubemap data definition based on a {@link TextureData} per face.
@@ -152,7 +156,7 @@ public class FacedCubemapData implements CubemapData{
 
     @Override
     public void prepare(){
-        if(!isComplete()) throw new GdxRuntimeException("You need to complete your cubemap data before using it");
+        if(!isComplete()) throw new ArcRuntimeException("You need to complete your cubemap data before using it");
         for(int i = 0; i < data.length; i++)
             if(!data[i].isPrepared()) data[i].prepare();
     }
