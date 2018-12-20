@@ -21,9 +21,8 @@ subprojects{
     targetCompatibility = 1.8
     sourceSets.main.java.srcDirs = ["src"]
     sourceSets.main.resources.srcDirs = ["src"]
-
-
+    
     dependencies{
-        compile project(":gdx")
+        compile project(":arc")
     }
 }
