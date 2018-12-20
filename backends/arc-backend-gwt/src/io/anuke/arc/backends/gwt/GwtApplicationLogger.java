@@ -16,9 +16,9 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.utils.Log.LogHandler;
-import com.badlogic.gdx.utils.Strings;
+import io.anuke.arc.Core;
+import io.anuke.arc.utils.Log.LogHandler;
+import io.anuke.arc.utils.Strings;
 import com.google.gwt.user.client.ui.TextArea;
 
 public class GwtApplicationLogger extends LogHandler{

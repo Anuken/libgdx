@@ -20,7 +20,7 @@ import io.anuke.arc.Core;
 import io.anuke.arc.Files.FileType;
 import io.anuke.arc.backends.gwt.preloader.Preloader;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -33,7 +33,7 @@ public class GwtFileHandle extends FileHandle{
 
     public GwtFileHandle(Preloader preloader, String fileName, FileType type){
         if(type != FileType.Internal && type != FileType.Classpath)
-            throw new GdxRuntimeException("FileType '" + type + "' Not supported in GWT backend");
+            throw new ArcRuntimeException("FileType '" + type + "' Not supported in GWT backend");
         this.preloader = preloader;
         this.file = fixSlashes(fileName);
         this.type = type;
@@ -94,22 +94,22 @@ public class GwtFileHandle extends FileHandle{
      * {@link FileType#Absolute} and {@link FileType#External} file handles.
      */
     public File file(){
-        throw new GdxRuntimeException("Not supported in GWT backend");
+        throw new ArcRuntimeException("Not supported in GWT backend");
     }
 
     /**
      * Returns a stream for reading this file as bytes.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public InputStream read(){
         InputStream in = preloader.read(file);
-        if(in == null) throw new GdxRuntimeException(file + " does not exist");
+        if(in == null) throw new ArcRuntimeException(file + " does not exist");
         return in;
     }
 
     /**
      * Returns a buffered stream for reading this file as bytes.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedInputStream read(int bufferSize){
         return new BufferedInputStream(read(), bufferSize);
@@ -117,7 +117,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Returns a reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public Reader reader(){
         return new InputStreamReader(read());
@@ -125,19 +125,19 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Returns a reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public Reader reader(String charset){
         try{
             return new InputStreamReader(read(), charset);
         }catch(Exception e){
-            throw new GdxRuntimeException("Encoding '" + charset + "' not supported", e);
+            throw new ArcRuntimeException("Encoding '" + charset + "' not supported", e);
         }
     }
 
     /**
      * Returns a buffered reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedReader reader(int bufferSize){
         return new BufferedReader(reader(), bufferSize);
@@ -145,7 +145,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Returns a buffered reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedReader reader(int bufferSize, String charset){
         return new BufferedReader(reader(charset), bufferSize);
@@ -153,7 +153,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Reads the entire file into a string using the platform's default charset.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public String readString(){
         return readString(null);
@@ -161,7 +161,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Reads the entire file into a string using the specified charset.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public String readString(String charset){
         if(preloader.isText(file)) return preloader.texts.get(file);
@@ -174,7 +174,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Reads the entire file into a byte array.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public byte[] readBytes(){
         int length = (int)length();
@@ -195,7 +195,7 @@ public class GwtFileHandle extends FileHandle{
                 }
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }finally{
             try{
                 if(input != null) input.close();
@@ -228,7 +228,7 @@ public class GwtFileHandle extends FileHandle{
                 position += count;
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }finally{
             try{
                 if(input != null) input.close();
@@ -239,34 +239,34 @@ public class GwtFileHandle extends FileHandle{
     }
 
     public ByteBuffer map(FileChannel.MapMode mode){
-        throw new GdxRuntimeException("Cannot map files in GWT backend");
+        throw new ArcRuntimeException("Cannot map files in GWT backend");
     }
 
     /**
      * Returns a stream for writing to this file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public OutputStream write(boolean append){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Reads the remaining bytes from the specified stream and writes them to this file. The stream is closed. Parent directories
      * will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void write(InputStream input, boolean append){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Returns a writer for writing to this file using the default charset. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public Writer writer(boolean append){
@@ -277,17 +277,17 @@ public class GwtFileHandle extends FileHandle{
      * Returns a writer for writing to this file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
      * @param charset May be null to use the default charset.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public Writer writer(boolean append, String charset){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Writes the specified string to the file using the default charset. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeString(String string, boolean append){
@@ -298,38 +298,38 @@ public class GwtFileHandle extends FileHandle{
      * Writes the specified string to the file as UTF-8. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
      * @param charset May be null to use the default charset.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeString(String string, boolean append, String charset){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Writes the specified bytes to the file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeBytes(byte[] bytes, boolean append){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Writes the specified bytes to the file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeBytes(byte[] bytes, int offset, int length, boolean append){
-        throw new GdxRuntimeException("Cannot write to files in GWT backend");
+        throw new ArcRuntimeException("Cannot write to files in GWT backend");
     }
 
     /**
      * Returns the paths to the children of this directory. Returns an empty list if this file handle represents a file and not a
      * directory. On the desktop, an {@link FileType#Internal} handle to a directory on the classpath will return a zero length
      * array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileHandle[] list(){
         return preloader.list(file);
@@ -339,7 +339,7 @@ public class GwtFileHandle extends FileHandle{
      * Returns the paths to the children of this directory that satisfy the specified filter. Returns an empty list if this file
      * handle represents a file and not a directory. On the desktop, an {@link FileType#Internal} handle to a directory on the
      * classpath will return a zero length array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileHandle[] list(FileFilter filter){
         return preloader.list(file, filter);
@@ -349,7 +349,7 @@ public class GwtFileHandle extends FileHandle{
      * Returns the paths to the children of this directory that satisfy the specified filter. Returns an empty list if this file
      * handle represents a file and not a directory. On the desktop, an {@link FileType#Internal} handle to a directory on the
      * classpath will return a zero length array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileHandle[] list(FilenameFilter filter){
         return preloader.list(file, filter);
@@ -359,7 +359,7 @@ public class GwtFileHandle extends FileHandle{
      * Returns the paths to the children of this directory with the specified suffix. Returns an empty list if this file handle
      * represents a file and not a directory. On the desktop, an {@link FileType#Internal} handle to a directory on the classpath
      * will return a zero length array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileHandle[] list(String suffix){
         return preloader.list(file, suffix);
@@ -376,7 +376,7 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Returns a handle to the child with the specified name.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} and the child
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} and the child
      * doesn't exist.
      */
     public FileHandle child(String name){
@@ -395,9 +395,9 @@ public class GwtFileHandle extends FileHandle{
         return parent().child(fixSlashes(name));
     }
 
-    /** @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file. */
+    /** @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file. */
     public void mkdirs(){
-        throw new GdxRuntimeException("Cannot mkdirs with an internal file: " + file);
+        throw new ArcRuntimeException("Cannot mkdirs with an internal file: " + file);
     }
 
     /**
@@ -410,41 +410,41 @@ public class GwtFileHandle extends FileHandle{
 
     /**
      * Deletes this file or empty directory and returns success. Will not delete a directory that has children.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
      */
     public boolean delete(){
-        throw new GdxRuntimeException("Cannot delete an internal file: " + file);
+        throw new ArcRuntimeException("Cannot delete an internal file: " + file);
     }
 
     /**
      * Deletes this file or directory and all children, recursively.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
      */
     public boolean deleteDirectory(){
-        throw new GdxRuntimeException("Cannot delete an internal file: " + file);
+        throw new ArcRuntimeException("Cannot delete an internal file: " + file);
     }
 
     /**
      * Copies this file or directory to the specified file or directory. If this handle is a file, then 1) if the destination is a
      * file, it is overwritten, or 2) if the destination is a directory, this file is copied into it, or 3) if the destination
      * doesn't exist, {@link #mkdirs()} is called on the destination's parent and this file is copied into it with a new name. If
-     * this handle is a directory, then 1) if the destination is a file, GdxRuntimeException is thrown, or 2) if the destination is
+     * this handle is a directory, then 1) if the destination is a file, ArcRuntimeException is thrown, or 2) if the destination is
      * a directory, this directory is copied into it recursively, overwriting existing files, or 3) if the destination doesn't
      * exist, {@link #mkdirs()} is called on the destination and this directory is copied into it recursively.
-     * @throw GdxRuntimeException if the destination file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file,
+     * @throw ArcRuntimeException if the destination file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file,
      * or copying failed.
      */
     public void copyTo(FileHandle dest){
-        throw new GdxRuntimeException("Cannot copy to an internal file: " + dest);
+        throw new ArcRuntimeException("Cannot copy to an internal file: " + dest);
     }
 
     /**
      * Moves this file to the specified file, overwriting the file if it already exists.
-     * @throw GdxRuntimeException if the source or destination file handle is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if the source or destination file handle is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file.
      */
     public void moveTo(FileHandle dest){
-        throw new GdxRuntimeException("Cannot move an internal file: " + file);
+        throw new ArcRuntimeException("Cannot move an internal file: " + file);
     }
 
     /**

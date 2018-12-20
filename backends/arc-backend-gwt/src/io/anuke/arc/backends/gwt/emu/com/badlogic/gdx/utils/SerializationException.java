@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils;
+package io.anuke.arc.utils;
 
 /**
  * Indicates an error during serialization due to misconfiguration or during deserialization due to invalid input data.
@@ -62,7 +62,7 @@ public class SerializationException extends RuntimeException{
 
     /**
      * Adds information to the exception message about where in the the object graph serialization failure occurred. Serializers
-     * can catch {@link com.badlogic.gdx.utils.serialization.SerializationException}, add trace information, and rethrow the exception.
+     * can catch {@link io.anuke.arc.utils.serialization.SerializationException}, add trace information, and rethrow the exception.
      */
     public void addTrace(String info){
         if(info == null) throw new IllegalArgumentException("info cannot be null.");

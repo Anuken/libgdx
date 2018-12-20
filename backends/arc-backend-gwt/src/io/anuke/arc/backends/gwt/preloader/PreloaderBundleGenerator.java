@@ -17,7 +17,7 @@
 package io.anuke.arc.backends.gwt.preloader;
 
 import io.anuke.arc.backends.gwt.preloader.AssetFilter.AssetType;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.core.ext.*;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -128,7 +128,7 @@ public class PreloaderBundleGenerator extends Generator{
             assets.add(new Asset(dest, filter.getType(dest.path())));
             dest.write(source.read(), false);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error copying source file: " + source + "\n" //
+            throw new ArcRuntimeException("Error copying source file: " + source + "\n" //
             + "To destination: " + dest, ex);
         }
     }

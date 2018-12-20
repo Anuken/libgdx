@@ -1,9 +1,9 @@
-package com.badlogic.gdx.graphics;
+package io.anuke.arc.graphics;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.graphics.glutils.FileTextureData;
+import io.anuke.arc.graphics.glutils.MipMapGenerator;
 
 /**
  * Used by a {@link Texture} to load the pixel data. A TextureData can either return a {@link Pixmap} or upload the pixel data

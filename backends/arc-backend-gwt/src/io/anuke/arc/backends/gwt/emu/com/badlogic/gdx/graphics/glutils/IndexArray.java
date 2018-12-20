@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
 /**
  * <p>

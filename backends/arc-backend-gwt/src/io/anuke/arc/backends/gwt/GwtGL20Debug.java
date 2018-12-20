@@ -16,7 +16,7 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.webgl.client.WebGLRenderingContext;
 
 import java.nio.Buffer;
@@ -32,7 +32,7 @@ public class GwtGL20Debug extends GwtGL20{
     private void checkError(){
         int error = 0;
         if((error = gl.getError()) != GL_NO_ERROR){
-            throw new GdxRuntimeException("GL error: " + error + ", " + Integer.toHexString(error));
+            throw new ArcRuntimeException("GL error: " + error + ", " + Integer.toHexString(error));
         }
     }
 

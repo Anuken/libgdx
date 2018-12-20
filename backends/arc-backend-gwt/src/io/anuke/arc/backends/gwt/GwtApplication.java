@@ -16,18 +16,18 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Core;
+import io.anuke.arc.Application;
+import io.anuke.arc.ApplicationListener;
+import io.anuke.arc.Core;
 import io.anuke.arc.backends.gwt.preloader.Preloader;
 import io.anuke.arc.backends.gwt.preloader.Preloader.PreloaderCallback;
 import io.anuke.arc.backends.gwt.preloader.Preloader.PreloaderState;
 import io.anuke.arc.backends.gwt.soundmanager2.SoundManager;
-import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.Log;
-import com.badlogic.gdx.utils.Log.LogLevel;
-import com.badlogic.gdx.utils.TimeUtils;
+import io.anuke.arc.collection.Array;
+import io.anuke.arc.utils.Clipboard;
+import io.anuke.arc.utils.Log;
+import io.anuke.arc.utils.Log.LogLevel;
+import io.anuke.arc.utils.TimeUtils;
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.core.client.EntryPoint;

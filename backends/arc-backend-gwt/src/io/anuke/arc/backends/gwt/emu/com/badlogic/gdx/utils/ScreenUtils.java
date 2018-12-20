@@ -14,15 +14,15 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils;
+package io.anuke.arc.utils;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Mathf;
+import io.anuke.arc.Core;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.graphics.Texture;
+import io.anuke.arc.graphics.g2d.TextureRegion;
+import io.anuke.arc.math.Mathf;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.typedarrays.shared.ArrayBufferView;
 

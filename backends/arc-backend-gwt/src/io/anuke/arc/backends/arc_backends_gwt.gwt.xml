@@ -9,7 +9,7 @@
 
     <inherits name="io.anuke.arc/">
     <inherits name="com.google.gwt.webgl.WebGL"/>
-    <inherits name="com.badlogic.gwtref.GwtReflect"/>
+    <inherits name="io.anuke.gwtref.GwtReflect"/>
 
     <script src="soundmanager2-setup.js"/>
     <script src="soundmanager2-jsmin.js"/>

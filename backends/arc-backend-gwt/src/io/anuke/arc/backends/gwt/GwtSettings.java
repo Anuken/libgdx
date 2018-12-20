@@ -1,7 +1,7 @@
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Settings;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Settings;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class GwtSettings extends Settings{
     String prefix;
@@ -30,7 +30,7 @@ public class GwtSettings extends Settings{
             }
 
         }catch(Exception e){
-            throw new GdxRuntimeException("Couldn't flush preferences");
+            throw new ArcRuntimeException("Couldn't flush preferences");
         }
     }
 

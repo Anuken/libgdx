@@ -14,12 +14,12 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.assets.loaders.resolvers;
+package io.anuke.arc.assets.loaders.resolvers;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import io.anuke.arc.Core;
+import io.anuke.arc.assets.loaders.FileHandleResolver;
 import io.anuke.arc.backends.gwt.GwtFileHandle;
-import com.badlogic.gdx.files.FileHandle;
+import io.anuke.arc.files.FileHandle;
 
 public class ResolutionFileResolver implements FileHandleResolver{
     protected final FileHandleResolver baseResolver;

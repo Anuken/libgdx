@@ -14,15 +14,15 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.math.Mathf;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Core;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.graphics.TextureData;
+import io.anuke.arc.math.Mathf;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class FileTextureData implements TextureData{
     static public boolean copyToPOT;
@@ -55,7 +55,7 @@ public class FileTextureData implements TextureData{
 
     @Override
     public void prepare(){
-        if(isPrepared) throw new GdxRuntimeException("Already prepared");
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
         if(pixmap == null){
             pixmap = ensurePot(new Pixmap(file));
             width = pixmap.getWidth();
@@ -83,7 +83,7 @@ public class FileTextureData implements TextureData{
 
     @Override
     public Pixmap consumePixmap(){
-        if(!isPrepared) throw new GdxRuntimeException("Call prepare() before calling getPixmap()");
+        if(!isPrepared) throw new ArcRuntimeException("Call prepare() before calling getPixmap()");
         isPrepared = false;
         Pixmap pixmap = this.pixmap;
         this.pixmap = null;
@@ -131,6 +131,6 @@ public class FileTextureData implements TextureData{
 
     @Override
     public void consumeCustomData(int target){
-        throw new GdxRuntimeException("This TextureData implementation does not upload data itself");
+        throw new ArcRuntimeException("This TextureData implementation does not upload data itself");
     }
 }

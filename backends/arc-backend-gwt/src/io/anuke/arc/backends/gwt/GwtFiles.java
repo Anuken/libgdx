@@ -21,7 +21,7 @@ import io.anuke.arc.Files;
 import io.anuke.arc.Files.FileType;
 import io.anuke.arc.backends.gwt.preloader.Preloader;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class GwtFiles implements Files{
 
@@ -36,7 +36,7 @@ public class GwtFiles implements Files{
     @Override
     public FileHandle getFileHandle(String path, FileType type){
         if(type != FileType.Internal)
-            throw new GdxRuntimeException("FileType '" + type + "' not supported in GWT backend");
+            throw new ArcRuntimeException("FileType '" + type + "' not supported in GWT backend");
         return new GwtFileHandle(preloader, path, type);
     }
 
@@ -52,17 +52,17 @@ public class GwtFiles implements Files{
 
     @Override
     public FileHandle external(String path){
-        throw new GdxRuntimeException("Not supported in GWT backend");
+        throw new ArcRuntimeException("Not supported in GWT backend");
     }
 
     @Override
     public FileHandle absolute(String path){
-        throw new GdxRuntimeException("Not supported in GWT backend");
+        throw new ArcRuntimeException("Not supported in GWT backend");
     }
 
     @Override
     public FileHandle local(String path){
-        throw new GdxRuntimeException("Not supported in GWT backend");
+        throw new ArcRuntimeException("Not supported in GWT backend");
     }
 
     @Override

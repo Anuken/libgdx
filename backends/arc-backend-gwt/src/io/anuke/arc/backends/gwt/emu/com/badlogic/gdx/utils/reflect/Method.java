@@ -14,9 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.reflect;
+package io.anuke.arc.utils.reflect;
 
-import com.badlogic.gwtref.client.Parameter;
+import io.anuke.gwtref.client.Parameter;
 
 /**
  * Provides information about, and access to, a single method on a class or interface.
@@ -24,9 +24,9 @@ import com.badlogic.gwtref.client.Parameter;
  */
 public final class Method{
 
-    private final com.badlogic.gwtref.client.Method method;
+    private final io.anuke.gwtref.client.Method method;
 
-    Method(com.badlogic.gwtref.client.Method method){
+    Method(io.anuke.gwtref.client.Method method){
         this.method = method;
     }
 

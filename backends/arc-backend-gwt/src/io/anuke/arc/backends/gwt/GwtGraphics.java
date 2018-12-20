@@ -16,16 +16,16 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.GLVersion;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Application;
+import io.anuke.arc.Core;
+import io.anuke.arc.Graphics;
+import io.anuke.arc.graphics.Cursor;
+import io.anuke.arc.graphics.Cursor.SystemCursor;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.GL30;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.graphics.glutils.GLVersion;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.user.client.ui.Panel;
@@ -48,7 +48,7 @@ public class GwtGraphics extends Graphics{
     GwtApplicationConfiguration config;
     public GwtGraphics(Panel root, GwtApplicationConfiguration config){
         Canvas canvasWidget = Canvas.createIfSupported();
-        if(canvasWidget == null) throw new GdxRuntimeException("Canvas not supported");
+        if(canvasWidget == null) throw new ArcRuntimeException("Canvas not supported");
         canvas = canvasWidget.getCanvasElement();
         root.add(canvasWidget);
         canvas.setWidth(config.width);

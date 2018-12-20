@@ -14,9 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.reflect;
+package io.anuke.arc.utils.reflect;
 
-import com.badlogic.gwtref.client.Type;
+import io.anuke.gwtref.client.Type;
 
 /**
  * Provides information about, and access to, a single field of a class or interface.
@@ -24,9 +24,9 @@ import com.badlogic.gwtref.client.Type;
  */
 public final class Field{
 
-    private final com.badlogic.gwtref.client.Field field;
+    private final io.anuke.gwtref.client.Field field;
 
-    Field(com.badlogic.gwtref.client.Field field){
+    Field(io.anuke.gwtref.client.Field field){
         this.field = field;
     }
 

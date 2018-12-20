@@ -16,15 +16,15 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.collection.IntMap;
-import com.badlogic.gdx.collection.IntSet;
-import com.badlogic.gdx.collection.IntSet.IntSetIterator;
-import com.badlogic.gdx.input.InputProcessor;
-import com.badlogic.gdx.input.KeyCode;
-import com.badlogic.gdx.utils.Bits;
-import com.badlogic.gdx.utils.TimeUtils;
+import io.anuke.arc.Core;
+import io.anuke.arc.Input;
+import io.anuke.arc.collection.IntMap;
+import io.anuke.arc.collection.IntSet;
+import io.anuke.arc.collection.IntSet.IntSetIterator;
+import io.anuke.arc.input.InputProcessor;
+import io.anuke.arc.input.KeyCode;
+import io.anuke.arc.utils.Bits;
+import io.anuke.arc.utils.TimeUtils;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.CanvasElement;

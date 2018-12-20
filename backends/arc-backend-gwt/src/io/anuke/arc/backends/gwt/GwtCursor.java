@@ -16,9 +16,9 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.graphics.Cursor;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class GwtCursor implements Cursor{
     String cssCursorProperty;
@@ -30,26 +30,26 @@ public class GwtCursor implements Cursor{
         }
 
         if(pixmap.getFormat() != Pixmap.Format.RGBA8888){
-            throw new GdxRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
+            throw new ArcRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
         }
 
         if((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0){
-            throw new GdxRuntimeException("Cursor image pixmap width of " + pixmap.getWidth()
+            throw new ArcRuntimeException("Cursor image pixmap width of " + pixmap.getWidth()
             + " is not a power-of-two greater than zero.");
         }
 
         if((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0){
-            throw new GdxRuntimeException("Cursor image pixmap height of " + pixmap.getHeight()
+            throw new ArcRuntimeException("Cursor image pixmap height of " + pixmap.getHeight()
             + " is not a power-of-two greater than zero.");
         }
 
         if(xHotspot < 0 || xHotspot >= pixmap.getWidth()){
-            throw new GdxRuntimeException("xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, "
+            throw new ArcRuntimeException("xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, "
             + pixmap.getWidth() + ").");
         }
 
         if(yHotspot < 0 || yHotspot >= pixmap.getHeight()){
-            throw new GdxRuntimeException("yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, "
+            throw new ArcRuntimeException("yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, "
             + pixmap.getHeight() + ").");
         }
         cssCursorProperty = "url('";
@@ -75,7 +75,7 @@ public class GwtCursor implements Cursor{
         }else if(systemCursor == SystemCursor.Ibeam){
             return "text";
         }else{
-            throw new GdxRuntimeException("Unknown system cursor " + systemCursor);
+            throw new ArcRuntimeException("Unknown system cursor " + systemCursor);
         }
 
     }

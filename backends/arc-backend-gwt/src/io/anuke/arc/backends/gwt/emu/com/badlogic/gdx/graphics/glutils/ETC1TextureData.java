@@ -14,21 +14,21 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.graphics.TextureData;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 public class ETC1TextureData implements TextureData{
     public ETC1TextureData(FileHandle file){
-        throw new GdxRuntimeException("ETC1TextureData not supported in GWT backend");
+        throw new ArcRuntimeException("ETC1TextureData not supported in GWT backend");
     }
 
     public ETC1TextureData(FileHandle file, boolean useMipMaps){
-        throw new GdxRuntimeException("ETC1TextureData not supported in GWT backend");
+        throw new ArcRuntimeException("ETC1TextureData not supported in GWT backend");
     }
 
     @Override

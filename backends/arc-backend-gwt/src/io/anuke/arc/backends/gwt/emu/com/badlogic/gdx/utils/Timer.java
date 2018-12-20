@@ -14,12 +14,12 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils;
+package io.anuke.arc.utils;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.collection.Array;
+import io.anuke.arc.Application;
+import io.anuke.arc.ApplicationListener;
+import io.anuke.arc.Core;
+import io.anuke.arc.collection.Array;
 
 /**
  * Executes tasks in the future on the main loop thread.
@@ -230,7 +230,7 @@ public class Timer{
                     try{
                         waitMillis = instances.get(i).update(timeMillis, waitMillis);
                     }catch(Throwable ex){
-                        throw new GdxRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
+                        throw new ArcRuntimeException("Task failed: " + instances.get(i).getClass().getName(), ex);
                     }
                 }
 

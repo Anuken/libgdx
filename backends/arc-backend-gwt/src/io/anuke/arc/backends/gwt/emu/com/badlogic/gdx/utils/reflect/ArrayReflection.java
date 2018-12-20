@@ -14,9 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.reflect;
+package io.anuke.arc.utils.reflect;
 
-import com.badlogic.gwtref.client.ReflectionCache;
+import io.anuke.gwtref.client.ReflectionCache;
 
 /**
  * Utilities for Array reflection.

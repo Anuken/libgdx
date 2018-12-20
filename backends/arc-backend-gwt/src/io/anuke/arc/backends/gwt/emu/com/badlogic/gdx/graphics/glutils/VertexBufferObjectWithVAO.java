@@ -1,12 +1,12 @@
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.collection.IntArray;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.utils.BufferUtils;
+import io.anuke.arc.Core;
+import io.anuke.arc.collection.IntArray;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.GL30;
+import io.anuke.arc.graphics.VertexAttribute;
+import io.anuke.arc.graphics.VertexAttributes;
+import io.anuke.arc.utils.BufferUtils;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -49,7 +49,7 @@ public class VertexBufferObjectWithVAO implements VertexData{
      * Constructs a new interleaved VertexBufferObjectWithVAO.
      * @param isStatic whether the vertex data is static.
      * @param numVertices the maximum number of vertices
-     * @param attributes the {@link com.badlogic.gdx.graphics.VertexAttribute}s.
+     * @param attributes the {@link io.anuke.arc.graphics.VertexAttribute}s.
      */
     public VertexBufferObjectWithVAO(boolean isStatic, int numVertices, VertexAttribute... attributes){
         this(isStatic, numVertices, new VertexAttributes(attributes));

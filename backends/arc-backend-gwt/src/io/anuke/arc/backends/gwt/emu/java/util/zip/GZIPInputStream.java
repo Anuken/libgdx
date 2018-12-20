@@ -20,7 +20,7 @@ package java.util.zip;
 import java.io.InputStream;
 
 /**
- * Dummy emulation. Throws a GdxRuntimeException on first read.
+ * Dummy emulation. Throws a ArcRuntimeException on first read.
  * @author hneuer
  */
 public class GZIPInputStream extends InflaterInputStream{

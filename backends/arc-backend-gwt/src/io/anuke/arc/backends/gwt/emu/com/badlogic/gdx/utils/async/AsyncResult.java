@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.async;
+package io.anuke.arc.utils.async;
 
 /**
  * Returned by {@link AsyncExecutor#submit(AsyncTask)}, allows to poll

@@ -14,13 +14,13 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics;
+package io.anuke.arc.graphics;
 
 import io.anuke.arc.backends.gwt.GwtFileHandle;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.utils.BufferUtils;
+import io.anuke.arc.utils.Disposable;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.CanvasPixelArray;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -54,7 +54,7 @@ public class Pixmap implements Disposable{
     public Pixmap(FileHandle file){
         this(((GwtFileHandle)file).preloader.images.get(file.path()));
         if(imageElement == null)
-            throw new GdxRuntimeException("Couldn't load image '" + file.path() + "', file does not exist");
+            throw new ArcRuntimeException("Couldn't load image '" + file.path() + "', file does not exist");
     }
     public Pixmap(ImageElement img){
         this(-1, -1, img);
@@ -524,7 +524,7 @@ public class Pixmap implements Disposable{
             if(format == RGB888) return GL20.GL_RGB;
             if(format == RGBA4444) return GL20.GL_RGBA;
             if(format == RGBA8888) return GL20.GL_RGBA;
-            throw new GdxRuntimeException("unknown format: " + format);
+            throw new ArcRuntimeException("unknown format: " + format);
         }
 
         public static int toGlType(Format format){
@@ -535,7 +535,7 @@ public class Pixmap implements Disposable{
             if(format == RGB888) return GL20.GL_UNSIGNED_BYTE;
             if(format == RGBA4444) return GL20.GL_UNSIGNED_SHORT_4_4_4_4;
             if(format == RGBA8888) return GL20.GL_UNSIGNED_BYTE;
-            throw new GdxRuntimeException("unknown format: " + format);
+            throw new ArcRuntimeException("unknown format: " + format);
         }
     }
 

@@ -1,17 +1,17 @@
-package com.badlogic.gdx.assets.loaders;
+package io.anuke.arc.assets.loaders;
 
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.assets.AssetLoaderParameters;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.collection.Array;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Cubemap;
-import com.badlogic.gdx.graphics.CubemapData;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
-import com.badlogic.gdx.graphics.TextureData;
+import io.anuke.arc.assets.AssetDescriptor;
+import io.anuke.arc.assets.AssetLoaderParameters;
+import io.anuke.arc.assets.AssetManager;
+import io.anuke.arc.collection.Array;
+import io.anuke.arc.files.FileHandle;
+import io.anuke.arc.graphics.Cubemap;
+import io.anuke.arc.graphics.CubemapData;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.graphics.Pixmap.Format;
+import io.anuke.arc.graphics.Texture.TextureFilter;
+import io.anuke.arc.graphics.Texture.TextureWrap;
+import io.anuke.arc.graphics.TextureData;
 
 /**
  * {@link AssetLoader} for {@link Cubemap} instances. The pixel data is loaded asynchronously. The texture is then created on the

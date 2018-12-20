@@ -16,9 +16,9 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.Pixmap;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.typedarrays.client.Uint8ArrayNative;
@@ -183,7 +183,7 @@ public class GwtGL20 implements GL20{
         }else if(data instanceof ShortBuffer){
             gl.bufferData(target, copy((ShortBuffer)data), usage);
         }else{
-            throw new GdxRuntimeException("Can only cope with FloatBuffer and ShortBuffer at the moment");
+            throw new ArcRuntimeException("Can only cope with FloatBuffer and ShortBuffer at the moment");
         }
     }
 
@@ -194,7 +194,7 @@ public class GwtGL20 implements GL20{
         }else if(data instanceof ShortBuffer){
             gl.bufferSubData(target, offset, copy((ShortBuffer)data));
         }else{
-            throw new GdxRuntimeException("Can only cope with FloatBuffer and ShortBuffer at the moment");
+            throw new ArcRuntimeException("Can only cope with FloatBuffer and ShortBuffer at the moment");
         }
     }
 
@@ -237,13 +237,13 @@ public class GwtGL20 implements GL20{
     @Override
     public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
                                        int imageSize, Buffer data){
-        throw new GdxRuntimeException("compressed textures not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("compressed textures not supported by GWT WebGL backend");
     }
 
     @Override
     public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
                                           int imageSize, Buffer data){
-        throw new GdxRuntimeException("compressed textures not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("compressed textures not supported by GWT WebGL backend");
     }
 
     @Override
@@ -511,7 +511,7 @@ public class GwtGL20 implements GL20{
     @Override
     public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -522,13 +522,13 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glGetBooleanv(int pname, Buffer params){
-        throw new GdxRuntimeException("glGetBoolean not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glGetBoolean not supported by GWT WebGL backend");
     }
 
     @Override
     public void glGetBufferParameteriv(int target, int pname, IntBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -542,13 +542,13 @@ public class GwtGL20 implements GL20{
         || pname == GL20.GL_POLYGON_OFFSET_UNITS || pname == GL20.GL_SAMPLE_COVERAGE_VALUE)
             params.put(0, gl.getParameterf(pname));
         else
-            throw new GdxRuntimeException("glGetFloat not supported by GWT WebGL backend");
+            throw new ArcRuntimeException("glGetFloat not supported by GWT WebGL backend");
     }
 
     @Override
     public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -581,7 +581,7 @@ public class GwtGL20 implements GL20{
             params.put(3, array.get(3));
             params.flip();
         }else
-            throw new GdxRuntimeException("glGetInteger not supported by GWT WebGL backend");
+            throw new ArcRuntimeException("glGetInteger not supported by GWT WebGL backend");
     }
 
     @Override
@@ -602,7 +602,7 @@ public class GwtGL20 implements GL20{
     @Override
     public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -623,7 +623,7 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision){
-        throw new GdxRuntimeException("glGetShaderPrecisionFormat not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glGetShaderPrecisionFormat not supported by GWT WebGL backend");
     }
 
     @Override
@@ -633,24 +633,24 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glGetTexParameterfv(int target, int pname, FloatBuffer params){
-        throw new GdxRuntimeException("glGetTexParameter not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glGetTexParameter not supported by GWT WebGL backend");
     }
 
     @Override
     public void glGetTexParameteriv(int target, int pname, IntBuffer params){
-        throw new GdxRuntimeException("glGetTexParameter not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glGetTexParameter not supported by GWT WebGL backend");
     }
 
     @Override
     public void glGetUniformfv(int program, int location, FloatBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
     public void glGetUniformiv(int program, int location, IntBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -670,18 +670,18 @@ public class GwtGL20 implements GL20{
     @Override
     public void glGetVertexAttribfv(int index, int pname, FloatBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
     public void glGetVertexAttribiv(int index, int pname, IntBuffer params){
         // FIXME
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
     public void glGetVertexAttribPointerv(int index, int pname, Buffer pointer){
-        throw new GdxRuntimeException("glGetVertexAttribPointer not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glGetVertexAttribPointer not supported by GWT WebGL backend");
     }
 
     @Override
@@ -748,11 +748,11 @@ public class GwtGL20 implements GL20{
     public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels){
         // verify request
         if((format != WebGLRenderingContext.RGBA) || (type != WebGLRenderingContext.UNSIGNED_BYTE)){
-            throw new GdxRuntimeException(
+            throw new ArcRuntimeException(
             "Only format RGBA and type UNSIGNED_BYTE are currently supported for glReadPixels(...). Create an issue when you need other formats.");
         }
         if(!(pixels instanceof ByteBuffer)){
-            throw new GdxRuntimeException("Inputed pixels buffer needs to be of type ByteBuffer for glReadPixels(...).");
+            throw new ArcRuntimeException("Inputed pixels buffer needs to be of type ByteBuffer for glReadPixels(...).");
         }
 
         // create new ArrayBufferView (4 bytes per pixel)
@@ -765,7 +765,7 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glReleaseShaderCompiler(){
-        throw new GdxRuntimeException("not implemented");
+        throw new ArcRuntimeException("not implemented");
     }
 
     @Override
@@ -785,7 +785,7 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length){
-        throw new GdxRuntimeException("glShaderBinary not supported by GWT WebGL backend");
+        throw new ArcRuntimeException("glShaderBinary not supported by GWT WebGL backend");
     }
 
     @Override
@@ -1127,7 +1127,7 @@ public class GwtGL20 implements GL20{
 
     @Override
     public void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr){
-        throw new GdxRuntimeException("not implemented, vertex arrays aren't support in WebGL it seems");
+        throw new ArcRuntimeException("not implemented, vertex arrays aren't support in WebGL it seems");
     }
 
     @Override

@@ -16,8 +16,8 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
+import io.anuke.arc.audio.Sound;
+import io.anuke.arc.files.FileHandle;
 
 public class GwtSound implements Sound{
 

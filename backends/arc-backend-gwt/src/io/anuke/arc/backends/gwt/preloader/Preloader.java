@@ -25,7 +25,7 @@ import io.anuke.arc.backends.gwt.preloader.AssetFilter.AssetType;
 import io.anuke.arc.collection.Array;
 import io.anuke.arc.collection.ObjectMap;
 import io.anuke.arc.files.FileHandle;
-import io.anuke.arc.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.io.*;
 
@@ -66,7 +66,7 @@ public class Preloader{
                 for(String line : lines){
                     String[] tokens = line.split(":");
                     if(tokens.length != 4){
-                        throw new GdxRuntimeException("Invalid assets description file.");
+                        throw new ArcRuntimeException("Invalid assets description file.");
                     }
                     AssetType type = AssetType.Text;
                     if(tokens[0].equals("i")) type = AssetType.Image;

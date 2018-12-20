@@ -16,11 +16,11 @@
 
 package io.anuke.arc.backends.gwt.preloader;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.io.StreamUtils;
+import io.anuke.arc.Core;
+import io.anuke.arc.Files;
+import io.anuke.arc.Files.FileType;
+import io.anuke.arc.utils.ArcRuntimeException;
+import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.*;
 
@@ -70,7 +70,7 @@ public class FileWrapper{
         try{
             return new FileWrapper(File.createTempFile(prefix, null));
         }catch(IOException ex){
-            throw new GdxRuntimeException("Unable to create temp file.", ex);
+            throw new ArcRuntimeException("Unable to create temp file.", ex);
         }
     }
 
@@ -81,7 +81,7 @@ public class FileWrapper{
             if(!file.mkdir()) throw new IOException("Unable to create temp directory: " + file);
             return new FileWrapper(file);
         }catch(IOException ex){
-            throw new GdxRuntimeException("Unable to create temp file.", ex);
+            throw new ArcRuntimeException("Unable to create temp file.", ex);
         }
     }
 
@@ -104,7 +104,7 @@ public class FileWrapper{
         try{
             dest.write(source.read(), false);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error copying source file: " + source.file + " (" + source.type + ")\n" //
+            throw new ArcRuntimeException("Error copying source file: " + source.file + " (" + source.type + ")\n" //
             + "To destination: " + dest.file + " (" + dest.type + ")", ex);
         }
     }
@@ -159,27 +159,27 @@ public class FileWrapper{
 
     /**
      * Returns a stream for reading this file as bytes.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public InputStream read(){
         if(type == FileType.Classpath || (type == FileType.Internal && !file.exists())
         || (type == FileType.Local && !file.exists())){
             InputStream input = FileWrapper.class.getResourceAsStream("/" + file.getPath().replace('\\', '/'));
-            if(input == null) throw new GdxRuntimeException("File not found: " + file + " (" + type + ")");
+            if(input == null) throw new ArcRuntimeException("File not found: " + file + " (" + type + ")");
             return input;
         }
         try{
             return new FileInputStream(file());
         }catch(Exception ex){
             if(file().isDirectory())
-                throw new GdxRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
-            throw new GdxRuntimeException("Error reading file: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error reading file: " + file + " (" + type + ")", ex);
         }
     }
 
     /**
      * Returns a buffered stream for reading this file as bytes.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedInputStream read(int bufferSize){
         return new BufferedInputStream(read(), bufferSize);
@@ -187,7 +187,7 @@ public class FileWrapper{
 
     /**
      * Returns a reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public Reader reader(){
         return new InputStreamReader(read());
@@ -195,19 +195,19 @@ public class FileWrapper{
 
     /**
      * Returns a reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public Reader reader(String charset){
         try{
             return new InputStreamReader(read(), charset);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }
     }
 
     /**
      * Returns a buffered reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedReader reader(int bufferSize){
         return new BufferedReader(new InputStreamReader(read()), bufferSize);
@@ -215,19 +215,19 @@ public class FileWrapper{
 
     /**
      * Returns a buffered reader for reading this file as characters.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public BufferedReader reader(int bufferSize, String charset){
         try{
             return new BufferedReader(new InputStreamReader(read(), charset), bufferSize);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }
     }
 
     /**
      * Reads the entire file into a string using the platform's default charset.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public String readString(){
         return readString(null);
@@ -235,7 +235,7 @@ public class FileWrapper{
 
     /**
      * Reads the entire file into a string using the specified charset.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public String readString(String charset){
         int fileLength = (int)length();
@@ -254,7 +254,7 @@ public class FileWrapper{
                 output.append(buffer, 0, length);
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading layout file: " + this, ex);
+            throw new ArcRuntimeException("Error reading layout file: " + this, ex);
         }finally{
             StreamUtils.closeQuietly(reader);
         }
@@ -263,7 +263,7 @@ public class FileWrapper{
 
     /**
      * Reads the entire file into a byte array.
-     * @throw GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
+     * @throw ArcRuntimeException if the file handle represents a directory, doesn't exist, or could not be read.
      */
     public byte[] readBytes(){
         int length = (int)length();
@@ -284,7 +284,7 @@ public class FileWrapper{
                 }
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }finally{
             try{
                 if(input != null) input.close();
@@ -317,7 +317,7 @@ public class FileWrapper{
                 position += count;
             }
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error reading file: " + this, ex);
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
         }finally{
             try{
                 if(input != null) input.close();
@@ -330,19 +330,19 @@ public class FileWrapper{
     /**
      * Returns a stream for writing to this file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public OutputStream write(boolean append){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot write to a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot write to an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot write to a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot write to an internal file: " + file);
         parent().mkdirs();
         try{
             return new FileOutputStream(file(), append);
         }catch(Exception ex){
             if(file().isDirectory())
-                throw new GdxRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
-            throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
         }
     }
 
@@ -350,7 +350,7 @@ public class FileWrapper{
      * Reads the remaining bytes from the specified stream and writes them to this file. The stream is closed. Parent directories
      * will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void write(InputStream input, boolean append){
@@ -364,7 +364,7 @@ public class FileWrapper{
                 output.write(buffer, 0, length);
             }
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error stream writing to file: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error stream writing to file: " + file + " (" + type + ")", ex);
         }finally{
             try{
                 if(input != null) input.close();
@@ -381,7 +381,7 @@ public class FileWrapper{
     /**
      * Returns a writer for writing to this file using the default charset. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public Writer writer(boolean append){
@@ -392,12 +392,12 @@ public class FileWrapper{
      * Returns a writer for writing to this file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
      * @param charset May be null to use the default charset.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public Writer writer(boolean append, String charset){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot write to a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot write to an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot write to a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot write to an internal file: " + file);
         parent().mkdirs();
         try{
             FileOutputStream output = new FileOutputStream(file(), append);
@@ -407,15 +407,15 @@ public class FileWrapper{
                 return new OutputStreamWriter(output, charset);
         }catch(IOException ex){
             if(file().isDirectory())
-                throw new GdxRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
-            throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+                throw new ArcRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
         }
     }
 
     /**
      * Writes the specified string to the file using the default charset. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeString(String string, boolean append){
@@ -426,7 +426,7 @@ public class FileWrapper{
      * Writes the specified string to the file as UTF-8. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
      * @param charset May be null to use the default charset.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeString(String string, boolean append, String charset){
@@ -435,7 +435,7 @@ public class FileWrapper{
             writer = writer(append, charset);
             writer.write(string);
         }catch(Exception ex){
-            throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
         }finally{
             StreamUtils.closeQuietly(writer);
         }
@@ -444,7 +444,7 @@ public class FileWrapper{
     /**
      * Writes the specified bytes to the file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeBytes(byte[] bytes, boolean append){
@@ -452,7 +452,7 @@ public class FileWrapper{
         try{
             output.write(bytes);
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
         }finally{
             try{
                 output.close();
@@ -464,7 +464,7 @@ public class FileWrapper{
     /**
      * Writes the specified bytes to the file. Parent directories will be created if necessary.
      * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
-     * @throw GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file, or if it could not be written.
      */
     public void writeBytes(byte[] bytes, int offset, int length, boolean append){
@@ -472,7 +472,7 @@ public class FileWrapper{
         try{
             output.write(bytes, offset, length);
         }catch(IOException ex){
-            throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+            throw new ArcRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
         }finally{
             try{
                 output.close();
@@ -485,10 +485,10 @@ public class FileWrapper{
      * Returns the paths to the children of this directory. Returns an empty list if this file handle represents a file and not a
      * directory. On the desktop, an {@link FileType#Internal} handle to a directory on the classpath will return a zero length
      * array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileWrapper[] list(){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot list a classpath directory: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot list a classpath directory: " + file);
         String[] relativePaths = file().list();
         if(relativePaths == null) return new FileWrapper[0];
         FileWrapper[] handles = new FileWrapper[relativePaths.length];
@@ -501,10 +501,10 @@ public class FileWrapper{
      * Returns the paths to the children of this directory with the specified suffix. Returns an empty list if this file handle
      * represents a file and not a directory. On the desktop, an {@link FileType#Internal} handle to a directory on the classpath
      * will return a zero length array.
-     * @throw GdxRuntimeException if this file is an {@link FileType#Classpath} file.
+     * @throw ArcRuntimeException if this file is an {@link FileType#Classpath} file.
      */
     public FileWrapper[] list(String suffix){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot list a classpath directory: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot list a classpath directory: " + file);
         String[] relativePaths = file().list();
         if(relativePaths == null) return new FileWrapper[0];
         FileWrapper[] handles = new FileWrapper[relativePaths.length];
@@ -535,7 +535,7 @@ public class FileWrapper{
 
     /**
      * Returns a handle to the child with the specified name.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} and the child
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} and the child
      * doesn't exist.
      */
     public FileWrapper child(String name){
@@ -554,10 +554,10 @@ public class FileWrapper{
         return new FileWrapper(parent, type);
     }
 
-    /** @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file. */
+    /** @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file. */
     public boolean mkdirs(){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot mkdirs with a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot mkdirs with an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot mkdirs with a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot mkdirs with an internal file: " + file);
         return file().mkdirs();
     }
 
@@ -578,21 +578,21 @@ public class FileWrapper{
 
     /**
      * Deletes this file or empty directory and returns success. Will not delete a directory that has children.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
      */
     public boolean delete(){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot delete a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot delete an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot delete a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot delete an internal file: " + file);
         return file().delete();
     }
 
     /**
      * Deletes this file or directory and all children, recursively.
-     * @throw GdxRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
+     * @throw ArcRuntimeException if this file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file.
      */
     public boolean deleteDirectory(){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot delete a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot delete an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot delete a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot delete an internal file: " + file);
         return deleteDirectory(file());
     }
 
@@ -600,10 +600,10 @@ public class FileWrapper{
      * Copies this file or directory to the specified file or directory. If this handle is a file, then 1) if the destination is a
      * file, it is overwritten, or 2) if the destination is a directory, this file is copied into it, or 3) if the destination
      * doesn't exist, {@link #mkdirs()} is called on the destination's parent and this file is copied into it with a new name. If
-     * this handle is a directory, then 1) if the destination is a file, GdxRuntimeException is thrown, or 2) if the destination is
+     * this handle is a directory, then 1) if the destination is a file, ArcRuntimeException is thrown, or 2) if the destination is
      * a directory, this directory is copied into it recursively, overwriting existing files, or 3) if the destination doesn't
      * exist, {@link #mkdirs()} is called on the destination and this directory is copied into it recursively.
-     * @throw GdxRuntimeException if the destination file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file,
+     * @throw ArcRuntimeException if the destination file handle is a {@link FileType#Classpath} or {@link FileType#Internal} file,
      * or copying failed.
      */
     public void copyTo(FileWrapper dest){
@@ -614,10 +614,10 @@ public class FileWrapper{
             return;
         }
         if(dest.exists()){
-            if(!dest.isDirectory()) throw new GdxRuntimeException("Destination exists but is not a directory: " + dest);
+            if(!dest.isDirectory()) throw new ArcRuntimeException("Destination exists but is not a directory: " + dest);
         }else{
             dest.mkdirs();
-            if(!dest.isDirectory()) throw new GdxRuntimeException("Destination directory cannot be created: " + dest);
+            if(!dest.isDirectory()) throw new ArcRuntimeException("Destination directory cannot be created: " + dest);
         }
         if(!sourceDir) dest = dest.child(name());
         copyDirectory(this, dest);
@@ -625,12 +625,12 @@ public class FileWrapper{
 
     /**
      * Moves this file to the specified file, overwriting the file if it already exists.
-     * @throw GdxRuntimeException if the source or destination file handle is a {@link FileType#Classpath} or
+     * @throw ArcRuntimeException if the source or destination file handle is a {@link FileType#Classpath} or
      * {@link FileType#Internal} file.
      */
     public void moveTo(FileWrapper dest){
-        if(type == FileType.Classpath) throw new GdxRuntimeException("Cannot move a classpath file: " + file);
-        if(type == FileType.Internal) throw new GdxRuntimeException("Cannot move an internal file: " + file);
+        if(type == FileType.Classpath) throw new ArcRuntimeException("Cannot move a classpath file: " + file);
+        if(type == FileType.Internal) throw new ArcRuntimeException("Cannot move an internal file: " + file);
         copyTo(dest);
         delete();
     }

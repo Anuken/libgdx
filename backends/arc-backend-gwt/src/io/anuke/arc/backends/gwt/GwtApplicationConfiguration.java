@@ -16,7 +16,7 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Application;
+import io.anuke.arc.Application;
 import io.anuke.arc.backends.gwt.GwtGraphics.OrientationLockType;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;

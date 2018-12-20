@@ -14,10 +14,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.reflect;
+package io.anuke.arc.utils.reflect;
 
-import com.badlogic.gwtref.client.ReflectionCache;
-import com.badlogic.gwtref.client.Type;
+import io.anuke.gwtref.client.ReflectionCache;
+import io.anuke.gwtref.client.Type;
 
 import java.lang.annotation.Inherited;
 
@@ -113,7 +113,7 @@ public final class ClassReflection{
 
     /** Returns an array of {@link Constructor} containing the public constructors of the class represented by the supplied Class. */
     static public Constructor[] getConstructors(Class c){
-        com.badlogic.gwtref.client.Constructor[] constructors = ReflectionCache.getType(c).getConstructors();
+        io.anuke.gwtref.client.Constructor[] constructors = ReflectionCache.getType(c).getConstructors();
         Constructor[] result = new Constructor[constructors.length];
         for(int i = 0, j = constructors.length; i < j; i++){
             result[i] = new Constructor(constructors[i]);
@@ -156,7 +156,7 @@ public final class ClassReflection{
 
     /** Returns an array of {@link Method} containing the public member methods of the class represented by the supplied Class. */
     static public Method[] getMethods(Class c){
-        com.badlogic.gwtref.client.Method[] methods = ReflectionCache.getType(c).getMethods();
+        io.anuke.gwtref.client.Method[] methods = ReflectionCache.getType(c).getMethods();
         Method[] result = new Method[methods.length];
         for(int i = 0, j = methods.length; i < j; i++){
             result[i] = new Method(methods[i]);
@@ -180,7 +180,7 @@ public final class ClassReflection{
 
     /** Returns an array of {@link Method} containing the methods declared by the class represented by the supplied Class. */
     static public Method[] getDeclaredMethods(Class c){
-        com.badlogic.gwtref.client.Method[] methods = ReflectionCache.getType(c).getDeclaredMethods();
+        io.anuke.gwtref.client.Method[] methods = ReflectionCache.getType(c).getDeclaredMethods();
         Method[] result = new Method[methods.length];
         for(int i = 0, j = methods.length; i < j; i++){
             result[i] = new Method(methods[i]);
@@ -201,7 +201,7 @@ public final class ClassReflection{
 
     /** Returns an array of {@link Field} containing the public fields of the class represented by the supplied Class. */
     static public Field[] getFields(Class c){
-        com.badlogic.gwtref.client.Field[] fields = ReflectionCache.getType(c).getFields();
+        io.anuke.gwtref.client.Field[] fields = ReflectionCache.getType(c).getFields();
         Field[] result = new Field[fields.length];
         for(int i = 0, j = fields.length; i < j; i++){
             result[i] = new Field(fields[i]);
@@ -222,7 +222,7 @@ public final class ClassReflection{
 
     /** Returns an array of {@link Field} objects reflecting all the fields declared by the supplied class. */
     static public Field[] getDeclaredFields(Class c){
-        com.badlogic.gwtref.client.Field[] fields = ReflectionCache.getType(c).getDeclaredFields();
+        io.anuke.gwtref.client.Field[] fields = ReflectionCache.getType(c).getDeclaredFields();
         Field[] result = new Field[fields.length];
         for(int i = 0, j = fields.length; i < j; i++){
             result[i] = new Field(fields[i]);

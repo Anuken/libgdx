@@ -17,7 +17,7 @@
 package io.anuke.arc.backends.gwt.preloader;
 
 import io.anuke.arc.backends.gwt.preloader.AssetFilter.AssetType;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.typedarrays.shared.Int8Array;
@@ -97,7 +97,7 @@ public class AssetDownloader{
                 listener.onSuccess(null);
                 break;
             default:
-                throw new GdxRuntimeException("Unsupported asset type " + type);
+                throw new ArcRuntimeException("Unsupported asset type " + type);
         }
     }
 

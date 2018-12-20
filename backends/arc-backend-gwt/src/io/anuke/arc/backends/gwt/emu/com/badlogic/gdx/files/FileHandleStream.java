@@ -14,10 +14,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.files;
+package io.anuke.arc.files;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.Files.FileType;
+import io.anuke.arc.Core;
+import io.anuke.arc.Files.FileType;
 import io.anuke.arc.backends.gwt.GwtApplication;
 import io.anuke.arc.backends.gwt.GwtFileHandle;
 

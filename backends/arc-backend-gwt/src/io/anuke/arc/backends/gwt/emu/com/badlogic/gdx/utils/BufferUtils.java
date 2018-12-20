@@ -14,9 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils;
+package io.anuke.arc.utils;
 
-import com.badlogic.gdx.math.Matrix3;
+import io.anuke.arc.math.Matrix3;
 import com.google.gwt.core.client.GWT;
 
 import java.nio.*;
@@ -61,7 +61,7 @@ public final class BufferUtils{
      * @param numElements the number of elements to copy.
      */
     public static void copy(byte[] src, int srcOffset, Buffer dst, int numElements){
-        if(!(dst instanceof ByteBuffer)) throw new GdxRuntimeException("dst must be a ByteBuffer");
+        if(!(dst instanceof ByteBuffer)) throw new ArcRuntimeException("dst must be a ByteBuffer");
 
         ByteBuffer byteBuffer = (ByteBuffer)dst;
         int oldPosition = byteBuffer.position();
@@ -85,7 +85,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asShortBuffer();
         else if(dst instanceof ShortBuffer) buffer = (ShortBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or ShortBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or ShortBuffer");
 
         int oldPosition = buffer.position();
         buffer.limit(oldPosition + numElements);
@@ -108,7 +108,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asCharBuffer();
         else if(dst instanceof CharBuffer) buffer = (CharBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or CharBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or CharBuffer");
 
         int oldPosition = buffer.position();
         buffer.limit(oldPosition + numElements);
@@ -131,7 +131,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asIntBuffer();
         else if(dst instanceof IntBuffer) buffer = (IntBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or IntBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or IntBuffer");
 
         int oldPosition = buffer.position();
         buffer.limit(oldPosition + numElements);
@@ -154,7 +154,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asLongBuffer();
         else if(dst instanceof LongBuffer) buffer = (LongBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or LongBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or LongBuffer");
 
         int oldPosition = buffer.position();
         buffer.limit(oldPosition + numElements);
@@ -196,7 +196,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asDoubleBuffer();
         else if(dst instanceof DoubleBuffer) buffer = (DoubleBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or DoubleBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or DoubleBuffer");
 
         int oldPosition = buffer.position();
         buffer.limit(oldPosition + numElements);
@@ -218,7 +218,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asCharBuffer();
         else if(dst instanceof CharBuffer) buffer = (CharBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or CharBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or CharBuffer");
 
         int oldPosition = buffer.position();
         buffer.put(src, srcOffset, numElements);
@@ -239,7 +239,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asIntBuffer();
         else if(dst instanceof IntBuffer) buffer = (IntBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or IntBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or IntBuffer");
 
         int oldPosition = buffer.position();
         buffer.put(src, srcOffset, numElements);
@@ -260,7 +260,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asLongBuffer();
         else if(dst instanceof LongBuffer) buffer = (LongBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or LongBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or LongBuffer");
 
         int oldPosition = buffer.position();
         buffer.put(src, srcOffset, numElements);
@@ -297,7 +297,7 @@ public final class BufferUtils{
         if(dst instanceof ByteBuffer)
             buffer = ((ByteBuffer)dst).asDoubleBuffer();
         else if(dst instanceof DoubleBuffer) buffer = (DoubleBuffer)dst;
-        if(buffer == null) throw new GdxRuntimeException("dst must be a ByteBuffer or DoubleBuffer");
+        if(buffer == null) throw new ArcRuntimeException("dst must be a ByteBuffer or DoubleBuffer");
 
         int oldPosition = buffer.position();
         buffer.put(src, srcOffset, numElements);
@@ -336,7 +336,7 @@ public final class BufferUtils{
         else if((srcIsByte || src instanceof DoubleBuffer) && (dstIsByte || dst instanceof DoubleBuffer))
             (dstIsByte ? ((ByteBuffer)dst).asDoubleBuffer() : (DoubleBuffer)dst).put((srcIsByte ? ((ByteBuffer)src).asDoubleBuffer() : (DoubleBuffer)src));
         else
-            throw new GdxRuntimeException("Buffers must be of same type or ByteBuffer");
+            throw new ArcRuntimeException("Buffers must be of same type or ByteBuffer");
         src.position(srcPos);
         dst.flip();
         dst.position(dstPos);
@@ -347,7 +347,7 @@ public final class BufferUtils{
         if(data instanceof ByteBuffer)
             buffer = ((ByteBuffer)data).asFloatBuffer();
         else if(data instanceof FloatBuffer) buffer = (FloatBuffer)data;
-        if(buffer == null) throw new GdxRuntimeException("data must be a ByteBuffer or FloatBuffer");
+        if(buffer == null) throw new ArcRuntimeException("data must be a ByteBuffer or FloatBuffer");
         return buffer;
     }
 

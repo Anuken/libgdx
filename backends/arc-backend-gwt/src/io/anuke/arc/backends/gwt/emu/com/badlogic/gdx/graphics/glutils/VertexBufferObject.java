@@ -14,14 +14,14 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.utils.BufferUtils;
+import io.anuke.arc.Core;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.graphics.VertexAttribute;
+import io.anuke.arc.graphics.VertexAttributes;
+import io.anuke.arc.graphics.VertexAttributes.Usage;
+import io.anuke.arc.utils.BufferUtils;
 
 import java.nio.FloatBuffer;
 

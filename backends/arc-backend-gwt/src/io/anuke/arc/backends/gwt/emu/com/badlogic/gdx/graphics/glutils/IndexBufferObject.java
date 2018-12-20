@@ -14,12 +14,12 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.glutils;
+package io.anuke.arc.graphics.glutils;
 
-import com.badlogic.gdx.Core;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Core;
+import io.anuke.arc.graphics.GL20;
+import io.anuke.arc.utils.BufferUtils;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 import java.nio.ShortBuffer;
 
@@ -152,7 +152,7 @@ public class IndexBufferObject implements IndexData{
 
     /** Binds this IndexBufferObject for rendering with glDrawElements. */
     public void bind(){
-        if(bufferHandle == 0) throw new GdxRuntimeException("No buffer allocated!");
+        if(bufferHandle == 0) throw new ArcRuntimeException("No buffer allocated!");
 
         Core.gl20.glBindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, bufferHandle);
         if(isDirty){

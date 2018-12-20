@@ -17,14 +17,14 @@
 
 package java.util.zip;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.io.StreamUtils;
+import io.anuke.arc.utils.ArcRuntimeException;
+import io.anuke.arc.utils.io.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Dummy emulation. Throws a GdxRuntimeException on first read.
+ * Dummy emulation. Throws a ArcRuntimeException on first read.
  * @author hneuer
  */
 public class InflaterInputStream extends InputStream{
@@ -36,7 +36,7 @@ public class InflaterInputStream extends InputStream{
 
     @Override
     public int read(){
-        throw new GdxRuntimeException("InflaterInputStream not supported in GWT");
+        throw new ArcRuntimeException("InflaterInputStream not supported in GWT");
     }
 
     @Override

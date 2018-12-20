@@ -14,12 +14,12 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.graphics.profiling;
+package io.anuke.arc.graphics.profiling;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Log;
+import io.anuke.arc.utils.ArcRuntimeException;
+import io.anuke.arc.utils.Log;
 
-import static com.badlogic.gdx.graphics.profiling.GLInterceptor.resolveErrorNumber;
+import static io.anuke.arc.graphics.profiling.GLInterceptor.resolveErrorNumber;
 
 /**
  * @author Jan Polák
@@ -69,11 +69,11 @@ public interface GLErrorListener{
     };
 
     // Basic implementations
-    /** Listener that will throw a GdxRuntimeException with error name. */
+    /** Listener that will throw a ArcRuntimeException with error name. */
     GLErrorListener THROWING_LISTENER = new GLErrorListener(){
 
         public void onError(int error){
-            throw new GdxRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
+            throw new ArcRuntimeException("GLProfiler: Got GL error " + resolveErrorNumber(error));
         }
     };
 

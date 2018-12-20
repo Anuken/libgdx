@@ -14,10 +14,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.async;
+package io.anuke.arc.utils.async;
 
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.utils.Disposable;
+import io.anuke.arc.utils.ArcRuntimeException;
 
 /**
  * GWT emulation of AsynchExecutor, will call tasks immediately :D
@@ -41,7 +41,7 @@ public class AsyncExecutor implements Disposable{
         try{
             result = task.call();
         }catch(Throwable t){
-            throw new GdxRuntimeException("Could not submit AsyncTask: " + t.getMessage(), t);
+            throw new ArcRuntimeException("Could not submit AsyncTask: " + t.getMessage(), t);
         }
         return new AsyncResult<T>(result);
     }

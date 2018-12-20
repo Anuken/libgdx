@@ -16,10 +16,10 @@
 
 package io.anuke.arc.backends.gwt;
 
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.collection.ObjectMap;
-import com.badlogic.gdx.net.*;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import io.anuke.arc.Net;
+import io.anuke.arc.collection.ObjectMap;
+import io.anuke.arc.net.*;
+import io.anuke.arc.utils.ArcRuntimeException;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
 
@@ -41,7 +41,7 @@ public class GwtNet implements Net{
     @Override
     public void sendHttpRequest(final HttpRequest httpRequest, final HttpResponseListener httpResultListener){
         if(httpRequest.getUrl() == null){
-            httpResultListener.failed(new GdxRuntimeException("can't process a HTTP request without URL set"));
+            httpResultListener.failed(new ArcRuntimeException("can't process a HTTP request without URL set"));
             return;
         }
 
@@ -67,7 +67,7 @@ public class GwtNet implements Net{
         }else if(method.equalsIgnoreCase(HttpMethods.PUT)){
             builder = new RequestBuilder(RequestBuilder.PUT, url);
         }else{
-            throw new GdxRuntimeException("Unsupported HTTP Method");
+            throw new ArcRuntimeException("Unsupported HTTP Method");
         }
 
         Map<String, String> content = httpRequest.getHeaders();

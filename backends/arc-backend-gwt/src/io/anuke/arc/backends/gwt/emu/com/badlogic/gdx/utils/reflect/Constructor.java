@@ -14,9 +14,9 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.badlogic.gdx.utils.reflect;
+package io.anuke.arc.utils.reflect;
 
-import com.badlogic.gwtref.client.Parameter;
+import io.anuke.gwtref.client.Parameter;
 
 /**
  * Provides information about, and access to, a single constructor for a Class.
@@ -24,9 +24,9 @@ import com.badlogic.gwtref.client.Parameter;
  */
 public final class Constructor{
 
-    private final com.badlogic.gwtref.client.Constructor constructor;
+    private final io.anuke.gwtref.client.Constructor constructor;
 
-    Constructor(com.badlogic.gwtref.client.Constructor constructor){
+    Constructor(io.anuke.gwtref.client.Constructor constructor){
         this.constructor = constructor;
     }
 
